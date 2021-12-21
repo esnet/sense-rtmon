@@ -68,4 +68,3 @@ else:
         print("Interrupt detected")
         subprocess.run("sudo docker stop snmp-exporter", shell=True)
         print("Shutting down SNMP Exporter instance to save resources...")
-

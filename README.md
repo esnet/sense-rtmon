@@ -54,7 +54,7 @@ Ensure the docker container is running and keep track of the container ID:
 Now, through either an SSH tunnel or an alternative, navigate to ```http://localhost:3000``` and login to Grafana with the default authentication (username: admin, password: admin). Add Prometheus as a datasource (https://grafana.com/docs/grafana/v7.5/datasources/add-a-data-source/?utm_source=grafana_gettingstarted) by setting the URL to ```http://localhost:9090``` and the Access to ```Browser```. 
 Finally, generate an API key by navigating to the API Keys tab within Grafana and generating a new API key with ```admin``` access and no expiration date. Save the API token value which starts with ```Bearer ...```. 
 
-Also, at this time, you should add Prometheus as a data source. Navigate to the "Add a New Datasource" panel in the homepage of Grafana and select Prometheus from the list of options. For the URL field, input the Host OS IP and port in which you configured the Grafana container on. Select the 'Browser' option in the Access field. Finally, save the datasource. **Note:** Since Prometheus is not configured until later on in execution, this step may produce an error message from Grafana, but this should be fixed later on in the execution of these scripts. 
+**Note:** Since Prometheus is not configured until later on in execution, this step may produce an error message from Grafana, but this should be fixed later on in the execution of these scripts. 
 
 **Step 3: Fill out config file**
 Within the ```PrometheusGrafana``` directory, fill out the requisite information mimicing a sample config file we have provided (e.g. ```topFlowConfig.yml```) to customize your dashboard for the flow you wish to visualize. Make sure to add the private Grafana API token to the config file at this step.
@@ -72,3 +72,13 @@ For each network element in the flow you wish to visualize, you must configure a
 Assuming the Dynamic Dashboard scripts have been configured, the Grafana docker container is running, the Node Exporter containers are running, and the SNMP Exporter container scripts have run, you can visualize your flow through Prometheus and Grafana with scripts from within the ```PrometheusGrafana``` directory. To run the script, issue the following command:
 - ```python dynamic.py <config_file>```
 where ```<config_file>``` is the user-generated config file detailing the configuration parameters of the flow we wish to visualize. Examples of sample config file formats are located within the ```PrometheusGrafana``` directory. 
+
+## Uninstallation
+
+To remove all docker containers and dependencies from the environment, use the ```cleanEnv.py``` Python script. The ```cleanEnv.py``` script has two modalities: one to erase all dependencies and containers for all associated software for flow monitoring, and one to erase all but the configured Grafana docker container. Since this Grafana docker container requires manual setup to generate the API key through a point-and-click approach, the default modality for ```cleanEnv.py``` is to remove all containers and dependencies in the environment EXCEPT for the Grafana docker container. That is, by issuing the following command, the script will remove the Node Exporter, SNMP Exporter, Pushgateway, and Prometheus container as well as all related dependencies on a host OS:
+- ```python3 cleanEnv.py```
+
+To uninstall all containers in the environment including the Grafana container, issue any ONE of the following commands: 
+- ```python3 cleanEnv.py --a```
+- OR ```python3 cleanEnv.py --A```
+- OR ```python3 cleanEnv.py --all

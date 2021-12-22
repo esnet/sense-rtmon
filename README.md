@@ -81,7 +81,7 @@ To remove all docker containers and dependencies from the environment, use the `
 To uninstall all containers in the environment including the Grafana container, issue any ONE of the following commands: 
 - ```python3 cleanEnv.py --a```
 - OR ```python3 cleanEnv.py --A```
-- OR ```python3 cleanEnv.py --all
+- OR ```python3 cleanEnv.py --all```
 
 
 **NOTE:** If there are multiple exporters running on different hosts across the flow, then use the ```cleanEnv.py``` script in each host to remove associated Docker containers. For example, if there are multiple end systems in a flow running the Node Exporter containers, then for each end system running the Node Exporter container, use the ```cleanEnv.py``` script to remove all containers. 

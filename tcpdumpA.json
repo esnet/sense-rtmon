@@ -1,0 +1,4775 @@
+[
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.386569000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.386569000",
+          "frame.time_delta": "0.000000000",
+          "frame.time_delta_displayed": "0.000000000",
+          "frame.time_relative": "0.000000000",
+          "frame.number": "1",
+          "frame.len": "202",
+          "frame.cap_len": "100",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:ssh"
+        },
+        "eth": {
+          "eth.dst": "4c:76:25:e8:44:c2",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000048",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "18",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "188",
+          "ip.id": "0x00009a92",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00000c3c",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "47.148.114.97",
+          "ip.addr": "47.148.114.97",
+          "ip.dst_host": "47.148.114.97",
+          "ip.host": "47.148.114.97"
+        },
+        "tcp": {
+          "tcp.srcport": "22",
+          "tcp.dstport": "56916",
+          "tcp.port": "22",
+          "tcp.port": "56916",
+          "tcp.stream": "0",
+          "tcp.len": "148",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "149",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7AP\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "4",
+          "tcp.window_size": "4",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x000093d4",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.bytes_in_flight": "148",
+            "tcp.analysis.push_bytes_sent": "148"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          },
+          "tcp.payload": "5f:ee:81:7b:d9:a5:aa:32:b4:ef:00:46:51:65:2a:ac:58:f4:62:54:7b:73:ba:79:f8:8b:f7:3a:0b:61:ac:ae:46:4b:ab:26:da:92:fb:e8:c4:34:28:c8:65:b1"
+        },
+        "ssh": {
+          "ssh.packet_length_encrypted": "5f:ee:81:7b"
+        },
+        "_ws.short": "[Packet size limited during capture: SSH truncated]"
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.405254000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.405254000",
+          "frame.time_delta": "0.018685000",
+          "frame.time_delta_displayed": "0.018685000",
+          "frame.time_relative": "0.018685000",
+          "frame.number": "2",
+          "frame.len": "56",
+          "frame.cap_len": "56",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:vssmonitoring"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "4c:76:25:e8:44:c2",
+          "eth.src_tree": {
+            "eth.src_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "52",
+          "ip.proto": "6",
+          "ip.checksum": "0x0000b3aa",
+          "ip.checksum.status": "2",
+          "ip.src": "47.148.114.97",
+          "ip.addr": "47.148.114.97",
+          "ip.src_host": "47.148.114.97",
+          "ip.host": "47.148.114.97",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16"
+        },
+        "tcp": {
+          "tcp.srcport": "56916",
+          "tcp.dstport": "22",
+          "tcp.port": "56916",
+          "tcp.port": "22",
+          "tcp.stream": "0",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "149",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000010",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "4093",
+          "tcp.window_size": "4093",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x00009289",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "1",
+            "tcp.analysis.ack_rtt": "0.018685000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.018685000",
+            "tcp.time_delta": "0.018685000"
+          }
+        },
+        "vssmonitoring": {
+          "vssmonitoring.srcport": "0"
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.428997000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.428997000",
+          "frame.time_delta": "0.023743000",
+          "frame.time_delta_displayed": "0.023743000",
+          "frame.time_relative": "0.042428000",
+          "frame.number": "3",
+          "frame.len": "218",
+          "frame.cap_len": "100",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:ssh"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "4c:76:25:e8:44:c2",
+          "eth.src_tree": {
+            "eth.src_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "204",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "52",
+          "ip.proto": "6",
+          "ip.checksum": "0x0000b306",
+          "ip.checksum.status": "2",
+          "ip.src": "47.148.114.97",
+          "ip.addr": "47.148.114.97",
+          "ip.src_host": "47.148.114.97",
+          "ip.host": "47.148.114.97",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16"
+        },
+        "tcp": {
+          "tcp.srcport": "54556",
+          "tcp.dstport": "22",
+          "tcp.port": "54556",
+          "tcp.port": "22",
+          "tcp.stream": "1",
+          "tcp.len": "164",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "165",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7AP\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "32768",
+          "tcp.window_size": "32768",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000d9b9",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.bytes_in_flight": "164",
+            "tcp.analysis.push_bytes_sent": "164"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          },
+          "tcp.payload": "08:21:24:e5:de:e8:43:80:4e:de:e2:1b:6b:2b:f7:89:d2:d1:b8:7a:56:30:ed:92:c3:17:1a:8e:e2:35:68:c5:48:13:dc:0b:4c:eb:46:72:f3:ee:73:06:4e:42"
+        },
+        "ssh": {
+          "ssh.packet_length_encrypted": "08:21:24:e5"
+        },
+        "_ws.short": "[Packet size limited during capture: SSH truncated]"
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.429033000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.429033000",
+          "frame.time_delta": "0.000036000",
+          "frame.time_delta_displayed": "0.000036000",
+          "frame.time_relative": "0.042464000",
+          "frame.number": "4",
+          "frame.len": "54",
+          "frame.cap_len": "54",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "4c:76:25:e8:44:c2",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00002bf0",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00007bba",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "47.148.114.97",
+          "ip.addr": "47.148.114.97",
+          "ip.dst_host": "47.148.114.97",
+          "ip.host": "47.148.114.97"
+        },
+        "tcp": {
+          "tcp.srcport": "22",
+          "tcp.dstport": "54556",
+          "tcp.port": "22",
+          "tcp.port": "54556",
+          "tcp.stream": "1",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "165",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000010",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "880",
+          "tcp.window_size": "880",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x00009340",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "3",
+            "tcp.analysis.ack_rtt": "0.000036000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000036000",
+            "tcp.time_delta": "0.000036000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.430843000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.430843000",
+          "frame.time_delta": "0.001810000",
+          "frame.time_delta_displayed": "0.001810000",
+          "frame.time_relative": "0.044274000",
+          "frame.number": "5",
+          "frame.len": "130",
+          "frame.cap_len": "100",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:ssh"
+        },
+        "eth": {
+          "eth.dst": "4c:76:25:e8:44:c2",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "116",
+          "ip.id": "0x00002bf1",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00007b6d",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "47.148.114.97",
+          "ip.addr": "47.148.114.97",
+          "ip.dst_host": "47.148.114.97",
+          "ip.host": "47.148.114.97"
+        },
+        "tcp": {
+          "tcp.srcport": "22",
+          "tcp.dstport": "54556",
+          "tcp.port": "22",
+          "tcp.port": "54556",
+          "tcp.stream": "1",
+          "tcp.len": "76",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "77",
+          "tcp.ack": "165",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7AP\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "880",
+          "tcp.window_size": "880",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000938c",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.bytes_in_flight": "76",
+            "tcp.analysis.push_bytes_sent": "76"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.001846000",
+            "tcp.time_delta": "0.001810000"
+          },
+          "tcp.payload": "29:29:fd:45:44:8b:a7:a9:b7:e8:a3:04:41:73:1c:26:f8:d7:19:94:8f:26:c6:ee:1e:e4:b3:27:16:50:49:f0:1f:d8:6c:60:ee:73:31:93:83:b6:37:2e:39:62"
+        },
+        "ssh": {
+          "ssh.packet_length_encrypted": "29:29:fd:45"
+        },
+        "_ws.short": "[Packet size limited during capture: SSH truncated]"
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.444776000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.444776000",
+          "frame.time_delta": "0.013933000",
+          "frame.time_delta_displayed": "0.013933000",
+          "frame.time_relative": "0.058207000",
+          "frame.number": "6",
+          "frame.len": "56",
+          "frame.cap_len": "56",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:vssmonitoring"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "4c:76:25:e8:44:c2",
+          "eth.src_tree": {
+            "eth.src_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "52",
+          "ip.proto": "6",
+          "ip.checksum": "0x0000b3aa",
+          "ip.checksum.status": "2",
+          "ip.src": "47.148.114.97",
+          "ip.addr": "47.148.114.97",
+          "ip.src_host": "47.148.114.97",
+          "ip.host": "47.148.114.97",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16"
+        },
+        "tcp": {
+          "tcp.srcport": "54556",
+          "tcp.dstport": "22",
+          "tcp.port": "54556",
+          "tcp.port": "22",
+          "tcp.stream": "1",
+          "tcp.len": "0",
+          "tcp.seq": "165",
+          "tcp.nxtseq": "165",
+          "tcp.ack": "77",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000010",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "32766",
+          "tcp.window_size": "32766",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000b238",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "5",
+            "tcp.analysis.ack_rtt": "0.013933000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.015779000",
+            "tcp.time_delta": "0.013933000"
+          }
+        },
+        "vssmonitoring": {
+          "vssmonitoring.srcport": "0"
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.444794000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.444794000",
+          "frame.time_delta": "0.000018000",
+          "frame.time_delta_displayed": "0.000018000",
+          "frame.time_relative": "0.058225000",
+          "frame.number": "7",
+          "frame.len": "334",
+          "frame.cap_len": "100",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:ssh"
+        },
+        "eth": {
+          "eth.dst": "4c:76:25:e8:44:c2",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "320",
+          "ip.id": "0x00002bf2",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00007aa0",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "47.148.114.97",
+          "ip.addr": "47.148.114.97",
+          "ip.dst_host": "47.148.114.97",
+          "ip.host": "47.148.114.97"
+        },
+        "tcp": {
+          "tcp.srcport": "22",
+          "tcp.dstport": "54556",
+          "tcp.port": "22",
+          "tcp.port": "54556",
+          "tcp.stream": "1",
+          "tcp.len": "280",
+          "tcp.seq": "77",
+          "tcp.nxtseq": "357",
+          "tcp.ack": "165",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7AP\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "880",
+          "tcp.window_size": "880",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x00009458",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.bytes_in_flight": "280",
+            "tcp.analysis.push_bytes_sent": "280"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.015797000",
+            "tcp.time_delta": "0.000018000"
+          },
+          "tcp.payload": "3e:0b:66:7f:5a:bf:82:85:69:e7:4f:e6:da:93:19:97:5e:24:92:b7:bf:8c:9b:e7:7e:aa:09:27:39:7b:9e:98:b5:dd:89:44:f7:ac:22:b0:3a:f9:34:49:97:5a"
+        },
+        "ssh": {
+          "ssh.packet_length_encrypted": "3e:0b:66:7f"
+        },
+        "_ws.short": "[Packet size limited during capture: SSH truncated]"
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.460478000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.460478000",
+          "frame.time_delta": "0.015684000",
+          "frame.time_delta_displayed": "0.015684000",
+          "frame.time_relative": "0.073909000",
+          "frame.number": "8",
+          "frame.len": "56",
+          "frame.cap_len": "56",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:vssmonitoring"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "4c:76:25:e8:44:c2",
+          "eth.src_tree": {
+            "eth.src_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "52",
+          "ip.proto": "6",
+          "ip.checksum": "0x0000b3aa",
+          "ip.checksum.status": "2",
+          "ip.src": "47.148.114.97",
+          "ip.addr": "47.148.114.97",
+          "ip.src_host": "47.148.114.97",
+          "ip.host": "47.148.114.97",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16"
+        },
+        "tcp": {
+          "tcp.srcport": "54556",
+          "tcp.dstport": "22",
+          "tcp.port": "54556",
+          "tcp.port": "22",
+          "tcp.stream": "1",
+          "tcp.len": "0",
+          "tcp.seq": "165",
+          "tcp.nxtseq": "165",
+          "tcp.ack": "357",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000010",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "32763",
+          "tcp.window_size": "32763",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000b123",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "7",
+            "tcp.analysis.ack_rtt": "0.015684000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.031481000",
+            "tcp.time_delta": "0.015684000"
+          }
+        },
+        "vssmonitoring": {
+          "vssmonitoring.srcport": "0"
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.460702000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.460702000",
+          "frame.time_delta": "0.000224000",
+          "frame.time_delta_displayed": "0.000224000",
+          "frame.time_relative": "0.074133000",
+          "frame.number": "9",
+          "frame.len": "130",
+          "frame.cap_len": "100",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:ssh"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "4c:76:25:e8:44:c2",
+          "eth.src_tree": {
+            "eth.src_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "116",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "52",
+          "ip.proto": "6",
+          "ip.checksum": "0x0000b35e",
+          "ip.checksum.status": "2",
+          "ip.src": "47.148.114.97",
+          "ip.addr": "47.148.114.97",
+          "ip.src_host": "47.148.114.97",
+          "ip.host": "47.148.114.97",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16"
+        },
+        "tcp": {
+          "tcp.srcport": "54556",
+          "tcp.dstport": "22",
+          "tcp.port": "54556",
+          "tcp.port": "22",
+          "tcp.stream": "1",
+          "tcp.len": "76",
+          "tcp.seq": "165",
+          "tcp.nxtseq": "241",
+          "tcp.ack": "357",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7AP\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "32768",
+          "tcp.window_size": "32768",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000f2eb",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.bytes_in_flight": "76",
+            "tcp.analysis.push_bytes_sent": "76"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.031705000",
+            "tcp.time_delta": "0.000224000"
+          },
+          "tcp.payload": "ab:ff:49:ed:c4:57:24:a8:51:52:91:b1:5b:ee:a9:6d:60:32:bc:ee:fb:94:05:4a:50:a2:aa:3b:f5:e5:58:f8:d3:7b:02:e0:11:9a:f8:f5:c7:d2:09:a1:49:f5"
+        },
+        "ssh": {
+          "ssh.packet_length_encrypted": "ab:ff:49:ed"
+        },
+        "_ws.short": "[Packet size limited during capture: SSH truncated]"
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.496440000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.496440000",
+          "frame.time_delta": "0.035738000",
+          "frame.time_delta_displayed": "0.035738000",
+          "frame.time_relative": "0.109871000",
+          "frame.number": "10",
+          "frame.len": "66",
+          "frame.cap_len": "66",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "ec:0d:9a:65:dd:04",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_65:dd:04",
+            "eth.addr": "ec:0d:9a:65:dd:04",
+            "eth.addr_resolved": "Mellanox_65:dd:04",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "52",
+          "ip.id": "0x00002c4b",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00002c22",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.6",
+          "ip.addr": "198.32.43.6",
+          "ip.src_host": "198.32.43.6",
+          "ip.host": "198.32.43.6",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "40410",
+          "tcp.dstport": "6812",
+          "tcp.port": "40410",
+          "tcp.port": "6812",
+          "tcp.stream": "2",
+          "tcp.len": "0",
+          "tcp.seq": "0",
+          "tcp.nxtseq": "0",
+          "tcp.ack": "0",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x00000002",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "0",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "1",
+            "tcp.flags.syn_tree": {
+              "_ws.expert": {
+                "tcp.connection.syn": "",
+                "_ws.expert.message": "Connection establish request (SYN): server port 6812",
+                "_ws.expert.severity": "2097152",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7S\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "26880",
+          "tcp.window_size": "26880",
+          "tcp.checksum": "0x00003490",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "02:04:23:00:01:01:04:02:01:03:03:0e",
+          "tcp.options_tree": {
+            "tcp.options.mss": "02:04:23:00",
+            "tcp.options.mss_tree": {
+              "tcp.option_kind": "2",
+              "tcp.option_len": "4",
+              "tcp.options.mss_val": "8960"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.sack_perm": "04:02",
+            "tcp.options.sack_perm_tree": {
+              "tcp.option_kind": "4",
+              "tcp.option_len": "2"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.wscale": "03:03:0e",
+            "tcp.options.wscale_tree": {
+              "tcp.option_kind": "3",
+              "tcp.option_len": "3",
+              "tcp.options.wscale.shift": "14",
+              "tcp.options.wscale.multiplier": "16384"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.496484000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.496484000",
+          "frame.time_delta": "0.000044000",
+          "frame.time_delta_displayed": "0.000044000",
+          "frame.time_relative": "0.109915000",
+          "frame.number": "11",
+          "frame.len": "54",
+          "frame.cap_len": "54",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "ec:0d:9a:65:dd:04",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_65:dd:04",
+            "eth.addr": "ec:0d:9a:65:dd:04",
+            "eth.addr_resolved": "Mellanox_65:dd:04",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00005879",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "198.32.43.6",
+          "ip.addr": "198.32.43.6",
+          "ip.dst_host": "198.32.43.6",
+          "ip.host": "198.32.43.6",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "6812",
+          "tcp.dstport": "40410",
+          "tcp.port": "6812",
+          "tcp.port": "40410",
+          "tcp.stream": "2",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000014",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "1",
+            "tcp.flags.reset_tree": {
+              "_ws.expert": {
+                "tcp.connection.rst": "",
+                "_ws.expert.message": "Connection reset (RST)",
+                "_ws.expert.severity": "6291456",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7R\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "0",
+          "tcp.window_size": "0",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000fba1",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "10",
+            "tcp.analysis.ack_rtt": "0.000044000",
+            "tcp.analysis.initial_rtt": "0.000044000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000044000",
+            "tcp.time_delta": "0.000044000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.496496000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.496496000",
+          "frame.time_delta": "0.000012000",
+          "frame.time_delta_displayed": "0.000012000",
+          "frame.time_relative": "0.109927000",
+          "frame.number": "12",
+          "frame.len": "66",
+          "frame.cap_len": "66",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "ec:0d:9a:65:dd:04",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_65:dd:04",
+            "eth.addr": "ec:0d:9a:65:dd:04",
+            "eth.addr_resolved": "Mellanox_65:dd:04",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "52",
+          "ip.id": "0x00008e34",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x0000ca38",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.6",
+          "ip.addr": "198.32.43.6",
+          "ip.src_host": "198.32.43.6",
+          "ip.host": "198.32.43.6",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "53108",
+          "tcp.dstport": "6814",
+          "tcp.port": "53108",
+          "tcp.port": "6814",
+          "tcp.stream": "3",
+          "tcp.len": "0",
+          "tcp.seq": "0",
+          "tcp.nxtseq": "0",
+          "tcp.ack": "0",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x00000002",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "0",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "1",
+            "tcp.flags.syn_tree": {
+              "_ws.expert": {
+                "tcp.connection.syn": "",
+                "_ws.expert.message": "Connection establish request (SYN): server port 6814",
+                "_ws.expert.severity": "2097152",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7S\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "26880",
+          "tcp.window_size": "26880",
+          "tcp.checksum": "0x0000a54f",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "02:04:23:00:01:01:04:02:01:03:03:0e",
+          "tcp.options_tree": {
+            "tcp.options.mss": "02:04:23:00",
+            "tcp.options.mss_tree": {
+              "tcp.option_kind": "2",
+              "tcp.option_len": "4",
+              "tcp.options.mss_val": "8960"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.sack_perm": "04:02",
+            "tcp.options.sack_perm_tree": {
+              "tcp.option_kind": "4",
+              "tcp.option_len": "2"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.wscale": "03:03:0e",
+            "tcp.options.wscale_tree": {
+              "tcp.option_kind": "3",
+              "tcp.option_len": "3",
+              "tcp.options.wscale.shift": "14",
+              "tcp.options.wscale.multiplier": "16384"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.496510000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.496510000",
+          "frame.time_delta": "0.000014000",
+          "frame.time_delta_displayed": "0.000014000",
+          "frame.time_relative": "0.109941000",
+          "frame.number": "13",
+          "frame.len": "54",
+          "frame.cap_len": "54",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "ec:0d:9a:65:dd:04",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_65:dd:04",
+            "eth.addr": "ec:0d:9a:65:dd:04",
+            "eth.addr_resolved": "Mellanox_65:dd:04",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00005879",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "198.32.43.6",
+          "ip.addr": "198.32.43.6",
+          "ip.dst_host": "198.32.43.6",
+          "ip.host": "198.32.43.6",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "6814",
+          "tcp.dstport": "53108",
+          "tcp.port": "6814",
+          "tcp.port": "53108",
+          "tcp.stream": "3",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000014",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "1",
+            "tcp.flags.reset_tree": {
+              "_ws.expert": {
+                "tcp.connection.rst": "",
+                "_ws.expert.message": "Connection reset (RST)",
+                "_ws.expert.severity": "6291456",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7R\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "0",
+          "tcp.window_size": "0",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x00006c61",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "12",
+            "tcp.analysis.ack_rtt": "0.000014000",
+            "tcp.analysis.initial_rtt": "0.000014000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000014000",
+            "tcp.time_delta": "0.000014000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.501620000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.501620000",
+          "frame.time_delta": "0.005110000",
+          "frame.time_delta_displayed": "0.005110000",
+          "frame.time_relative": "0.115051000",
+          "frame.number": "14",
+          "frame.len": "54",
+          "frame.cap_len": "54",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "4c:76:25:e8:44:c2",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00002bf3",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00007bb7",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "47.148.114.97",
+          "ip.addr": "47.148.114.97",
+          "ip.dst_host": "47.148.114.97",
+          "ip.host": "47.148.114.97",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          },
+          "ip.geoip.dst_summary": "Cerritos, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Cerritos",
+            "ip.geoip.city": "Cerritos",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "33.8661",
+            "ip.geoip.lat": "33.8661",
+            "ip.geoip.dst_lon": "-118.0528",
+            "ip.geoip.lon": "-118.0528"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "22",
+          "tcp.dstport": "54556",
+          "tcp.port": "22",
+          "tcp.port": "54556",
+          "tcp.stream": "1",
+          "tcp.len": "0",
+          "tcp.seq": "357",
+          "tcp.nxtseq": "357",
+          "tcp.ack": "241",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000010",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "880",
+          "tcp.window_size": "880",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x00009340",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "9",
+            "tcp.analysis.ack_rtt": "0.040918000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.072623000",
+            "tcp.time_delta": "0.040918000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.615555000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.615555000",
+          "frame.time_delta": "0.113935000",
+          "frame.time_delta_displayed": "0.113935000",
+          "frame.time_relative": "0.228986000",
+          "frame.number": "15",
+          "frame.len": "58",
+          "frame.cap_len": "58",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:data"
+        },
+        "eth": {
+          "eth.dst": "4c:76:25:e8:44:c2",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "44",
+          "ip.id": "0x00003bc1",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00001ba8",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "198.32.44.18",
+          "ip.addr": "198.32.44.18",
+          "ip.dst_host": "198.32.44.18",
+          "ip.host": "198.32.44.18",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "36025",
+          "tcp.dstport": "601",
+          "tcp.port": "36025",
+          "tcp.port": "601",
+          "tcp.stream": "4",
+          "tcp.len": "4",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "5",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7AP\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "2",
+          "tcp.window_size": "2",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000e381",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.bytes_in_flight": "4",
+            "tcp.analysis.push_bytes_sent": "4"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          },
+          "tcp.payload": "31:31:34:20"
+        },
+        "data": {
+          "data.data": "31:31:34:20",
+          "data.len": "4"
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.615804000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.615804000",
+          "frame.time_delta": "0.000249000",
+          "frame.time_delta_displayed": "0.000249000",
+          "frame.time_relative": "0.229235000",
+          "frame.number": "16",
+          "frame.len": "56",
+          "frame.cap_len": "56",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:vssmonitoring"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "4c:76:25:e8:44:c2",
+          "eth.src_tree": {
+            "eth.src_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x0000d086",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "62",
+          "ip.proto": "6",
+          "ip.checksum": "0x000088e6",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.44.18",
+          "ip.addr": "198.32.44.18",
+          "ip.src_host": "198.32.44.18",
+          "ip.host": "198.32.44.18",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "601",
+          "tcp.dstport": "36025",
+          "tcp.port": "601",
+          "tcp.port": "36025",
+          "tcp.stream": "4",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "5",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000010",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "8156",
+          "tcp.window_size": "8156",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000f7c4",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "15",
+            "tcp.analysis.ack_rtt": "0.000249000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000249000",
+            "tcp.time_delta": "0.000249000"
+          }
+        },
+        "vssmonitoring": {
+          "vssmonitoring.srcport": "0"
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.615857000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.615857000",
+          "frame.time_delta": "0.000053000",
+          "frame.time_delta_displayed": "0.000053000",
+          "frame.time_relative": "0.229288000",
+          "frame.number": "17",
+          "frame.len": "283",
+          "frame.cap_len": "100",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:data"
+        },
+        "eth": {
+          "eth.dst": "4c:76:25:e8:44:c2",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "269",
+          "ip.id": "0x00003bc2",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00001ac6",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "198.32.44.18",
+          "ip.addr": "198.32.44.18",
+          "ip.dst_host": "198.32.44.18",
+          "ip.host": "198.32.44.18",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "36025",
+          "tcp.dstport": "601",
+          "tcp.port": "36025",
+          "tcp.port": "601",
+          "tcp.stream": "4",
+          "tcp.len": "229",
+          "tcp.seq": "5",
+          "tcp.nxtseq": "234",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7AP\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "2",
+          "tcp.window_size": "2",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000e462",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.bytes_in_flight": "229",
+            "tcp.analysis.push_bytes_sent": "229"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000302000",
+            "tcp.time_delta": "0.000053000"
+          },
+          "tcp.payload": "3c:36:3e:31:20:32:30:32:32:2d:30:31:2d:30:36:54:31:32:3a:34:33:3a:31:39:2d:30:38:3a:30:30:20:73:64:6e:2d:64:74:6e:2d:32:2d:31:30:2e:75:6c"
+        },
+        "data": {
+          "data.data": "3c:36:3e:31:20:32:30:32:32:2d:30:31:2d:30:36:54:31:32:3a:34:33:3a:31:39:2d:30:38:3a:30:30:20:73:64:6e:2d:64:74:6e:2d:32:2d:31:30:2e:75:6c",
+          "data.len": "46"
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.615938000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.615938000",
+          "frame.time_delta": "0.000081000",
+          "frame.time_delta_displayed": "0.000081000",
+          "frame.time_relative": "0.229369000",
+          "frame.number": "18",
+          "frame.len": "56",
+          "frame.cap_len": "56",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:vssmonitoring"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "4c:76:25:e8:44:c2",
+          "eth.src_tree": {
+            "eth.src_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x0000d087",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "62",
+          "ip.proto": "6",
+          "ip.checksum": "0x000088e5",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.44.18",
+          "ip.addr": "198.32.44.18",
+          "ip.src_host": "198.32.44.18",
+          "ip.host": "198.32.44.18",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "601",
+          "tcp.dstport": "36025",
+          "tcp.port": "601",
+          "tcp.port": "36025",
+          "tcp.stream": "4",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "234",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000010",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "8156",
+          "tcp.window_size": "8156",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000f6df",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "17",
+            "tcp.analysis.ack_rtt": "0.000081000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000383000",
+            "tcp.time_delta": "0.000081000"
+          }
+        },
+        "vssmonitoring": {
+          "vssmonitoring.srcport": "0"
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.666656000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.666656000",
+          "frame.time_delta": "0.050718000",
+          "frame.time_delta_displayed": "0.050718000",
+          "frame.time_relative": "0.280087000",
+          "frame.number": "19",
+          "frame.len": "74",
+          "frame.cap_len": "74",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:02:c9:a0:c4:e0",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_a0:c4:e0",
+            "eth.addr": "00:02:c9:a0:c4:e0",
+            "eth.addr_resolved": "Mellanox_a0:c4:e0",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "60",
+          "ip.id": "0x000003bf",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x000054a9",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.3",
+          "ip.addr": "198.32.43.3",
+          "ip.src_host": "198.32.43.3",
+          "ip.host": "198.32.43.3",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "33214",
+          "tcp.dstport": "6814",
+          "tcp.port": "33214",
+          "tcp.port": "6814",
+          "tcp.stream": "5",
+          "tcp.len": "0",
+          "tcp.seq": "0",
+          "tcp.nxtseq": "0",
+          "tcp.ack": "0",
+          "tcp.hdr_len": "40",
+          "tcp.flags": "0x00000002",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "0",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "1",
+            "tcp.flags.syn_tree": {
+              "_ws.expert": {
+                "tcp.connection.syn": "",
+                "_ws.expert.message": "Connection establish request (SYN): server port 6814",
+                "_ws.expert.severity": "2097152",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7S\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "64240",
+          "tcp.window_size": "64240",
+          "tcp.checksum": "0x00000a1e",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "02:04:05:b4:04:02:08:0a:8e:a4:52:57:00:00:00:00:01:03:03:07",
+          "tcp.options_tree": {
+            "tcp.options.mss": "02:04:05:b4",
+            "tcp.options.mss_tree": {
+              "tcp.option_kind": "2",
+              "tcp.option_len": "4",
+              "tcp.options.mss_val": "1460"
+            },
+            "tcp.options.sack_perm": "04:02",
+            "tcp.options.sack_perm_tree": {
+              "tcp.option_kind": "4",
+              "tcp.option_len": "2"
+            },
+            "tcp.options.timestamp": "08:0a:8e:a4:52:57:00:00:00:00",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "2393133655",
+              "tcp.options.timestamp.tsecr": "0"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.wscale": "03:03:07",
+            "tcp.options.wscale_tree": {
+              "tcp.option_kind": "3",
+              "tcp.option_len": "3",
+              "tcp.options.wscale.shift": "7",
+              "tcp.options.wscale.multiplier": "128"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.666680000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.666680000",
+          "frame.time_delta": "0.000024000",
+          "frame.time_delta_displayed": "0.000024000",
+          "frame.time_relative": "0.280111000",
+          "frame.number": "20",
+          "frame.len": "54",
+          "frame.cap_len": "54",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "00:02:c9:a0:c4:e0",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_a0:c4:e0",
+            "eth.addr": "00:02:c9:a0:c4:e0",
+            "eth.addr_resolved": "Mellanox_a0:c4:e0",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x0000587c",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "198.32.43.3",
+          "ip.addr": "198.32.43.3",
+          "ip.dst_host": "198.32.43.3",
+          "ip.host": "198.32.43.3",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "6814",
+          "tcp.dstport": "33214",
+          "tcp.port": "6814",
+          "tcp.port": "33214",
+          "tcp.stream": "5",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000014",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "1",
+            "tcp.flags.reset_tree": {
+              "_ws.expert": {
+                "tcp.connection.rst": "",
+                "_ws.expert.message": "Connection reset (RST)",
+                "_ws.expert.severity": "6291456",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7R\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "0",
+          "tcp.window_size": "0",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x00004dda",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "19",
+            "tcp.analysis.ack_rtt": "0.000024000",
+            "tcp.analysis.initial_rtt": "0.000024000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000024000",
+            "tcp.time_delta": "0.000024000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.670779000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.670779000",
+          "frame.time_delta": "0.004099000",
+          "frame.time_delta_displayed": "0.004099000",
+          "frame.time_relative": "0.284210000",
+          "frame.number": "21",
+          "frame.len": "74",
+          "frame.cap_len": "74",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:02:c9:a0:c4:e0",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_a0:c4:e0",
+            "eth.addr": "00:02:c9:a0:c4:e0",
+            "eth.addr_resolved": "Mellanox_a0:c4:e0",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "60",
+          "ip.id": "0x0000450f",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00001359",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.3",
+          "ip.addr": "198.32.43.3",
+          "ip.src_host": "198.32.43.3",
+          "ip.host": "198.32.43.3",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "37880",
+          "tcp.dstport": "6812",
+          "tcp.port": "37880",
+          "tcp.port": "6812",
+          "tcp.stream": "6",
+          "tcp.len": "0",
+          "tcp.seq": "0",
+          "tcp.nxtseq": "0",
+          "tcp.ack": "0",
+          "tcp.hdr_len": "40",
+          "tcp.flags": "0x00000002",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "0",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "1",
+            "tcp.flags.syn_tree": {
+              "_ws.expert": {
+                "tcp.connection.syn": "",
+                "_ws.expert.message": "Connection establish request (SYN): server port 6812",
+                "_ws.expert.severity": "2097152",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7S\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "64240",
+          "tcp.window_size": "64240",
+          "tcp.checksum": "0x0000ae33",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "02:04:05:b4:04:02:08:0a:8e:a4:52:5b:00:00:00:00:01:03:03:07",
+          "tcp.options_tree": {
+            "tcp.options.mss": "02:04:05:b4",
+            "tcp.options.mss_tree": {
+              "tcp.option_kind": "2",
+              "tcp.option_len": "4",
+              "tcp.options.mss_val": "1460"
+            },
+            "tcp.options.sack_perm": "04:02",
+            "tcp.options.sack_perm_tree": {
+              "tcp.option_kind": "4",
+              "tcp.option_len": "2"
+            },
+            "tcp.options.timestamp": "08:0a:8e:a4:52:5b:00:00:00:00",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "2393133659",
+              "tcp.options.timestamp.tsecr": "0"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.wscale": "03:03:07",
+            "tcp.options.wscale_tree": {
+              "tcp.option_kind": "3",
+              "tcp.option_len": "3",
+              "tcp.options.wscale.shift": "7",
+              "tcp.options.wscale.multiplier": "128"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.670803000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.670803000",
+          "frame.time_delta": "0.000024000",
+          "frame.time_delta_displayed": "0.000024000",
+          "frame.time_relative": "0.284234000",
+          "frame.number": "22",
+          "frame.len": "54",
+          "frame.cap_len": "54",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "00:02:c9:a0:c4:e0",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_a0:c4:e0",
+            "eth.addr": "00:02:c9:a0:c4:e0",
+            "eth.addr_resolved": "Mellanox_a0:c4:e0",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x0000587c",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "198.32.43.3",
+          "ip.addr": "198.32.43.3",
+          "ip.dst_host": "198.32.43.3",
+          "ip.host": "198.32.43.3",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "6812",
+          "tcp.dstport": "37880",
+          "tcp.port": "6812",
+          "tcp.port": "37880",
+          "tcp.stream": "6",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000014",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "1",
+            "tcp.flags.reset_tree": {
+              "_ws.expert": {
+                "tcp.connection.rst": "",
+                "_ws.expert.message": "Connection reset (RST)",
+                "_ws.expert.severity": "6291456",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7R\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "0",
+          "tcp.window_size": "0",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000f1f3",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "21",
+            "tcp.analysis.ack_rtt": "0.000024000",
+            "tcp.analysis.initial_rtt": "0.000024000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000024000",
+            "tcp.time_delta": "0.000024000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.699496000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.699496000",
+          "frame.time_delta": "0.028693000",
+          "frame.time_delta_displayed": "0.028693000",
+          "frame.time_relative": "0.312927000",
+          "frame.number": "23",
+          "frame.len": "66",
+          "frame.cap_len": "66",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "ec:0d:9a:65:dd:04",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_65:dd:04",
+            "eth.addr": "ec:0d:9a:65:dd:04",
+            "eth.addr_resolved": "Mellanox_65:dd:04",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "52",
+          "ip.id": "0x000077db",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x0000e091",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.6",
+          "ip.addr": "198.32.43.6",
+          "ip.src_host": "198.32.43.6",
+          "ip.host": "198.32.43.6",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          },
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "53114",
+          "tcp.dstport": "6814",
+          "tcp.port": "53114",
+          "tcp.port": "6814",
+          "tcp.stream": "7",
+          "tcp.len": "0",
+          "tcp.seq": "0",
+          "tcp.nxtseq": "0",
+          "tcp.ack": "0",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x00000002",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "0",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "1",
+            "tcp.flags.syn_tree": {
+              "_ws.expert": {
+                "tcp.connection.syn": "",
+                "_ws.expert.message": "Connection establish request (SYN): server port 6814",
+                "_ws.expert.severity": "2097152",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7S\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "26880",
+          "tcp.window_size": "26880",
+          "tcp.checksum": "0x000022d0",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "02:04:23:00:01:01:04:02:01:03:03:0e",
+          "tcp.options_tree": {
+            "tcp.options.mss": "02:04:23:00",
+            "tcp.options.mss_tree": {
+              "tcp.option_kind": "2",
+              "tcp.option_len": "4",
+              "tcp.options.mss_val": "8960"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.sack_perm": "04:02",
+            "tcp.options.sack_perm_tree": {
+              "tcp.option_kind": "4",
+              "tcp.option_len": "2"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.wscale": "03:03:0e",
+            "tcp.options.wscale_tree": {
+              "tcp.option_kind": "3",
+              "tcp.option_len": "3",
+              "tcp.options.wscale.shift": "14",
+              "tcp.options.wscale.multiplier": "16384"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.699539000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.699539000",
+          "frame.time_delta": "0.000043000",
+          "frame.time_delta_displayed": "0.000043000",
+          "frame.time_relative": "0.312970000",
+          "frame.number": "24",
+          "frame.len": "54",
+          "frame.cap_len": "54",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "ec:0d:9a:65:dd:04",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_65:dd:04",
+            "eth.addr": "ec:0d:9a:65:dd:04",
+            "eth.addr_resolved": "Mellanox_65:dd:04",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00005879",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "198.32.43.6",
+          "ip.addr": "198.32.43.6",
+          "ip.dst_host": "198.32.43.6",
+          "ip.host": "198.32.43.6",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          },
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "6814",
+          "tcp.dstport": "53114",
+          "tcp.port": "6814",
+          "tcp.port": "53114",
+          "tcp.stream": "7",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000014",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "1",
+            "tcp.flags.reset_tree": {
+              "_ws.expert": {
+                "tcp.connection.rst": "",
+                "_ws.expert.message": "Connection reset (RST)",
+                "_ws.expert.severity": "6291456",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7R\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "0",
+          "tcp.window_size": "0",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000e9e1",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "23",
+            "tcp.analysis.ack_rtt": "0.000043000",
+            "tcp.analysis.initial_rtt": "0.000043000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000043000",
+            "tcp.time_delta": "0.000043000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.719542000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.719542000",
+          "frame.time_delta": "0.020003000",
+          "frame.time_delta_displayed": "0.020003000",
+          "frame.time_relative": "0.332973000",
+          "frame.number": "25",
+          "frame.len": "66",
+          "frame.cap_len": "66",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "ec:0d:9a:65:dd:04",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_65:dd:04",
+            "eth.addr": "ec:0d:9a:65:dd:04",
+            "eth.addr_resolved": "Mellanox_65:dd:04",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "52",
+          "ip.id": "0x00000086",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x000057e7",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.6",
+          "ip.addr": "198.32.43.6",
+          "ip.src_host": "198.32.43.6",
+          "ip.host": "198.32.43.6",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          },
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "40424",
+          "tcp.dstport": "6812",
+          "tcp.port": "40424",
+          "tcp.port": "6812",
+          "tcp.stream": "8",
+          "tcp.len": "0",
+          "tcp.seq": "0",
+          "tcp.nxtseq": "0",
+          "tcp.ack": "0",
+          "tcp.hdr_len": "32",
+          "tcp.flags": "0x00000002",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "0",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "1",
+            "tcp.flags.syn_tree": {
+              "_ws.expert": {
+                "tcp.connection.syn": "",
+                "_ws.expert.message": "Connection establish request (SYN): server port 6812",
+                "_ws.expert.severity": "2097152",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7S\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "26880",
+          "tcp.window_size": "26880",
+          "tcp.checksum": "0x00005074",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "02:04:23:00:01:01:04:02:01:03:03:0e",
+          "tcp.options_tree": {
+            "tcp.options.mss": "02:04:23:00",
+            "tcp.options.mss_tree": {
+              "tcp.option_kind": "2",
+              "tcp.option_len": "4",
+              "tcp.options.mss_val": "8960"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.sack_perm": "04:02",
+            "tcp.options.sack_perm_tree": {
+              "tcp.option_kind": "4",
+              "tcp.option_len": "2"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.wscale": "03:03:0e",
+            "tcp.options.wscale_tree": {
+              "tcp.option_kind": "3",
+              "tcp.option_len": "3",
+              "tcp.options.wscale.shift": "14",
+              "tcp.options.wscale.multiplier": "16384"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.719566000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.719566000",
+          "frame.time_delta": "0.000024000",
+          "frame.time_delta_displayed": "0.000024000",
+          "frame.time_relative": "0.332997000",
+          "frame.number": "26",
+          "frame.len": "54",
+          "frame.cap_len": "54",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "ec:0d:9a:65:dd:04",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_65:dd:04",
+            "eth.addr": "ec:0d:9a:65:dd:04",
+            "eth.addr_resolved": "Mellanox_65:dd:04",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00005879",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "198.32.43.6",
+          "ip.addr": "198.32.43.6",
+          "ip.dst_host": "198.32.43.6",
+          "ip.host": "198.32.43.6",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          },
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "6812",
+          "tcp.dstport": "40424",
+          "tcp.port": "6812",
+          "tcp.port": "40424",
+          "tcp.stream": "8",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000014",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "1",
+            "tcp.flags.reset_tree": {
+              "_ws.expert": {
+                "tcp.connection.rst": "",
+                "_ws.expert.message": "Connection reset (RST)",
+                "_ws.expert.severity": "6291456",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7R\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "0",
+          "tcp.window_size": "0",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x00001786",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "25",
+            "tcp.analysis.ack_rtt": "0.000024000",
+            "tcp.analysis.initial_rtt": "0.000024000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000024000",
+            "tcp.time_delta": "0.000024000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.869629000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.869629000",
+          "frame.time_delta": "0.150063000",
+          "frame.time_delta_displayed": "0.150063000",
+          "frame.time_relative": "0.483060000",
+          "frame.number": "27",
+          "frame.len": "74",
+          "frame.cap_len": "74",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:02:c9:a0:c4:e0",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_a0:c4:e0",
+            "eth.addr": "00:02:c9:a0:c4:e0",
+            "eth.addr_resolved": "Mellanox_a0:c4:e0",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "60",
+          "ip.id": "0x00002d27",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00002b41",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.3",
+          "ip.addr": "198.32.43.3",
+          "ip.src_host": "198.32.43.3",
+          "ip.host": "198.32.43.3",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "39980",
+          "tcp.dstport": "6806",
+          "tcp.port": "39980",
+          "tcp.port": "6806",
+          "tcp.stream": "9",
+          "tcp.len": "0",
+          "tcp.seq": "0",
+          "tcp.nxtseq": "0",
+          "tcp.ack": "0",
+          "tcp.hdr_len": "40",
+          "tcp.flags": "0x00000002",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "0",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "1",
+            "tcp.flags.syn_tree": {
+              "_ws.expert": {
+                "tcp.connection.syn": "",
+                "_ws.expert.message": "Connection establish request (SYN): server port 6806",
+                "_ws.expert.severity": "2097152",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7S\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "64240",
+          "tcp.window_size": "64240",
+          "tcp.checksum": "0x0000db7c",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "02:04:05:b4:04:02:08:0a:8e:a4:53:22:00:00:00:00:01:03:03:07",
+          "tcp.options_tree": {
+            "tcp.options.mss": "02:04:05:b4",
+            "tcp.options.mss_tree": {
+              "tcp.option_kind": "2",
+              "tcp.option_len": "4",
+              "tcp.options.mss_val": "1460"
+            },
+            "tcp.options.sack_perm": "04:02",
+            "tcp.options.sack_perm_tree": {
+              "tcp.option_kind": "4",
+              "tcp.option_len": "2"
+            },
+            "tcp.options.timestamp": "08:0a:8e:a4:53:22:00:00:00:00",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "2393133858",
+              "tcp.options.timestamp.tsecr": "0"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.wscale": "03:03:07",
+            "tcp.options.wscale_tree": {
+              "tcp.option_kind": "3",
+              "tcp.option_len": "3",
+              "tcp.options.wscale.shift": "7",
+              "tcp.options.wscale.multiplier": "128"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.869675000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.869675000",
+          "frame.time_delta": "0.000046000",
+          "frame.time_delta_displayed": "0.000046000",
+          "frame.time_relative": "0.483106000",
+          "frame.number": "28",
+          "frame.len": "54",
+          "frame.cap_len": "54",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "00:02:c9:a0:c4:e0",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_a0:c4:e0",
+            "eth.addr": "00:02:c9:a0:c4:e0",
+            "eth.addr_resolved": "Mellanox_a0:c4:e0",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x0000587c",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "198.32.43.3",
+          "ip.addr": "198.32.43.3",
+          "ip.dst_host": "198.32.43.3",
+          "ip.host": "198.32.43.3",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "6806",
+          "tcp.dstport": "39980",
+          "tcp.port": "6806",
+          "tcp.port": "39980",
+          "tcp.stream": "9",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000014",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "1",
+            "tcp.flags.reset_tree": {
+              "_ws.expert": {
+                "tcp.connection.rst": "",
+                "_ws.expert.message": "Connection reset (RST)",
+                "_ws.expert.severity": "6291456",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7R\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "0",
+          "tcp.window_size": "0",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x00002004",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "27",
+            "tcp.analysis.ack_rtt": "0.000046000",
+            "tcp.analysis.initial_rtt": "0.000046000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000046000",
+            "tcp.time_delta": "0.000046000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.877828000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.877828000",
+          "frame.time_delta": "0.008153000",
+          "frame.time_delta_displayed": "0.008153000",
+          "frame.time_relative": "0.491259000",
+          "frame.number": "29",
+          "frame.len": "74",
+          "frame.cap_len": "74",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "00:02:c9:a0:c4:e0",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_a0:c4:e0",
+            "eth.addr": "00:02:c9:a0:c4:e0",
+            "eth.addr_resolved": "Mellanox_a0:c4:e0",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "60",
+          "ip.id": "0x0000411f",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00001749",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.3",
+          "ip.addr": "198.32.43.3",
+          "ip.src_host": "198.32.43.3",
+          "ip.host": "198.32.43.3",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "41428",
+          "tcp.dstport": "6804",
+          "tcp.port": "41428",
+          "tcp.port": "6804",
+          "tcp.stream": "10",
+          "tcp.len": "0",
+          "tcp.seq": "0",
+          "tcp.nxtseq": "0",
+          "tcp.ack": "0",
+          "tcp.hdr_len": "40",
+          "tcp.flags": "0x00000002",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "0",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "1",
+            "tcp.flags.syn_tree": {
+              "_ws.expert": {
+                "tcp.connection.syn": "",
+                "_ws.expert.message": "Connection establish request (SYN): server port 6804",
+                "_ws.expert.severity": "2097152",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7S\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "64240",
+          "tcp.window_size": "64240",
+          "tcp.checksum": "0x0000bb10",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.options": "02:04:05:b4:04:02:08:0a:8e:a4:53:2a:00:00:00:00:01:03:03:07",
+          "tcp.options_tree": {
+            "tcp.options.mss": "02:04:05:b4",
+            "tcp.options.mss_tree": {
+              "tcp.option_kind": "2",
+              "tcp.option_len": "4",
+              "tcp.options.mss_val": "1460"
+            },
+            "tcp.options.sack_perm": "04:02",
+            "tcp.options.sack_perm_tree": {
+              "tcp.option_kind": "4",
+              "tcp.option_len": "2"
+            },
+            "tcp.options.timestamp": "08:0a:8e:a4:53:2a:00:00:00:00",
+            "tcp.options.timestamp_tree": {
+              "tcp.option_kind": "8",
+              "tcp.option_len": "10",
+              "tcp.options.timestamp.tsval": "2393133866",
+              "tcp.options.timestamp.tsecr": "0"
+            },
+            "tcp.options.nop": "01",
+            "tcp.options.nop_tree": {
+              "tcp.option_kind": "1"
+            },
+            "tcp.options.wscale": "03:03:07",
+            "tcp.options.wscale_tree": {
+              "tcp.option_kind": "3",
+              "tcp.option_len": "3",
+              "tcp.options.wscale.shift": "7",
+              "tcp.options.wscale.multiplier": "128"
+            }
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000000000",
+            "tcp.time_delta": "0.000000000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:19.877871000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501799.877871000",
+          "frame.time_delta": "0.000043000",
+          "frame.time_delta_displayed": "0.000043000",
+          "frame.time_relative": "0.491302000",
+          "frame.number": "30",
+          "frame.len": "54",
+          "frame.cap_len": "54",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp"
+        },
+        "eth": {
+          "eth.dst": "00:02:c9:a0:c4:e0",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_a0:c4:e0",
+            "eth.addr": "00:02:c9:a0:c4:e0",
+            "eth.addr_resolved": "Mellanox_a0:c4:e0",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x00000000",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x0000587c",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "198.32.43.3",
+          "ip.addr": "198.32.43.3",
+          "ip.dst_host": "198.32.43.3",
+          "ip.host": "198.32.43.3",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "6804",
+          "tcp.dstport": "41428",
+          "tcp.port": "6804",
+          "tcp.port": "41428",
+          "tcp.stream": "10",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000014",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "1",
+            "tcp.flags.reset_tree": {
+              "_ws.expert": {
+                "tcp.connection.rst": "",
+                "_ws.expert.message": "Connection reset (RST)",
+                "_ws.expert.severity": "6291456",
+                "_ws.expert.group": "33554432"
+              }
+            },
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7R\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "0",
+          "tcp.window_size": "0",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000ff9f",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "29",
+            "tcp.analysis.ack_rtt": "0.000043000",
+            "tcp.analysis.initial_rtt": "0.000043000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.000043000",
+            "tcp.time_delta": "0.000043000"
+          }
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:20.365628000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501800.365628000",
+          "frame.time_delta": "0.487757000",
+          "frame.time_delta_displayed": "0.487757000",
+          "frame.time_relative": "0.979059000",
+          "frame.number": "31",
+          "frame.len": "58",
+          "frame.cap_len": "58",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:data"
+        },
+        "eth": {
+          "eth.dst": "4c:76:25:e8:44:c2",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "44",
+          "ip.id": "0x00003bc3",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00001ba6",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "198.32.44.18",
+          "ip.addr": "198.32.44.18",
+          "ip.dst_host": "198.32.44.18",
+          "ip.host": "198.32.44.18",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          },
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "36025",
+          "tcp.dstport": "601",
+          "tcp.port": "36025",
+          "tcp.port": "601",
+          "tcp.stream": "4",
+          "tcp.len": "4",
+          "tcp.seq": "234",
+          "tcp.nxtseq": "238",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7AP\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "2",
+          "tcp.window_size": "2",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000e381",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.bytes_in_flight": "4",
+            "tcp.analysis.push_bytes_sent": "4"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.750073000",
+            "tcp.time_delta": "0.749690000"
+          },
+          "tcp.payload": "32:39:39:20"
+        },
+        "data": {
+          "data.data": "32:39:39:20",
+          "data.len": "4"
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:20.365822000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501800.365822000",
+          "frame.time_delta": "0.000194000",
+          "frame.time_delta_displayed": "0.000194000",
+          "frame.time_relative": "0.979253000",
+          "frame.number": "32",
+          "frame.len": "56",
+          "frame.cap_len": "56",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:vssmonitoring"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "4c:76:25:e8:44:c2",
+          "eth.src_tree": {
+            "eth.src_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x0000d088",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "62",
+          "ip.proto": "6",
+          "ip.checksum": "0x000088e4",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.44.18",
+          "ip.addr": "198.32.44.18",
+          "ip.src_host": "198.32.44.18",
+          "ip.host": "198.32.44.18",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          },
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "601",
+          "tcp.dstport": "36025",
+          "tcp.port": "601",
+          "tcp.port": "36025",
+          "tcp.stream": "4",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "238",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000010",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "8156",
+          "tcp.window_size": "8156",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000f6db",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "31",
+            "tcp.analysis.ack_rtt": "0.000194000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.750267000",
+            "tcp.time_delta": "0.000194000"
+          }
+        },
+        "vssmonitoring": {
+          "vssmonitoring.srcport": "0"
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:20.365858000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501800.365858000",
+          "frame.time_delta": "0.000036000",
+          "frame.time_delta_displayed": "0.000036000",
+          "frame.time_relative": "0.979289000",
+          "frame.number": "33",
+          "frame.len": "353",
+          "frame.cap_len": "100",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:data"
+        },
+        "eth": {
+          "eth.dst": "4c:76:25:e8:44:c2",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "24:8a:07:9c:02:1e",
+          "eth.src_tree": {
+            "eth.src_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "339",
+          "ip.id": "0x00003bc4",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "64",
+          "ip.proto": "6",
+          "ip.checksum": "0x00001a7e",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.src_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.dst": "198.32.44.18",
+          "ip.addr": "198.32.44.18",
+          "ip.dst_host": "198.32.44.18",
+          "ip.host": "198.32.44.18",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          },
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "36025",
+          "tcp.dstport": "601",
+          "tcp.port": "36025",
+          "tcp.port": "601",
+          "tcp.stream": "4",
+          "tcp.len": "299",
+          "tcp.seq": "238",
+          "tcp.nxtseq": "537",
+          "tcp.ack": "1",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000018",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "1",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7AP\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "2",
+          "tcp.window_size": "2",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000e4a8",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.bytes_in_flight": "299",
+            "tcp.analysis.push_bytes_sent": "299"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.750303000",
+            "tcp.time_delta": "0.000036000"
+          },
+          "tcp.payload": "3c:33:30:3e:31:20:32:30:32:32:2d:30:31:2d:30:36:54:31:32:3a:34:33:3a:32:30:2d:30:38:3a:30:30:20:73:64:6e:2d:64:74:6e:2d:32:2d:31:30:2e:75"
+        },
+        "data": {
+          "data.data": "3c:33:30:3e:31:20:32:30:32:32:2d:30:31:2d:30:36:54:31:32:3a:34:33:3a:32:30:2d:30:38:3a:30:30:20:73:64:6e:2d:64:74:6e:2d:32:2d:31:30:2e:75",
+          "data.len": "46"
+        }
+      }
+    }
+  }
+
+  ,
+  {
+    "_index": "packets-2022-01-06",
+    "_type": "pcap_file",
+    "_score": null,
+    "_source": {
+      "layers": {
+        "frame": {
+          "frame.encap_type": "1",
+          "frame.time": "Jan  6, 2022 12:43:20.365959000 PST",
+          "frame.offset_shift": "0.000000000",
+          "frame.time_epoch": "1641501800.365959000",
+          "frame.time_delta": "0.000101000",
+          "frame.time_delta_displayed": "0.000101000",
+          "frame.time_relative": "0.979390000",
+          "frame.number": "34",
+          "frame.len": "56",
+          "frame.cap_len": "56",
+          "frame.marked": "0",
+          "frame.ignored": "0",
+          "frame.protocols": "eth:ethertype:ip:tcp:vssmonitoring"
+        },
+        "eth": {
+          "eth.dst": "24:8a:07:9c:02:1e",
+          "eth.dst_tree": {
+            "eth.dst_resolved": "Mellanox_9c:02:1e",
+            "eth.addr": "24:8a:07:9c:02:1e",
+            "eth.addr_resolved": "Mellanox_9c:02:1e",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.src": "4c:76:25:e8:44:c2",
+          "eth.src_tree": {
+            "eth.src_resolved": "Dell_e8:44:c2",
+            "eth.addr": "4c:76:25:e8:44:c2",
+            "eth.addr_resolved": "Dell_e8:44:c2",
+            "eth.lg": "0",
+            "eth.ig": "0"
+          },
+          "eth.type": "0x00000800"
+        },
+        "ip": {
+          "ip.version": "4",
+          "ip.hdr_len": "20",
+          "ip.dsfield": "0x00000000",
+          "ip.dsfield_tree": {
+            "ip.dsfield.dscp": "0",
+            "ip.dsfield.ecn": "0"
+          },
+          "ip.len": "40",
+          "ip.id": "0x0000d089",
+          "ip.flags": "0x00004000",
+          "ip.flags_tree": {
+            "ip.flags.rb": "0",
+            "ip.flags.df": "1",
+            "ip.flags.mf": "0",
+            "ip.frag_offset": "0"
+          },
+          "ip.ttl": "62",
+          "ip.proto": "6",
+          "ip.checksum": "0x000088e3",
+          "ip.checksum.status": "2",
+          "ip.src": "198.32.44.18",
+          "ip.addr": "198.32.44.18",
+          "ip.src_host": "198.32.44.18",
+          "ip.host": "198.32.44.18",
+          "ip.dst": "198.32.43.16",
+          "ip.addr": "198.32.43.16",
+          "ip.dst_host": "198.32.43.16",
+          "ip.host": "198.32.43.16",
+          "ip.geoip.src_summary": "Houston, US",
+          "ip.geoip.src_summary_tree": {
+            "ip.geoip.src_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.src_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.src_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.src_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.src_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          },
+          "ip.geoip.dst_summary": "Houston, US",
+          "ip.geoip.dst_summary_tree": {
+            "ip.geoip.dst_city": "Houston",
+            "ip.geoip.city": "Houston",
+            "ip.geoip.dst_country": "United States",
+            "ip.geoip.country": "United States",
+            "ip.geoip.dst_country_iso": "US",
+            "ip.geoip.country_iso": "US",
+            "ip.geoip.dst_lat": "29.7431",
+            "ip.geoip.lat": "29.7431",
+            "ip.geoip.dst_lon": "-95.4446",
+            "ip.geoip.lon": "-95.4446"
+          }
+        },
+        "tcp": {
+          "tcp.srcport": "601",
+          "tcp.dstport": "36025",
+          "tcp.port": "601",
+          "tcp.port": "36025",
+          "tcp.stream": "4",
+          "tcp.len": "0",
+          "tcp.seq": "1",
+          "tcp.nxtseq": "1",
+          "tcp.ack": "537",
+          "tcp.hdr_len": "20",
+          "tcp.flags": "0x00000010",
+          "tcp.flags_tree": {
+            "tcp.flags.res": "0",
+            "tcp.flags.ns": "0",
+            "tcp.flags.cwr": "0",
+            "tcp.flags.ecn": "0",
+            "tcp.flags.urg": "0",
+            "tcp.flags.ack": "1",
+            "tcp.flags.push": "0",
+            "tcp.flags.reset": "0",
+            "tcp.flags.syn": "0",
+            "tcp.flags.fin": "0",
+            "tcp.flags.str": "\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7A\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7\u00c2\u00b7"
+          },
+          "tcp.window_size_value": "8156",
+          "tcp.window_size": "8156",
+          "tcp.window_size_scalefactor": "-1",
+          "tcp.checksum": "0x0000f5b0",
+          "tcp.checksum.status": "2",
+          "tcp.urgent_pointer": "0",
+          "tcp.analysis": {
+            "tcp.analysis.acks_frame": "33",
+            "tcp.analysis.ack_rtt": "0.000101000"
+          },
+          "Timestamps": {
+            "tcp.time_relative": "0.750404000",
+            "tcp.time_delta": "0.000101000"
+          }
+        },
+        "vssmonitoring": {
+          "vssmonitoring.srcport": "0"
+        }
+      }
+    }
+  }
+
+]

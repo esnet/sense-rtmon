@@ -1,0 +1,6 @@
+hostA:
+  IP: 198.32.43.16
+  interfaceName: 'ens2f0.43'
+hostB:
+  IP: 198.32.43.15
+  interfaceName: 'ens2f0.43'

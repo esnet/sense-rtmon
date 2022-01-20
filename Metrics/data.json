@@ -1,0 +1,9 @@
+{
+  "requests_handled": 14324,
+  "requests_duration_milliseconds": 1235257,
+  "request_failures": 7,
+  "documents_loaded": {
+    "fast": 7,
+    "slow": 60
+  }
+}

@@ -4,3 +4,5 @@ hostA:
 hostB:
   IP: 198.32.43.15
   interfaceName: 'ens2f0.43'
+# How long to scrape host-level data (in seconds)
+scrapeDuration: 5

@@ -2,7 +2,7 @@ hostA:
   IP: 198.32.43.16
   interfaceName: 'ens2f0.43'
 hostB:
-  IP: 198.32.43.15
+  IP: 198.32.43.16
   interfaceName: 'ens2f0.43'
 # How long to scrape host-level data (in seconds)
 scrapeDuration: 5

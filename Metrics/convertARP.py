@@ -8,7 +8,7 @@ with open(filename) as file:
     lines = [line.rstrip() for line in lines]
 
 json_file = open('arp.json', 'w')
-json_file.write("{\n")
+json_file.write("[\n")
 for line in lines:
     try:
         dump = {}
@@ -19,5 +19,5 @@ for line in lines:
         json_file.write(",\n")
     except IndexError:
         continue
-json_file.write("}")
+json_file.write("]")
 json_file.close()

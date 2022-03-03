@@ -67,9 +67,14 @@ For each end system which you seek to visualize the node exporter metrics in, cr
 For each network element in the flow you wish to visualize, you must configure an SNMP Exporter on a host OS with access to the network element in the flow. For example, a flow with two end systems connected by a switch should be configured to have one (1) SNMP Exporter container on any one of the end systems. We provide scripts and supporting files within the ```SNMPExporter``` directory which will dynamically generate an SNMP Exporter container with a custom config file of the OIDs and scrape parameters specified by the user in the ```snmpConfig.yml``` file. Start by filling out the ```snmpConfig.yml``` file with your network topology details. Then, you may generate a custom SNMP exporter container (assuming you have docker pre-installed) with the following script command: 
 - ```python3 dynamic.py snmpConfig.yml```
 
-**Step 6: Configure JSON Exporter container**
-To configure the JSON Exporter docker container, navigate to the ```Metrics``` folder and run the following script:
-- ```python3 jsonSetup.py```
+**Step 6: Configure ARP Host Metrics Data**
+To configure the ARP Table host metrics data, navigate to the ```Metrics/ARPMetrics``` folder and run the following script:
+- ```./arpMetrics.sh```
+
+**Step 7: Configure TCPDump Metrics Data**
+To configure the TCPDUMP host metrics data, navigate to the ```Metrics/TCPMetrics``` folder and run the following script:
+- ```./tcpMetrics.sh```
+
 
 ## Execution
 

@@ -10,7 +10,13 @@ grafanaHostIP: 198.32.43.16
 # Default is 3000
 grafanaPort: 3000
 # Grafana API Token
-grafanaAPIToken: "Bearer eyJrIjoiZTZPVUJ5b2VXMWdSc084TmQ4NGhWb0JveWxrOVhXaHkiLCJuIjoiYWRtaW4iLCJpZCI6MX0="
+grafanaAPIToken: "Bearer eyJrIjoiUVlBbnpBckJWVjB2cjNYc3Yxem1lOXNkM3g0djdYQ0IiLCJuIjoiYWRtaW4iLCJpZCI6MX0="
+tcpMetrics:
+  port: 9191
+  job_name: 'tcpmetrics'
+arpMetrics:
+  port: 9192
+  job_name: 'arpmetrics'
 # Host 1 Specifics 
 hostA:
   IP: 198.32.43.16

@@ -47,6 +47,10 @@ else:
                             'NODENAMEB': str(data['hostB']['nodeName']),
                             'PORTA': str(data['hostA']['nodeExporterPort']),
                             'PORTB': str(data['hostB']['nodeExporterPort']),
+                            'ARPPORT': str(data['arpMetrics']['port']),
+                            'TCPPORT': str(data['tcpMetrics']['port']),
+                            'ARPNAME': str(data['arpMetrics']['job_name']),
+                            'TCPNAME': str(data['tcpMetrics']['job_name']),
                             'IPSWITCH': str(data['switchData']['target']),
                             'SNMPNAME': str(data['switchData']['job_name']),
                             'SCRAPEINTERVAL': str(data['switchData']['scrapeInterval']),
@@ -69,7 +73,7 @@ else:
                     for src, target in replacements.items():
                         line = line.replace(src, target)
                     outfile.write(line)
-            subprocess.run("sudo docker run -d  -p 9090:9090     -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml  --network host   prom/prometheus", shell=True)
+            subprocess.run("sudo docker run -d  -p 9090:9090     -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml     prom/prometheus:v2.2.1", shell=True)
 
             print("Applying dashboard JSON to Grafana API...")
             # Run the API script to convert output JSON to Grafana dashboard automatically
@@ -101,6 +105,10 @@ else:
                                 'NODENAMEB': str(data['hostB']['nodeName']),
                                 'PORTA': str(data['hostA']['nodeExporterPort']),
                                 'PORTB': str(data['hostB']['nodeExporterPort']),
+                                'ARPPORT': str(data['arpMetrics']['port']),
+                                'TCPPORT': str(data['tcpMetrics']['port']),
+                                'ARPNAME': str(data['arpMetrics']['job_name']),
+                                'TCPNAME': str(data['tcpMetrics']['job_name']),
                                 'IPSWITCHA': str(data['switchDataA']['target']),
                                 'IPSWITCHB': str(data['switchDataB']['target']),
                                 'SNMPNAME': str(data['switchDataA']['job_name']),
@@ -128,6 +136,10 @@ else:
                                 'NODENAMEB': str(data['hostB']['nodeName']),
                                 'PORTA': str(data['hostA']['nodeExporterPort']),
                                 'PORTB': str(data['hostB']['nodeExporterPort']),
+                                'ARPPORT': str(data['arpMetrics']['port']),
+                                'TCPPORT': str(data['tcpMetrics']['port']),
+                                'ARPNAME': str(data['arpMetrics']['job_name']),
+                                'TCPNAME': str(data['tcpMetrics']['job_name']),
                                 'IPSWITCHA': str(data['switchDataA']['target']),
                                 'IPSWITCHB': str(data['switchDataB']['target']),
                                 'IPSWITCHC': str(data['switchDataC']['target']),
@@ -160,6 +172,10 @@ else:
                                 'NODENAMEB': str(data['hostB']['nodeName']),
                                 'PORTA': str(data['hostA']['nodeExporterPort']),
                                 'PORTB': str(data['hostB']['nodeExporterPort']),
+                                'ARPPORT': str(data['arpMetrics']['port']),
+                                'TCPPORT': str(data['tcpMetrics']['port']),
+                                'ARPNAME': str(data['arpMetrics']['job_name']),
+                                'TCPNAME': str(data['tcpMetrics']['job_name']),
                                 'IPSWITCHA': str(data['switchDataA']['target']),
                                 'IPSWITCHB': str(data['switchDataB']['target']),
                                 'IPSWITCHC': str(data['switchDataC']['target']),
@@ -184,4 +200,3 @@ else:
     except KeyboardInterrupt:
         print("Interrupt detected")
         print("Shutting down SNMP Exporter instance to save resources...")
-

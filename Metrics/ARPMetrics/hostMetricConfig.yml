@@ -9,4 +9,4 @@ scrapeDuration: 900
 # Scrape interval duration (in seconds)
 scrapeInterval: 30
 # ARP Metric Port
-tcpPort: 9192
+port: 9192

@@ -29,28 +29,28 @@ class JsonCollector(object):
           try:
             metricName = "Packet_" + str(count) + "_Scrape_" + str(output[6:-5]).replace("-","_")
             metric = Metric(metricName, 'Packet Info Collected from TCPDUMP', 'summary')
-            metric.add_sample(metricName, value=1, labels={'TCP Source Port': entry['_source']['layers']['tcp']['tcp.srcport']})
-            metric.add_sample(metricName, value=1, labels={'TCP Destination Port': entry['_source']['layers']['tcp']['tcp.dstport']})
-            metric.add_sample(metricName, value=1, labels={'TCP Flags': entry['_source']['layers']['tcp']['tcp.flags']})
-            metric.add_sample(metricName, value=1, labels={'TCP Window Size': entry['_source']['layers']['tcp']['tcp.window_size_value']})
-            metric.add_sample(metricName, value=1, labels={'TCP Payload': entry['_source']['layers']['tcp']['tcp.payload']})
-            metric.add_sample(metricName, value=1, labels={'IP Source': entry['_source']['layers']['ip']['ip.src']})
-            metric.add_sample(metricName, value=1, labels={'IP Destination': entry['_source']['layers']['ip']['ip.dst']})
-            metric.add_sample(metricName, value=1, labels={'IP Source Geo Summary': entry['_source']['layers']['ip']['ip.geoip.src_summary']})
-            metric.add_sample(metricName, value=1, labels={'IP Source Latitude': entry['_source']['layers']['ip']['ip.geoip.src_summary_tree']['ip.geoip.src_lat']})
-            metric.add_sample(metricName, value=1, labels={'IP Source Longitude': entry['_source']['layers']['ip']['ip.geoip.src_summary_tree']['ip.geoip.src_lon']})
-            metric.add_sample(metricName, value=1, labels={'IP Destination Geo Summary': entry['_source']['layers']['ip']['ip.geoip.dst_summary']})
-            metric.add_sample(metricName, value=1, labels={'IP Source Latitude': entry['_source']['layers']['ip']['ip.geoip.dst_summary_tree']['ip.geoip.dst_lat']})
-            metric.add_sample(metricName, value=1, labels={'IP Source Longitude': entry['_source']['layers']['ip']['ip.geoip.dst_summary_tree']['ip.geoip.dst_lon']})
-            metric.add_sample(metricName, value=1, labels={'Eth Source': entry['_source']['layers']['eth']['eth.src']})
-            metric.add_sample(metricName, value=1, labels={'Eth Destination': entry['_source']['layers']['eth']['eth.dst']})
-            metric.add_sample(metricName, value=1, labels={'Frame Protocols': entry['_source']['layers']['frame']['frame.protocols']})
+            metric.add_sample(metricName, value=1, labels={'TCPSourcePort': entry['_source']['layers']['tcp']['tcp.srcport']})
+            metric.add_sample(metricName, value=1, labels={'TCPDestinationPort': entry['_source']['layers']['tcp']['tcp.dstport']})
+            metric.add_sample(metricName, value=1, labels={'TCPFlags': entry['_source']['layers']['tcp']['tcp.flags']})
+            metric.add_sample(metricName, value=1, labels={'TCPWindowSize': entry['_source']['layers']['tcp']['tcp.window_size_value']})
+            metric.add_sample(metricName, value=1, labels={'TCPPayload': entry['_source']['layers']['tcp']['tcp.payload']})
+            metric.add_sample(metricName, value=1, labels={'IPSource': entry['_source']['layers']['ip']['ip.src']})
+            metric.add_sample(metricName, value=1, labels={'IPDestination': entry['_source']['layers']['ip']['ip.dst']})
+            metric.add_sample(metricName, value=1, labels={'IPSourceGeoSummary': entry['_source']['layers']['ip']['ip.geoip.src_summary']})
+            metric.add_sample(metricName, value=1, labels={'IPSourceLatitude': entry['_source']['layers']['ip']['ip.geoip.src_summary_tree']['ip.geoip.src_lat']})
+            metric.add_sample(metricName, value=1, labels={'IPSourceLongitude': entry['_source']['layers']['ip']['ip.geoip.src_summary_tree']['ip.geoip.src_lon']})
+            metric.add_sample(metricName, value=1, labels={'IPDestinationGeoSummary': entry['_source']['layers']['ip']['ip.geoip.dst_summary']})
+            metric.add_sample(metricName, value=1, labels={'IPSourceLatitude': entry['_source']['layers']['ip']['ip.geoip.dst_summary_tree']['ip.geoip.dst_lat']})
+            metric.add_sample(metricName, value=1, labels={'IPSourceLongitude': entry['_source']['layers']['ip']['ip.geoip.dst_summary_tree']['ip.geoip.dst_lon']})
+            metric.add_sample(metricName, value=1, labels={'EthSource': entry['_source']['layers']['eth']['eth.src']})
+            metric.add_sample(metricName, value=1, labels={'EthDestination': entry['_source']['layers']['eth']['eth.dst']})
+            metric.add_sample(metricName, value=1, labels={'FrameProtocols': entry['_source']['layers']['frame']['frame.protocols']})
             count += 1
             yield metric
           except KeyError:
             continue
 
-        mName = "TCPDUMP_Retrieved_Packet_Count_From_Scrape_" + output[6:-5].replace("-","_")
+        mName = "TCP_Packet_Count"
         metric = Metric(mName, "Number of Packets Retrieved from TCPDUMP", "summary")
         metric.add_sample(mName, value=(count-1), labels={})
         yield metric

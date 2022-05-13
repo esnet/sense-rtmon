@@ -75,6 +75,15 @@ To configure the ARP Table host metrics data, navigate to the ```Metrics/ARPMetr
 To configure the TCPDUMP host metrics data, navigate to the ```Metrics/TCPMetrics``` folder and run the following script:
 - ```./tcpMetrics.sh```
 
+**Step 8: Configure the Layer 2 Debugging Scripts**
+- To configure the Layer 2 Debugging scripts, we will have to utilize a pre-built docker container which acts as a Prometheus Script Exporter. To build and install the pre-built image, make sure to navigate to the same directory hierarchy as ```args.sh```. Then, issue the following commands:
+ - ``` git clone https://github.com/ricoberger/script_exporter.git ```
+ - ``` cd script_exporter ```
+ - ``` docker build -f ./Dockerfile -t ricoberger/script_exporter:dev . ```
+ - ``` docker run --network="host" --rm -it --name script_exporter -p 9469:9469 -v $(pwd)/examples:/examples ricoberger/script_exporter:dev -config.file /examples/config.yaml ```
+
+This will configure the docker container to translate the output of the ```args.sh``` script into Prometheus-friendly metrics. The metrics page for this exporter will be listening on port 9469 by default, however this can be changed by alterning the ```-p``` option in the ```docker run``` command. 
+
 
 ## Execution
 

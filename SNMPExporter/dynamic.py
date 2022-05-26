@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import yaml
 import sys
 import fileinput
@@ -27,15 +25,18 @@ else:
                  outGen.write(line)
         print("Reading SNMP OIDs/Interfaces/Scrape Duration/Scrape Time from config file...")
         oids = set(data['oids'])
-        for i in range(len(oids)):
-            oid = next(iter(oids))
-            snip = "      - " + str(oid) + "\n"
-            with open('generator.yml', 'r') as gen:
+        
+        # read all oids in first then add to generator file
+        snip = ""
+        for oid in oids:
+            snip = snip + "      - " + str(oid) + "\n"
+            # oids.remove(oid)
+        with open('generator.yml', 'r') as gen:
                 text = gen.readlines()
-            text[3+i] = snip
-            with open('generator.yml', 'w') as genOut:
-                genOut.writelines(text)
-            oids.remove(oid)
+        text[3] = snip
+        with open('generator.yml', 'w') as genOut:
+            genOut.writelines(text)
+            
         replacements = {'RETRY': str(data['retries']),
                         'TIMEOUT': str(data['scrapeTimeout']),
                         'COMMUNITYREADSTRING': str(data['communityString'])}

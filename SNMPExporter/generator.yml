@@ -9,7 +9,7 @@ modules:
     auth:
       # Community string is used with SNMP v1 and v2. Defaults to "public".
       # Replace with your network element's SNMP community read string. 
-      community: mgmt_hep
+      community: COMMUNITYREADSTRING
 
     lookups:  # Optional list of lookups to perform.
       - source_indexes: [ifIndex]

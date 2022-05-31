@@ -1,9 +1,3 @@
-sudo yum install tcpdump
-pip install pyyaml
-pip install prometheus_client
-python3 hostMetrics.py hostMetricConfig.yml & ( sleep 2 && python3 json_exporter_tcp.py hostMetricConfig.yml )
-trap "kill -- -$$" EXIT
-[root@sdn-dtn-2-10 TCPMetrics]# cat json_exporter_tcp.py 
 from prometheus_client import start_http_server, Metric, REGISTRY
 import yaml
 import json

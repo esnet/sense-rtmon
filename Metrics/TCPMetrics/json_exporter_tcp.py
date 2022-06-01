@@ -8,6 +8,15 @@ import os
 from datetime import datetime
 from subprocess import Popen, PIPE
 
+config_data ={}
+if __name__ == '__main__':
+  with open(sys.argv[1], 'r') as stream:
+      try:
+          config_data = yaml.safe_load(stream)
+      except yaml.YAMLError as exc:
+          print("Config file load error!")
+receiver_ip_address = "http://" + str(config_data['receiverIP'])
+
 class JsonCollector(object):
   def collect(self):
     # Fetch the JSON
@@ -48,7 +57,7 @@ class JsonCollector(object):
             metric.add_sample(metricName, value=1, labels={'EthDestination': entry['_source']['layers']['eth']['eth.dst']})
             metric.add_sample(metricName, value=1, labels={'FrameProtocols': entry['_source']['layers']['frame']['frame.protocols']})
             payload = "Scrape_" + now.strftime("%Y_%m_%d_%H_%M_%S") + " 1\n"
-            url = "http://localhost:9091/metrics/job/tcpMetrics/tcpSourcePort/" + str(entry['_source']['layers']['tcp']['tcp.srcport']) + "/tcpDestinationPort/" + str(entry['_source']['layers']['tcp']['tcp.dstport']) + "/TCPWindowSize/" + str(entry['_source']['layers']['tcp']['tcp.window_size_value']) + "/TCPFlags/" + str(entry['_source']['layers']['tcp']['tcp.flags']) +"/IPSource/" + str(entry['_source']['layers']['ip']['ip.src']) + "/IPDestination/" + str(entry['_source']['layers']['ip']['ip.dst'])
+            url = receiver_ip_address + ":9091/metrics/job/tcpMetrics/tcpSourcePort/" + str(entry['_source']['layers']['tcp']['tcp.srcport']) + "/tcpDestinationPort/" + str(entry['_source']['layers']['tcp']['tcp.dstport']) + "/TCPWindowSize/" + str(entry['_source']['layers']['tcp']['tcp.window_size_value']) + "/TCPFlags/" + str(entry['_source']['layers']['tcp']['tcp.flags']) +"/IPSource/" + str(entry['_source']['layers']['ip']['ip.src']) + "/IPDestination/" + str(entry['_source']['layers']['ip']['ip.dst'])
             push = requests.post(url, data=payload)
             count += 1
             yield metric
@@ -58,19 +67,12 @@ class JsonCollector(object):
         mName = "TCP_Packet_Count"
         metric = Metric(mName, "Number of Packets Retrieved from TCPDUMP", "summary")
         metric.add_sample(mName, value=(count-1), labels={})
-        url2 = "http://localhost:9091/metrics/job/tcpMetrics/packetCount/" + str(count-1)
+        url2 = receiver_ip_address + ":9091/metrics/job/tcpMetrics/packetCount/" + str(count-1)
         payload2 = "Scrape_" + now.strftime("%Y_%m_%d_%H_%M_%S") + " 1\n"
         push2 = requests.post(url2, data=payload2)
         yield metric
 if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint
-  data = {}
-  with open(sys.argv[1], 'r') as stream:
-      try:
-          data = yaml.safe_load(stream)
-      except yaml.YAMLError as exc:
-          print("Config file load error!")
-
-  start_http_server(int(data['port']))
+  start_http_server(int(config_data['port']))
   REGISTRY.register(JsonCollector())
-  while True: time.sleep(int(data['scrapeDuration']))
+  while True: time.sleep(int(config_data['scrapeDuration']))

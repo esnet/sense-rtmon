@@ -14,3 +14,5 @@ scrapeInterval: 30
 continuousCollect: False
 # TCP Metric Port
 tcpPort: 9191
+# Receiving end IP Address, where pushgateway located
+receiverIP: 'localhost' #change it

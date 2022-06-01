@@ -10,3 +10,5 @@ scrapeDuration: 900
 scrapeInterval: 30
 # ARP Metric Port
 port: 9192
+# Receiving end IP Address, where pushgateway located
+receiverIP: 'localhost' #change it

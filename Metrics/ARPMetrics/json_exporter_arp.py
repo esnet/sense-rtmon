@@ -63,7 +63,6 @@ class JsonCollector(object):
         yield metric
 if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint
-  # Usage: json_exporter.py port endpoint
   start_http_server(int(data['port']))
   REGISTRY.register(JsonCollector())
   while True: time.sleep(int(data['scrapeDuration']))

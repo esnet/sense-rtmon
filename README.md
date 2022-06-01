@@ -68,11 +68,15 @@ For each network element in the flow you wish to visualize, you must configure a
 - ```python3 dynamic.py snmpConfig.yml```
 
 **Step 6: Configure ARP Host Metrics Data**
-To configure the ARP Table host metrics data, navigate to the ```Metrics/ARPMetrics``` folder and run the following script:
+To configure the ARP Table host metrics data, navigate to the ```Metrics/ARPMetrics``` folder.
+First manually edit ```hostMetricConfig.yml```, change the receiver's IP address to where pushgateway is running on.
+Then run the following script:
 - ```./arpMetrics.sh```
 
 **Step 7: Configure TCPDump Metrics Data**
-To configure the TCPDUMP host metrics data, navigate to the ```Metrics/TCPMetrics``` folder and run the following script:
+To configure the TCPDump host metrics data, navigate to the ```Metrics/TCPMetrics``` folder.
+First manually edit ```hostMetricConfig.yml```, change the receiver's IP address to where pushgateway is running on.
+Then run the following script:
 - ```./tcpMetrics.sh```
 
 **Step 8: Configure the Layer 2 Debugging Scripts**

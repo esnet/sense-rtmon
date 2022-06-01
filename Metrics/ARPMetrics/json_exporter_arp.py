@@ -10,8 +10,6 @@ from subprocess import Popen, PIPE
 
 config_data ={}
 if __name__ == '__main__':
-  # Usage: json_exporter.py port endpoint
-  # Usage: json_exporter.py port endpoint
   with open(sys.argv[1], 'r') as stream:
       try:
           config_data = yaml.safe_load(stream)

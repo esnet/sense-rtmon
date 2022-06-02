@@ -13,6 +13,6 @@ scrapeInterval: 30
 # Defaults to False, collects the most recent burst (1 second's worth of data) at the current scrape interval
 continuousCollect: False
 # TCP Metric Port
-tcpPort: 9191
+port: 9191
 # Receiving end IP Address, where pushgateway located
 receiverIP: 'localhost' #change it

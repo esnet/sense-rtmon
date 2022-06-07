@@ -57,6 +57,7 @@ else:
         subprocess.run("sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz", shell=True)
         #subprocess.run("export PATH=$PATH:/usr/local/go/bin", shell=True)
         os.environ["PATH"] += os.pathsep + os.pathsep.join(["/usr/local/go/bin"])
+        #### CHANGES #######
         dir = str(os.getcwd())
         os.putenv("GOPATH", dir)
         subprocess.run("go get github.com/prometheus/snmp_exporter/generator", shell=True)

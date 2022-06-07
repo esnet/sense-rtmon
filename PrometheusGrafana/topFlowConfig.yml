@@ -4,6 +4,8 @@ switchNum: 1
 dashTitle: "Top Flow Dashboard"
 # Prometheus Port
 prometheusPort: 9090
+# Pushgateway Port
+pushgatewayPort: 9091
 # The IP of the host which is running the Grafana container
 grafanaHostIP: 198.32.43.16
 # The port which the Grafana container is listening on

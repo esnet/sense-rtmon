@@ -42,6 +42,10 @@ scrape_configs:
     static_configs:
       - targets:
         - IPSWITCH # SNMP device.
+  - job_name: PUSHGATEWAYNAME
+    static_configs:
+      - targets: 
+        - IPHOSTA:PUSHPORT
     metrics_path: /snmp
     params:
       module: PARAMS

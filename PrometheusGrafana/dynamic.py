@@ -53,6 +53,8 @@ else:
                             'TCPNAME': str(data['tcpMetrics']['job_name']),
                             'IPSWITCH': str(data['switchData']['target']),
                             'SNMPNAME': str(data['switchData']['job_name']),
+                            'PUSHPORT': str(data['pushgatewayPort']),
+                            'PUSHGATEWAYNAME': "pushgateway",
                             'SCRAPEINTERVAL': str(data['switchData']['scrapeInterval']),
                             'PARAMS': str(data['switchData']['params']),
                             'SNMPHOSTIP': str(data['switchData']['SNMPHostIP']),
@@ -107,6 +109,8 @@ else:
                                 'PORTB': str(data['hostB']['nodeExporterPort']),
                                 'ARPPORT': str(data['arpMetrics']['port']),
                                 'TCPPORT': str(data['tcpMetrics']['port']),
+                                'PUSHPORT': str(data['pushgatewayPort']),
+                                'PUSHGATEWAYNAME': "pushgateway",
                                 'ARPNAME': str(data['arpMetrics']['job_name']),
                                 'TCPNAME': str(data['tcpMetrics']['job_name']),
                                 'IPSWITCHA': str(data['switchDataA']['target']),
@@ -143,6 +147,8 @@ else:
                                 'IPSWITCHA': str(data['switchDataA']['target']),
                                 'IPSWITCHB': str(data['switchDataB']['target']),
                                 'IPSWITCHC': str(data['switchDataC']['target']),
+                                'PUSHPORT': str(data['pushgatewayPort']),
+                                'PUSHGATEWAYNAME': "pushgateway",
                                 'SNMPNAME': str(data['switchDataA']['job_name']),
                                 'DASHTITLE':str(data['dashTitle']) + timeTxt}
             else:
@@ -181,6 +187,8 @@ else:
                                 'IPSWITCHC': str(data['switchDataC']['target']),
                                 'IPSWITCHD': str(data['switchDataD']['target']),
                                 'SNMPNAME': str(data['switchDataA']['job_name']),
+                                'PUSHPORT': str(data['pushgatewayPort']),
+                                'PUSHGATEWAYNAME': "pushgateway",
                                 'DASHTITLE':str(data['dashTitle']) + timeTxt}
             print("Creating custom Grafana JSON Dashboard...")
 

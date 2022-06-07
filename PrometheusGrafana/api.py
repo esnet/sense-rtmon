@@ -11,8 +11,8 @@ with open(sys.argv[2], 'r') as stream:
         data = yaml.safe_load(stream)
     except yaml.YAMLError as exc:
         pass
-
-server = "http://" + str(data['grafanaHostIP']) + ":" + str(data['grafanaPort'])
+# http or https check your Grafana setting
+server = "https://" + str(data['grafanaHostIP']) + ":" + str(data['grafanaPort'])
 # Get Default Home Dashboard
 url = server + "/api/dashboards/db"
 # HTTP Post Header

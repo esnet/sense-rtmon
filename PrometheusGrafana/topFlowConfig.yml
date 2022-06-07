@@ -22,7 +22,7 @@ arpMetrics:
 # Host 1 Specifics 
 hostA:
   IP: 198.32.43.16
-  interfaceName: 'ens2.1000'
+  interfaceName: 'ens2f0.43'
   interfaceIP: '10.10.100.1'
   nodeName: 'sdn-dtn-2-10.ultralight.org'
   vlan: 1000
@@ -33,7 +33,7 @@ hostA:
 # Host 2 Specifics
 hostB:
   IP: 198.32.43.15
-  interfaceName: 'ens2.1000'
+  interfaceName: 'ens2f0.43'
   interfaceIP: '10.10.100.2'
   nodeName: 'sdn-dtn-2-11.ultralight.org'
   vlan: 1000

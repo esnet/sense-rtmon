@@ -15,6 +15,7 @@ if __name__ == '__main__':
       except yaml.YAMLError as exc:
           print("Config file load error!")
 receiver_ip_address = "http://" + str(config_data['receiverIP'])
+instance_ip = "198.32.43.16"
 
 class JsonCollector(object):
   def collect(self):
@@ -45,7 +46,7 @@ class JsonCollector(object):
             metric.add_sample(metricName, value=1, labels={'mac_address': entry['mac']})
             metric.add_sample(metricName, value=1, labels={'ip_address': entry['ip']})
             payload = "Last_Scrape" + " 1\n"
-            url = receiver_ip_address + ":9091/metrics/job/arpMetrics/hostname/" + str(entry['hostname']) + "/mac_address/" + str(entry['mac']) + "/ip_address/" + str(entry['ip'])
+            url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{str(entry['hostname'])}/mac_address/ {str(entry['mac'])}/ip_address/{str(entry['ip'])}"
             push = requests.post(url, data=payload)
             count += 1
             yield metric
@@ -55,8 +56,8 @@ class JsonCollector(object):
         mName = "ARP_Entry_Count" + str(count) + "_Scrape"
         metric = Metric("ARP_Entry_Count", "Number of ARP Entries", "summary")
         metric.add_sample("ARP_Entry_Count", value=(count-1), labels={})
-        url2 = receiver_ip_address + ":9091/metrics/job/arpMetrics/entryCount/" + str(count-1)
-        payload2 = "Last_Scrape" + " 1\n"
+        url2 = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/entryCount/value"
+        payload2 = f"Last_Scrape + {str(count-1)} + \n"
         push2 = requests.post(url2, data=payload2)
         yield metric
 if __name__ == '__main__':

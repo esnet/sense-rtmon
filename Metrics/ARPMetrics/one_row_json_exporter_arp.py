@@ -45,7 +45,7 @@ class JsonCollector(object):
             metric.add_sample(metricName, value=1, labels={'hostname': entry['hostname']})
             metric.add_sample(metricName, value=1, labels={'mac_address': entry['mac']})
             metric.add_sample(metricName, value=1, labels={'ip_address': entry['ip']})
-            payload = f"hostname_{str(entry['hostname'])}/mac_address_ {str(entry['mac'])}/ip_address_{str(entry['ip'])} 0\n"
+            payload = f"hostname_{str(entry['hostname'])}/mac_address_{str(entry['mac'])}/ip_address_{str(entry['ip'])} 0\n"
             url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}"
             push = requests.post(url, data=payload)
             count += 1

@@ -38,15 +38,22 @@ class JsonCollector(object):
         for line in lines[1:-1]:
           response.append(json.loads(line[:-2]))
         count = 1
+        no_name = 0
         for entry in response:
           try: 
             metricName = "ARP_Entry_" + str(count) + "_Scrape"
             metric = Metric(metricName, 'ARP Entry', 'summary')
-            metric.add_sample(metricName, value=1, labels={'hostname': entry['hostname']})
+            hostname = entry['hostname']
+            if hostname == "":
+              hostname = "no_name" + str(no_name)
+              no_name += 1
+            else:
+              hostname = entry['hostname']
+            metric.add_sample(metricName, value=1, labels={'hostname': hostname})
             metric.add_sample(metricName, value=1, labels={'mac_address': entry['mac']})
             metric.add_sample(metricName, value=1, labels={'ip_address': entry['ip']})
             payload = "Last_Scrape" + " 1\n"
-            url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{str(entry['hostname'])}/mac_address/ {str(entry['mac'])}/ip_address/{str(entry['ip'])}"
+            url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{str(hostname)}/mac_address/ {str(entry['mac'])}/ip_address/{str(entry['ip'])}"
             push = requests.post(url, data=payload)
             count += 1
             yield metric

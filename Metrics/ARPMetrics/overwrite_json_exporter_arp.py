@@ -19,6 +19,7 @@ instance_ip = "198.32.43.16"
 
 class JsonCollector(object):
   def collect(self):
+    delete_list = []
     dir = str(os.getcwd())
     loc = dir + "/jsonFiles/"
     pastOut = ""
@@ -39,8 +40,9 @@ class JsonCollector(object):
           response.append(json.loads(line[:-2]))
         count = 1
         no_name = 0
-        delete_url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}"
-        delete = requests.delete(delete_url)
+        for each_url in delete_list:
+            delete = requests.delete(each_url)
+        delete_list = []
         for entry in response:
           try: 
             metricName = "ARP_Entry_" + str(count) + "_Scrape"
@@ -55,8 +57,9 @@ class JsonCollector(object):
             metric.add_sample(metricName, value=1, labels={'mac_address': entry['mac']})
             metric.add_sample(metricName, value=1, labels={'ip_address': entry['ip']})
             payload = "ARP_Table " + str(count) + "\n"
-            url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hhostname/{str(hostname)}/mac_address/ {str(entry['mac'])}/ip_address/{str(entry['ip'])}"
+            url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{str(hostname)}/mac_address/ {str(entry['mac'])}/ip_address/{str(entry['ip'])}"
             push = requests.post(url, data=payload)
+            delete_list.append(url)
             count += 1
             yield metric
           except KeyError:

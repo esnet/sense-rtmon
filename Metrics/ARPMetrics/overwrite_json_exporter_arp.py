@@ -44,6 +44,7 @@ class JsonCollector(object):
             metricName = "ARP_Entry_" + str(count) + "_Scrape"
             metric = Metric(metricName, 'ARP Entry', 'summary')
             hostname = entry['hostname']
+            print(hostname)
             if hostname == "":
               hostname = "no_name" + str(no_name)
               no_name += 1

@@ -45,9 +45,14 @@ class JsonCollector(object):
             metric.add_sample(metricName, value=1, labels={'hostname': entry['hostname']})
             metric.add_sample(metricName, value=1, labels={'mac_address': entry['mac']})
             metric.add_sample(metricName, value=1, labels={'ip_address': entry['ip']})
-            payload = f"hostname_{str(entry['hostname'])}/mac_address_{str(entry['mac'])}/ip_address_{str(entry['ip'])} 0\n"
+            payload = f"hostname_{str(entry['hostname'])}/mac_address_{str(entry['mac'])}/ip_address_{str(entry['ip'])}"
+            clean_p = ""
+            for x in payload:
+              if x not in " '\"":
+                clean_p = clean_p + x
+            clean_p = clean_p + " 1/n" 
             url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}"
-            push = requests.post(url, data=payload)
+            push = requests.post(url, data=clean_p)
             count += 1
             yield metric
           except KeyError:
@@ -57,7 +62,7 @@ class JsonCollector(object):
         metric = Metric("ARP_Entry_Count", "Number of ARP Entries", "summary")
         metric.add_sample("ARP_Entry_Count", value=(count-1), labels={})
         url2 = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/entryCount/value"
-        payload2 = f"Entry_Count {str(count-1)}\n"
+        payload2 = f"Entry._Count {str(count-1)}\n"
         push2 = requests.post(url2, data=payload2)
         yield metric
 if __name__ == '__main__':

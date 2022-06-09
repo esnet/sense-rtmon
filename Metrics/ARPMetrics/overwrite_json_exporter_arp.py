@@ -49,7 +49,6 @@ class JsonCollector(object):
               no_name += 1
             else:
               hostname = entry['hostname']
-            metric.add_sample(metricName, value=1, labels={'instance': instance_ip})
             metric.add_sample(metricName, value=1, labels={'hostname': hostname})
             metric.add_sample(metricName, value=1, labels={'mac_address': entry['mac']})
             metric.add_sample(metricName, value=1, labels={'ip_address': entry['ip']})

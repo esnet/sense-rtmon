@@ -57,7 +57,7 @@ class JsonCollector(object):
         metric = Metric("ARP_Entry_Count", "Number of ARP Entries", "summary")
         metric.add_sample("ARP_Entry_Count", value=(count-1), labels={})
         url2 = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/entryCount/value"
-        payload2 = f"Last_Scrape {str(count-1)}\n"
+        payload2 = f"Entry_Count {str(count-1)}\n"
         push2 = requests.post(url2, data=payload2)
         yield metric
 if __name__ == '__main__':

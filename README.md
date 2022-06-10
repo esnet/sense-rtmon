@@ -61,7 +61,7 @@ Within the ```PrometheusGrafana``` directory, fill out the requisite information
 
 **Step 4: Configure the Node Exporter containers**
 For each end system which you seek to visualize the node exporter metrics in, create a docker container in the host OS using the following command: 
-- ``` docker run -d --net="host" --pid="host" -v "/:/host:ro,rslave" quay.io/prometheus/node-exporter:latest --path.rootfs=/host```
+- ``` docker run -d --name node-exporter --net="host" --pid="host" -v "/:/host:ro,rslave" quay.io/prometheus/node-exporter:latest --path.rootfs=/host```
      
 **Step 5: Configure the SNMP Exporter containers**
 For each network element in the flow you wish to visualize, you must configure an SNMP Exporter on a host OS with access to the network element in the flow. For example, a flow with two end systems connected by a switch should be configured to have one (1) SNMP Exporter container on any one of the end systems. We provide scripts and supporting files within the ```SNMPExporter``` directory which will dynamically generate an SNMP Exporter container with a custom config file of the OIDs and scrape parameters specified by the user in the ```snmpConfig.yml``` file. Start by filling out the ```snmpConfig.yml``` file with your network topology details. Then, you may generate a custom SNMP exporter container (assuming you have docker pre-installed) with the following script command: 

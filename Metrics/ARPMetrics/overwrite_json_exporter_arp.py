@@ -15,7 +15,7 @@ if __name__ == '__main__':
       except yaml.YAMLError as exc:
           print("Config file load error!")
 receiver_ip_address = "http://" + str(config_data['receiverIP'])
-instance_ip = str(config_data['HostIP'])
+instance_ip = str(config_data['hostIP'])
 
 class JsonCollector(object):
   def collect(self):

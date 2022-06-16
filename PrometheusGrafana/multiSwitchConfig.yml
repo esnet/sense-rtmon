@@ -2,8 +2,23 @@
 switchNum: 2
 # Grafana Dashboard Title
 dashTitle: "Multiple Network Element Dashboard"
+# L2 Debugging Dashboard Title
+debugTitle: "Multiple Network Element L2 Debugging Dashboard"
 # Prometheus Port
 prometheusPort: 9090
+# The IP of the host which is running the Grafana container
+grafanaHostIP: 198.32.43.16
+# The port which the Grafana container is listening on
+# Default is 3000
+grafanaPort: 3000
+# Grafana API Token
+grafanaAPIToken: "Bearer eyJrIjoiMVozbktVZzRQQzUyc3ExNmJUeUJTUzFBQ3A3aGFQVVMiLCJuIjoiYWRtaW4iLCJpZCI6MX0="
+tcpMetrics:
+  port: 9191
+  job_name: 'tcpmetrics'
+arpMetrics:
+  port: 9192
+  job_name: 'arpmetrics'
 # Host 1 Specifics 
 hostA:
   IP: 198.32.43.16
@@ -31,7 +46,7 @@ switchDataA:
   job_name: 'snmp1'
   scrapeInterval: 10s
   scrapeDuration: 6h
-  target: 172.16.1.14
+  target: 198.43.32.1
   # if-mib and F10-IF-EXTENSION-MIB
   params: [1.3.6.1.2.1.31, 1.3.6.1.4.1.6027.3.11]
   portIn: 

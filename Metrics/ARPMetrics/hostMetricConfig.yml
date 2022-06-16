@@ -12,3 +12,5 @@ scrapeInterval: 30
 port: 9192
 # Receiving end IP Address, where pushgateway located
 receiverIP: 'localhost' #change it
+# This host's IP address
+hostIP: 198.32.43.16

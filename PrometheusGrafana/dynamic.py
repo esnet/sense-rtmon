@@ -53,21 +53,24 @@ else:
                             'TCPNAME': str(data['tcpMetrics']['job_name']),
                             'IPSWITCH': str(data['switchData']['target']),
                             'SNMPNAME': str(data['switchData']['job_name']),
-                            'PUSHPORT': str(data['pushgatewayPort']),
-                            'PUSHGATEWAYNAME': "pushgateway",
                             'SCRAPEINTERVAL': str(data['switchData']['scrapeInterval']),
                             'PARAMS': str(data['switchData']['params']),
                             'SNMPHOSTIP': str(data['switchData']['SNMPHostIP']),
-                            'DASHTITLE': str(data['dashTitle']) + timeTxt }
+                            'DASHTITLE': str(data['dashTitle']) + timeTxt,
+                            'DEBUGTITLE': str(data['debugTitle']) + timeTxt}
             print("Creating custom Grafana JSON Dashboard...")
-
+            print("Creating custom L2 Debugging Dashboard...")
             # Iteratively find and replace in one go 
             with open('newTemplate.json') as infile, open('out.json', 'w') as outfile:
                 for line in infile:
                     for src, target in replacements.items():
                         line = line.replace(src, target)
                     outfile.write(line)
-
+            with open('debugTemplate.json') as infile, open('outDebug.json', 'w') as outfile:
+                for line in infile:
+                    for src, target in replacements.items():
+                        line = line.replace(src, target)
+                    outfile.write(line)
             print("Generating custom Prometheus config file...")
             # Iteratively find and replace in one go 
             with open('prometheusTemplate.yml') as infile, open('prometheus.yml', 'w') as outfile:
@@ -80,7 +83,7 @@ else:
             print("Applying dashboard JSON to Grafana API...")
             # Run the API script to convert output JSON to Grafana dashboard automatically
             print("Loading Grafana dashboard on Grafana server...")
-            cmd = "sudo python3 api.py out.json " + str(sys.argv[1])
+            cmd = "sudo python3 api.py out.json outDebug.json " + str(sys.argv[1])
             subprocess.run(cmd, shell=True)
             print("Loaded Grafana dashboard")
         else:
@@ -109,8 +112,6 @@ else:
                                 'PORTB': str(data['hostB']['nodeExporterPort']),
                                 'ARPPORT': str(data['arpMetrics']['port']),
                                 'TCPPORT': str(data['tcpMetrics']['port']),
-                                'PUSHPORT': str(data['pushgatewayPort']),
-                                'PUSHGATEWAYNAME': "pushgateway",
                                 'ARPNAME': str(data['arpMetrics']['job_name']),
                                 'TCPNAME': str(data['tcpMetrics']['job_name']),
                                 'IPSWITCHA': str(data['switchDataA']['target']),
@@ -147,8 +148,6 @@ else:
                                 'IPSWITCHA': str(data['switchDataA']['target']),
                                 'IPSWITCHB': str(data['switchDataB']['target']),
                                 'IPSWITCHC': str(data['switchDataC']['target']),
-                                'PUSHPORT': str(data['pushgatewayPort']),
-                                'PUSHGATEWAYNAME': "pushgateway",
                                 'SNMPNAME': str(data['switchDataA']['job_name']),
                                 'DASHTITLE':str(data['dashTitle']) + timeTxt}
             else:
@@ -187,8 +186,6 @@ else:
                                 'IPSWITCHC': str(data['switchDataC']['target']),
                                 'IPSWITCHD': str(data['switchDataD']['target']),
                                 'SNMPNAME': str(data['switchDataA']['job_name']),
-                                'PUSHPORT': str(data['pushgatewayPort']),
-                                'PUSHGATEWAYNAME': "pushgateway",
                                 'DASHTITLE':str(data['dashTitle']) + timeTxt}
             print("Creating custom Grafana JSON Dashboard...")
 
@@ -208,3 +205,4 @@ else:
     except KeyboardInterrupt:
         print("Interrupt detected")
         print("Shutting down SNMP Exporter instance to save resources...")
+

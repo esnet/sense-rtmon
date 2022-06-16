@@ -117,7 +117,8 @@ else:
                                 'IPSWITCHA': str(data['switchDataA']['target']),
                                 'IPSWITCHB': str(data['switchDataB']['target']),
                                 'SNMPNAME': str(data['switchDataA']['job_name']),
-                                'DASHTITLE':str(data['dashTitle']) + timeTxt}
+                                'DASHTITLE':str(data['dashTitle']) + timeTxt,
+                                'DEBUGTITLE': str(data['debugTitle']) + timeTxt}
             elif data['switchNum'] == 3:
                 replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                                 'IPHOSTB': str(data['hostB']['IP']),
@@ -149,7 +150,8 @@ else:
                                 'IPSWITCHB': str(data['switchDataB']['target']),
                                 'IPSWITCHC': str(data['switchDataC']['target']),
                                 'SNMPNAME': str(data['switchDataA']['job_name']),
-                                'DASHTITLE':str(data['dashTitle']) + timeTxt}
+                                'DASHTITLE':str(data['dashTitle']) + timeTxt,
+                                'DEBUGTITLE': str(data['debugTitle']) + timeTxt}
             else:
                 replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                                 'IPHOSTB': str(data['hostB']['IP']),
@@ -186,23 +188,29 @@ else:
                                 'IPSWITCHC': str(data['switchDataC']['target']),
                                 'IPSWITCHD': str(data['switchDataD']['target']),
                                 'SNMPNAME': str(data['switchDataA']['job_name']),
-                                'DASHTITLE':str(data['dashTitle']) + timeTxt}
+                                'DASHTITLE':str(data['dashTitle']) + timeTxt,
+                                'DEBUGTITLE': str(data['debugTitle']) + timeTxt}
             print("Creating custom Grafana JSON Dashboard...")
-
+            print("Creating custom L2 Debugging JSON Dashboard...")
             # Iteratively find and replace in one go 
             fname = "template" + str(data['switchNum']) + ".json"
+            dname = "debugTemplate" + str(data['switchNum']) + ".json"
             with open(fname) as infile, open('out.json', 'w') as outfile:
                 for line in infile:
                     for src, target in replacements.items():
                         line = line.replace(src, target)
-                    outfile.write(line)            
+                    outfile.write(line)
+            with open(dname) as infile, open('outDebug.json', 'w') as outfile:
+                for line in infile:
+                    for src, target in replacements.items():
+                        line = line.replace(src, target)
+                    outfile.write(line)              
             print("Applying dashboard JSON to Grafana API...")
             # Run the API script to convert output JSON to Grafana dashboard automatically
             print("Loading Grafana dashboard on Grafana server...")
-            cmd = "sudo python3 api.py out.json " + str(sys.argv[1])
+            cmd = "sudo python3 api.py out.json outDebug.json " + str(sys.argv[1])
             subprocess.run(cmd, shell=True)
             print("Loaded Grafana dashboard")
     except KeyboardInterrupt:
         print("Interrupt detected")
         print("Shutting down SNMP Exporter instance to save resources...")
-

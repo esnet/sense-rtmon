@@ -6,12 +6,12 @@ import sys
 import yaml
 
 data = {}
-with open(sys.argv[2], 'r') as stream:
+with open(sys.argv[3], 'r') as stream:
     try:
         data = yaml.safe_load(stream)
     except yaml.YAMLError as exc:
         pass
-# http or https check your Grafana setting
+# http or https check Grafana setting
 server = "https://" + str(data['grafanaHostIP']) + ":" + str(data['grafanaPort'])
 # Get Default Home Dashboard
 url = server + "/api/dashboards/db"
@@ -22,7 +22,11 @@ headers = {"Authorization": str(data['grafanaAPIToken']),
             "Accept": "application/json"}
 # Open and load out.json input
 f = open(sys.argv[1],)
+f2 = open(sys.argv[2],)
 x = json.load(f)
+x2 = json.load(f2)
 # HTTP Post Request
 r = requests.post(url=url, headers=headers, data=json.dumps(x), verify=False)
 print(r.json())
+r2 = requests.post(url=url, headers=headers, data=json.dumps(x2), verify=False)
+print(r2.json())

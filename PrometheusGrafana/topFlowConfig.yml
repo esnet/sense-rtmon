@@ -2,17 +2,17 @@
 switchNum: 1
 # Grafana Dashboard Title   
 dashTitle: "Top Flow Dashboard"
+# L2 Debugging Dashboard Title
+debugTitle: "L2 Debugging Dashboard"
 # Prometheus Port
 prometheusPort: 9090
-# Pushgateway Port
-pushgatewayPort: 9091
 # The IP of the host which is running the Grafana container
 grafanaHostIP: 198.32.43.16
 # The port which the Grafana container is listening on
 # Default is 3000
 grafanaPort: 3000
 # Grafana API Token
-grafanaAPIToken: "Bearer eyJrIjoiUVlBbnpBckJWVjB2cjNYc3Yxem1lOXNkM3g0djdYQ0IiLCJuIjoiYWRtaW4iLCJpZCI6MX0="
+grafanaAPIToken: "Bearer eyJrIjoiMVozbktVZzRQQzUyc3ExNmJUeUJTUzFBQ3A3aGFQVVMiLCJuIjoiYWRtaW4iLCJpZCI6MX0="
 tcpMetrics:
   port: 9191
   job_name: 'tcpmetrics'
@@ -22,7 +22,7 @@ arpMetrics:
 # Host 1 Specifics 
 hostA:
   IP: 198.32.43.16
-  interfaceName: 'ens2f0.43'
+  interfaceName: 'ens2.1000'
   interfaceIP: '10.10.100.1'
   nodeName: 'sdn-dtn-2-10.ultralight.org'
   vlan: 1000
@@ -33,7 +33,7 @@ hostA:
 # Host 2 Specifics
 hostB:
   IP: 198.32.43.15
-  interfaceName: 'ens2f0.43'
+  interfaceName: 'ens2.1000'
   interfaceIP: '10.10.100.2'
   nodeName: 'sdn-dtn-2-11.ultralight.org'
   vlan: 1000

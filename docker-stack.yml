@@ -4,6 +4,7 @@ networks:
   site-net:
 
 services:
+
   node-exporter:
     image: prom/node-exporter
     volumes:
@@ -21,5 +22,19 @@ services:
       - site-net
     deploy:
       mode: global
+      restart_policy:
+          condition: on-failure
+  
+  snmp-exporter:
+    image: prom/snmp-exporter:latest
+    volumes:
+      - ./SNMPExporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+    command: 
+      - '--config.file=/etc/snmp_exporter/snmp.yml'
+      ports:
+      - 9116:9116
+    networks:
+      - site-net
+    deploy:
       restart_policy:
           condition: on-failure

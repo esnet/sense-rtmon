@@ -1,18 +1,31 @@
-version: '3'
+version: '3.8'
+
 services:
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
     restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
     command:
-      - 'docker run -d --name node-exporter --net="host" --pid="host" -v "/:/host:ro,rslave" quay.io/prometheus/node-exporter:latest --path.rootfs=/host'
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    expose:
+      - 9100
+    
+  snmp-exporter:
+    image: prom/snmp-exporter:latest
+    container_name: snmp-exporter
+    restart: unless-stopped
+    volumes:
+      - ./SNMPExporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+    expose:
+      - 9116
+    command: 
+      - '--config.file=/etc/snmp_exporter/snmp.yml'
 
-  arp-exporter:
-    build: ./Metrics/ARPMetrics/
-#    volumes:
-#      - ./Metrics/ARPMetrics:
-
-#  snmp-exporter:
-#    build: ./SNMPExporter/
-#    volumes:
-#      - ./SNMPExporter:
+              # subprocess.run("sudo docker run -d --name snmp-exporter -p 9116:9116     -v $PWD/snmp.yml:/etc/snmp_exporter/snmp.yml p")

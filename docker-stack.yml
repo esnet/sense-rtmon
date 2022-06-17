@@ -31,7 +31,7 @@ services:
       - ./SNMPExporter/snmp.yml:/etc/snmp_exporter/snmp.yml
     command: 
       - '--config.file=/etc/snmp_exporter/snmp.yml'
-      ports:
+    ports:
       - 9116:9116
     networks:
       - site-net

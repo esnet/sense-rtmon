@@ -11,6 +11,10 @@ sudo lsof -i -P -n | grep 9116
 sleep 1
 
 # all exporter started
+echo "!!    Config SNMP (can be shut down later)"
+cd SNMPExporter
+python3 dynamic.py snmpConfig.yml
+cd ..
 docker stack deploy -c docker-stack.yml site
 
 echo "!!    NODE, SNMP, ARP Exporters (technically everthing already started, shut down one at the time)"

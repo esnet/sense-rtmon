@@ -26,7 +26,7 @@ services:
   snmp-exporter:
     image: quay.io/prometheus/snmp-exporter
     volumes:
-      - ./SNMPExporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+      - ./SNMPExporter/src/github.com/prometheus/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
     # command: 
     #   - '--config.file=/etc/snmp_exporter/snmp.yml'
     ports:

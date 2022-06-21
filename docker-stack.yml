@@ -19,9 +19,9 @@ services:
     networks:
       - site-net
     deploy:
-      # mode: global
+      mode: global
       restart_policy:
-          condition: on-failure
+          condition: always
   
   snmp-exporter:
     image: prom/snmp-exporter
@@ -35,4 +35,4 @@ services:
       - site-net
     deploy:
       restart_policy:
-          condition: on-failure
+          condition: always

@@ -23,16 +23,16 @@ services:
       restart_policy:
           condition: on-failure
   
-  snmp-exporter:
-    image: prom/snmp-exporter
-    volumes:
-      - ./SNMPExporter/src/github.com/prometheus/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
-    command: 
-      - '--config.file=/etc/snmp_exporter/snmp.yml'
-    ports:
-      - 9116:9116
-    networks:
-      - site-net
-    deploy:
-      restart_policy:
-          condition: on-failure
+  # snmp-exporter:
+  #   image: prom/snmp-exporter
+  #   volumes:
+  #     - ./SNMPExporter/src/github.com/prometheus/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+  #   command: 
+  #     - '--config.file=/etc/snmp_exporter/snmp.yml'
+  #   ports:
+  #     - 9116:9116
+  #   networks:
+  #     - site-net
+  #   deploy:
+  #     restart_policy:
+  #         condition: on-failure

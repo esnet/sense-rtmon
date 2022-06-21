@@ -20,8 +20,11 @@ services:
       - site-net
     deploy:
       mode: global
+      placement:
+        constraints:
+          - node.role==manager
       restart_policy:
-          condition: any
+        condition: on-failure
   
   snmp-exporter:
     image: prom/snmp-exporter
@@ -34,5 +37,8 @@ services:
     networks:
       - site-net
     deploy:
+      placement:
+        constraints:
+          - node.role==manager
       restart_policy:
-          condition: any
+        condition: on-failure

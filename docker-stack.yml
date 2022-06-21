@@ -24,11 +24,11 @@ services:
           condition: on-failure
   
   snmp-exporter:
-    image: prom/snmp-exporter:latest
+    image: quay.io/prometheus/snmp-exporter
     volumes:
       - ./SNMPExporter/snmp.yml:/etc/snmp_exporter/snmp.yml
-    command: 
-      - '--config.file=/etc/snmp_exporter/snmp.yml'
+    # command: 
+    #   - '--config.file=/etc/snmp_exporter/snmp.yml'
     ports:
       - 9116:9116
     networks:

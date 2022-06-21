@@ -59,8 +59,8 @@ else:
         os.environ["PATH"] += os.pathsep + os.pathsep.join(["/usr/local/go/bin"])
         dir = str(os.getcwd())
         os.putenv("GOPATH", dir)
-        subprocess.run("go get github.com/prometheus/snmp_exporter/generator", shell=True)
-        genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
+        subprocess.run("go get github.com/prometheus/snmp_exporter/tree/main/generator", shell=True)
+        genLoc = dir + "/src/github.com/prometheus/snmp_exporter/tree/main/generator"
         genCmd = "sudo mv generator.yml " + genLoc
         subprocess.run(genCmd, shell=True)
         subprocess.run("go build", shell=True, cwd=genLoc)

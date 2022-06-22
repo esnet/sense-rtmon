@@ -1,24 +1,24 @@
 version: '3.8'
 
-# services:
-  # node-exporter:
-  #   image: quay.io/prometheus/node-exporter:latest
-  #   volumes:
-  #     - /proc:/host/proc:ro
-  #     - /sys:/host/sys:ro
-  #     - /:/rootfs:ro
-  #     - /:/host:ro,rslave
-  #   command: 
-  #     - '--path.rootfs=/host'
-  #     - '--path.procfs=/host/proc' 
-  #     - '--path.sysfs=/host/sys'
-  #     - --collector.filesystem.ignored-mount-points
-  #     - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
-  #   ports:
-  #     - 9100:9100
-  #   restart: always
-  #   deploy:
-  #     mode: global
+services:
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - /:/host:ro,rslave
+    command: 
+      - '--path.rootfs=/host'
+      - '--path.procfs=/host/proc' 
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - 9100:9100
+    restart: always
+    deploy:
+      mode: global
 
   # snmp-exporter:
   #   image: prom/snmp-exporter:latest
@@ -33,48 +33,48 @@ version: '3.8'
 
               # subprocess.run("sudo docker run -d --name snmp-exporter -p 9116:9116     -v $PWD/snmp.yml:/etc/snmp_exporter/snmp.yml p")
 
-services:
-  node-exporter:
-    command:
-    - --path.rootfs=/host
-    - --path.procfs=/host/proc
-    - --path.sysfs=/host/sys
-    - --collector.filesystem.ignored-mount-points
-    - ^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)
-    deploy:
-      mode: replicated
-    image: quay.io/prometheus/node-exporter:latest
-    networks:
-      default: null
-    ports:
-    - mode: ingress
-      target: 9100
-      published: 9100
-      protocol: tcp
-    restart: always
-    volumes:
-    - type: bind
-      source: /proc
-      target: /host/proc
-      read_only: true
-      bind:
-        create_host_path: true
-    - type: bind
-      source: /sys
-      target: /host/sys
-      read_only: true
-      bind:
-        create_host_path: true
-    - type: bind
-      source: /
-      target: /rootfs
-      read_only: true
-      bind:
-        create_host_path: true
-    - type: bind
-      source: /
-      target: /host
-      read_only: true
-      bind:
-        propagation: rslave
-        create_host_path: true
+# services:
+#   node-exporter:
+#     command:
+#     - --path.rootfs=/host
+#     - --path.procfs=/host/proc
+#     - --path.sysfs=/host/sys
+#     - --collector.filesystem.ignored-mount-points
+#     - ^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)
+#     deploy:
+#       mode: replicated
+#     image: quay.io/prometheus/node-exporter:latest
+#     networks:
+#       default: null
+#     ports:
+#     - mode: ingress
+#       target: 9100
+#       published: 9100
+#       protocol: tcp
+#     restart: always
+#     volumes:
+#     - type: bind
+#       source: /proc
+#       target: /host/proc
+#       read_only: true
+#       bind:
+#         create_host_path: true
+#     - type: bind
+#       source: /sys
+#       target: /host/sys
+#       read_only: true
+#       bind:
+#         create_host_path: true
+#     - type: bind
+#       source: /
+#       target: /rootfs
+#       read_only: true
+#       bind:
+#         create_host_path: true
+#     - type: bind
+#       source: /
+#       target: /host
+#       read_only: true
+#       bind:
+#         propagation: rslave
+#         create_host_path: true

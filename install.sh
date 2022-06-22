@@ -1,4 +1,17 @@
 #! /bin/bash
+
+if [ -x "$(command -v docker)" ]; then
+    echo "||        Found docker..."
+    echo "||        Running docker login..."
+    docker login
+    echo "||        Checking docker swarm..."
+    docker swarm init # &>/dev/null
+else
+    echo "!!    Docker command not found."
+    echo "!!        Please visit https://docs.docker.com/install/ for installation instructions."
+    exit 1
+fi
+
 # get correct IP address
 MYIP=$(hostname -I | head -n1 | awk '{print $1;}')
 read -r -p "Is ${MYIP} your IP address [y/N]: " correct_ip
@@ -37,6 +50,7 @@ curl -s localhost:9116/metrics | curl --data-binary @- $pushgateway_server/metri
 EOF
 fi
 
+# create a temporary copy paste file
 echo ""
 if [ -f "/root/cron_autopush" ]; then
     echo "cron_autopush already exits"
@@ -47,17 +61,17 @@ fi
 echo "!!    copy paste crontab to a temporary file"
 crontab -l > /root/cron_autopush
 
-if grep -Fxq "localhost:9116" /root/cron_autopush 
+# check if port already in the crontab
+if grep -F "/root/push_snmp_exporter_metrics.sh" /root/cron_autopush 
 then
-    echo "port 9116 in use in cron, type crontab -e to check"
+    echo "task is already in cron, type crontab -e to check"
 else
     echo "#Puppet Name: snmp exporter data to pushgateway every 15 seconds" >> /root/cron_autopush
     echo "MAILTO=""" >> /root/cron_autopush
     echo "* * * * * for i in 0 1 2; do /root/push_snmp_exporter_metrics.sh & sleep 15; done; /root/push_snmp_exporter_metrics.sh" >> /root/cron_autopush
 fi
-    if grep -Fxq "localhost:9100" /root/cron_autopush 
-    then
-    echo "port 9100 in use in cron, type crontab -e to check"
+     grep -F "/root/push_node_exporter_metrics.sh" /root/cron_autopush
+    echo "task is already in cron, type crontab -e to check"
 else
     echo "#Puppet Name: node exporter data to pushgateway every 15 seconds" >> /root/cron_autopush
     echo "MAILTO=""" >> /root/cron_autopush

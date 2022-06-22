@@ -49,7 +49,7 @@ services:
     ports:
     - mode: ingress
       target: 9100
-      published: "9100"
+      published: 9100
       protocol: tcp
     restart: always
     volumes:

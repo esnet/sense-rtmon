@@ -70,7 +70,9 @@ else
     echo "MAILTO=""" >> /root/cron_autopush
     echo "* * * * * for i in 0 1 2; do /root/push_snmp_exporter_metrics.sh & sleep 15; done; /root/push_snmp_exporter_metrics.sh" >> /root/cron_autopush
 fi
-     grep -F "/root/push_node_exporter_metrics.sh" /root/cron_autopush
+
+if grep -F "/root/push_node_exporter_metrics.sh" /root/cron_autopush
+then    
     echo "task is already in cron, type crontab -e to check"
 else
     echo "#Puppet Name: node exporter data to pushgateway every 15 seconds" >> /root/cron_autopush
@@ -78,6 +80,7 @@ else
     echo "* * * * * for i in 0 1 2; do /root/push_node_exporter_metrics.sh & sleep 15; done; /root/push_node_exporter_metrics.sh" >> /root/cron_autopush
 fi
 
+echo ""
 crontab /root/cron_autopush
 rm -f /root/cron_autopush
-echo "!!    crontab set up complete"
+echo "!!    crontab set up successfuly"

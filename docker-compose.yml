@@ -19,14 +19,14 @@ services:
     restart: always
     deploy:
       mode: global
-
+      
   snmp-exporter:
     image: prom/snmp-exporter:latest
     container_name: snmp-exporter
-    restart: unless-stopped
     volumes:
-      - ./SNMPExporter/snmp.yml:/etc/snmp_exporter/snmp.yml
-    expose:
-      - 9116
+      - ./SNMPExporter/src/github.com/prometheus/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
     command: 
       - '--config.file=/etc/snmp_exporter/snmp.yml'
+    ports:
+      - 9116:9116
+    restart: always

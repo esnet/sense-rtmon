@@ -25,6 +25,10 @@ services:
           - node.role==manager
       restart_policy:
         condition: on-failure
+      replicas: 6
+      update_config:
+        parallelism: 2
+        delay: 10s
   
   snmp-exporter:
     image: prom/snmp-exporter
@@ -42,3 +46,7 @@ services:
           - node.role==manager
       restart_policy:
         condition: on-failure
+      replicas: 6
+      update_config:
+        parallelism: 2
+        delay: 10s

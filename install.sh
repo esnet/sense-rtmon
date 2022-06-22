@@ -49,7 +49,7 @@ if grep -Fxq "localhost:9116" /root/cron_autopush
 then
     echo "port 9116 in use in cron, type crontab -e to check"
 else
-    echo "Puppet Name: snmp exporter data to pushgateway every 15 seconds" >> /root/cron_autopush
+    echo "#Puppet Name: snmp exporter data to pushgateway every 15 seconds" >> /root/cron_autopush
     echo "MAILTO=""" >> /root/cron_autopush
     echo "* * * * * for i in 0 1 2; do /root/push_snmp_exporter_metrics.sh & sleep 15; done; /root/push_snmp_exporter_metrics.sh" >> /root/cron_autopush
 fi
@@ -57,7 +57,7 @@ fi
     then
     echo "port 9100 in use in cron, type crontab -e to check"
 else
-    echo "Puppet Name: node exporter data to pushgateway every 15 seconds" >> /root/cron_autopush
+    echo "#Puppet Name: node exporter data to pushgateway every 15 seconds" >> /root/cron_autopush
     echo "MAILTO=""" >> /root/cron_autopush
     echo "* * * * * for i in 0 1 2; do /root/push_node_exporter_metrics.sh & sleep 15; done; /root/push_node_exporter_metrics.sh" >> /root/cron_autopush
 fi

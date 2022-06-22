@@ -25,7 +25,7 @@ services:
           - node.role==manager
       restart_policy:
         condition: on-failure
-        endpoint_mode: dnsrr
+      endpoint_mode: dnsrr
       # replicas: 6
       # update_config:
       #   parallelism: 2
@@ -47,7 +47,7 @@ services:
           - node.role==manager
       restart_policy:
         condition: on-failure
-        endpoint_mode: vip
+      endpoint_mode: vip
       # replicas: 6
       # update_config:
       #   parallelism: 2

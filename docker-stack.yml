@@ -19,7 +19,7 @@ services:
     networks:
       - site-net
     deploy:
-      mode: global
+      # mode: global
       placement:
         constraints:
           - node.role==manager

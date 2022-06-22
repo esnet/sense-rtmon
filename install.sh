@@ -63,4 +63,5 @@ else
 fi
 
 crontab /root/cron_autopush
+rm -f /root/cron_autopush
 echo "!!    crontab set up complete"

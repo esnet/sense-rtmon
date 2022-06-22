@@ -20,16 +20,8 @@ services:
       - site-net
     deploy:
       mode: global
-      placement:
-        constraints:
-          - node.role==manager
       restart_policy:
         condition: on-failure
-      # replicas: 6
-      # update_config:
-      #   parallelism: 2
-      #   delay: 10s
-
   
   snmp-exporter:
     image: prom/snmp-exporter
@@ -42,8 +34,5 @@ services:
     networks:
       - site-net
     deploy:
-      placement:
-        constraints:
-          - node.role==manager
       restart_policy:
         condition: on-failure

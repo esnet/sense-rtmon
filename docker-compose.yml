@@ -78,6 +78,3 @@ services:
       bind:
         propagation: rslave
         create_host_path: true
-networks:
-  default:
-    name: dynamicdashboard_default

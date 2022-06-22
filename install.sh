@@ -25,6 +25,7 @@ curl -s localhost:9100/metrics | curl --data-binary @- $pushgateway_server/metri
 EOF
 fi
 
+echo ""
 if [ -f "/root/push_snmp_exporter_metrics.sh" ]; then
     echo "push_snmp_exporter_metrics.sh already exits"
     chmod +x /root/push_snmp_exporter_metrics.sh
@@ -36,6 +37,7 @@ curl -s localhost:9116/metrics | curl --data-binary @- $pushgateway_server/metri
 EOF
 fi
 
+echo ""
 if [ -f "/root/cron_autopush" ]; then
     echo "cron_autopush already exits"
 else

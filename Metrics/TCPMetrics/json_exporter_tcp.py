@@ -10,12 +10,17 @@ from subprocess import Popen, PIPE
 
 config_data ={}
 if __name__ == '__main__':
-  with open(sys.argv[1], 'r') as stream:
+  owd = os.getcwd()
+  os.chdir("..")
+  os.chdir("..")
+  infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
+  os.chdir(owd)
+  with open(infpth, 'r') as stream:
       try:
           config_data = yaml.safe_load(stream)
       except yaml.YAMLError as exc:
           print("Config file load error!")
-receiver_ip_address = "http://" + str(config_data['receiverIP'])
+receiver_ip_address = "http://" + str(config_data['tcpMetrics']['receiverIP'])
 
 class JsonCollector(object):
   def collect(self):
@@ -73,6 +78,6 @@ class JsonCollector(object):
         yield metric
 if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint
-  start_http_server(int(config_data['port']))
+  start_http_server(int(config_data['tcpMetrics']['port']))
   REGISTRY.register(JsonCollector())
-  while True: time.sleep(int(config_data['scrapeDuration']))
+  while True: time.sleep(int(config_data['tcpMetrics']['scrapeDuration']))

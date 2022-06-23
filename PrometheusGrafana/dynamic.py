@@ -8,18 +8,22 @@ import os
 from datetime import datetime
 
 # Help Command
-if len(sys.argv) <= 1 or str(sys.argv[1]) == "-h" or str(sys.argv[1]) == "-H":
+if len(sys.argv) < 0:
         print("\n USAGE: python3 dynamic.py <config-file> \n \n Tip: Ensure that the Python script dynamic.py, the supporting files, and the config file are in one directory without subdirectories or other hierarchies.\n")
 else: 
     try:
         print("Parsing config file...")
         # Load yaml config file as dict
+        owd = os.getcwd()
+        os.chdir("..")
+        infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
+        os.chdir(owd)
         data = {}
-        with open(sys.argv[1], 'r') as stream:
+        with open(infpth, 'r') as stream:
             try:
                 data = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
-                print("\n USAGE: python3 dynamic.py <config-file> \n \n Tip: Ensure that the Python script dynamic.py, the supporting files, and the config file are in one directory without subdirectories or other hierarchies.\n")
+                print("\n Config file 'config.yml' could not be found in the DynamicDashboard directory\n")
         print("Initializing docker containers...")
         subprocess.run("docker start grafana", shell=True)
         subprocess.run("sudo docker run -d -p 9091:9091 prom/pushgateway", shell=True)
@@ -83,7 +87,7 @@ else:
             print("Applying dashboard JSON to Grafana API...")
             # Run the API script to convert output JSON to Grafana dashboard automatically
             print("Loading Grafana dashboard on Grafana server...")
-            cmd = "sudo python3 api.py out.json outDebug.json " + str(sys.argv[1])
+            cmd = "sudo python3 api.py out.json outDebug.json"
             subprocess.run(cmd, shell=True)
             print("Loaded Grafana dashboard")
         else:
@@ -208,9 +212,10 @@ else:
             print("Applying dashboard JSON to Grafana API...")
             # Run the API script to convert output JSON to Grafana dashboard automatically
             print("Loading Grafana dashboard on Grafana server...")
-            cmd = "sudo python3 api.py out.json outDebug.json " + str(sys.argv[1])
+            cmd = "sudo python3 api.py out.json outDebug.json"
             subprocess.run(cmd, shell=True)
             print("Loaded Grafana dashboard")
     except KeyboardInterrupt:
         print("Interrupt detected")
         print("Shutting down SNMP Exporter instance to save resources...")
+

@@ -1,17 +1,28 @@
 #! /bin/bash
 
+# check docker 
 if [ -x "$(command -v docker)" ]; then
     echo "||        Found docker..."
+    echo "||        Running docker login..."
+    docker login
+else
+    echo "!!    Docker command not found."
+    exit 1
+fi
+
+# check docker compose
+if [ -x "$(command -v docker compose)" ]; then
+    echo "||        Found docker compose..."
     echo "||        Running docker login..."
     docker login
     echo "||        Checking docker swarm..."
     docker swarm init # &>/dev/null
 else
-    echo "!!    Docker command not found."
-    echo "!!        Please visit https://docs.docker.com/install/ for installation instructions."
-    exit 1
+    echo "!!    Docker compose command not found."
+    echo "!!    Installing docker compose"
+    suod yum install -y docker-compose-plugin
+    # exit 1
 fi
-
 # get correct IP address
 MYIP=$(hostname -I | head -n1 | awk '{print $1;}')
 read -r -p "Is ${MYIP} your IP address [y/N]: " correct_ip

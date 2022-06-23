@@ -4,14 +4,20 @@ import requests
 import json
 import sys
 import yaml
+import os
 
+owd = os.getcwd()
+os.chdir("..")
+infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
+os.chdir(owd)
 data = {}
-with open(sys.argv[3], 'r') as stream:
+with open(infpth, 'r') as stream:
     try:
         data = yaml.safe_load(stream)
     except yaml.YAMLError as exc:
         pass
-# http or https check Grafana setting
+
+# http or https depending on Grafana setting
 server = "https://" + str(data['grafanaHostIP']) + ":" + str(data['grafanaPort'])
 # Get Default Home Dashboard
 url = server + "/api/dashboards/db"

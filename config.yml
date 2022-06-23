@@ -25,6 +25,8 @@ tcpMetrics:
   scrapeDuration: 900
   # Scrape interval duration (in seconds)
   scrapeInterval: 30
+  # Receiving end IP Address, where pushgateway located
+  receiverIP: 'localhost' #change it
 arpMetrics:
   port: 9192
   job_name: 'arpmetrics'
@@ -32,6 +34,8 @@ arpMetrics:
   scrapeDuration: 900
   # Scrape interval duration (in seconds)
   scrapeInterval: 30
+  # Receiving end IP Address, where pushgateway located
+  receiverIP: 'localhost' #change it
 # Host 1 Specifics 
 hostA:
   IP: 198.32.43.16

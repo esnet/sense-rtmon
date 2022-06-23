@@ -22,6 +22,9 @@ services:
       mode: global
       restart_policy:
         condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker
   
   snmp-exporter:
     image: prom/snmp-exporter
@@ -36,3 +39,6 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker

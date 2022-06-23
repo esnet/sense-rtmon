@@ -68,16 +68,18 @@ For each network element in the flow you wish to visualize, you must configure a
 - ```python3 dynamic.py snmpConfig.yml```
 
 **Step 6: Configure ARP Host Metrics Data**
-To configure the ARP Table host metrics data, navigate to the ```Metrics/ARPMetrics``` folder.
+To configure the ARP Table host metrics data as a Docker container, navigate to the ```Metrics``` folder.
 First manually edit ```hostMetricConfig.yml```, change the receiver's IP address to where pushgateway is running on.
-Then run the following script:
-- ```./arpMetrics.sh```
+Then run the following commands to build and run a Docker container:
+- ```docker build -t arpexporter -f Dockerfile.arp .```
+- ```docker run -d --net="host" arpexporter```
 
 **Step 7: Configure TCPDump Metrics Data**
-To configure the TCPDump host metrics data, navigate to the ```Metrics/TCPMetrics``` folder.
+To configure the TCPDump host metrics data as a Docker container, navigate to the ```Metrics``` folder.
 First manually edit ```hostMetricConfig.yml```, change the receiver's IP address to where pushgateway is running on.
 Then run the following script:
-- ```./tcpMetrics.sh```
+- ```docker build -t tcpexporter -f Dockerfile.tcp .```
+- ```docker run -d --net="host" tcpexporter```
 
 **Step 8: Configure the Layer 2 Debugging Scripts**
 - To configure the Layer 2 Debugging scripts, we will have to utilize a pre-built docker container which acts as a Prometheus Script Exporter. To build and install the pre-built image, make sure to navigate to the same directory hierarchy as ```args.sh```. Then, issue the following commands:

@@ -1,0 +1,67 @@
+# Number of switches
+switchNum: 1
+# Grafana Dashboard Title   
+dashTitle: "Top Flow Dashboard"
+# L2 Debugging Dashboard Title
+debugTitle: "Top Flow L2 Debugging Dashboard"
+# Prometheus Port
+prometheusPort: 9090
+# The IP of the host which is running the Grafana container
+grafanaHostIP: 198.32.43.16
+# The port which the Grafana container is listening on
+# Default is 3000
+grafanaPort: 3000
+# Grafana API Token
+grafanaAPIToken: "Bearer eyJrIjoiRjRpazhiRVRKUG1USjBGbkNQNU9XdjlIUmRWRmpJSVoiLCJuIjoiYWRtaW4iLCJpZCI6MX0="
+# TCP/ARP Data
+tcpMetrics:
+  port: 9191
+  job_name: 'tcpmetrics'
+  # Collect all packets continuously over the scrape interval
+  # Not recommended for general use cases, but provides additional information if set to True
+  # Defaults to False, collects the most recent burst (1 second's worth of data) at the current scrape interval
+  continuousCollect: False
+  # How long to scrape host-level data (in seconds)
+  scrapeDuration: 900
+  # Scrape interval duration (in seconds)
+  scrapeInterval: 30
+arpMetrics:
+  port: 9192
+  job_name: 'arpmetrics'
+  # How long to scrape host-level data (in seconds)
+  scrapeDuration: 900
+  # Scrape interval duration (in seconds)
+  scrapeInterval: 30
+# Host 1 Specifics 
+hostA:
+  IP: 198.32.43.16
+  interfaceName: 'enp4s0f0'
+  interfaceIP: '10.10.100.1'
+  nodeName: 'sdn-dtn-2-10.ultralight.org'
+  vlan: 1000
+  nodeExporterPort: 9100
+  switchPort: 
+    ifName: 'TenGigabitEthernet 0/46'
+    ifIndex: 1054468
+# Host 2 Specifics
+hostB:
+  IP: 198.32.43.15
+  interfaceName: 'enp4s0f0'
+  interfaceIP: '10.10.100.2'
+  nodeName: 'sdn-dtn-2-11.ultralight.org'
+  vlan: 1000
+  nodeExporterPort: 9100
+  switchPort: 
+    ifName: 'TenGigabitEthernet 0/45'
+    ifIndex: 1054340
+# Prometheus source specifics
+switchData:
+  job_name: 'snmp1'
+  # The IP of the host which is running the SNMP Exporter container
+  SNMPHostIP: 198.32.43.16
+  # Scrape interval/duration time
+  scrapeInterval: 15s
+  scrapeDuration: 5h
+  target: 172.16.1.14
+  #if-mib and F10-IF-EXTENSION-MIB
+  params: ['if_mib']

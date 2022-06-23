@@ -5,11 +5,17 @@ import subprocess
 from subprocess import Popen
 import json
 import yaml
+import os
 
 try:
     # Load yaml config file as dict
+    owd = os.getcwd()
+    os.chdir("..")
+    os.chdir("..")
+    infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
+    os.chdir(owd)
     data = {}
-    with open(sys.argv[1], 'r') as stream:
+    with open(infpth, 'r') as stream:
         try:
             data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
@@ -20,7 +26,7 @@ try:
 
     arpCMDs = []
 
-    arpCollect = "count=1; end=$((SECONDS+" + str(data['scrapeDuration']) + ")); while [ $SECONDS -lt $end ]; do sleep " + str(data['scrapeInterval']) +"; arp -a > ./arpFiles/arpOut-$count.txt;  python3 convertARP.py ./arpFiles/arpOut-$count.txt ./jsonFiles/arpOut-$count.json; done"
+    arpCollect = "count=1; end=$((SECONDS+" + str(data['arpMetrics']['scrapeDuration']) + ")); while [ $SECONDS -lt $end ]; do sleep " + str(data['arpMetrics']['scrapeInterval']) +"; arp -a > ./arpFiles/arpOut-$count.txt;  python3 convertARP.py ./arpFiles/arpOut-$count.txt ./jsonFiles/arpOut-$count.json; done"
     arpCMDs.append(arpCollect)
     # run in parallel
     processes = [Popen(cmd, shell=True) for cmd in arpCMDs]

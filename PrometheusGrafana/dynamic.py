@@ -76,12 +76,7 @@ else:
                         line = line.replace(src, target)
                     outfile.write(line)
             print("Generating custom Prometheus config file...")
-            # Iteratively find and replace in one go 
-            with open('prometheusTemplate.yml') as infile, open('prometheus.yml', 'w') as outfile:
-                for line in infile:
-                    for src, target in replacements.items():
-                        line = line.replace(src, target)
-                    outfile.write(line)
+
             subprocess.run("sudo docker run -d  -p 9090:9090     -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml     prom/prometheus:v2.2.1", shell=True)
 
             print("Applying dashboard JSON to Grafana API...")

@@ -9,7 +9,7 @@ fi
 
 echo "||    Inserting ${MYIP} to prometheus.yml file"
 echo "||    If the IP address is incorrect please update manually"
-sed -i -e "s@your_ip:9091 @${MYIP}:9091 @" PrometheusGrafana/prometheus.yml
+sed -i -e "s@your_ip:9091 @${MYIP}:9091 @" /root/DynamicDashboard/PrometheusGrafana/prometheus.yml
 
 sleep 1
 echo " "

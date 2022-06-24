@@ -75,7 +75,6 @@ else:
                     for src, target in replacements.items():
                         line = line.replace(src, target)
                     outfile.write(line)
-            print("Generating custom Prometheus config file...")
 
             subprocess.run("sudo docker run -d  -p 9090:9090     -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml     prom/prometheus:v2.2.1", shell=True)
 

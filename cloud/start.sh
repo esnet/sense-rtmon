@@ -25,6 +25,7 @@ echo "!!    Deploy script exporter"
 yes | cp -rfa se_config/. script_exporter/examples
 cd script_exporter
 docker stack deploy -c docker-compose.yaml cloud
+yes | cp -rfa se_config/. script_exporter/examples
 
 cd ..
 cd ..

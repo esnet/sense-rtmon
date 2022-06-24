@@ -10,9 +10,9 @@ import os
 try:
     # Load yaml config file as dict
     owd = os.getcwd()
-    os.chdir("..")
-    os.chdir("..")
-    infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
+    os.chdir("etc")
+    os.chdir("arp_exporter")
+    infpth = str(os.path.abspath(os.curdir)) + "/arp.yml"
     os.chdir(owd)
     data = {}
     with open(infpth, 'r') as stream:

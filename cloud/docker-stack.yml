@@ -1,0 +1,58 @@
+version: '3'
+
+volumes:
+    prometheus_data: {}
+
+networks:
+  monitor-net:
+
+services:
+
+  prometheus:
+    image: prom/prometheus:v2.2.1
+    volumes:
+      - ./PrometheusGrafana/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - monitor-net
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+      restart_policy:
+        condition: on-failure
+
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - "9091:9091"
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+      restart_policy:
+        condition: on-failure
+    networks:
+      - monitor-net 
+
+# script exporter is stand alone in script_exporter file 
+
+  # script_exporter:
+  #   image: 'ricoberger/script_exporter:v2.4.0'
+  #   volumes:
+  #     - './script_exporter/examples:bin/examples'
+  #   command:
+  #     - '-config.file=/bin/examples/config.yaml'
+  #     - '-web.listen-address=:9469'
+  #   ports:
+  #     - '9469:9469'
+  #   deploy:
+  #     placement:
+  #       constraints:
+  #         - node.role==manager
+  #     restart_policy:
+  #       condition: on-failure
+  #   networks:
+  #     - monitor-net 

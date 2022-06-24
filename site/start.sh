@@ -12,6 +12,7 @@ sleep 1
 
 # all exporter started
 echo "!!    Config SNMP (can be shut down later)"
+cd ..
 cd SNMPExporter
 python3 dynamic.py snmpConfig.yml
 cd ..

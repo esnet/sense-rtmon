@@ -11,9 +11,9 @@ from subprocess import Popen, PIPE
 config_data ={}
 if __name__ == '__main__':
   owd = os.getcwd()
-  os.chdir("..")
-  os.chdir("..")
-  infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
+  os.chdir("etc")
+  os.chdir("arp_exporter")
+  infpth = str(os.path.abspath(os.curdir)) + "/arp.yml"
   os.chdir(owd)
   with open(infpth, 'r') as stream:
       try:

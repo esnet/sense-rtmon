@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   node-exporter:
     image: quay.io/prometheus/node-exporter:latest
     volumes:
@@ -29,4 +30,14 @@ services:
       - '--config.file=/etc/snmp_exporter/snmp.yml'
     ports:
       - 9116:9116
+    restart: always
+
+  arp-exporter:
+    build: ../Metrics/arp.Dockerfile
+    container_name: arp-exporter
+    restart: always
+  
+  tcp-exporter:
+    build: ../Metrics/tcp.Dockerfile
+    container_name: tcp-exporter
     restart: always

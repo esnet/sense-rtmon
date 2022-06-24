@@ -37,20 +37,21 @@ if [ -f "PrometheusGrafana/$config_file" ]; then
     sleep 1
     
     echo "!!    Deploy script exporter"
+    mv multiDef.sh script_exporter/examples
+    mv argsDef.sh script_exporter/examples
+    mv config.yaml script_exporter/examples
     cd script_exporter
     docker stack deploy -c docker-compose.yaml cloud
     sleep 1
     
     cd ..
     cd PrometheusGrafana
-    # sudo docker run -d --name startprom -p 9090:9090     -v $PWD/prometheus.yml:/etc/prometheus/prometheus.yml     prom/prometheus:v2.2.1
-    # sudo docker run -d --name startpush -p 9091:9091 prom/pushgateway
     python3 dynamic.py $config_file
 
     # read -r -p "Start script exporter? [y/N]: " script
 
     # if [ "$script" == "y" ] || [ "$script" == "Y" ]; then
-        
+
     # fi
 else
     echo "!!    Config file doesn't exist"

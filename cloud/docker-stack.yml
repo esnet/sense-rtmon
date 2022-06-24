@@ -11,7 +11,7 @@ services:
   prometheus:
     image: prom/prometheus:v2.2.1
     volumes:
-      - ./PrometheusGrafana/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ../PrometheusGrafana/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
       - "9090:9090"

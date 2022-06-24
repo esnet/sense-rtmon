@@ -39,7 +39,7 @@ services:
     container_name: arp-exporter
     restart: always
     command: 
-      - '--net=host'
+      - --net="host"
     volumes:
       - /root/awsvm/DynamicDashboard/config.yml:/etc/arp_exporter/arp.yml
     ports:

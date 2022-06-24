@@ -33,7 +33,7 @@ services:
     restart: always
 
   arp-exporter:
-    build: ../Metrics/arp.Dockerfile
+    build: .../Metrics/arp.Dockerfile
     container_name: arp-exporter
     restart: always
   

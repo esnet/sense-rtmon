@@ -4,6 +4,7 @@ services:
 
   node-exporter:
     image: quay.io/prometheus/node-exporter:latest
+    # network_mode: "host"
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -24,6 +25,7 @@ services:
   # snmp-exporter:
   #   image: prom/snmp-exporter:latest
   #   container_name: snmp-exporter
+  #   network_mode: "host"
   #   volumes:
   #     - ./SNMPExporter/src/github.com/prometheus/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
   #   command: 
@@ -37,9 +39,8 @@ services:
       context: ../Metrics
       dockerfile: arp.Dockerfile
     container_name: arp-exporter
+    network_mode: "host"
     restart: always
-    command: 
-      - --net="host"
     volumes:
       - /root/awsvm/DynamicDashboard/config.yml:/etc/arp_exporter/arp.yml
     ports:

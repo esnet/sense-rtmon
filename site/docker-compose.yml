@@ -39,9 +39,9 @@ services:
     container_name: arp-exporter
     restart: always
   
-  tcp-exporter:
-    build: 
-      context: ../Metrics
-      dockerfile: tcp.Dockerfile    
-    container_name: tcp-exporter
-    restart: always
+  # tcp-exporter:
+  #   build: 
+  #     context: ../Metrics
+  #     dockerfile: tcp.Dockerfile    
+  #   container_name: tcp-exporter
+  #   restart: always

@@ -42,3 +42,9 @@ services:
       placement:
         constraints:
           - node.role == worker
+
+  arp-exporter:
+    build: 
+      context: ../Metrics
+      dockerfile: arp.Dockerfile
+    restart: always

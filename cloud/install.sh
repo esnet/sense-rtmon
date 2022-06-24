@@ -29,6 +29,9 @@ if [ -d "$(/script_exporter)"]; then
 else
     echo "!!    downloading script exporter"
     git clone https://github.com/ricoberger/script_exporter.git
+    cp -ia se_config/. script_exporter/examples
+    # cp -i se_config/argsDef.sh script_exporter/examples
+    # cp -i se_config/config.yaml script_exporter/examples
 fi
 
 sleep 0.5

@@ -37,9 +37,6 @@ if [ -f "PrometheusGrafana/$config_file" ]; then
     sleep 1
     
     echo "!!    Deploy script exporter"
-    mv multiDef.sh script_exporter/examples
-    mv argsDef.sh script_exporter/examples
-    mv config.yaml script_exporter/examples
     cd script_exporter
     docker stack deploy -c docker-compose.yaml cloud
     sleep 1

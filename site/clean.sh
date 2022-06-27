@@ -1,5 +1,6 @@
 #! /bin/bash
 echo "!!    Removing related Stack, Containers, Compose"
+systemctl stop node_exporter
 docker stack rm site
 docker rm -f node-exporter snmp-exporter arp-exporter tcp-exporter
 # remove compose containers

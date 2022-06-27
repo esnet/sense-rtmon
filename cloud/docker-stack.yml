@@ -42,7 +42,7 @@ services:
       - '-config.file=/examples/config.yaml'
       - '-web.listen-address=:9469'
     network_mode: 'host'
-    image: 'ricoberger/script_exporter:latest'
+    image: 'ricoberger/script_exporter'
     ports:
       - '9469:9469'
     volumes:

@@ -25,7 +25,7 @@ services:
       - '-web.listen-address=:9469'
     container_name: 'script_exporter'
     network_mode: 'host'
-    image: 'ricoberger/script_exporter:v2.5.2'
+    image: 'ricoberger/script_exporter:dev'
     ports:
       - '9469:9469'
     volumes:

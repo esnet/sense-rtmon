@@ -1,3 +1,3 @@
 #! /bin/bash
 
-rm -rf go* pkg src
+rm -rf go* pkg src bin

@@ -38,6 +38,9 @@ services:
       - monitor-net 
   
   script_exporter:
+    command:
+      - '-config.file=/examples/config.yaml'
+      - '-web.listen-address=:9469'
     network_mode: 'host'
     image: 'ricoberger/script_exporter:v2.5.2'
     ports:
@@ -52,6 +55,23 @@ services:
         condition: on-failure
     networks:
       - monitor-net 
-  
 
 # script exporter is stand alone in script_exporter file 
+
+  # script_exporter:
+  #   image: 'ricoberger/script_exporter:v2.4.0'
+  #   volumes:
+  #     - './script_exporter/examples:bin/examples'
+  #   command:
+  #     - '-config.file=/bin/examples/config.yaml'
+  #     - '-web.listen-address=:9469'
+  #   ports:
+  #     - '9469:9469'
+  #   deploy:
+  #     placement:
+  #       constraints:
+  #         - node.role==manager
+  #     restart_policy:
+  #       condition: on-failure
+  #   networks:
+  #     - monitor-net 

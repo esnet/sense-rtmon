@@ -55,7 +55,7 @@ else:
         subprocess.run("sudo yum -y install gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel", shell=True)
         subprocess.run("wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz", shell=True)
         subprocess.run("sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz", shell=True)
-        #subprocess.run("export PATH=$PATH:/usr/local/go/bin", shell=True)
+        subprocess.run("export PATH=$PATH:/usr/local/go/bin", shell=True)
         os.environ["PATH"] += os.pathsep + os.pathsep.join(["/usr/local/go/bin"])
         dir = str(os.getcwd())
         os.putenv("GOPATH", dir)

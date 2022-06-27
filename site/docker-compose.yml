@@ -27,7 +27,7 @@ services:
     container_name: snmp-exporter
     network_mode: "host"
     volumes:
-      - ../SNMPExporter/src/github.com/prometheus/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+      - ../SNMPExporter/src/github.com/prometheus/generator/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
     command: 
       - '--config.file=/etc/snmp_exporter/snmp.yml'
     ports:
@@ -45,10 +45,15 @@ services:
       - ../config.yml:/etc/arp_exporter/arp.yml
     ports:
       - 9191:9191
-  
+
   # tcp-exporter:
   #   build: 
   #     context: ../Metrics
-  #     dockerfile: tcp.Dockerfile    
+  #     dockerfile: tcp.Dockerfile
   #   container_name: tcp-exporter
+  #   network_mode: "host"
   #   restart: always
+  #   volumes:
+  #     - ../config.yml:/etc/tcp_exporter/tcp.yml
+  #   ports:
+  #     - 9192:9192

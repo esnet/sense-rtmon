@@ -27,7 +27,7 @@ services:
   #   container_name: snmp-exporter
   #   network_mode: "host"
   #   volumes:
-  #     - ./SNMPExporter/src/github.com/prometheus/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+  #     - /root/awsvm/DynamicDashboard/SNMPExporter/src/github.com/prometheus/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
   #   command: 
   #     - '--config.file=/etc/snmp_exporter/snmp.yml'
   #   ports:
@@ -42,7 +42,7 @@ services:
     network_mode: "host"
     restart: always
     volumes:
-      - /root/awsvm/DynamicDashboard/config.yml:/etc/arp_exporter/arp.yml
+      - ../config.yml:/etc/arp_exporter/arp.yml
     ports:
       - 9191:9191
   

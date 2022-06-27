@@ -22,17 +22,17 @@ services:
     deploy:
       mode: global
       
-  # snmp-exporter:
-  #   image: prom/snmp-exporter:latest
-  #   container_name: snmp-exporter
-  #   network_mode: "host"
-  #   volumes:
-  #     - /root/awsvm/DynamicDashboard/SNMPExporter/src/github.com/prometheus/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
-  #   command: 
-  #     - '--config.file=/etc/snmp_exporter/snmp.yml'
-  #   ports:
-  #     - 9116:9116
-  #   restart: always
+  snmp-exporter:
+    image: prom/snmp-exporter:latest
+    container_name: snmp-exporter
+    network_mode: "host"
+    volumes:
+      - ../SNMPExporter/src/github.com/prometheus/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+    command: 
+      - '--config.file=/etc/snmp_exporter/snmp.yml'
+    ports:
+      - 9116:9116
+    restart: always
 
   arp-exporter:
     build: 

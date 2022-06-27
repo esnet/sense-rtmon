@@ -9,7 +9,7 @@ hostIP: 198.32.43.16
 # Prometheus Port
 prometheusPort: 9090
 # The IP of the host which is running the Grafana container
-grafanaHostIP: 198.32.43.16
+grafanaHostIP: 'dev2.virnao.com'
 # The port which the Grafana container is listening on
 # Default is 3000
 grafanaPort: 3000
@@ -28,7 +28,7 @@ tcpMetrics:
   # Scrape interval duration (in seconds)
   scrapeInterval: 30
   # Receiving end IP Address, where pushgateway located
-  receiverIP: 'localhost' #change it
+  receiverIP: 'dev2.virnao.com' #change it
 arpMetrics:
   port: 9192
   job_name: 'arpmetrics'
@@ -37,7 +37,7 @@ arpMetrics:
   # Scrape interval duration (in seconds)
   scrapeInterval: 30
   # Receiving end IP Address, where pushgateway located
-  receiverIP: 'localhost' #change it
+  receiverIP: 'dev2.virnao.com' #change it
 # Host 1 Specifics 
 hostA:
   IP: 198.32.43.16

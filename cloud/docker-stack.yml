@@ -37,24 +37,24 @@ services:
     networks:
       - monitor-net 
   
-  script_exporter:
-    command:
-      - '-config.file=/examples/config.yaml'
-      - '-web.listen-address=:9469'
-    network_mode: 'host'
-    image: 'ricoberger/script_exporter'
-    ports:
-      - '9469:9469'
-    volumes:
-      - './script_exporter/examples:/examples'
-    deploy:
-      placement:
-        constraints:
-          - node.role==manager
-      restart_policy:
-        condition: on-failure
-    networks:
-      - monitor-net 
+  # script_exporter:
+  #   command:
+  #     - '-config.file=/examples/config.yaml'
+  #     - '-web.listen-address=:9469'
+  #   network_mode: 'host'
+  #   image: 'zhenboyan/script_exporter'
+  #   ports:
+  #     - '9469:9469'
+  #   volumes:
+  #     - './script_exporter/examples:/examples'
+  #   deploy:
+  #     placement:
+  #       constraints:
+  #         - node.role==manager
+  #     restart_policy:
+  #       condition: on-failure
+  #   networks:
+  #     - monitor-net 
 
 # script exporter is stand alone in script_exporter file 
 

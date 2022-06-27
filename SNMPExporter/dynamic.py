@@ -70,6 +70,7 @@ else:
         print("Initializing docker container with custom SNMP exporter...")
         print(str(os.getcwd()))
         # subprocess.run("sudo docker run -d --name snmp-exporter -p 9116:9116     -v $PWD/snmp.yml:/etc/snmp_exporter/snmp.yml prom/snmp-exporter", shell=True, cwd=genLoc)
+        subprocess.run("echo $PWD")
         print("Success! Configured custom SNMP Exporter container")
     except KeyboardInterrupt:
         print("Interrupt detected")

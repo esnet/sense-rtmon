@@ -45,9 +45,12 @@ class JsonCollector(object):
           response.append(json.loads(line[:-2]))
         count = 1
         no_name = 0
+        
+        # delete previous urls 
         for each_url in delete_list:
             delete = requests.delete(each_url)
         delete_list = []
+        
         for entry in response:
           try: 
             metricName = "ARP_Entry_" + str(count) + "_Scrape"
@@ -61,6 +64,7 @@ class JsonCollector(object):
             metric.add_sample(metricName, value=1, labels={'hostname': hostname})
             metric.add_sample(metricName, value=1, labels={'mac_address': entry['mac']})
             metric.add_sample(metricName, value=1, labels={'ip_address': entry['ip']})
+            # abitrary pay load data is stored inside url
             payload = "ARP_Table " + str(count) + "\n"
             url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{str(hostname)}/mac_address/ {str(entry['mac'])}/ip_address/{str(entry['ip'])}"
             push = requests.post(url, data=payload)
@@ -70,9 +74,10 @@ class JsonCollector(object):
           except KeyError:
             continue
 
-        mName = "ARP_Entry_Count" + str(count) + "_Scrape"
-        metric = Metric("ARP_Entry_Count", "Number of ARP Entries", "summary")
-        metric.add_sample("ARP_Entry_Count", value=(count-1), labels={})
+        # mName = "ARP_Entry_Count" + str(count) + "_Scrape"
+        mName = "ARP_Entry_Count"
+        metric = Metric(mName, "Number of ARP Entries", "summary")
+        metric.add_sample(mName, value=(count-1), labels={})
         url2 = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/entryCount/value"
         payload2 = f"ARP_Entry_Count {str(count-1)}\n"
         push2 = requests.post(url2, data=payload2)

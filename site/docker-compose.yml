@@ -28,7 +28,7 @@ services:
     restart: always
     deploy:
       mode: global
-      endpoint_mode: dnsrr
+      # endpoint_mode: dnsrr
 
       
   # snmp-exporter:

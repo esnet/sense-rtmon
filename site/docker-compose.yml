@@ -1,9 +1,5 @@
 version: '3.8'
 
-networks:
-  my-network:
-    driver: host
-
 services:
 
   node-exporter:
@@ -23,8 +19,6 @@ services:
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
     ports:
       - 9100:9100
-    networks:
-      - my-network
     # restart: always
     # deploy:
     #   mode: global

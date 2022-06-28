@@ -43,19 +43,33 @@ services:
         constraints:
           - node.role == worker
 
-arp-exporter:
-  build: 
-    context: ../Metrics
-    dockerfile: arp.Dockerfile
-  network_mode: "host"
-  restart: always
-  volumes:
-    - /root/awsvm/DynamicDashboard/config.yml:/etc/arp_exporter/arp.yml
-  ports:
-    - 9191:9191
-  deploy:
-    restart_policy:
-      condition: on-failure
-    placement:
-      constraints:
-        - node.role == worker
+  arp-exporter:
+    image: arp_exporter
+    network_mode: "host"
+    restart: always
+    volumes:
+      - /root/awsvm/DynamicDashboard/config.yml:/etc/arp_exporter/arp.yml
+    ports:
+      - 9191:9191
+    deploy:
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker
+  
+  tcp-exporter:
+    image: tcp_exporter
+    network_mode: "host"
+    restart: always
+    volumes:
+      - ../config.yml:/etc/tcp_exporter/tcp.yml
+    ports:
+      - 9192:9192
+    deploy:
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker
+

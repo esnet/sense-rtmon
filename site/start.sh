@@ -1,4 +1,6 @@
 #! /bin/bash
+echo "!!    Please edit config.yml for single switch or multiconfig.yml for multiple switches under DynamicDashboard before procceding"
+read -p "Press enter to continue"
 
 echo "!!    Make sure Port 9100, 9116 are not in use"
 echo "!!    sudo lsof -i -P -n | grep LISTEN"
@@ -32,6 +34,10 @@ fi
 read -r -p "Start ARP Exporter? [y/N]: " start_arp
 if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     echo "Satring ARP Exporter Service"
+    cd Metrics
+    docker image rm -f arp_exporter
+    docker build -t arp_exporter -f arp.Dockerfile .
+    cd ..
     docker stack deploy -c arp-exporter.yml site
 else 
     echo "Skip ARP Exporter"
@@ -40,6 +46,10 @@ fi
 read -r -p "Start TCP Exporter? [y/N]: " start_tcp
 if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
     echo "Satring TCP Exporter Service"
+    cd Metrics
+    docker image rm -f tcp_exporter
+    docker build -t tcp_exporter -f tcp.Dockerfile .
+    cd ..
     docker stack deploy -c tcp-exporter.yml site
 else 
     echo "Skip TCP Exporter"

@@ -1,0 +1,27 @@
+version: '3.8'
+
+networks:
+  site-net:
+
+services:
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    volumes:
+      - /:/host:ro,rslave
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - 9100:9100
+    networks:
+      - site-net
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker

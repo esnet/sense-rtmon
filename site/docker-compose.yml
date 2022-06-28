@@ -3,8 +3,9 @@ version: '3.8'
 services:
 
   node-exporter:
+    hostname: "host1"
     image: quay.io/prometheus/node-exporter:latest
-    network_mode: "host"
+    # network_mode: "host"
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro

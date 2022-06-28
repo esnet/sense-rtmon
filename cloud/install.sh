@@ -14,14 +14,24 @@ if [ -x "$(command -v docker)" ]; then
     echo "||        Found docker..."
     echo "||        Running docker login..."
     docker login
-    echo "||        Checking docker swarm..."
-    docker swarm init # &>/dev/null
 else
     echo "!!    Docker command not found."
     echo "!!        Please visit https://docs.docker.com/install/ for installation instructions."
     exit 1
 fi
 
+# check docker compose
+if [ -x "$(command -v docker compose)" ]; then
+    echo "||        Found docker compose..."
+    echo "||        Running docker login..."
+    docker login
+else
+    echo "!!    Docker compose command not found."
+    echo "!!    Installing docker compose"
+    suod yum install -y docker-compose-plugin
+    docker login
+    # exit 1
+fi
 sleep 0.5
 
 echo "!!    downloading script exporter"

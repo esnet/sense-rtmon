@@ -7,6 +7,7 @@ if [ -x "$(command -v docker)" ]; then
     docker login
 else
     echo "!!    Docker command not found."
+    echo "!!    Please visit https://docs.docker.com/install/ for installation instructions."
     exit 1
 fi
 
@@ -15,14 +16,14 @@ if [ -x "$(command -v docker compose)" ]; then
     echo "||        Found docker compose..."
     echo "||        Running docker login..."
     docker login
-    echo "||        Checking docker swarm..."
-    docker swarm init # &>/dev/null
 else
     echo "!!    Docker compose command not found."
     echo "!!    Installing docker compose"
     suod yum install -y docker-compose-plugin
+    docker login
     # exit 1
 fi
+
 # get correct IP address
 MYIP=$(hostname -I | head -n1 | awk '{print $1;}')
 read -r -p "Is ${MYIP} your IP address [y/N]: " correct_ip
@@ -45,7 +46,7 @@ else
     touch /root/push_node_exporter_metrics.sh
     chmod +x /root/push_node_exporter_metrics.sh
     sudo tee /root/push_node_exporter_metrics.sh<<EOF
-curl -s localhost:9100/metrics | curl --data-binary @- $pushgateway_server/metrics/job/node-exporter/instance/$MYIP
+curl -s ${MYIP}:9100/metrics | curl --data-binary @- $pushgateway_server/metrics/job/node-exporter/instance/$MYIP
 EOF
 fi
 
@@ -57,7 +58,7 @@ else
     touch /root/push_snmp_exporter_metrics.sh
     chmod +x /root/push_snmp_exporter_metrics.sh
     sudo tee /root/push_snmp_exporter_metrics.sh<<EOF
-curl -s localhost:9116/metrics | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/instance/$MYIP
+curl -s ${MYIP}:9116/metrics | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/instance/$MYIP
 EOF
 fi
 

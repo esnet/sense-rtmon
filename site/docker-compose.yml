@@ -18,9 +18,9 @@ services:
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
     ports:
       - 9100:9100
-    restart: always
-    deploy:
-      mode: global
+    # restart: always
+    # deploy:
+    #   mode: global
       
   # snmp-exporter:
   #   image: prom/snmp-exporter:latest

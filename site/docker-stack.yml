@@ -26,36 +26,36 @@ services:
         constraints:
           - node.role == worker
   
-  # snmp-exporter:
-  #   image: prom/snmp-exporter
-  #   volumes:
-  #     - ../SNMPExporter/src/github.com/prometheus/generator/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
-  #   command: 
-  #     - '--config.file=/etc/snmp_exporter/snmp.yml'
-  #   ports:
-  #     - 9116:9116
-  #   networks:
-  #     - site-net
-  #   deploy:
-  #     restart_policy:
-  #       condition: on-failure
-  #     placement:
-  #       constraints:
-  #         - node.role == worker
+  snmp-exporter:
+    image: prom/snmp-exporter
+    volumes:
+      - ../SNMPExporter/src/github.com/prometheus/generator/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+    command: 
+      - '--config.file=/etc/snmp_exporter/snmp.yml'
+    ports:
+      - 9116:9116
+    networks:
+      - site-net
+    deploy:
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker
 
-# arp-exporter:
-#   build: 
-#     context: ../Metrics
-#     dockerfile: arp.Dockerfile
-#   network_mode: "host"
-#   restart: always
-#   volumes:
-#     - /root/awsvm/DynamicDashboard/config.yml:/etc/arp_exporter/arp.yml
-#   ports:
-#     - 9191:9191
-#   deploy:
-#     restart_policy:
-#       condition: on-failure
-#     placement:
-#       constraints:
-#         - node.role == worker
+arp-exporter:
+  build: 
+    context: ../Metrics
+    dockerfile: arp.Dockerfile
+  network_mode: "host"
+  restart: always
+  volumes:
+    - /root/awsvm/DynamicDashboard/config.yml:/etc/arp_exporter/arp.yml
+  ports:
+    - 9191:9191
+  deploy:
+    restart_policy:
+      condition: on-failure
+    placement:
+      constraints:
+        - node.role == worker

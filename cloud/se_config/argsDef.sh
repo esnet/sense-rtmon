@@ -29,7 +29,7 @@ if [ $? -eq 0 ]; then
     echo "ping_status{host=\"198.32.43.15\"} 1";
     # If success, double check that the MAC address for the other host is in the ARP table
     echo "# HELP Metric checks whether remote host exists in ARP table of current host";
-    if curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="198.32.43.15"'; then
+    if [curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="198.32.43.15"']; then
         DATA=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="198.32.43.15"')
         echo "# \"$DATA\"";
         echo "arp_status{host=\"198.32.43.15\"} 1";

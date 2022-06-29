@@ -28,12 +28,12 @@ if [ $? -eq 0 ]; then
     echo "ping_status{host=\"$input\"} 1";
     # If success, double check that the MAC address for the other host is in the ARP table
     echo "# HELP Metric checks whether remote host exists in ARP table of current host";
-    if arp -a | grep -w "$input" ; then
-        DATA=$(arp -a | grep -w "$input")
+    if curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="$input"'; then
+        DATA=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="$input"')
         echo "# \"$DATA\"";
         echo "arp_status{host=\"$input\"} 1";
-        MAC=$(arp -a | grep -w "$input" | cut -d' ' -f 4);
-        IFACE=$(arp -a | grep -w "$input" | rev | cut -d ' ' -f 1 | rev);
+        MAC=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="$input"' | cut -d' ' -f 4);
+        IFACE=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="$input"' | cut -d ' ' -f 1 | rev);
         echo "# HELP MAC Address of Remote Host"
         echo "remote_host_mac{mac=\"$MAC\"} 1";
         echo "# HELP Interface of current host which remote host is connected to"
@@ -76,12 +76,12 @@ else
     echo "ping_status{host=\"$input\"} 0";
     # If failure, check if the MAC address for the other host is in the ARP table
     echo "# HELP Metric checks whether remote host exists in ARP table of current host";
-    if arp -a | grep "$input" ; then
-        DATA=$(arp -a | grep -w "$input")
+    if curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="$input"'; then
+        DATA=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="$input"' | grep -w "$input")
         echo "# \"$DATA\"";
         echo "arp_status{host=\"$input\"} 1";
-        MAC=$(arp -a | grep -w "$input" | cut -d ' ' -f 4)
-        IFACE=$(arp -a | grep -w "$input" | rev | cut -d ' ' -f 1 | rev);
+        MAC=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="$input"' | grep -w "$input" | cut -d ' ' -f 4)
+        IFACE=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="$input"' | grep -w "$input" | rev | cut -d ' ' -f 1 | rev);
         echo "# HELP MAC Address of Remote Host"
         echo "remote_host_mac{mac=\"$MAC\"} 1";
         echo "# HELP Interface of current host which remote host is connected to"

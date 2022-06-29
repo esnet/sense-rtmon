@@ -348,21 +348,7 @@
               }
             ]
           }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "24:8a:07:9c:02:be"
-              }
-            ]
-          }
-        ]
+        }
       },
       "gridPos": {
         "h": 5,

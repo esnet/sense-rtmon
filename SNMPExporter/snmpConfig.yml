@@ -1,5 +1,5 @@
 # IP address of switch to configure
-switchIP: 198.32.43.15
+switchIP: 198.32.43.1
 # Scrape interval/duration time
 scrapeInterval: 15s
 scrapeDuration: 5h

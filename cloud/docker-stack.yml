@@ -40,7 +40,7 @@ services:
   script_exporter:
     command:
       - '-config.file=/examples/config.yaml'
-      # - '-web.listen-address=:9469'
+      - '-web.listen-address=:9469'
     network_mode: 'host'
     image: 'ricoberger/script_exporter:dev'
     ports:

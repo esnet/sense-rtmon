@@ -43,15 +43,15 @@ if [ $? -eq 0 ]; then
         if [ $netElNum -eq 1 ]; then
             echo "# Single Network Element"
             echo "# HELP Checks whether remote host exists in MAC table of network element";
-            SNMP=$(curl --request GET "http://198.32.43.16:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
+            SNMP=$(curl --request GET "http://172.31.72.189:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
             echo "m_snmp_mac_status{ip=\"$netElIP\"} 1";
         else 
             echo "# Multiple Network Element"
             echo "# HELP Checks whether remote host exists in MAC table of current network element";
-            SNMP1=$(curl --request GET "http://198.32.43.16:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
+            SNMP1=$(curl --request GET "http://172.31.72.189:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
             echo "m_snmp_1_mac_status{ip=\"198.32.43.1\"} 1"
             echo "# HELP snmp_2_mac_status (0 = failure, 1 = success)";
-            SNMP2=$(curl --request GET "http://198.32.43.16:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
+            SNMP2=$(curl --request GET "http://172.31.72.189:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
             echo "m_snmp_2_mac_status{ip=\"172.16.1.14\"} 0"
         fi
     # If not, check the switch's MAC address table
@@ -60,15 +60,15 @@ if [ $? -eq 0 ]; then
         if [ $netElNum -eq 1 ]; then
             echo "# Single Network Element"
             echo "# HELP Checks whether remote host exists in MAC table of network element";
-            SNMP=$(curl --request GET "http://198.32.43.16:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
+            SNMP=$(curl --request GET "http://172.31.72.189:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
             echo "m_snmp_mac_status{ip=\"$netElIP\"} 1";
         else 
             echo "# Multiple Network Element"
             echo "# HELP Checks whether remote host exists in MAC table of current network element";
-            SNMP1=$(curl --request GET "http://198.32.43.16:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
+            SNMP1=$(curl --request GET "http://172.31.72.189:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
             echo "m_snmp_1_mac_status{ip=\"198.32.43.1\"} 1"
             echo "# HELP snmp_2_mac_status (0 = failure, 1 = success)";
-            SNMP2=$(curl --request GET "http://198.32.43.16:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
+            SNMP2=$(curl --request GET "http://172.31.72.189:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
             echo "m_snmp_2_mac_status{ip=\"172.16.1.14\"} 0"
         fi
     fi

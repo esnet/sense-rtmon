@@ -39,3 +39,10 @@ scrape_configs:
     static_configs:
       - targets:
         - 172.31.72.189:9469
+  - job_name: single
+    metrics_path: /probe
+    params:
+      script: [default]
+    static_configs:
+      - targets:
+        - 172.31.72.189:9469

@@ -7,6 +7,10 @@ if [ "$correct_ip" == "N" ] || [ "$correct_ip" == "n" ]; then
     read -r -p "Type in your ip address: " MYIP
 fi
 
+# config the input host ip in argsDef 
+
+# change localhost to ip address of the host
+
 echo "||    Inserting ${MYIP} to prometheus.yml file"
 echo "||    If the IP address is incorrect please update manually"
 sed -i -e "s@your_ip:9091 @${MYIP}:9091 @" /root/DynamicDashboard/PrometheusGrafana/prometheus.yml

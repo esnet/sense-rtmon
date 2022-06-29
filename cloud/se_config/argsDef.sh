@@ -12,7 +12,7 @@
 #       - targets: ["localhost:9469"]
 
 # Check ping status
-input=198.32.43.16
+input=198.32.43.15
 netElNum=1
 netElIP=198.32.43.1
 output=$(ping -c 1 "$input" 2>/dev/null)

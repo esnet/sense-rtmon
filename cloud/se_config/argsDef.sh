@@ -16,25 +16,25 @@ instance=198.32.43.16
 input=198.32.43.15
 netElNum=1
 netElIP=198.32.43.1
-output=$(ping -c 1 "$input" 2>/dev/null)
+output=$(ping -c 1 "198.32.43.15" 2>/dev/null)
 echo "# HELP IP address of target remote host"
-echo "remote_host{ip=\"$input\"} 1";
+echo "remote_host{ip=\"198.32.43.15\"} 1";
 echo "# HELP Number of network elements (e.g. switches) across flow"
 echo "network_element_count" $netElNum
 echo "network_element_ip{ip=\"$netElIP\"}" 1
 echo "# HELP ping_status (0 = failure, 1 = success)";
 if [ $? -eq 0 ]; then
     ip=$(printf '%s' "$output" | gawk -F'[()]' '/PING/{print $netElNum}')  
-    echo "# ping to \"$input\" success";
-    echo "ping_status{host=\"$input\"} 1";
+    echo "# ping to \"198.32.43.15\" success";
+    echo "ping_status{host=\"198.32.43.15\"} 1";
     # If success, double check that the MAC address for the other host is in the ARP table
     echo "# HELP Metric checks whether remote host exists in ARP table of current host";
-    if curl 172.31.72.189:9091/metrics | grep 'instance="$instance",ip_address="$input"'; then
-        DATA=$(curl 172.31.72.189:9091/metrics | grep 'instance="$instance",ip_address="$input"')
+    if curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="198.32.43.15"'; then
+        DATA=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="198.32.43.15"')
         echo "# \"$DATA\"";
-        echo "arp_status{host=\"$input\"} 1";
-        MAC=$(curl 172.31.72.189:9091/metrics | grep 'instance="$instance",ip_address="$input"' | cut -d' ' -f 4);
-        IFACE=$(curl 172.31.72.189:9091/metrics | grep 'instance="$instance",ip_address="$input"' | cut -d ' ' -f 1 | rev);
+        echo "arp_status{host=\"198.32.43.15\"} 1";
+        MAC=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="198.32.43.15"' | cut -d' ' -f 4);
+        IFACE=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="198.32.43.15"' | cut -d ' ' -f 1 | rev);
         echo "# HELP MAC Address of Remote Host"
         echo "remote_host_mac{mac=\"$MAC\"} 1";
         echo "# HELP Interface of current host which remote host is connected to"
@@ -56,7 +56,7 @@ if [ $? -eq 0 ]; then
         fi
     # If not, check the switch's MAC address table
     else
-        echo "arp_status{host=\"$input\"} 0"
+        echo "arp_status{host=\"198.32.43.15\"} 0"
         if [ $netElNum -eq 1 ]; then
             echo "# Single Network Element"
             echo "# HELP Checks whether remote host exists in MAC table of network element";
@@ -73,23 +73,23 @@ if [ $? -eq 0 ]; then
         fi
     fi
 else
-    echo "# ping to \"$input\" failure";
-    echo "ping_status{host=\"$input\"} 0";
+    echo "# ping to \"198.32.43.15\" failure";
+    echo "ping_status{host=\"198.32.43.15\"} 0";
     # If failure, check if the MAC address for the other host is in the ARP table
     echo "# HELP Metric checks whether remote host exists in ARP table of current host";
-    if curl 172.31.72.189:9091/metrics | grep 'instance="$instance",ip_address="$input"'; then
-        DATA=$(curl 172.31.72.189:9091/metrics | grep 'instance="$instance",ip_address="$input"' | grep -w "$input")
+    if curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="198.32.43.15"'; then
+        DATA=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="198.32.43.15"' | grep -w "198.32.43.15")
         echo "# \"$DATA\"";
-        echo "arp_status{host=\"$input\"} 1";
-        MAC=$(curl 172.31.72.189:9091/metrics | grep 'instance="$instance",ip_address="$input"' | grep -w "$input" | cut -d ' ' -f 4)
-        IFACE=$(curl 172.31.72.189:9091/metrics | grep 'instance="$instance",ip_address="$input"' | grep -w "$input" | rev | cut -d ' ' -f 1 | rev);
+        echo "arp_status{host=\"198.32.43.15\"} 1";
+        MAC=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="198.32.43.15"' | grep -w "198.32.43.15" | cut -d ' ' -f 4)
+        IFACE=$(curl 172.31.72.189:9091/metrics | grep 'instance="198.32.43.16",ip_address="198.32.43.15"' | grep -w "198.32.43.15" | rev | cut -d ' ' -f 1 | rev);
         echo "# HELP MAC Address of Remote Host"
         echo "remote_host_mac{mac=\"$MAC\"} 1";
         echo "# HELP Interface of current host which remote host is connected to"
         echo "remote_host_interface_connect{interface=\"$IFACE\"} 1";
     else
         # If not, check the switch's MAC address table
-        echo "arp_status{host=\"$input\"} 0"
+        echo "arp_status{host=\"198.32.43.15\"} 0"
         # switch=$netElNum
         # commStrng=$3
         # echo "# HELP Metric checks whether remote host exists in MAC table of current switch";

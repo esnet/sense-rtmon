@@ -26,22 +26,22 @@ services:
         constraints:
           - node.role == worker
   
-  snmp-exporter:
-    image: prom/snmp-exporter
-    volumes:
-      - ../SNMPExporter/src/github.com/prometheus/generator/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
-    command: 
-      - '--config.file=/etc/snmp_exporter/snmp.yml'
-    ports:
-      - 9116:9116
-    networks:
-      - site-net
-    deploy:
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints:
-          - node.role == worker
+  # snmp-exporter:
+  #   image: prom/snmp-exporter
+  #   volumes:
+  #     - ../SNMPExporter/src/github.com/prometheus/generator/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+  #   command: 
+  #     - '--config.file=/etc/snmp_exporter/snmp.yml'
+  #   ports:
+  #     - 9116:9116
+  #   networks:
+  #     - site-net
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #     placement:
+  #       constraints:
+  #         - node.role == worker
 
   arp-exporter:
     image: arp_exporter
@@ -58,18 +58,18 @@ services:
         constraints:
           - node.role == worker
   
-  tcp-exporter:
-    image: tcp_exporter
-    network_mode: "host"
-    restart: always
-    volumes:
-      - ../config.yml:/etc/tcp_exporter/tcp.yml
-    ports:
-      - 9192:9192
-    deploy:
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints:
-          - node.role == worker
+  # tcp-exporter:
+  #   image: tcp_exporter
+  #   network_mode: "host"
+  #   restart: always
+  #   volumes:
+  #     - ../config.yml:/etc/tcp_exporter/tcp.yml
+  #   ports:
+  #     - 9192:9192
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #     placement:
+  #       constraints:
+  #         - node.role == worker
 

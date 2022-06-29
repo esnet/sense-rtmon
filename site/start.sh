@@ -34,7 +34,7 @@ fi
 read -r -p "Start ARP Exporter? [y/N]: " start_arp
 if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     echo "Satring ARP Exporter Service"
-    cd Metrics
+    cd ../Metrics
     docker image rm -f arp_exporter
     docker build -t arp_exporter -f arp.Dockerfile .
     cd ..
@@ -46,7 +46,7 @@ fi
 read -r -p "Start TCP Exporter? [y/N]: " start_tcp
 if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
     echo "Satring TCP Exporter Service"
-    cd Metrics
+    cd ../Metrics
     docker image rm -f tcp_exporter
     docker build -t tcp_exporter -f tcp.Dockerfile .
     cd ..

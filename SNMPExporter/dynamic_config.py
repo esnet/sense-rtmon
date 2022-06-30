@@ -62,8 +62,8 @@ os.putenv("GOPATH", dir)
 genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
 genCmd = "yes | sudo cp -rfa generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)
-# subprocess.run("go build", shell=True, cwd=genLoc)
-# subprocess.run("make mibs", shell=True, cwd=genLoc)
+subprocess.run("go build", shell=True, cwd=genLoc)
+subprocess.run("make mibs", shell=True, cwd=genLoc)
 print("Generating dynamic SNMP config file...")
 subprocess.run("./generator generate", shell=True, cwd=genLoc)
 print("Success! Configured custom SNMP Exporter container")

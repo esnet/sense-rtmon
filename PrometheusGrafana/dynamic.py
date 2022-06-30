@@ -134,7 +134,7 @@ else:
                         'TCPPORT': str(data['tcpMetrics']['port']),
                         'ARPNAME': str(data['arpMetrics']['job_name']),
                         'TCPNAME': str(data['tcpMetrics']['job_name']),
-                        'IPSWITCHA': str(data['switchDataA']['target']),
+                        'IPSWITCHA': str(data['switchDataA']['target']), 
                         'IPSWITCHB': str(data['switchDataB']['target']),
                         'IPSWITCHC': str(data['switchDataC']['target']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),

@@ -21,13 +21,18 @@ ip_address=198.32.43.15
 netElNum=1
 # network element ip address
 netElIP=198.32.43.1
+# network element 2 ip address
+netElIP2=172.16.1.14
+
 output=$(ping -c 1 "${ip_address}" 2>/dev/null)
+
 echo "# HELP IP address of target remote host"
 echo "remote_host{ip=\"${ip_address}\"} 1";
 echo "# HELP Number of network elements (e.g. switches) across flow"
 echo "network_element_count" $netElNum
 echo "network_element_ip{ip=\"$netElIP\"}" 1
 echo "# HELP ping_status (0 = failure, 1 = success)";
+
 if [ $? -eq 0 ]; then
     # ip=$(printf '%s' "$output" | gawk -F'[()]' '/PING/{print $netElNum}')  
     echo "# ping to \"${ip_address}\" success";
@@ -48,16 +53,16 @@ if [ $? -eq 0 ]; then
         if [ $netElNum -eq 1 ]; then
             echo "# Single Network Element"
             echo "# HELP Checks whether remote host exists in MAC table of network element";
-            SNMP=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
+            SNMP=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
             echo "snmp_mac_status{ip=\"$netElIP\"} 1";
         else 
             echo "# Multiple Network Element"
             echo "# HELP Checks whether remote host exists in MAC table of current network element";
-            SNMP1=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
-            echo "snmp_1_mac_status{ip=198.32.43.1} 1"
+            SNMP1=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
+            echo "snmp_1_mac_status{ip=$netElIP} 1"
             echo "# HELP snmp_2_mac_status (0 = failure, 1 = success)";
-            SNMP2=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
-            echo "snmp_2_mac_status{ip=172.16.1.14} 0"
+            SNMP2=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
+            echo "snmp_2_mac_status{ip=$netElIP2} 0"
         fi
     # If not, check the switch's MAC address table
     else
@@ -65,16 +70,16 @@ if [ $? -eq 0 ]; then
         if [ $netElNum -eq 1 ]; then
             echo "# Single Network Element"
             echo "# HELP Checks whether remote host exists in MAC table of network element";
-            SNMP=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
+            SNMP=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
             echo "snmp_mac_status{ip=\"$netElIP\"} 1";
         else 
             echo "# Multiple Network Element"
             echo "# HELP Checks whether remote host exists in MAC table of current network element";
-            SNMP1=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
-            echo "snmp_1_mac_status{ip=198.32.43.1} 1"
+            SNMP1=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
+            echo "snmp_1_mac_status{ip=$netElIP} 1"
             echo "# HELP snmp_2_mac_status (0 = failure, 1 = success)";
-            SNMP2=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w 'dot1dTpFdbEntry\|$netElIP');
-            echo "snmp_2_mac_status{ip=172.16.1.14} 0"
+            SNMP2=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
+            echo "snmp_2_mac_status{ip=$netElIP2} 0"
         fi
     fi
 else

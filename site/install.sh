@@ -62,6 +62,10 @@ curl -s ${MYIP}:9116/metrics | curl --data-binary @- $pushgateway_server/metrics
 EOF
 fi
 
+# install dependencies
+yum install -y p7zip p7zip-plugins make
+
+
 # create a temporary copy paste file
 echo ""
 if [ -f "/root/cron_autopush" ]; then

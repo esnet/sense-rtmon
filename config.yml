@@ -71,3 +71,17 @@ switchData:
   target: 172.16.1.14
   #if-mib and F10-IF-EXTENSION-MIB
   params: ['if_mib']
+snmpMetrics:
+  # IP address of switch to configure
+  switchIP: 198.32.43.1
+  # Scrape interval/duration time
+  scrapeInterval: 15s
+  scrapeDuration: 5h
+  # OIDs to scrape
+  oids: [1.3.6.1.2.1.31]
+  # SNMP community read string
+  communityString: "COMMUNITYSTRING"
+  # Scrape timeout default is 5s
+  scrapeTimeout: 5s
+  # Max retries default is 3
+  retries: 3

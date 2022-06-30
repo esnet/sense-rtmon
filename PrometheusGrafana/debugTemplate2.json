@@ -707,6 +707,26 @@
           "interval": "",
           "legendFormat": "SNMP 2 MAC Address Status",
           "refId": "E"
+        },
+        {
+          "exemplar": true,
+          "expr": "m_host2_has_host1_arp",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "Host2 ARP table contains Host1 IP",
+          "refId": "F"
+        },
+        {
+          "exemplar": true,
+          "expr": "m_host1_has_host2_arp",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "Host1 ARP table contains Host2 IP",
+          "refId": "G"
         }
       ],
       "title": "Layer 2 Debugging",

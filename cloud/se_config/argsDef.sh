@@ -39,6 +39,19 @@ if [ $? -eq 0 ]; then
     echo "ping_status{host=\"${ip_address}\"} 1";
     # If success, double check that the MAC address for the other host is in the ARP table
     echo "# HELP Metric checks whether remote host exists in ARP table of current host";
+
+    if curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\""; then
+        echo "host1_has_host2_arp{host=\"${instance}\"} 1";
+    else 
+        echo "host1_has_host2_arp{host=\"${instance}\"} 0";
+    fi
+
+    if curl ${pushgateway}:9091/metrics | grep "instance=\"${ip_address}\",ip_address=\"${instance}\""; then
+        echo "host2_has_host1_arp{host=\"${ip_address}\"} 1";
+    else 
+        echo "host2_has_host1_arp{host=\"${instance}\"} 0";
+    fi
+
     if curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\""; then
         # DATA=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"")
         # echo "# \"$DATA\"";

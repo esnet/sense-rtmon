@@ -20,7 +20,8 @@ if __name__ == '__main__':
           config_data = yaml.safe_load(stream)
       except yaml.YAMLError as exc:
           print("Config file load error!")
-receiver_ip_address = "http://" + str(config_data['arpMetrics']['receiverIP'])
+receiver_ip_address = "http://" + str(config_data['grafanaHostIP'])
+instance_ip = str(config_data['hostIP'])
 
 class JsonCollector(object):
   def collect(self):

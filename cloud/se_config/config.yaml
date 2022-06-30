@@ -35,7 +35,7 @@ scripts:
   - name: docker
     script: ./examples/docker.sh
   - name: args
-    script: ./examples/args.sh
+    script: ./examples/args.sh holder1 holder2 holder3 holder4 holder5 holder6
   - name: default
     script: ./examples/argsDef.sh
   - name: multi

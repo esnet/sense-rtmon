@@ -1,0 +1,3 @@
+# ignore configuration files that's unique to each host
+config.yml
+./SNMPExporter/snmpConfig.yml

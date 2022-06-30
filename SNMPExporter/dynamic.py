@@ -49,7 +49,6 @@ with open('generator.yml', 'w') as file:
     file.write(filedata)
 print("Configuring SNMP Exporter Generator...")
 subprocess.run("sudo yum -y install p7zip p7zip-plugins gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel make", shell=True)
-subprocess.run("sudo yum -y group install \"Development Tools\"", shell=True)
 subprocess.run("wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz", shell=True)
 subprocess.run("sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz", shell=True)
 subprocess.run("export PATH=$PATH:/usr/local/go/bin", shell=True)

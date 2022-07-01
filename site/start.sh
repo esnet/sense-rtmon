@@ -37,7 +37,7 @@ if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     cd ../Metrics
     docker image rm -f arp_exporter
     docker build -t arp_exporter -f arp.Dockerfile .
-    cd ..
+    cd ../site
     docker stack deploy -c arp-exporter.yml site
 else 
     echo "Skip ARP Exporter"

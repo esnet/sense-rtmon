@@ -10,12 +10,9 @@ services:
     network_mode: "host"
     restart: always
     volumes:
-      - /root/awsvm/DynamicDashboard/config.yml:/etc/arp_exporter/arp.yml
+      - ../config.yml:/etc/arp_exporter/arp.yml
     ports:
       - 9191:9191
     deploy:
       restart_policy:
         condition: on-failure
-      placement:
-        constraints:
-          - node.role == worker

@@ -9,7 +9,7 @@ services:
     volumes:
       - ../config.yml:/etc/tcp_exporter/tcp.yml
     ports:
-      - 9192:9192
+      - 9191:9191
     deploy:
       restart_policy:
         condition: on-failure

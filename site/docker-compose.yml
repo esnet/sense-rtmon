@@ -21,6 +21,7 @@ services:
     restart: always
     deploy:
       mode: global
+    
       
   # snmp-exporter:
   #   image: prom/snmp-exporter:latest
@@ -45,6 +46,9 @@ services:
       - ../config.yml:/etc/arp_exporter/arp.yml
     ports:
       - 9191:9191
+    deploy:
+      restart_policy:
+        condition: on-failure
 
   # tcp-exporter:
   #   build: 

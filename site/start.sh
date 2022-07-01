@@ -24,7 +24,7 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     read -p "Press enter to continue"
     cd ../SNMPExporter
     python3 dynamic.py snmpConfig.yml
-    cd ..
+    cd ../site
     echo "Satring SNMP Exporter Service"
     docker stack deploy -c snmp-exporter.yml site
 else 
@@ -49,7 +49,7 @@ if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
     cd ../Metrics
     docker image rm -f tcp_exporter
     docker build -t tcp_exporter -f tcp.Dockerfile .
-    cd ..
+    cd ../site
     docker stack deploy -c tcp-exporter.yml site
 else 
     echo "Skip TCP Exporter"

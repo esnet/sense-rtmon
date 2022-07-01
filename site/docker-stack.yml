@@ -43,9 +43,9 @@ services:
       - ../config.yml:/etc/arp_exporter/arp.yml
     ports:
       - 9192:9192
-    deploy:
-      restart_policy:
-        condition: on-failure
+    # deploy:
+    #   restart_policy:
+    #     condition: on-failure
 
   
   # tcp-exporter:

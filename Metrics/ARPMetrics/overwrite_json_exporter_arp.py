@@ -44,7 +44,7 @@ class JsonCollector(object):
         for line in lines[1:-1]:
           response.append(json.loads(line[:-2]))
         count = 1
-        no_name = 0
+        # no_name = 0
         
         # delete previous urls 
         for each_url in delete_list:
@@ -57,8 +57,9 @@ class JsonCollector(object):
             metric = Metric(metricName, 'ARP Entry', 'summary')
             hostname = entry['hostname']
             if hostname == "?":
-              hostname = "no_name" + str(no_name)
-              no_name += 1
+              hostname = "no_name"
+              # hostname = "no_name" + str(no_name)
+              # no_name += 1
             else:
               hostname = entry['hostname']
             metric.add_sample(metricName, value=1, labels={'hostname': hostname})

@@ -38,7 +38,7 @@ if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     docker image rm -f arp_exporter:latest
     docker build -t arp_exporter -f arp.Dockerfile .
     cd ../site
-    docker stack deploy -c arp-exporter.yml site
+    docker compose -f arp-exporter.yml up -d
 else 
     echo "Skip ARP Exporter"
 fi
@@ -50,7 +50,7 @@ if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
     docker image rm -f tcp_exporter:latest
     docker build -t tcp_exporter -f tcp.Dockerfile .
     cd ../site
-    docker stack deploy -c tcp-exporter.yml site
+    docker compose -f tcp-exporter.yml up -d
 else 
     echo "Skip TCP Exporter"
 fi

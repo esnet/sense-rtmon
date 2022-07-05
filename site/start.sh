@@ -9,7 +9,7 @@ sudo lsof -i -P -n | grep 9100
 echo "!!    Check Port 9116 for snmp exporter"
 sudo lsof -i -P -n | grep 9116
 
-read -r -p "Start Node Exporter? [y/N]: " start_node
+read -r -p "Start Node Exporter? [y/N (Enter)]: " start_node
 if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
     echo "Satring Node Exporter Service"
     docker stack deploy -c node-exporter.yml site

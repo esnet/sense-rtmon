@@ -133,7 +133,7 @@ if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
     else
         echo "#Puppet Name: check update on arp table every 15 seconds" >> /root/cron_autopush
         echo "MAILTO=""" >> /root/cron_autopush
-        echo "* * * * * for i in 0 1 2; do $current_pwd/../Metrics/update_arp_exporter.sh & sleep 15; done; $current_pwd/../Metrics/update_arp_exporter.sh" >> /root/cron_autopush
+        echo "* * * * * for i in 0 1 2; do $current_pwd/../Metrics/ARPMetrics/update_arp_exporter.sh & sleep 15; done; $current_pwd/../Metrics/ARPMetrics/update_arp_exporter.sh" >> /root/cron_autopush
     fi
 
     echo ""

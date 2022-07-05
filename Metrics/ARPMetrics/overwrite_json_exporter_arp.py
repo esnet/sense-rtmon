@@ -87,10 +87,10 @@ class JsonCollector(object):
         push2 = requests.post(url2, data=payload2)
         yield metric
                 
-        # delete previous urls 
-        for each_url in delete_list:
-            delete = requests.delete(each_url)
-        delete_list = []
+        # # delete previous urls 
+        # for each_url in delete_list:
+        #     delete = requests.delete(each_url)
+        # delete_list = []
         
 if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint

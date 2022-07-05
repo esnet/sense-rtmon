@@ -88,9 +88,9 @@ class JsonCollector(object):
         yield metric
                 
         # # delete previous urls 
-        for each_url in delete_list:
-          delete = requests.delete(each_url)
-        delete_list = []
+      for each_url in delete_list:
+        delete = requests.delete(each_url)
+      delete_list = []
         
 if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint

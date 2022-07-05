@@ -19,17 +19,17 @@ if __name__ == '__main__':
           config_data = yaml.safe_load(stream)
       except yaml.YAMLError as exc:
           print("Config file load error!")
-delete_list = []
 
 receiver_ip_address = "http://" + str(config_data['grafanaHostIP'])
 instance_ip = str(config_data['hostIP'])
 
 class JsonCollector(object):
+  delete_list = []
+  
   def collect(self):
     dir = str(os.getcwd())
     loc = dir + "/jsonFiles/"
     pastOut = ""
-    global delete_list
     if os.listdir(loc) != []:
       # p1 = Popen(["echo", "$PWD"], shell=True, stdout=PIPE, cwd=loc)
       p1 = Popen(["ls", "-t",  "*.json"], shell=True, stdout=PIPE, cwd=loc)
@@ -50,9 +50,9 @@ class JsonCollector(object):
         # no_name = 0
         
         # delete previous urls 
-        for each_url in delete_list:
+        for each_url in self.delete_list:
           delete = requests.delete(each_url)
-        delete_list = []
+        self.delete_list = []
         
         for entry in response:
           try: 

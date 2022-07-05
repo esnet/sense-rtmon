@@ -44,7 +44,7 @@ services:
     restart: always
     volumes:
       - ../config.yml:/etc/arp_exporter/arp.yml
-      - ../Metrics/ARPMetrics/jsonFiles:/etc/arp_exporter/jsonFiles
+      - ../Metrics/ARPMetrics/jsonFiles:/jsonFiles
     ports:
       - 9192:9192
     deploy:

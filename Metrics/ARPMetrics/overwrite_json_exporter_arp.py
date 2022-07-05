@@ -19,6 +19,8 @@ if __name__ == '__main__':
           config_data = yaml.safe_load(stream)
       except yaml.YAMLError as exc:
           print("Config file load error!")
+delete_list = []
+
 receiver_ip_address = "http://" + str(config_data['grafanaHostIP'])
 instance_ip = str(config_data['hostIP'])
 
@@ -27,8 +29,7 @@ class JsonCollector(object):
     dir = str(os.getcwd())
     loc = dir + "/jsonFiles/"
     pastOut = ""
-    delete_list = []
-    post_list = []
+    global delete_list
     if os.listdir(loc) != []:
       # p1 = Popen(["echo", "$PWD"], shell=True, stdout=PIPE, cwd=loc)
       p1 = Popen(["ls", "-t",  "*.json"], shell=True, stdout=PIPE, cwd=loc)
@@ -47,6 +48,12 @@ class JsonCollector(object):
           response.append(json.loads(line[:-2]))
         count = 1
         # no_name = 0
+        
+        # delete previous urls 
+        for each_url in delete_list:
+          delete = requests.delete(each_url)
+        delete_list = []
+        
         for entry in response:
           try: 
             metricName = "ARP_Entry_" + str(count) + "_Scrape"
@@ -64,7 +71,7 @@ class JsonCollector(object):
             # arbitrary pay load data is stored inside url
             payload = "ARP_Table " + str(count) + "\n"
             url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{str(hostname)}/mac_address/{str(entry['mac'])}/ip_address/{str(entry['ip'])}"
-            # push = requests.post(url, data=payload)
+            push = requests.post(url, data=payload)
             post_list.append(url)
             delete_list.append(url)
             count += 1
@@ -87,14 +94,7 @@ class JsonCollector(object):
         payload2 = f"ARP_Entry_Count {str(count-1)}\n"
         push2 = requests.post(url2, data=payload2)
         yield metric
-                
-        # # delete previous urls 
-      for each_url in delete_list:
-        delete = requests.delete(each_url)
-      delete_list = []
-      for each_url in post_list:
-        post = requests.post(url,data="ARP_Table 0")
-      post_list = []
+
         
 if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint

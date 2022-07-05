@@ -28,12 +28,7 @@ class JsonCollector(object):
     dir = str(os.getcwd())
     loc = dir + "/jsonFiles/"
     pastOut = ""
-            
-    # delete previous urls 
-    for each_url in delete_list:
-        delete = requests.delete(each_url)
-    delete_list = []
-    
+
     if os.listdir(loc) != []:
       # p1 = Popen(["echo", "$PWD"], shell=True, stdout=PIPE, cwd=loc)
       p1 = Popen(["ls", "-t",  "*.json"], shell=True, stdout=PIPE, cwd=loc)
@@ -52,7 +47,6 @@ class JsonCollector(object):
           response.append(json.loads(line[:-2]))
         count = 1
         # no_name = 0
-
         for entry in response:
           try: 
             metricName = "ARP_Entry_" + str(count) + "_Scrape"
@@ -76,7 +70,14 @@ class JsonCollector(object):
             yield metric
           except KeyError:
             continue
-
+        
+                  
+        # # open file in write mode
+        # with open(r'/delete_urls.json', 'w') as fp:
+        #   for each_url in delete_list:
+        #     # write each item on a new line
+        #     fp.write("%s\n" % each_url)
+            
         # mName = "ARP_Entry_Count" + str(count) + "_Scrape"
         mName = "ARP_Entry_Count"
         metric = Metric(mName, "Number of ARP Entries", "summary")
@@ -85,6 +86,12 @@ class JsonCollector(object):
         payload2 = f"ARP_Entry_Count {str(count-1)}\n"
         push2 = requests.post(url2, data=payload2)
         yield metric
+                
+        # delete previous urls 
+        for each_url in delete_list:
+            delete = requests.delete(each_url)
+        delete_list = []
+        
 if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint
   start_http_server(int(config_data['arpMetrics']['port']))

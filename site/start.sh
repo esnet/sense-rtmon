@@ -55,14 +55,12 @@ else
     echo "Skip TCP Exporter"
 fi
 
-echo "!!    to start any exporter later, enter:"
-echo "docker stack deploy -c node-exporter.yml site"
-echo "docker stack deploy -c snmp-exporter.yml site"
-echo "!!    Please configuring switch in snmpConfig.yml if needed"
-echo "!!    DynamicDashboard/SNMPExporter/snmpConfig.yml"
-echo "docker stack deploy -c arp-exporter.yml site"
-echo "docker stack deploy -c tcp-exporter.yml site"
-
-sleep 1
+# echo "!!    to start any exporter later, enter:"
+# echo "docker stack deploy -c node-exporter.yml site"
+# echo "docker stack deploy -c snmp-exporter.yml site"
+# echo "!!    Please configuring switch in snmpConfig.yml if needed"
+# echo "!!    DynamicDashboard/SNMPExporter/snmpConfig.yml"
+# echo "docker stack deploy -c arp-exporter.yml site"
+# echo "docker stack deploy -c tcp-exporter.yml site"
 
 echo "!!    to remove site stack run ./clean.sh"

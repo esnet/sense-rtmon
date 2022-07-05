@@ -72,8 +72,7 @@ class JsonCollector(object):
             payload = "ARP_Table " + str(count) + "\n"
             url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{str(hostname)}/mac_address/{str(entry['mac'])}/ip_address/{str(entry['ip'])}"
             push = requests.post(url, data=payload)
-            post_list.append(url)
-            delete_list.append(url)
+            self.delete_list.append(url)
             count += 1
             yield metric
           except KeyError:

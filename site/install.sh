@@ -62,6 +62,24 @@ curl -s ${MYIP}:9116/metrics | curl --data-binary @- $pushgateway_server/metrics
 EOF
 fi
 
+
+echo ""
+if [ -f "/root/update_arp_exporter.sh" ]; then
+    echo "update_arp_exporter.sh already exits"
+    chmod +x /root/update_arp_exporter.sh
+else
+    mkdir ../Metrics/ARPMetrics/jsonFiles
+    mkdir ../Metrics/ARPMetrics/arpFiles
+    touch ../Metrics/ARPMetrics/arpFiles/arpOut-.txt
+    touch ../Metrics/ARPMetrics/jsonFiles/arpOut-.json
+    touch /root/update_arp_exporter.sh
+    chmod +x /root/update_arp_exporter.sh
+    sudo tee /root/update_arp_exporter.sh<<EOF
+arp -a > ./arpFiles/arpOut-.txt
+python3 convertARP.py ./arpFiles/arpOut-.txt ./jsonFiles/arpOut-.json
+EOF
+fi
+
 # install dependencies
 yum install -y p7zip p7zip-plugins make
 
@@ -77,7 +95,7 @@ fi
 echo "!!    copy paste crontab to a temporary file"
 crontab -l > /root/cron_autopush
 
-# check if port already in the crontab
+# check if job is alread in
 if grep -F "/root/push_snmp_exporter_metrics.sh" /root/cron_autopush 
 then
     echo "task is already in cron, type crontab -e to check"
@@ -94,6 +112,15 @@ else
     echo "#Puppet Name: node exporter data to pushgateway every 15 seconds" >> /root/cron_autopush
     echo "MAILTO=""" >> /root/cron_autopush
     echo "* * * * * for i in 0 1 2; do /root/push_node_exporter_metrics.sh & sleep 15; done; /root/push_node_exporter_metrics.sh" >> /root/cron_autopush
+fi
+
+if grep -F "/root/update_arp_exporter.sh" /root/cron_autopush
+then    
+    echo "task is already in cron, type crontab -e to check"
+else
+    echo "#Puppet Name: check update on arp table every 15 seconds" >> /root/cron_autopush
+    echo "MAILTO=""" >> /root/cron_autopush
+    echo "* * * * * for i in 0 1 2; do /root/update_arp_exporter.sh & sleep 15; done; /root/update_arp_exporter.sh" >> /root/cron_autopush
 fi
 
 echo ""

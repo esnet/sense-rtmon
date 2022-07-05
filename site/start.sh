@@ -1,6 +1,6 @@
 #! /bin/bash
 echo "!!    Please edit config.yml for single switch or multiconfig.yml for multiple switches under DynamicDashboard before procceding"
-read -p "Press enter to continue"
+# read -p "Press enter to continue"
 
 echo "!!    Make sure Port 9100, 9116 are not in use"
 echo "!!    sudo lsof -i -P -n | grep LISTEN"

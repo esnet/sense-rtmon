@@ -2,7 +2,7 @@
 
 # install dependencies
 yum install -y p7zip p7zip-plugins make
-
+current_pwd=$PWD
 # check docker 
 if [ -x "$(command -v docker)" ]; then
     echo "||        Found docker..."
@@ -69,17 +69,21 @@ EOF
 fi
 
     echo ""
-    if [ -f "/root/update_arp_exporter.sh" ]; then
+    if [ -f "../Metrics/update_arp_exporter.sh" ]; then
         echo "update_arp_exporter.sh already exits"
-        chmod +x /root/update_arp_exporter.sh
+        chmod +x /Metrics/update_arp_exporter.sh
+        mkdir ../Metrics/ARPMetrics/jsonFiles
+        mkdir ../Metrics/ARPMetrics/arpFiles
+        touch ../Metrics/ARPMetrics/arpFiles/arpOut-.txt
+        touch ../Metrics/ARPMetrics/jsonFiles/arpOut-.json
     else
         mkdir ../Metrics/ARPMetrics/jsonFiles
         mkdir ../Metrics/ARPMetrics/arpFiles
         touch ../Metrics/ARPMetrics/arpFiles/arpOut-.txt
         touch ../Metrics/ARPMetrics/jsonFiles/arpOut-.json
-        touch /root/update_arp_exporter.sh
-        chmod +x /root/update_arp_exporter.sh
-        sudo tee /root/update_arp_exporter.sh<<EOF
+        touch /Metrics/update_arp_exporter.sh
+        chmod +x /Metrics/update_arp_exporter.sh
+        sudo tee /Metrics/update_arp_exporter.sh<<EOF
 arp -a > ./arpFiles/arpOut-.txt
 python3 convertARP.py ./arpFiles/arpOut-.txt ./jsonFiles/arpOut-.json
 EOF
@@ -129,7 +133,7 @@ if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
     else
         echo "#Puppet Name: check update on arp table every 15 seconds" >> /root/cron_autopush
         echo "MAILTO=""" >> /root/cron_autopush
-        echo "* * * * * for i in 0 1 2; do /root/update_arp_exporter.sh & sleep 15; done; /root/update_arp_exporter.sh" >> /root/cron_autopush
+        echo "* * * * * for i in 0 1 2; do $current_pwd/../Metrics/update_arp_exporter.sh & sleep 15; done; $current_pwd/../Metrics/update_arp_exporter.sh" >> /root/cron_autopush
     fi
 
     echo ""

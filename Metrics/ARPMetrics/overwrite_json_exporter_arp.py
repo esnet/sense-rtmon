@@ -29,6 +29,7 @@ class JsonCollector(object):
     loc = dir + "/jsonFiles/"
     pastOut = ""
     if os.listdir(loc) != []:
+      p1 = Popen(["echo", "$PWD"], shell=True, stdout=PIPE, cwd=loc)
       p1 = Popen(["ls", "-t",  "*.json"], shell=True, stdout=PIPE, cwd=loc)
       p2 = Popen(["head", "-n1"], shell=True, stdin=p1.stdout, stdout=PIPE, cwd=loc)
       p1.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.

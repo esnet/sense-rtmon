@@ -8,19 +8,19 @@ import time
 from subprocess import Popen, PIPE
 
 config_data ={}
-if __name__ == '__main__':
-  owd = os.getcwd()
-  os.chdir("etc")
-  os.chdir("arp_exporter")
-  infpth = str(os.path.abspath(os.curdir)) + "/arp.yml"
-  os.chdir(owd)
-  with open(infpth, 'r') as stream:
-      try:
-          config_data = yaml.safe_load(stream)
-      except yaml.YAMLError as exc:
-          print("Config file load error!")
-receiver_ip_address = "http://" + str(config_data['grafanaHostIP'])
-instance_ip = str(config_data['hostIP'])
+# if __name__ == '__main__':
+#   owd = os.getcwd()
+#   os.chdir("etc")
+#   os.chdir("arp_exporter")
+#   infpth = str(os.path.abspath(os.curdir)) + "/arp.yml"
+#   os.chdir(owd)
+#   with open(infpth, 'r') as stream:
+#       try:
+#           config_data = yaml.safe_load(stream)
+#       except yaml.YAMLError as exc:
+#           print("Config file load error!")
+# receiver_ip_address = "http://" + str(config_data['grafanaHostIP'])
+# instance_ip = str(config_data['hostIP'])
 
 class JsonCollector(object):
   def collect(self):
@@ -29,7 +29,7 @@ class JsonCollector(object):
     loc = dir + "/jsonFiles/"
     pastOut = ""
     if os.listdir(loc) != []:
-      p1 = Popen(["echo", "$PWD"], shell=True, stdout=PIPE, cwd=loc)
+      # p1 = Popen(["echo", "$PWD"], shell=True, stdout=PIPE, cwd=loc)
       p1 = Popen(["ls", "-t",  "*.json"], shell=True, stdout=PIPE, cwd=loc)
       p2 = Popen(["head", "-n1"], shell=True, stdin=p1.stdout, stdout=PIPE, cwd=loc)
       p1.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.

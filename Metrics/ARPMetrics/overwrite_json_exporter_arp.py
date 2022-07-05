@@ -21,10 +21,10 @@ if __name__ == '__main__':
           print("Config file load error!")
 receiver_ip_address = "http://" + str(config_data['grafanaHostIP'])
 instance_ip = str(config_data['hostIP'])
+delete_list = []
 
 class JsonCollector(object):
   def collect(self):
-    delete_list = []
     dir = str(os.getcwd())
     loc = dir + "/jsonFiles/"
     pastOut = ""

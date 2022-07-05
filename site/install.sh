@@ -90,10 +90,12 @@ if [ -f "/root/cron_autopush" ]; then
     echo "cron_autopush already exits"
 else
     touch /root/cron_autopush
+    touch /root/cron_history
 fi
 
-# echo "!!    copy paste crontab to a temporary file"
-# crontab -l > /root/cron_autopush
+echo "!!    copy paste crontab to a temporary file"
+crontab -l > /root/cron_autopush
+crontab -l > /root/cron_history
 
 # # check if job is alread in
 # if grep -F "/root/push_snmp_exporter_metrics.sh" /root/cron_autopush 
@@ -114,16 +116,16 @@ fi
 #     echo "* * * * * for i in 0 1 2; do /root/push_node_exporter_metrics.sh & sleep 15; done; /root/push_node_exporter_metrics.sh" >> /root/cron_autopush
 # fi
 
-# if grep -F "/root/update_arp_exporter.sh" /root/cron_autopush
-# then    
-#     echo "task is already in cron, type crontab -e to check"
-# else
-#     echo "#Puppet Name: check update on arp table every 15 seconds" >> /root/cron_autopush
-#     echo "MAILTO=""" >> /root/cron_autopush
-#     echo "* * * * * for i in 0 1 2; do /root/update_arp_exporter.sh & sleep 15; done; /root/update_arp_exporter.sh" >> /root/cron_autopush
-# fi
+if grep -F "/root/update_arp_exporter.sh" /root/cron_autopush
+then    
+    echo "task is already in cron, type crontab -e to check"
+else
+    echo "#Puppet Name: check update on arp table every 15 seconds" >> /root/cron_autopush
+    echo "MAILTO=""" >> /root/cron_autopush
+    echo "* * * * * for i in 0 1 2; do /root/update_arp_exporter.sh & sleep 15; done; /root/update_arp_exporter.sh" >> /root/cron_autopush
+fi
 
-# echo ""
-# crontab /root/cron_autopush
-# rm -f /root/cron_autopush
-# echo "!!    crontab set up successfuly"
+echo ""
+crontab /root/cron_autopush
+rm -f /root/cron_autopush
+echo "!!    crontab set up successfuly"

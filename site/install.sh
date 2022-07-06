@@ -83,19 +83,20 @@ fi
         chmod +x /Metrics/update_arp_exporter.sh
         mkdir ../Metrics/ARPMetrics/jsonFiles
         mkdir ../Metrics/ARPMetrics/arpFiles
-        touch ../Metrics/ARPMetrics/arpFiles/arpOut-.txt
-        touch ../Metrics/ARPMetrics/jsonFiles/arpOut-.json
+        touch ../Metrics/ARPMetrics/arpFiles/arpOut.txt
+        touch ../Metrics/ARPMetrics/jsonFiles/arpOut.json
     else
         mkdir ../Metrics/ARPMetrics/jsonFiles
         mkdir ../Metrics/ARPMetrics/arpFiles
-        touch ../Metrics/ARPMetrics/arpFiles/arpOut-.txt
-        touch ../Metrics/ARPMetrics/jsonFiles/arpOut-.json
+        touch ../Metrics/ARPMetrics/arpFiles/arpOut.txt
+        touch ../Metrics/ARPMetrics/jsonFiles/arpOut.json
         touch ../Metrics/ARPMetrics/update_arp_exporter.sh
         chmod +x ../Metrics/ARPMetrics/update_arp_exporter.sh
         sudo tee ../Metrics/ARPMetrics/update_arp_exporter.sh<<EOF
 #! /bin/bash
-arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut-.txt
-python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut-.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut-.json
+arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt
+sleep 1
+python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json
 EOF
 fi
 else 

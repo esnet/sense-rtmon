@@ -35,11 +35,16 @@ if [ "$correct_ip" == "N" ] || [ "$correct_ip" == "n" ]; then
 fi
 
 # get pushgateway server
-read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
+read -r -p "Start Node Exporter? [y/N (Enter)]: " push_docker
+if [ "$push_docker" == "y" ] || [ "$push_docker" == "Y" ]; then
+    read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
+    echo "!!    Initialize Docker Swarm"
+    echo "$MYIP is used for docker swarm advertise"
+    docker swarm init --advertise-addr $MYIP
+else 
+    echo "Skip pushgateway and docker swarm"
+fi 
 
-echo "!!    Initialize Docker Swarm"
-echo "$MYIP is used for docker swarm advertise"
-docker swarm init --advertise-addr $MYIP
 
 read -r -p "Set up bash script? [y/N (Enter)]: " bashstart
 if [ "$bashstart" == "y" ] || [ "$bashstart" == "Y" ]; then

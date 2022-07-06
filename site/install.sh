@@ -2,7 +2,9 @@
 
 # install dependencies
 yum install -y p7zip p7zip-plugins make
-current_pwd=$PWD
+cd ..
+general_path=$PWD
+cd ./site
 # check docker 
 if [ -x "$(command -v docker)" ]; then
     echo "||        Found docker..."
@@ -89,8 +91,8 @@ fi
         touch ../Metrics/ARPMetrics/update_arp_exporter.sh
         chmod +x ../Metrics/ARPMetrics/update_arp_exporter.sh
         sudo tee ../Metrics/ARPMetrics/update_arp_exporter.sh<<EOF
-arp -a > $current_pwd/../Metrics/ARPMetrics/arpFiles/arpOut-.txt
-python3 $current_pwd/../Metrics/ARPMetrics/convertARP.py $current_pwd/../Metrics/ARPMetrics/arpFiles/arpOut-.txt $current_pwd/../Metrics/ARPMetrics/jsonFiles/arpOut-.json
+arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut-.txt
+python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut-.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut-.json
 EOF
 fi
 else 
@@ -138,7 +140,7 @@ if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
     else
         echo "#Puppet Name: check update on arp table every 15 seconds" >> /root/cron_autopush
         echo "MAILTO=""" >> /root/cron_autopush
-        echo "* * * * * for i in 0 1 2; do $current_pwd/../Metrics/ARPMetrics/update_arp_exporter.sh & sleep 15; done; $current_pwd/../Metrics/ARPMetrics/update_arp_exporter.sh" >> /root/cron_autopush
+        echo "* * * * * for i in 0 1 2; do $general_path/Metrics/ARPMetrics/update_arp_exporter.sh & sleep 15; done; $general_path/Metrics/ARPMetrics/update_arp_exporter.sh" >> /root/cron_autopush
     fi
 
     echo ""

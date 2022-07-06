@@ -59,6 +59,7 @@ if [ "$bashstart" == "y" ] || [ "$bashstart" == "Y" ]; then
         touch /root/push_node_exporter_metrics.sh
         chmod +x /root/push_node_exporter_metrics.sh
         sudo tee /root/push_node_exporter_metrics.sh<<EOF
+#! /bin/bash
 curl -s ${MYIP}:9100/metrics | curl --data-binary @- $pushgateway_server/metrics/job/node-exporter/instance/$MYIP
 EOF
 fi
@@ -71,6 +72,7 @@ fi
         touch /root/push_snmp_exporter_metrics.sh
         chmod +x /root/push_snmp_exporter_metrics.sh
         sudo tee /root/push_snmp_exporter_metrics.sh<<EOF
+#! /bin/bash
 curl -s ${MYIP}:9116/metrics | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/instance/$MYIP
 EOF
 fi
@@ -91,6 +93,7 @@ fi
         touch ../Metrics/ARPMetrics/update_arp_exporter.sh
         chmod +x ../Metrics/ARPMetrics/update_arp_exporter.sh
         sudo tee ../Metrics/ARPMetrics/update_arp_exporter.sh<<EOF
+#! /bin/bash
 arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut-.txt
 python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut-.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut-.json
 EOF

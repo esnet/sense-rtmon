@@ -84,8 +84,8 @@ fi
         touch /Metrics/update_arp_exporter.sh
         chmod +x /Metrics/update_arp_exporter.sh
         sudo tee /Metrics/update_arp_exporter.sh<<EOF
-arp -a > ./arpFiles/arpOut-.txt
-python3 convertARP.py ./arpFiles/arpOut-.txt ./jsonFiles/arpOut-.json
+arp -a > $current_pwd/../Metrics/ARPMetrics/arpFiles/arpOut-.txt
+python3 $current_pwd/../Metrics/ARPMetrics/convertARP.py $current_pwd/../Metrics/ARPMetrics/arpFiles/arpOut-.txt $current_pwd/../Metrics/ARPMetrics/jsonFiles/arpOut-.json
 EOF
 fi
 else 
@@ -133,7 +133,7 @@ if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
     else
         echo "#Puppet Name: check update on arp table every 15 seconds" >> /root/cron_autopush
         echo "MAILTO=""" >> /root/cron_autopush
-        echo "* * * * * for i in 0 1 2; do cd $current_pwd/../Metrics/ARPMetrics && update_arp_exporter.sh & sleep 15; done; cd $current_pwd/../Metrics/ARPMetrics && update_arp_exporter.sh" >> /root/cron_autopush
+        echo "* * * * * for i in 0 1 2; do cd $current_pwd/../Metrics/ARPMetrics && update_arp_exporter.sh & sleep 15; done; $current_pwd/../Metrics/ARPMetrics/update_arp_exporter.sh" >> /root/cron_autopush
     fi
 
     echo ""

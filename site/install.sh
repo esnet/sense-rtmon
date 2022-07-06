@@ -94,8 +94,8 @@ fi
         chmod +x ../Metrics/ARPMetrics/update_arp_exporter.sh
         sudo tee ../Metrics/ARPMetrics/update_arp_exporter.sh<<EOF
 #! /bin/bash
-arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt
-sleep 1
+/sbin/arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt
+sleep 0.5
 python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json
 EOF
 fi
@@ -138,7 +138,7 @@ if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
         echo "* * * * * for i in 0 1 2; do /root/push_node_exporter_metrics.sh & sleep 15; done; /root/push_node_exporter_metrics.sh" >> /root/cron_autopush
     fi
 
-    if grep -F "/root/update_arp_exporter.sh" /root/cron_autopush
+    if grep -F "/update_arp_exporter.sh" /root/cron_autopush
     then    
         echo "task is already in cron, type crontab -e to check"
     else

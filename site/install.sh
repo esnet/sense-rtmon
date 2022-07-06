@@ -86,9 +86,9 @@ fi
         mkdir ../Metrics/ARPMetrics/arpFiles
         touch ../Metrics/ARPMetrics/arpFiles/arpOut-.txt
         touch ../Metrics/ARPMetrics/jsonFiles/arpOut-.json
-        touch /Metrics/update_arp_exporter.sh
-        chmod +x /Metrics/update_arp_exporter.sh
-        sudo tee /Metrics/update_arp_exporter.sh<<EOF
+        touch ../Metrics/ARPMetrics/update_arp_exporter.sh
+        chmod +x ../Metrics/ARPMetrics/update_arp_exporter.sh
+        sudo tee ../Metrics/ARPMetrics/update_arp_exporter.sh<<EOF
 arp -a > $current_pwd/../Metrics/ARPMetrics/arpFiles/arpOut-.txt
 python3 $current_pwd/../Metrics/ARPMetrics/convertARP.py $current_pwd/../Metrics/ARPMetrics/arpFiles/arpOut-.txt $current_pwd/../Metrics/ARPMetrics/jsonFiles/arpOut-.json
 EOF

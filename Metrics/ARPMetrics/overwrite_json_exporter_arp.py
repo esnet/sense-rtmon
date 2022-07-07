@@ -94,6 +94,6 @@ if __name__ == '__main__':
   # REGISTRY.register(JsonCollector())
   while True: 
     REGISTRY.register(JsonCollector())
-    time.sleep(int(config_data['arpMetrics']['scrapeInterval']))
+    time.sleep(10)
     # time.sleep(int(config_data['arpMetrics']['scrapeDuration']))
   # seems like nowhere to set scrape interval

@@ -99,9 +99,7 @@ fi
         sudo tee ../Metrics/ARPMetrics/update_arp_exporter.sh<<EOF
 #! /bin/bash
 /sbin/arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt
-sleep 0.5
-yes | cp -rfa $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json $general_path/Metrics/ARPMetrics/jsonFiles/prev.json
-sleep 0.5
+sleep 0.25
 python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json
 EOF
 fi
@@ -151,6 +149,8 @@ if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
         echo "#Puppet Name: check update on arp table every 15 seconds" >> /root/cron_autopush
         echo "MAILTO=""" >> /root/cron_autopush
         echo "* * * * * for i in 0 1 2; do $general_path/Metrics/ARPMetrics/update_arp_exporter.sh & sleep 15; done; $general_path/Metrics/ARPMetrics/update_arp_exporter.sh" >> /root/cron_autopush
+        # * * * * * /root/awsvm/DynamicDashboard/Metrics/ARPMetrics/update_arp_exporter.sh
+        # every minute instead of 15 seconds
     fi
 
     echo ""

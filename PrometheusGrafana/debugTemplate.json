@@ -466,22 +466,12 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "script_success",
-          "format": "time_series",
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "Script Status",
-          "refId": "A"
-        },
-        {
-          "exemplar": true,
           "expr": "ping_status",
           "hide": false,
           "instant": false,
           "interval": "",
           "legendFormat": "Ping Status",
-          "refId": "B"
+          "refId": "A"
         },
         {
           "exemplar": true,
@@ -491,7 +481,7 @@
           "instant": false,
           "interval": "",
           "legendFormat": "ARP Status",
-          "refId": "C"
+          "refId": "B"
         },
         {
           "exemplar": true,
@@ -499,7 +489,7 @@
           "hide": false,
           "interval": "",
           "legendFormat": "SNMP MAC Address Status",
-          "refId": "D"
+          "refId": "C"
         },
         {
           "exemplar": true,
@@ -509,7 +499,7 @@
           "instant": false,
           "interval": "",
           "legendFormat": "Host2 ARP table contains Host1 IP",
-          "refId": "E"
+          "refId": "D"
         },
         {
           "exemplar": true,
@@ -519,7 +509,7 @@
           "instant": false,
           "interval": "",
           "legendFormat": "Host1 ARP table contains Host2 IP",
-          "refId": "F"
+          "refId": "E"
         }
       ],
       "title": "Layer 2 Debugging",

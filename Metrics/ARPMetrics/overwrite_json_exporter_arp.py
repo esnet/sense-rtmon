@@ -39,10 +39,10 @@ class JsonCollector(object):
     
     # delete previous urls
     delete_file_path = dir + "delete.json"
-    # with open(delete_file_path,"rt") as fp:
-    #   load_delete = json.loads(fp)
-    #   for each_url in load_delete:
-    #     delete = requests.delete(each_url)
+    with open(delete_file_path,"rt") as fp:
+      load_delete = json.load(fp)
+      for each_url in load_delete:
+        delete = requests.delete(each_url)
     delete_list = []
     
     # post to pushgateway website
@@ -83,9 +83,9 @@ if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint
   start_http_server(int(config_data['arpMetrics']['port']))
   # REGISTRY.register(JsonCollector())
-  # dir = str(os.getcwd()) + "/jsonFiles/"
-  # output_file =  dir + "arpOut.json"
-  # previous_file = dir + "prev.json"
+  dir = str(os.getcwd()) + "/jsonFiles/"
+  output_file =  dir + "arpOut.json"
+  previous_file = dir + "prev.json"
 
   while True:
     # time.sleep(1)
@@ -96,7 +96,7 @@ if __name__ == '__main__':
     # if pre_lines != cur_lines:
     REGISTRY.register(JsonCollector())
     time.sleep(1)
-    REGISTRY = CollectorRegistry(auto_describe=True)
+    REGISTRY = CollectorRegistry(auto_describe=True) # solves duplicate entry problem
     # CollectorRegistry.clear()
 
   # time.sleep(int(config_data['arpMetrics']['scrapeDuration']))

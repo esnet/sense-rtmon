@@ -39,10 +39,10 @@ class JsonCollector(object):
     
     # delete previous urls
     delete_file_path = dir + "delete.json"
-    with open(delete_file_path,"rt") as fp:
-      load_delete = json.loads(fp)
-      for each_url in load_delete:
-        delete = requests.delete(each_url)
+    # with open(delete_file_path,"rt") as fp:
+    #   load_delete = json.loads(fp)
+    #   for each_url in load_delete:
+    #     delete = requests.delete(each_url)
     delete_list = []
     
     # post to pushgateway website

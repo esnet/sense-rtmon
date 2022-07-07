@@ -67,7 +67,7 @@ class JsonCollector(object):
 
     # store delete list
     with open(delete_file_path,"wt") as fp:
-      json.dumps(delete_list,fp)
+      json.dump(delete_list,fp)
 
     # mName = "ARP_Entry_Count" + str(count) + "_Scrape"
     mName = "ARP_Entry_Count"

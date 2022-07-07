@@ -37,7 +37,7 @@ class JsonCollector(object):
       output_file = str(p2.communicate()[0].decode()).strip('\n').split('\n')[-1]
 
       complete = loc + output_file
-      time.sleep(1)
+      # time.sleep(1)
       # Fetch the JSON
       f = open(complete)
       lines = f.readlines()
@@ -94,6 +94,6 @@ if __name__ == '__main__':
   # REGISTRY.register(JsonCollector())
   while True: 
     REGISTRY.register(JsonCollector())
-    time.sleep(10)
+    # time.sleep(10)
     # time.sleep(int(config_data['arpMetrics']['scrapeDuration']))
   # seems like nowhere to set scrape interval

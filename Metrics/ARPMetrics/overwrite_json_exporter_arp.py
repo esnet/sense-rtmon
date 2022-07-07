@@ -1,4 +1,4 @@
-from prometheus_client import start_http_server, Metric, REGISTRY
+from prometheus_client import start_http_server, Metric, REGISTRY,CollectorRegistry
 import os
 import yaml
 import json
@@ -96,7 +96,8 @@ if __name__ == '__main__':
     # if pre_lines != cur_lines:
     REGISTRY.register(JsonCollector())
     time.sleep(1)
-    REGISTRY.clear()
+    REGISTRY = CollectorRegistry(auto_describe=True)
+    # CollectorRegistry.clear()
 
   # time.sleep(int(config_data['arpMetrics']['scrapeDuration']))
   # seems like nowhere to set scrape interval

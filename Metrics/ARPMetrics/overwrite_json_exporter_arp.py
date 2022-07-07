@@ -51,9 +51,10 @@ class JsonCollector(object):
       # delete previous urls
       delete_file_path = dir + "delete.json"
       with open(delete_file_path,"rt") as fp:
-        load_delete = json.load(fp)
-        for each_url in load_delete:
-          delete = requests.delete(each_url)
+        if os.stat("file").st_size != 0:
+          load_delete = json.load(fp)
+          for each_url in load_delete:
+            requests.delete(each_url)
       delete_list = []
       
       # post to pushgateway website
@@ -71,7 +72,7 @@ class JsonCollector(object):
         # arbitrary pay load data is stored inside url
         payload = "ARP_Table " + str(count) + "\n"
         url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{str(hostname)}/mac_address/{str(entry['mac'])}/ip_address/{str(entry['ip'])}"
-        push = requests.post(url, data=payload)
+        requests.post(url, data=payload)
         delete_list.append(url)
         count += 1
         yield metric
@@ -86,7 +87,7 @@ class JsonCollector(object):
       metric.add_sample(mName, value=(count-1), labels={})
       url2 = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/entryCount/value"
       payload2 = f"ARP_Entry_Count {str(count-1)}\n"
-      push2 = requests.post(url2, data=payload2)
+      requests.post(url2, data=payload2)
       yield metric
 
         

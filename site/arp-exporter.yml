@@ -1,7 +1,7 @@
 version: '3.8'
 
-networks:
-  site-net:
+# networks:
+#   site-net:
 
 services:
 
@@ -12,8 +12,8 @@ services:
     volumes:
       - ../config.yml:/etc/arp_exporter/arp.yml
       - ../Metrics/ARPMetrics/jsonFiles:/jsonFiles
-    # ports:
-    #   - 9192:9192
-    deploy:
-      restart_policy:
-        condition: on-failure
+    ports:
+      - 9192:9192
+    # deploy:
+    #   restart_policy:
+    #     condition: on-failure

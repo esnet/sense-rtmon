@@ -51,7 +51,7 @@ class JsonCollector(object):
       # delete previous urls
       delete_file_path = dir + "delete.json"
       with open(delete_file_path,"rt") as fp:
-        if os.stat("file").st_size != 0:
+        if os.stat(delete_file_path).st_size != 0:
           load_delete = json.load(fp)
           for each_url in load_delete:
             requests.delete(each_url)

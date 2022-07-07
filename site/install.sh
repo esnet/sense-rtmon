@@ -85,12 +85,16 @@ fi
         mkdir ../Metrics/ARPMetrics/arpFiles
         touch ../Metrics/ARPMetrics/arpFiles/arpOut.txt
         touch ../Metrics/ARPMetrics/jsonFiles/arpOut.json
+        touch ../Metrics/ARPMetrics/jsonFiles/delete.json
+        touch ../Metrics/ARPMetrics/jsonFiles/prev.json
     else
         mkdir ../Metrics/ARPMetrics/jsonFiles
         mkdir ../Metrics/ARPMetrics/arpFiles
         touch ../Metrics/ARPMetrics/arpFiles/arpOut.txt
         touch ../Metrics/ARPMetrics/jsonFiles/arpOut.json
         touch ../Metrics/ARPMetrics/update_arp_exporter.sh
+        touch ../Metrics/ARPMetrics/jsonFiles/delete.json
+        touch ../Metrics/ARPMetrics/jsonFiles/prev.json
         chmod +x ../Metrics/ARPMetrics/update_arp_exporter.sh
         sudo tee ../Metrics/ARPMetrics/update_arp_exporter.sh<<EOF
 #! /bin/bash

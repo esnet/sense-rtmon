@@ -31,11 +31,11 @@ class JsonCollector(object):
     dir = str(os.getcwd())
     loc = dir + "/jsonFiles/"
     if os.listdir(loc) != []:
-      p1 = Popen(["ls", "-t",  "*.json"], shell=True, stdout=PIPE, cwd=loc)
-      p2 = Popen(["head", "-n1"], shell=True, stdin=p1.stdout, stdout=PIPE, cwd=loc)
-      p1.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
-      output_file = str(p2.communicate()[0].decode()).strip('\n').split('\n')[-1]
-
+      # p1 = Popen(["ls", "-t",  "*.json"], shell=True, stdout=PIPE, cwd=loc)
+      # p2 = Popen(["head", "-n1"], shell=True, stdin=p1.stdout, stdout=PIPE, cwd=loc)
+      # p1.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
+      # output_file = str(p2.communicate()[0].decode()).strip('\n').split('\n')[-1]
+      output_file = "arpOut.json"
       complete = loc + output_file
       # time.sleep(1)
       # Fetch the JSON
@@ -91,9 +91,9 @@ class JsonCollector(object):
 if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint
   start_http_server(int(config_data['arpMetrics']['port']))
-  REGISTRY.register(JsonCollector())
-  while True: continue
-  #   REGISTRY.register(JsonCollector())
+  # REGISTRY.register(JsonCollector())
+  while True:
+    REGISTRY.register(JsonCollector())
     # time.sleep(10)
     # time.sleep(int(config_data['arpMetrics']['scrapeDuration']))
   # seems like nowhere to set scrape interval

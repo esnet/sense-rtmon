@@ -96,6 +96,8 @@ fi
 #! /bin/bash
 /sbin/arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt
 sleep 0.5
+yes | cp -rfa $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json $general_path/Metrics/ARPMetrics/jsonFiles/prev.json
+sleep 0.5
 python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json
 EOF
 fi

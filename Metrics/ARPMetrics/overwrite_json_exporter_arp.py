@@ -41,7 +41,7 @@ class JsonCollector(object):
       # Fetch the JSON
       f = open(complete)
       lines = f.readlines()
-      self.prev_lines = "" # causing it to run always
+      # self.prev_lines = "" # causing it to run always
       if lines != self.prev_lines:
         self.prev_lines = lines 
         response = []

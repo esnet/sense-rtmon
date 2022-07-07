@@ -6,6 +6,7 @@ import requests
 import sys
 import time
 from subprocess import Popen, PIPE
+import subprocess
 
 config_data ={}
 if __name__ == '__main__':
@@ -35,7 +36,8 @@ class JsonCollector(object):
     pre_lines = pre_file.readlines()
     time.sleep(1)
     if pre_lines != cur_lines:
-
+      cmd = f"yes | cp -rfa {output_file} {previous_file}"
+      subprocess.run(cmd, shell=True)
       arpout_json = dir + "arpOut.json"
       f = open(arpout_json)
       lines = f.readlines()
@@ -91,16 +93,10 @@ class JsonCollector(object):
 if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint
   start_http_server(int(config_data['arpMetrics']['port']))
-  # REGISTRY.register(JsonCollector())
-  dir = str(os.getcwd()) + "/jsonFiles/"
-
   while True:
-    # time.sleep(1)
-
     REGISTRY.register(JsonCollector())
     time.sleep(1)
     REGISTRY = CollectorRegistry(auto_describe=True) # solves duplicate entry problem
-    # CollectorRegistry.clear()
 
   # time.sleep(int(config_data['arpMetrics']['scrapeDuration']))
   # seems like nowhere to set scrape interval

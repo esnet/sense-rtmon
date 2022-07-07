@@ -37,7 +37,7 @@ class JsonCollector(object):
       output_file = str(p2.communicate()[0].decode()).strip('\n').split('\n')[-1]
 
       complete = loc + output_file
-      time.sleep(2)
+      time.sleep(1)
       # Fetch the JSON
       f = open(complete)
       lines = f.readlines()
@@ -91,6 +91,9 @@ class JsonCollector(object):
 if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint
   start_http_server(int(config_data['arpMetrics']['port']))
-  REGISTRY.register(JsonCollector())
-  # while True: time.sleep(int(config_data['arpMetrics']['scrapeDuration']))
+  # REGISTRY.register(JsonCollector())
+  while True: 
+    REGISTRY.register(JsonCollector())
+    time.sleep(15)
+    # time.sleep(int(config_data['arpMetrics']['scrapeDuration']))
   # seems like nowhere to set scrape interval

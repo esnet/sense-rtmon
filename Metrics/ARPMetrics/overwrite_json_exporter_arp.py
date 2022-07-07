@@ -89,14 +89,14 @@ if __name__ == '__main__':
 
   while True:
     # time.sleep(1)
-    # cur_file = open(output_file)
-    # cur_lines = cur_file.readlines()
-    # pre_file = open(previous_file)
-    # pre_lines = pre_file.readlines()
-    # if pre_lines != cur_lines:
-    REGISTRY.register(JsonCollector())
-    time.sleep(1)
-    REGISTRY = CollectorRegistry(auto_describe=True) # solves duplicate entry problem
+    cur_file = open(output_file)
+    cur_lines = cur_file.readlines()
+    pre_file = open(previous_file)
+    pre_lines = pre_file.readlines()
+    if pre_lines != cur_lines:
+      REGISTRY.register(JsonCollector())
+      time.sleep(1)
+      REGISTRY = CollectorRegistry(auto_describe=True) # solves duplicate entry problem
     # CollectorRegistry.clear()
 
   # time.sleep(int(config_data['arpMetrics']['scrapeDuration']))

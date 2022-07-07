@@ -92,7 +92,7 @@ if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint
   start_http_server(int(config_data['arpMetrics']['port']))
   REGISTRY.register(JsonCollector())
-  # while True: 
+  while True: continue
   #   REGISTRY.register(JsonCollector())
     # time.sleep(10)
     # time.sleep(int(config_data['arpMetrics']['scrapeDuration']))

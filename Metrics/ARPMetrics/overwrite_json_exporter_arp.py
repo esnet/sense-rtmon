@@ -92,5 +92,5 @@ if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint
   start_http_server(int(config_data['arpMetrics']['port']))
   REGISTRY.register(JsonCollector())
-  while True: time.sleep(int(config_data['arpMetrics']['scrapeDuration']))
+  # while True: time.sleep(int(config_data['arpMetrics']['scrapeDuration']))
   # seems like nowhere to set scrape interval

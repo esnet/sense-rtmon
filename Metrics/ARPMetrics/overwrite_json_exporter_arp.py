@@ -95,6 +95,8 @@ if __name__ == '__main__':
     # pre_lines = pre_file.readlines()
     # if pre_lines != cur_lines:
     REGISTRY.register(JsonCollector())
-      
+    time.sleep(1)
+    REGISTRY.unregister(JsonCollector())
+
   # time.sleep(int(config_data['arpMetrics']['scrapeDuration']))
   # seems like nowhere to set scrape interval

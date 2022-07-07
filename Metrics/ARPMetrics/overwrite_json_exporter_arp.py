@@ -83,16 +83,16 @@ if __name__ == '__main__':
   # Usage: json_exporter.py port endpoint
   start_http_server(int(config_data['arpMetrics']['port']))
   # REGISTRY.register(JsonCollector())
-  dir = str(os.getcwd()) + "/jsonFiles/"
-  output_file =  dir + "arpOut.json"
-  previous_file = dir + "prev.json"
+  # dir = str(os.getcwd()) + "/jsonFiles/"
+  # output_file =  dir + "arpOut.json"
+  # previous_file = dir + "prev.json"
 
   while True:
-    time.sleep(1)
-    cur_file = open(output_file)
-    cur_lines = cur_file.readlines()
-    pre_file = open(previous_file)
-    pre_lines = pre_file.readlines()
+    # time.sleep(1)
+    # cur_file = open(output_file)
+    # cur_lines = cur_file.readlines()
+    # pre_file = open(previous_file)
+    # pre_lines = pre_file.readlines()
     # if pre_lines != cur_lines:
     REGISTRY.register(JsonCollector())
       

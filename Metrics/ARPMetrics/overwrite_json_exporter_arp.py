@@ -37,7 +37,7 @@ class JsonCollector(object):
       cmd2 = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"
       subprocess.run(cmd2, shell=True)
       
-      arpout_json = dir + "arpOut.json"
+      arpout_json = dir + "/jsonFiles/arpOut.json"
       f = open(arpout_json)
       lines = f.readlines()
 
@@ -48,7 +48,7 @@ class JsonCollector(object):
       count = 1
       
       # delete previous urls
-      delete_file_path = dir + "delete.json"
+      delete_file_path = dir + "/jsonFiles/delete.json"
       with open(delete_file_path,"rt") as fp:
         # check if the file is empty
         if os.stat(delete_file_path).st_size != 0:

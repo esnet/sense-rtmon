@@ -11,27 +11,29 @@ import subprocess
 class JsonCollector(object):
   def collect(self):
     # Fetch the files see if any file has changed
-    dir = str(os.getcwd()) + "/jsonFiles/"
-    output_file =  dir + "arpOut.json"
-    previous_file = dir + "prev.json"
+    dir = str(os.getcwd())
+    output_file =  dir + "/jsonFiles/arpOut.json"
+    previous_file = dir + "/jsonFiles/prev.json"
     cur_file = open(output_file)
     cur_lines = cur_file.readlines()
     pre_file = open(previous_file)
     pre_lines = pre_file.readlines()
     time.sleep(0.5)
-    previous_ping_file_path =  str(os.getcwd()) + "/pingStat/prev_ping_status.txt"
-    previou_ping_file =  open(previous_ping_file_path)
-    previous_ping_lines = previou_ping_file.readlines()
-
-    ping_file_path =  str(os.getcwd()) + "/pingStat/ping_status.txt"
+    
+    ping_file_path =  dir + "/pingStat/ping_status.txt"
     ping_file =  open(ping_file_path)
     ping_lines = ping_file.readlines()
+    previous_ping_file_path =  dir + "/pingStat/prev_ping_status.txt"
+    previou_ping_file =  open(previous_ping_file_path)
+    previous_ping_lines = previou_ping_file.readlines()
     
     time.sleep(0.5)
-    if pre_lines != cur_lines or ping_lines[0] != previous_ping_lines[0]:
+    if pre_lines != cur_lines or ping_lines != previous_ping_lines:
       cmd = f"yes | cp -rfa {output_file} {previous_file}"
       subprocess.run(cmd, shell=True)
       time.sleep(0.5)
+      cmd1 = f"echo \"copy pasting\""
+      subprocess.run(cmd1, shell=True)
       cmd2 = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"
       subprocess.run(cmd2, shell=True)
       

@@ -18,7 +18,7 @@ class JsonCollector(object):
     cur_lines = cur_file.readlines()
     pre_file = open(previous_file)
     pre_lines = pre_file.readlines()
-    
+    time.sleep(0.5)
     previous_ping_file_path =  str(os.getcwd()) + "/pingStat/prev_ping_status.txt"
     previou_ping_file =  open(previous_ping_file_path)
     previous_ping_lines = previou_ping_file.readlines()
@@ -27,12 +27,13 @@ class JsonCollector(object):
     ping_file =  open(ping_file_path)
     ping_lines = ping_file.readlines()
     
-    time.sleep(1)
-    if pre_lines != cur_lines or ping_lines != previous_ping_lines:
+    time.sleep(0.5)
+    if pre_lines != cur_lines or ping_lines[0] != previous_ping_lines[0]:
       cmd = f"yes | cp -rfa {output_file} {previous_file}"
       subprocess.run(cmd, shell=True)
-      cmd = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"
-      subprocess.run(cmd, shell=True)
+      time.sleep(0.5)
+      cmd2 = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"
+      subprocess.run(cmd2, shell=True)
       
       arpout_json = dir + "arpOut.json"
       f = open(arpout_json)
@@ -56,13 +57,12 @@ class JsonCollector(object):
       
       # ping status sent here
       clean_ping = ping_lines[0].strip()
-      ping_url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{str(clean_ping)}"
+      ping_url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/ping_this_ip/{str(clean_ping)}"
       if clean_ping[-1] == "1":
         requests.post(ping_url, data="Success_1_failure_0 1\n")
       else:
         requests.post(ping_url, data="Success_1_failure_0 0\n")
       # requests.post(ping_url, data="Success_1_failure_0 1")
-
       delete_list.append(ping_url)
 
       # post to pushgateway website

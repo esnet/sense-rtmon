@@ -66,12 +66,12 @@ if [ $? -eq 0 ]; then
     fi
     
     # SNMP mac address check
-    if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${netElIP}\".*mac_address.*"
+    if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${netElIP}\".*mac_address.*"; then
         echo "host1_snmp_mac_status{host=\"${host1}\"} 1"
     else 
         echo "host1_snmp_mac_status{host=\"${host1}\"} 0"
     fi
-    if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${netElIP}\".*mac_address.*"
+    if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${netElIP}\".*mac_address.*"; then
         echo "host2_snmp_mac_status{host=\"${host2}\"} 1"
     else 
         echo "host2_snmp_mac_status{host=\"${host2}\"} 0"

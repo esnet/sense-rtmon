@@ -61,8 +61,8 @@ class JsonCollector(object):
       with open(ping_file_path,"rt") as fp:
         # check if the file is empty
         if os.stat(ping_file_path).st_size != 0:
-          cmd1 = f"echo \"running in ping\""
-          subprocess.run(cmd1, shell=True)
+          # cmd1 = f"echo \"running in ping\""
+          # subprocess.run(cmd1, shell=True)
           clean_ping = ping_lines[0].strip()
           ping_url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/ping_this_ip/{str(clean_ping)}"
           if clean_ping[-1] == "1":

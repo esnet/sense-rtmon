@@ -1,5 +1,6 @@
 # erase all urls from this host (instance)
 import json
+import os
 import requests
 
 dir = str(os.getcwd())    

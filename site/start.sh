@@ -52,6 +52,7 @@ if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     touch ../Metrics/ARPMetrics/jsonFiles/delete.json
     touch ../Metrics/ARPMetrics/jsonFiles/prev.json
     touch ../Metrics/ARPMetrics/pingStat/ping_status.txt
+    touch ../Metrics/ARPMetrics/pingStat/prev_ping_status.txt
 
     chmod +x ../Metrics/ARPMetrics/update_arp_exporter.sh
     sudo tee ../Metrics/ARPMetrics/update_arp_exporter.sh<<EOF
@@ -62,9 +63,9 @@ python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARP
 
 ping -c 2 $host2IP
 if [ $? -eq 0 ]; then 
-  echo "1" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
+  echo "$host2IP/ping_status/1" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
 else
-  echo "0" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
+  echo "$host2IP/ping_status/0" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
 fi
 EOF
     echo "Satring ARP Exporter Service"

@@ -10,7 +10,7 @@ import subprocess
 
 class JsonCollector(object):
   def collect(self):
-    # Fetch the JSON
+    # Fetch the files see if any file has changed
     dir = str(os.getcwd()) + "/jsonFiles/"
     output_file =  dir + "arpOut.json"
     previous_file = dir + "prev.json"
@@ -18,9 +18,20 @@ class JsonCollector(object):
     cur_lines = cur_file.readlines()
     pre_file = open(previous_file)
     pre_lines = pre_file.readlines()
+    
+    previous_ping_file_path =  str(os.getcwd()) + "/pingStat/prev_ping_status.txt"
+    previou_ping_file =  open(previous_ping_file_path)
+    previous_ping_lines = previou_ping_file.readlines()
+
+    ping_file_path =  str(os.getcwd()) + "/pingStat/ping_status.txt"
+    ping_file =  open(ping_file_path)
+    ping_lines = ping_file.readlines()
+    
     time.sleep(1)
-    if pre_lines != cur_lines:
+    if pre_lines != cur_lines or ping_lines != previous_ping_lines:
       cmd = f"yes | cp -rfa {output_file} {previous_file}"
+      cmd = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"
+
       subprocess.run(cmd, shell=True)
       arpout_json = dir + "arpOut.json"
       f = open(arpout_json)
@@ -42,6 +53,14 @@ class JsonCollector(object):
             requests.delete(each_url)
       delete_list = []
       
+      # ping status sent here
+      clean_ping = ping_lines[0].strip()
+      ping_url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{clean_ping}"
+      if clean_ping[-1] == "1":
+        requests.post(ping_url, data=1)
+      else:
+        requests.post(ping_url, data=0)
+        
       # post to pushgateway website
       for entry in response:
         metricName = "ARP_Entry_" + str(count) + "_Scrape"

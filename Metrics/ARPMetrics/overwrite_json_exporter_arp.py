@@ -30,9 +30,10 @@ class JsonCollector(object):
     time.sleep(1)
     if pre_lines != cur_lines :#or ping_lines != previous_ping_lines:
       cmd = f"yes | cp -rfa {output_file} {previous_file}"
-      cmd = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"
-
       subprocess.run(cmd, shell=True)
+      cmd = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"
+      subprocess.run(cmd, shell=True)
+      
       arpout_json = dir + "arpOut.json"
       f = open(arpout_json)
       lines = f.readlines()

@@ -102,6 +102,7 @@ class JsonCollector(object):
       url2 = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/entryCount/value"
       payload2 = f"ARP_Entry_Count {str(count-1)}\n"
       requests.post(url2, data=payload2)
+      delete_list.append(url2)
       yield metric
 
         

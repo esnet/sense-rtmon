@@ -9,20 +9,7 @@ from subprocess import Popen, PIPE
 import subprocess
 
 config_data ={}
-if __name__ == '__main__':
-  owd = os.getcwd()
-  os.chdir("etc")
-  os.chdir("arp_exporter")
-  infpth = str(os.path.abspath(os.curdir)) + "/arp.yml"
-  os.chdir(owd)
-  with open(infpth, 'r') as stream:
-      try:
-          config_data = yaml.safe_load(stream)
-      except yaml.YAMLError as exc:
-          print("Config file load error!")
-
-receiver_ip_address = "http://" + str(config_data['grafanaHostIP'])
-instance_ip = str(config_data['hostIP'])
+# if __name__ == '__main__':
 
 class JsonCollector(object):
   def collect(self):
@@ -93,6 +80,19 @@ class JsonCollector(object):
 
         
 if __name__ == '__main__':
+  owd = os.getcwd()
+  os.chdir("etc")
+  os.chdir("arp_exporter")
+  infpth = str(os.path.abspath(os.curdir)) + "/arp.yml"
+  os.chdir(owd)
+  with open(infpth, 'r') as stream:
+      try:
+          config_data = yaml.safe_load(stream)
+      except yaml.YAMLError as exc:
+          print("Config file load error!")
+  receiver_ip_address = "http://" + str(config_data['grafanaHostIP'])
+  instance_ip = str(config_data['hostIP'])
+
   # Usage: json_exporter.py port endpoint
   start_http_server(int(config_data['arpMetrics']['port']))
   while True:

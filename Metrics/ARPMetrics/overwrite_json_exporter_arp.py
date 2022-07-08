@@ -60,7 +60,8 @@ class JsonCollector(object):
         requests.post(ping_url, data="Success_1_failure_0 1")
       else:
         requests.post(ping_url, data="Success_1_failure_0 0")
-        
+      delete_list.append(ping_url)
+
       # post to pushgateway website
       for entry in response:
         metricName = "ARP_Entry_" + str(count) + "_Scrape"

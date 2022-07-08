@@ -60,6 +60,7 @@ if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
 /sbin/arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt
 sleep 0.25
 python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json
+sleep 0.25
 ping -c 2 $host2IP
 if [ $? -eq 0 ]; then 
   echo "$host2IP/ping_status/1" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt

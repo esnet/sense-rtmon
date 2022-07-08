@@ -5,7 +5,7 @@ import requests
 
 dir = str(os.getcwd())    
 # delete previous urls
-delete_file_path = dir + "../Metrics/ARPMetrics/jsonFiles/delete.json"
+delete_file_path = dir + "/../Metrics/ARPMetrics/jsonFiles/delete.json"
 with open(delete_file_path,"rt") as fp:
 # check if the file is empty
     if os.stat(delete_file_path).st_size != 0:

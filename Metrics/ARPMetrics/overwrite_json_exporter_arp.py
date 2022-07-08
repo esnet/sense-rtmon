@@ -56,9 +56,7 @@ class JsonCollector(object):
       
       # ping status sent here
       clean_ping = ping_lines[0].strip()
-      ping_url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/1"
-      metric = Metric("Ping_Status_Scrape", 'ARP Entry', 'summary')
-      metric.add_sample("Ping_Status_Scrape", value=1, labels={})
+      ping_url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{str(clean_ping)}"
       if clean_ping[-1] == "1":
         requests.post(ping_url, data="Success_1_failure_0 1\n")
       else:

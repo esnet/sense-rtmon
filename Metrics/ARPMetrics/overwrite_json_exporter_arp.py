@@ -28,7 +28,7 @@ class JsonCollector(object):
     ping_lines = ping_file.readlines()
     
     time.sleep(1)
-    if pre_lines != cur_lines :#or ping_lines != previous_ping_lines:
+    if pre_lines != cur_lines or ping_lines != previous_ping_lines:
       cmd = f"yes | cp -rfa {output_file} {previous_file}"
       subprocess.run(cmd, shell=True)
       cmd = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"

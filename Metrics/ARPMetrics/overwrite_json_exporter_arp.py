@@ -29,11 +29,15 @@ class JsonCollector(object):
     
     time.sleep(0.5)
     if pre_lines != cur_lines or ping_lines[0] != previous_ping_lines[0]:
-      cmd = f"yes | cp -rfa {output_file} {previous_file}"
-      subprocess.run(cmd, shell=True)
-      time.sleep(0.5)
       cmd2 = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"
       subprocess.run(cmd2, shell=True)
+      time.sleep(0.5)
+      
+      cmd = f"yes | cp -rfa {output_file} {previous_file}"
+      subprocess.run(cmd, shell=True)
+
+      # cmd2 = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"
+      # subprocess.run(cmd2, shell=True)
       
       arpout_json = dir + "arpOut.json"
       f = open(arpout_json)

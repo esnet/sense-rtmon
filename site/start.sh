@@ -1,4 +1,8 @@
 #! /bin/bash
+cd ..
+general_path=$PWD
+cd ./site
+
 echo "!!    Please edit config.yml for single switch or multiconfig.yml for multiple switches under DynamicDashboard before procceding"
 # read -p "Press enter to continue"
 

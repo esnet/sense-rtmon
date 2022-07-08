@@ -23,9 +23,9 @@ with open(infpth, 'r') as stream:
 
 print("Starting script...")
 now = datetime.now()
-current_time = now.strftime("%d/%m/%Y_%H:%M:%S")
-# timeTxt = " ( " + str(current_time) + " )"
-timeTxt = ""
+current_time = now.strftime("%d/%m/%Y_%H:%M")
+timeTxt = " ( " + str(current_time) + " )"
+# timeTxt = ""
 if data['switchNum'] == 1:
     print("Single Network Element Flow Detected")
     print("Collecting dashboard template...")

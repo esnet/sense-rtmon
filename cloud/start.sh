@@ -23,14 +23,15 @@ docker stack deploy -c docker-stack.yml cloud
 
 echo "!!    Deploy script exporter"
 yes | cp -rfa se_config/. script_exporter/examples
-cd script_exporter
-docker stack deploy -c docker-compose.yaml cloud
-yes | cp -rfa se_config/. script_exporter/examples
 
-cd ..
-cd ..
-cd PrometheusGrafana
-python3 dynamic.py
+read -r -p "Generate Grafana Dashboar? [y/N enter]: " grafana
+if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
+    cd ..
+    cd PrometheusGrafana
+    python3 dynamic.py
+else 
+    echo "Skip Grafana Dashboard Generation"
+fi
 
 # read -r -p "Start script exporter? [y/N]: " script
 

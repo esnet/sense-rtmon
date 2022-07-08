@@ -67,8 +67,6 @@ else
   echo "0" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
 fi
 EOF
-    fi
-
     echo "Satring ARP Exporter Service"
     cd ../Metrics
     docker image rm -f arp_exporter:latest

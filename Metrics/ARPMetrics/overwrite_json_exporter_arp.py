@@ -18,7 +18,7 @@ class JsonCollector(object):
     cur_lines = cur_file.readlines()
     pre_file = open(previous_file)
     pre_lines = pre_file.readlines()
-    time.sleep(0.5)
+    time.sleep(0.25)
     
     ping_file_path =  dir + "/pingStat/ping_status.txt"
     ping_file =  open(ping_file_path)
@@ -27,11 +27,11 @@ class JsonCollector(object):
     previou_ping_file =  open(previous_ping_file_path)
     previous_ping_lines = previou_ping_file.readlines()
     
-    time.sleep(0.5)
+    time.sleep(0.25)
     if pre_lines != cur_lines or ping_lines != previous_ping_lines:
       cmd = f"yes | cp -rfa {output_file} {previous_file}"
       subprocess.run(cmd, shell=True)
-      time.sleep(0.5)
+      time.sleep(0.25)
 
       cmd2 = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"
       subprocess.run(cmd2, shell=True)
@@ -56,6 +56,7 @@ class JsonCollector(object):
             requests.delete(each_url)
       delete_list = []
       
+      time.sleep(0.25)
       # ping status sent here
       with open(ping_file_path,"rt") as fp:
         # check if the file is empty

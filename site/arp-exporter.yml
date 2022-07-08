@@ -12,6 +12,8 @@ services:
     volumes:
       - ../config.yml:/etc/arp_exporter/arp.yml
       - ../Metrics/ARPMetrics/jsonFiles:/jsonFiles
+      - ../Metrics/ARPMetrics/arpFiles:/arpFiles
+      - ../Metrics/ARPMetrics/pingStat:/pingStat
     ports:
       - 9192:9192
     # deploy:

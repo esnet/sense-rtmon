@@ -38,7 +38,7 @@ fi
 read -r -p "Start ARP Exporter? [y/N]: " start_arp
 if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     # delete everything first
-    read -r -p "Enter host2 IP address (198.32.43.15): " host2IP
+    read -r -p "Enter host2 IP address (e.g. 198.32.43.15): " host2IP
 
     rm -rf ../Metrics/ARPMetrics/jsonFiles ../Metrics/ARPMetrics/arpFiles ../Metrics/ARPMetrics/ping_status ../Metrics/ARPMetrics/update_arp_exporter
 

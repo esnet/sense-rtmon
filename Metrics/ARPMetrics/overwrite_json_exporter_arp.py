@@ -32,7 +32,7 @@ class JsonCollector(object):
       cmd = f"yes | cp -rfa {output_file} {previous_file}"
       subprocess.run(cmd, shell=True)
       time.sleep(0.5)
-      cmd1 = f"echo \"copy pasting\""
+      cmd1 = f"echo \"$PWD\""
       subprocess.run(cmd1, shell=True)
       cmd2 = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"
       subprocess.run(cmd2, shell=True)
@@ -58,9 +58,9 @@ class JsonCollector(object):
       delete_list = []
       
       # ping status sent here
-      with open(previous_ping_file_path,"rt") as fp:
+      with open(ping_file_path,"rt") as fp:
         # check if the file is empty
-        if os.stat(previous_ping_file_path).st_size != 0:
+        if os.stat(ping_file_path).st_size != 0:
           clean_ping = ping_lines[0].strip()
           ping_url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/ping_this_ip/{str(clean_ping)}"
           if clean_ping[-1] == "1":

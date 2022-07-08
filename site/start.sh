@@ -40,7 +40,7 @@ if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     # delete everything first
     read -r -p "Enter host2 IP address (e.g. 198.32.43.15): " host2IP
 
-    rm -rf ../Metrics/ARPMetrics/jsonFiles ../Metrics/ARPMetrics/arpFiles ../Metrics/ARPMetrics/ping_status ../Metrics/ARPMetrics/update_arp_exporter
+    rm -rf ../Metrics/ARPMetrics/jsonFiles ../Metrics/ARPMetrics/arpFiles ../Metrics/ARPMetrics/pingStat ../Metrics/ARPMetrics/update_arp_exporter
 
     mkdir ../Metrics/ARPMetrics/jsonFiles
     mkdir ../Metrics/ARPMetrics/arpFiles
@@ -60,7 +60,6 @@ if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
 /sbin/arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt
 sleep 0.25
 python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json
-
 ping -c 2 $host2IP
 if [ $? -eq 0 ]; then 
   echo "$host2IP/ping_status/1" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt

@@ -466,30 +466,37 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "ping_status",
+          "expr": "host1_ping_status",
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "Ping Status",
+          "legendFormat": "Host 1 pings Host 2",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "arp_status",
-          "format": "time_series",
+          "expr": "host2_ping_status",
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "ARP Status",
+          "legendFormat": "Host 2 pings Host 1",
           "refId": "B"
         },
         {
           "exemplar": true,
-          "expr": "snmp_mac_status",
+          "expr": "host1_snmp_mac_status",
           "hide": false,
           "interval": "",
-          "legendFormat": "SNMP MAC Address Status",
+          "legendFormat": "Host 1 Contains Switch SNMP MAC Address Status",
           "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "host2_snmp_mac_status",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Host 2 Contains Switch SNMP MAC Address Status",
+          "refId": "D"
         },
         {
           "exemplar": true,
@@ -499,7 +506,7 @@
           "instant": false,
           "interval": "",
           "legendFormat": "Host2 ARP table contains Host1 IP",
-          "refId": "D"
+          "refId": "E"
         },
         {
           "exemplar": true,
@@ -509,7 +516,7 @@
           "instant": false,
           "interval": "",
           "legendFormat": "Host1 ARP table contains Host2 IP",
-          "refId": "E"
+          "refId": "F"
         }
       ],
       "title": "Layer 2 Debugging",

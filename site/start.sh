@@ -33,6 +33,38 @@ fi
 
 read -r -p "Start ARP Exporter? [y/N]: " start_arp
 if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
+    # delete everything first
+    read -r -p "Enter host2 IP address (198.32.43.15): " host2IP
+
+    rm -rf ../Metrics/ARPMetrics/jsonFiles ../Metrics/ARPMetrics/arpFiles ../Metrics/ARPMetrics/ping_status ../Metrics/ARPMetrics/update_arp_exporter
+
+    mkdir ../Metrics/ARPMetrics/jsonFiles
+    mkdir ../Metrics/ARPMetrics/arpFiles
+    mkdir ../Metrics/ARPMetrics/pingStat
+
+    touch ../Metrics/ARPMetrics/arpFiles/arpOut.txt
+    touch ../Metrics/ARPMetrics/jsonFiles/arpOut.json
+    touch ../Metrics/ARPMetrics/update_arp_exporter.sh
+    touch ../Metrics/ARPMetrics/jsonFiles/delete.json
+    touch ../Metrics/ARPMetrics/jsonFiles/prev.json
+    touch ../Metrics/ARPMetrics/pingStat/ping_status.txt
+
+    chmod +x ../Metrics/ARPMetrics/update_arp_exporter.sh
+    sudo tee ../Metrics/ARPMetrics/update_arp_exporter.sh<<EOF
+#! /bin/bash
+/sbin/arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt
+sleep 0.25
+python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json
+
+ping -c 2 $host2IP
+if [ $? -eq 0 ]; then 
+  echo "1" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
+else
+  echo "0" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
+fi
+EOF
+    fi
+
     echo "Satring ARP Exporter Service"
     cd ../Metrics
     docker image rm -f arp_exporter:latest

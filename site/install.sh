@@ -36,6 +36,9 @@ if [ "$correct_ip" == "N" ] || [ "$correct_ip" == "n" ]; then
     read -r -p "Type in your ip address: " MYIP
 fi
 
+# get host2 IP address
+read -r -p "Enter host2 IP address (if needed): " host2IP
+
 # get pushgateway server
 read -r -p "Build connection to pushgateway and init Docker Swarm [y/N (Enter)]: " push_docker
 if [ "$push_docker" == "y" ] || [ "$push_docker" == "Y" ]; then
@@ -87,6 +90,7 @@ fi
         touch ../Metrics/ARPMetrics/jsonFiles/arpOut.json
         touch ../Metrics/ARPMetrics/jsonFiles/delete.json
         touch ../Metrics/ARPMetrics/jsonFiles/prev.json
+        touch ../Metrics/ARPMetrics/pingStat/ping_status.txt
     else
         mkdir ../Metrics/ARPMetrics/jsonFiles
         mkdir ../Metrics/ARPMetrics/arpFiles
@@ -95,14 +99,23 @@ fi
         touch ../Metrics/ARPMetrics/update_arp_exporter.sh
         touch ../Metrics/ARPMetrics/jsonFiles/delete.json
         touch ../Metrics/ARPMetrics/jsonFiles/prev.json
+        touch ../Metrics/ARPMetrics/pingStat/ping_status.txt
         chmod +x ../Metrics/ARPMetrics/update_arp_exporter.sh
         sudo tee ../Metrics/ARPMetrics/update_arp_exporter.sh<<EOF
 #! /bin/bash
 /sbin/arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt
 sleep 0.25
 python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json
-EOF
+
+ping -c 1 $host2IP
+if [ $? -eq 0 ]; then 
+  echo "1" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
+else
+  echo "0" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
 fi
+EOF
+    fi
+
 else 
     echo "Nothing installed"
 fi

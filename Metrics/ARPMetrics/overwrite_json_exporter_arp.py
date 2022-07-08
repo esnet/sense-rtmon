@@ -91,10 +91,6 @@ class JsonCollector(object):
         count += 1
         yield metric
 
-      # store delete list
-      with open(delete_file_path,"wt") as fp:
-        json.dump(delete_list,fp)
-
       # mName = "ARP_Entry_Count" + str(count) + "_Scrape"
       mName = "ARP_Entry_Count"
       metric = Metric(mName, "Number of ARP Entries", "summary")
@@ -105,6 +101,9 @@ class JsonCollector(object):
       delete_list.append(url2)
       yield metric
 
+      # store delete list
+      with open(delete_file_path,"wt") as fp:
+        json.dump(delete_list,fp)
         
 if __name__ == '__main__':
   config_data ={}

@@ -8,9 +8,6 @@ import time
 from subprocess import Popen, PIPE
 import subprocess
 
-config_data ={}
-# if __name__ == '__main__':
-
 class JsonCollector(object):
   def collect(self):
     # Fetch the JSON
@@ -80,6 +77,7 @@ class JsonCollector(object):
 
         
 if __name__ == '__main__':
+  config_data ={}
   owd = os.getcwd()
   os.chdir("etc")
   os.chdir("arp_exporter")

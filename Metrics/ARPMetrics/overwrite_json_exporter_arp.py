@@ -57,17 +57,14 @@ class JsonCollector(object):
       # ping status sent here
       clean_ping = ping_lines[0].strip()
       ping_url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{clean_ping}"
+      metric = Metric("Ping_Status_Scrape", 'ARP Entry', 'summary')
+      metric.add_sample("Ping_Status_Scrape", value=1, labels={})
       if clean_ping[-1] == "1":
         requests.post(ping_url, data="Success_1_failure_0 1")
-        print(ping_url)
-        print(clean_ping)
-        print(clean_ping[-1])
       else:
         requests.post(ping_url, data="Success_1_failure_0 0")
-        print(ping_url)
-        print(clean_ping)
-        print(clean_ping[-1])
-        
+      # requests.post(ping_url, data="Success_1_failure_0 1")
+
       delete_list.append(ping_url)
 
       # post to pushgateway website

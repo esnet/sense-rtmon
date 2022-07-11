@@ -16,7 +16,7 @@ docker stack rm could
 echo "!!    Previous stack revmoed"
 
 echo "!!    Parsing config.yml"
-python3 parse_config.py
+# python3 parse_config.py
 
 echo "!!    Deploy script exporter"
 yes | cp -rfa se_config/. script_exporter/examples

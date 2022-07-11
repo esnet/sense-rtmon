@@ -14,7 +14,6 @@ with open(sys.argv[1], 'r') as stream:
         data = yaml.safe_load(stream)
     except yaml.YAMLError as exc:
         print("\n USAGE: python3 dynamic.py <config-file> \n \n Tip: Ensure that the Python script dynamic.py, the supporting files, and the config file are in one directory without subdirectories or other hierarchies.\n")
-        
 print("Collecting SNMP generator template...")
 with open('generatorTemplate.yml') as inGen, open('generator.yml', 'w') as outGen:
         for line in inGen:
@@ -48,16 +47,16 @@ print("Writing SNMP Exporter generator config file...")
 with open('generator.yml', 'w') as file:
     file.write(filedata)
 print("Configuring SNMP Exporter Generator...")
-subprocess.run("sudo yum -y install p7zip p7zip-plugins gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel make", shell=True)
-subprocess.run("wget https://dl.google.com/go/go1.18.3.linux-amd64.tar.gz", shell=True)
-subprocess.run("sudo tar -C /usr/local -xzf go1.18.3.linux-amd64.tar.gz", shell=True)
-subprocess.run("export PATH=$PATH:/usr/local/go/bin", shell=True)
+subprocess.run("sudo yum -y install gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel", shell=True)
+subprocess.run("wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz", shell=True)
+subprocess.run("sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz", shell=True)
+#subprocess.run("export PATH=$PATH:/usr/local/go/bin", shell=True)
 os.environ["PATH"] += os.pathsep + os.pathsep.join(["/usr/local/go/bin"])
 dir = str(os.getcwd())
 os.putenv("GOPATH", dir)
 subprocess.run("go get github.com/prometheus/snmp_exporter/generator", shell=True)
 genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
-genCmd = "yes | sudo cp -rfa generator.yml " + genLoc
+genCmd = "sudo mv generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)
 subprocess.run("go build", shell=True, cwd=genLoc)
 subprocess.run("make mibs", shell=True, cwd=genLoc)

@@ -33,7 +33,6 @@ elif switch_num == "2":
     switch_ip1 = str(config_data['switchDataA']['SNMPHostIP'])
     switch_ip2 = str(config_data['switchDataB']['SNMPHostIP'])
 
-
 with open('se_config/config.yaml', 'r') as file:
     data = file.readlines()
 

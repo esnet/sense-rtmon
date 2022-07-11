@@ -15,12 +15,12 @@ host1=$instance
 host2=$ip_address
 
 # check if ARP exporters are on
-if curl ${pushgateway}:9091/metrics | grep "*instance=\"${host1}\"*"; then
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*"; then
     echo "host1_arp_on{host=\"${host1}\"} 1";
 else 
     echo "host1_arp_on{host=\"${host1}\"} 0";
 fi
-if curl ${pushgateway}:9091/metrics | grep "*instance=\"${host2}\"*"; then
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*"; then
     echo "host2_arp_on{host=\"${host2}\"} 1";
 else 
     echo "host2_arp_on{host=\"${host2}\"} 0";

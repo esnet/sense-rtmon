@@ -1,5 +1,3 @@
-# #! /bin/bash
-
 #! /bin/bash
 
 # scrape_configs:

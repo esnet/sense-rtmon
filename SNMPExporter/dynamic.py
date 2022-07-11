@@ -47,7 +47,8 @@ print("Writing SNMP Exporter generator config file...")
 with open('generator.yml', 'w') as file:
     file.write(filedata)
 print("Configuring SNMP Exporter Generator...")
-subprocess.run("sudo yum -y install gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel", shell=True)
+
+subprocess.run("sudo yum -y install p7zip p7zip-plugins gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel", shell=True)
 subprocess.run("wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz", shell=True)
 subprocess.run("sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz", shell=True)
 #subprocess.run("export PATH=$PATH:/usr/local/go/bin", shell=True)
@@ -62,6 +63,5 @@ subprocess.run("go build", shell=True, cwd=genLoc)
 subprocess.run("make mibs", shell=True, cwd=genLoc)
 print("Generating dynamic SNMP config file...")
 subprocess.run("./generator generate", shell=True, cwd=genLoc)
-# print("Initializing docker container with custom SNMP exporter...")
-# subprocess.run("sudo docker run -d --name snmp-exporter -p 9116:9116     -v $PWD/snmp.yml:/etc/snmp_exporter/snmp.yml prom/snmp-exporter", shell=True, cwd=genLoc)
+
 print("Success! Configured custom SNMP Exporter container")

@@ -36,10 +36,10 @@ scripts:
     script: ./examples/docker.sh
   - name: args
     script: ./examples/args.sh holder1 holder2 holder3 holder4 holder5 holder6
-  - name: default
-    script: ./examples/argsDef.sh 
+#  - name: default
+#    script: ./examples/argsDef.sh 
   - name: multi
     script: ./examples/multiDef.sh
   # make sure defaul it the last line
-  # - name: default
-  #   script: ./examples/args.sh
+  - name: default
+    script: ./examples/args.sh 172.31.72.189 198.32.43.16 198.32.43.15 1 198.32.43.16 0

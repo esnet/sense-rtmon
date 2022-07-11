@@ -1,3 +1,3 @@
 #! /bin/bash
 
-rm -rf go* pkg src bin
+rm -rf go* pkg src bin snmp.yml

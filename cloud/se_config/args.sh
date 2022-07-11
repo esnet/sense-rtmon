@@ -82,19 +82,19 @@ else
     echo "host2_snmp_mac_status{host=\"${host2}\"} 0"
 fi
 
-# SNMP mac address check switch 2
-if $switch_num == "2"; then  
-    if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
-        echo "host1_snmp_mac_status2{host=\"${host1}\"} 1"
-    else 
-        echo "host1_snmp_mac_status2{host=\"${host1}\"} 0"
-    fi
-    if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
-        echo "host2_snmp_mac_status2{host=\"${host2}\"} 1"
-    else 
-        echo "host2_snmp_mac_status2{host=\"${host2}\"} 0"
-    fi
-fi
+# # SNMP mac address check switch 2
+# if $switch_num == "2"; then  
+#     if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
+#         echo "host1_snmp_mac_status2{host=\"${host1}\"} 1"
+#     else 
+#         echo "host1_snmp_mac_status2{host=\"${host1}\"} 0"
+#     fi
+#     if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
+#         echo "host2_snmp_mac_status2{host=\"${host2}\"} 1"
+#     else 
+#         echo "host2_snmp_mac_status2{host=\"${host2}\"} 0"
+#     fi
+# fi
 
 
 # output=$(ping -c 1 "${ip_address}" 2>/dev/null)

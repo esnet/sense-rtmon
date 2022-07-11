@@ -24,104 +24,167 @@ echo "!!    optional 6. if more than one network element input the second one"
 # Check ping status
 pushgateway=$1
 # from which host
-instance=$2
+host1=$2
 # contains which host
-ip_address=$3
+host2=$3
 # number of network elemenet
-netElNum=$4
+switch_num=$4
 # network element ip address
-netElIP=$5
+switch_ip1=$5
 # netowrk element 2 ip address
-netElIP2=$6
+switch_ip2=$6
 
-output=$(ping -c 1 "${ip_address}" 2>/dev/null)
-echo "# HELP IP address of target remote host"
-echo "remote_host{ip=\"${ip_address}\"} 1";
-echo "# HELP Number of network elements (e.g. switches) across flow"
-echo "network_element_count" $netElNum
-echo "network_element_ip{ip=\"$netElIP\"}" 1
-echo "# HELP ping_status (0 = failure, 1 = success)";
+# check if ARP exporters are on
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*"; then
+    echo "m_host1_arp_on{host=\"${host1}\"} 1";
+else 
+    echo "m_host1_arp_on{host=\"${host1}\"} 0";
+fi
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*"; then
+    echo "m_host2_arp_on{host=\"${host2}\"} 1";
+else 
+    echo "m_host2_arp_on{host=\"${host2}\"} 0";
+fi
 
-if [ $? -eq 0 ]; then
-    # ip=$(printf '%s' "$output" | gawk -F'[()]' '/PING/{print $netElNum}')  
-    echo "# ping to \"${ip_address}\" success";
-    echo "ping_status{host=\"${ip_address}\"} 1";
-    # If success, double check that the MAC address for the other host is in the ARP table
-    echo "# HELP Metric checks whether remote host exists in ARP table of current host";
-    if curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\""; then
-        # DATA=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"")
-        # echo "# \"$DATA\"";
-        echo "arp_status{host=\"${ip_address}\"} 1";
-        # MAC=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"" | cut -d' ' -f 4);
-        # IFACE=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"" | cut -d ' ' -f 1 | rev);
-        echo "# HELP MAC Address of Remote Host"
-        echo "remote_host_mac{mac=\"$MAC\"} 1";
-        echo "# HELP Interface of current host which remote host is connected to"
-        echo "remote_host_interface_connect{interface=\"$IFACE\"} 1";
+# ARP check
+if curl ${pushgateway}:9091/metrics | grep "instance=\"${host1}\",ip_address=\"${host2}\""; then
+    echo "m_host1_has_host2_arp{host=\"${host1}\"} 1";
+else 
+    echo "m_host1_has_host2_arp{host=\"${host1}\"} 0";
+fi
+if curl ${pushgateway}:9091/metrics | grep "instance=\"${host2}\",ip_address=\"${host1}\""; then
+    echo "m_host2_has_host1_arp{host=\"${host2}\"} 1";
+else 
+    echo "m_host2_has_host1_arp{host=\"${host2}\"} 0";
+fi
 
-        if [ $netElNum -eq 1 ]; then
-            echo "# Single Network Element"
-            echo "# HELP Checks whether remote host exists in MAC table of network element";
-            SNMP=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
-            echo "snmp_mac_status{ip=\"$netElIP\"} 1";
-        else 
-            echo "# Multiple Network Element"
-            echo "# HELP Checks whether remote host exists in MAC table of current network element";
-            SNMP1=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
-            echo "snmp_1_mac_status{ip=$netElIP} 1"
-            echo "# HELP snmp_2_mac_status (0 = failure, 1 = success)";
-            SNMP2=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
-            echo "snmp_2_mac_status{ip=$netElIP2} 0"
-        fi
-    # If not, check the switch's MAC address table
-    else
-        echo "arp_status{host=\"${ip_address}\"} 0"
-        if [ $netElNum -eq 1 ]; then
-            echo "# Single Network Element"
-            echo "# HELP Checks whether remote host exists in MAC table of network element";
-            SNMP=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
-            echo "snmp_mac_status{ip=\"$netElIP\"} 1";
-        else 
-            echo "# Multiple Network Element"
-            echo "# HELP Checks whether remote host exists in MAC table of current network element";
-            SNMP1=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
-            echo "snmp_1_mac_status{ip=$netElIP} 1"
-            echo "# HELP snmp_2_mac_status (0 = failure, 1 = success)";
-            SNMP2=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
-            echo "snmp_2_mac_status{ip=$netElIP2} 0"
-        fi
+# ping check
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ping_status=\"1\".*ping_this_ip=\"${host2}\".*"; then 
+    echo "m_host1_ping_status{host=\"${host1}\"} 1"
+else 
+    echo "m_host1_ping_status{host=\"${host1}\"} 0"
+fi
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ping_status=\"1\".*ping_this_ip=\"${host1}\".*"; then 
+    echo "m_host2_ping_status{host=\"${host2}\"} 1"
+else 
+    echo "m_host2_ping_status{host=\"${host2}\"} 0"
+fi
+
+# SNMP mac address check switch 1
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip1}\".*mac_address.*"; then
+    echo "m_host1_snmp_mac_status1{host=\"${host1}\"} 1"
+else 
+    echo "m_host1_snmp_mac_status1{host=\"${host1}\"} 0"
+fi
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip1}\".*mac_address.*"; then
+    echo "m_host2_snmp_mac_status1{host=\"${host2}\"} 1"
+else 
+    echo "m_host2_snmp_mac_status1{host=\"${host2}\"} 0"
+fi
+
+# SNMP mac address check switch 2
+if $switch_num == "2"; then  
+    if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
+        echo "m_host1_snmp_mac_status2{host=\"${host1}\"} 1"
+    else 
+        echo "m_host1_snmp_mac_status2{host=\"${host1}\"} 0"
     fi
-else
-    echo "# ping to \"${ip_address}\" failure";
-    echo "ping_status{host=\"${ip_address}\"} 0";
-    # If failure, check if the MAC address for the other host is in the ARP table
-    echo "# HELP Metric checks whether remote host exists in ARP table of current host";
-    if curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\""; then
-        # DATA=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"" | grep -w \"${ip_address}\")
-        # echo "# \"$DATA\"";
-        echo "arp_status{host=\"${ip_address}\"} 1";
-        # MAC=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"" | grep -w \"${ip_address}\" | cut -d ' ' -f 4)
-        # IFACE=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"" | grep -w \"${ip_address}\" | rev | cut -d ' ' -f 1 | rev);
-        echo "# HELP MAC Address of Remote Host"
-        echo "remote_host_mac{mac=\"$MAC\"} 1";
-        echo "# HELP Interface of current host which remote host is connected to"
-        echo "remote_host_interface_connect{interface=\"$IFACE\"} 1";
-    else
-        # If not, check the switch's MAC address table
-        echo "arp_status{host=\"${ip_address}\"} 0"
-        # switch=$netElNum
-        # commStrng=$3
-        # echo "# HELP Metric checks whether remote host exists in MAC table of current switch";
-        # echo "# HELP snmp_mac_status (0 = failure, 1 = success)";
-        # if snmpwalk -v 2c -c $commString $switch 1.3.6.1.2.1.17.4.3.1.1 | grep MAC; then
-        #   SNMP=$(snmpwalk -v 2c -c $commString $switch 1.3.6.1.2.1.17.4.3.1.1 | grep MAC)
-        #   echo "# \"$SNMP\"";
-        #   echo "snmp_mac_status{target=\"$netElNum\"} 1";
-        # else 
-        #   echo "snmp_mac_status{target=\"$netElNum\"} 0";
-        # fi 
+    if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
+        echo "m_host2_snmp_mac_status2{host=\"${host2}\"} 1"
+    else 
+        echo "m_host2_snmp_mac_status2{host=\"${host2}\"} 0"
     fi
 fi
+
+
+# output=$(ping -c 1 "${ip_address}" 2>/dev/null)
+# echo "# HELP IP address of target remote host"
+# echo "remote_host{ip=\"${ip_address}\"} 1";
+# echo "# HELP Number of network elements (e.g. switches) across flow"
+# echo "network_element_count" $netElNum
+# echo "network_element_ip{ip=\"$netElIP\"}" 1
+# echo "# HELP ping_status (0 = failure, 1 = success)";
+
+# if [ $? -eq 0 ]; then
+#     # ip=$(printf '%s' "$output" | gawk -F'[()]' '/PING/{print $netElNum}')  
+#     echo "# ping to \"${ip_address}\" success";
+#     echo "ping_status{host=\"${ip_address}\"} 1";
+#     # If success, double check that the MAC address for the other host is in the ARP table
+#     echo "# HELP Metric checks whether remote host exists in ARP table of current host";
+#     if curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\""; then
+#         # DATA=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"")
+#         # echo "# \"$DATA\"";
+#         echo "arp_status{host=\"${ip_address}\"} 1";
+#         # MAC=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"" | cut -d' ' -f 4);
+#         # IFACE=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"" | cut -d ' ' -f 1 | rev);
+#         echo "# HELP MAC Address of Remote Host"
+#         echo "remote_host_mac{mac=\"$MAC\"} 1";
+#         echo "# HELP Interface of current host which remote host is connected to"
+#         echo "remote_host_interface_connect{interface=\"$IFACE\"} 1";
+
+#         if [ $netElNum -eq 1 ]; then
+#             echo "# Single Network Element"
+#             echo "# HELP Checks whether remote host exists in MAC table of network element";
+#             SNMP=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
+#             echo "snmp_mac_status{ip=\"$netElIP\"} 1";
+#         else 
+#             echo "# Multiple Network Element"
+#             echo "# HELP Checks whether remote host exists in MAC table of current network element";
+#             SNMP1=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
+#             echo "snmp_1_mac_status{ip=$netElIP} 1"
+#             echo "# HELP snmp_2_mac_status (0 = failure, 1 = success)";
+#             SNMP2=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
+#             echo "snmp_2_mac_status{ip=$netElIP2} 0"
+#         fi
+#     # If not, check the switch's MAC address table
+#     else
+#         echo "arp_status{host=\"${ip_address}\"} 0"
+#         if [ $netElNum -eq 1 ]; then
+#             echo "# Single Network Element"
+#             echo "# HELP Checks whether remote host exists in MAC table of network element";
+#             SNMP=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
+#             echo "snmp_mac_status{ip=\"$netElIP\"} 1";
+#         else 
+#             echo "# Multiple Network Element"
+#             echo "# HELP Checks whether remote host exists in MAC table of current network element";
+#             SNMP1=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
+#             echo "snmp_1_mac_status{ip=$netElIP} 1"
+#             echo "# HELP snmp_2_mac_status (0 = failure, 1 = success)";
+#             SNMP2=$(curl --request GET "http://${pushgateway}:9091/metrics" | grep -w "dot1dTpFdbEntry\|$netElIP");
+#             echo "snmp_2_mac_status{ip=$netElIP2} 0"
+#         fi
+#     fi
+# else
+#     echo "# ping to \"${ip_address}\" failure";
+#     echo "ping_status{host=\"${ip_address}\"} 0";
+#     # If failure, check if the MAC address for the other host is in the ARP table
+#     echo "# HELP Metric checks whether remote host exists in ARP table of current host";
+#     if curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\""; then
+#         # DATA=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"" | grep -w \"${ip_address}\")
+#         # echo "# \"$DATA\"";
+#         echo "arp_status{host=\"${ip_address}\"} 1";
+#         # MAC=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"" | grep -w \"${ip_address}\" | cut -d ' ' -f 4)
+#         # IFACE=$(curl ${pushgateway}:9091/metrics | grep "instance=\"${instance}\",ip_address=\"${ip_address}\"" | grep -w \"${ip_address}\" | rev | cut -d ' ' -f 1 | rev);
+#         echo "# HELP MAC Address of Remote Host"
+#         echo "remote_host_mac{mac=\"$MAC\"} 1";
+#         echo "# HELP Interface of current host which remote host is connected to"
+#         echo "remote_host_interface_connect{interface=\"$IFACE\"} 1";
+#     else
+#         # If not, check the switch's MAC address table
+#         echo "arp_status{host=\"${ip_address}\"} 0"
+#         # switch=$netElNum
+#         # commStrng=$3
+#         # echo "# HELP Metric checks whether remote host exists in MAC table of current switch";
+#         # echo "# HELP snmp_mac_status (0 = failure, 1 = success)";
+#         # if snmpwalk -v 2c -c $commString $switch 1.3.6.1.2.1.17.4.3.1.1 | grep MAC; then
+#         #   SNMP=$(snmpwalk -v 2c -c $commString $switch 1.3.6.1.2.1.17.4.3.1.1 | grep MAC)
+#         #   echo "# \"$SNMP\"";
+#         #   echo "snmp_mac_status{target=\"$netElNum\"} 1";
+#         # else 
+#         #   echo "snmp_mac_status{target=\"$netElNum\"} 0";
+#         # fi 
+#     fi
+# fi
 
 
 

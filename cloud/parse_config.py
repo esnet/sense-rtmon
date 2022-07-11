@@ -1,10 +1,6 @@
+# parsing the main config.yml and dynamically create layer 2 arguments
 import os
 import yaml
-import json
-import sys
-import time
-from subprocess import Popen, PIPE
-import subprocess
         
 config_data ={}
 owd = os.getcwd()
@@ -31,13 +27,20 @@ with open('se_config/config.yaml', 'r') as file:
     data = file.readlines()
 
 if switch_num == "1":
+    print("1 switch detected")
     switch_ip1 = str(config_data['switchData']['SNMPHostIP'])
     data[-1] = f"    script: ./examples/args.sh {pushgateway_ip} {host1} {host2} {switch_num} {switch_ip1} 0" # means no second switch 
-
 elif switch_num == "2":
+    print("2 switch detected")
     switch_ip1 = str(config_data['switchDataA']['SNMPHostIP'])
     switch_ip2 = str(config_data['switchDataB']['SNMPHostIP'])
     data[-1] = f"    script: ./examples/args.sh {pushgateway_ip} {host1} {host2} {switch_num} {switch_ip1} {switch_ip2}" 
-
+else:
+    print("Wrong Number of Switches Detected")
+    print("No modification made")
+    quit()
+    
 with open('se_config/config.yaml', 'w') as file:
     file.writelines(data)
+
+print("Parsing Completed")

@@ -1,6 +1,6 @@
 #! /bin/bash
 
-pushgateway=172.31.72.189
+pushgateway=172.31.72.18
 # from which host
 host1=198.32.43.16
 # contains which host

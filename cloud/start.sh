@@ -15,17 +15,17 @@ echo "!!    Remove previous stack"
 docker stack rm could
 echo "!!    Previous stack revmoed"
 
-echo "!!    Start Grafana-server"
-sudo systemctl start grafana-server
-
-echo "!!    Deploy promethues and pushgateway"
-docker stack deploy -c docker-stack.yml cloud
-
 echo "!!    Parsing config.yml"
 python3 parse_config.py
 
 echo "!!    Deploy script exporter"
 yes | cp -rfa se_config/. script_exporter/examples
+
+echo "!!    Start Grafana-server"
+sudo systemctl start grafana-server
+
+echo "!!    Deploy promethues and pushgateway"
+docker stack deploy -c docker-stack.yml cloud
 
 read -r -p "Generate Grafana Dashboar? [y/N enter]: " grafana
 if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then

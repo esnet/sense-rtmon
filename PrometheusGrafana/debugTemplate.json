@@ -470,7 +470,7 @@
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "Host 1 ARP Exporter Sending Data",
+          "legendFormat": "Host 1 ARP Exporter On",
           "refId": "A"
         },
         {
@@ -506,7 +506,7 @@
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "Host 2 ARP Exporter Sending Data",
+          "legendFormat": "Host 2 ARP Exporter On",
           "refId": "E"
         },
         {

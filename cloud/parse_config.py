@@ -1,7 +1,6 @@
 import os
 import yaml
 import json
-import requests
 import sys
 import time
 from subprocess import Popen, PIPE
@@ -29,7 +28,16 @@ host1 = str(config_data['HostA']['IP'])
 host2 = str(config_data['HostB']['IP'])
 
 if switch_num == "1":
-    switch_ip = str(config_data['switchData']['SNMPHostIP'])
+    switch_ip1 = str(config_data['switchData']['SNMPHostIP'])
 elif switch_num == "2":
-    switch_ip = str(config_data['switchDataA']['SNMPHostIP'])
-    switch_ip = str(config_data['switchDataB']['SNMPHostIP'])
+    switch_ip1 = str(config_data['switchDataA']['SNMPHostIP'])
+    switch_ip2 = str(config_data['switchDataB']['SNMPHostIP'])
+
+
+with open('se_config/config.yaml', 'r') as file:
+    data = file.readlines()
+
+data[-1] = f"    script: ./examples/args.sh {pushgateway_ip} {host1} {host2} {switch_num} {switch_ip1} {switch_ip2}" 
+  
+with open('example.txt', 'w', encoding='utf-8') as file:
+    file.writelines(data)

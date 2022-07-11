@@ -21,6 +21,9 @@ sudo systemctl start grafana-server
 echo "!!    Deploy promethues and pushgateway"
 docker stack deploy -c docker-stack.yml cloud
 
+echo "!!    Parsing config.yml"
+python3 parse_config.py
+
 echo "!!    Deploy script exporter"
 yes | cp -rfa se_config/. script_exporter/examples
 

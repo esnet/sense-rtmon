@@ -96,6 +96,7 @@ fi
 #     fi
 # fi
 
+####################### PAST CODE #################################
 
 # output=$(ping -c 1 "${ip_address}" 2>/dev/null)
 # echo "# HELP IP address of target remote host"

@@ -470,7 +470,7 @@
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "Host 1 ARP Exporter On",
+          "legendFormat": "Host1 ARP On",
           "refId": "A"
         },
         {
@@ -479,7 +479,7 @@
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "Host 1 pings Host 2",
+          "legendFormat": "Host1 Ping Host2",
           "refId": "B"
         },
         {
@@ -487,7 +487,7 @@
           "expr": "host1_snmp_mac_status",
           "hide": false,
           "interval": "",
-          "legendFormat": "Host 1 Contains Switch SNMP MAC Address Status",
+          "legendFormat": "Host1 Contains SNMP MAC Address",
           "refId": "C"
         },
         {
@@ -497,7 +497,7 @@
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "Host1 ARP table contains Host2 IP",
+          "legendFormat": "Host1 Contains Host2 IP",
           "refId": "D"
         },
         {
@@ -506,7 +506,7 @@
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "Host 2 ARP Exporter On",
+          "legendFormat": "Host2 ARP On",
           "refId": "E"
         },
         {
@@ -515,7 +515,7 @@
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "Host 2 pings Host 1",
+          "legendFormat": "Host2 Ping Host1",
           "refId": "F"
         },
         {
@@ -523,7 +523,7 @@
           "expr": "host2_snmp_mac_status",
           "hide": false,
           "interval": "",
-          "legendFormat": "Host 2 Contains Switch SNMP MAC Address Status",
+          "legendFormat": "Host2 Contains SNMP MAC Address",
           "refId": "G"
         },
         {
@@ -533,7 +533,7 @@
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "Host2 ARP table contains Host1 IP",
+          "legendFormat": "Host2 Contains Host1 IP",
           "refId": "H"
         }
       ],

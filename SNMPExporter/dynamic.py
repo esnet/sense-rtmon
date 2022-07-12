@@ -1,13 +1,14 @@
 import yaml
 import sys
+import fileinput
 import subprocess
 import os
+from datetime import datetime
 
 print("Starting script...")
 # Load yaml config file as dict
 print("Parsing config file...")
 data = {}
-
 with open(sys.argv[1], 'r') as stream:
     data = yaml.safe_load(stream)
 
@@ -61,5 +62,4 @@ subprocess.run("make mibs", shell=True, cwd=genLoc)
 print("Generating dynamic SNMP config file...")
 subprocess.run("./generator generate", shell=True, cwd=genLoc)
 
-subprocess.run("yes | cp -rfa snmp.yml ../../../../../",shell=True, cwd=genLoc)
 print("Success! Configured custom SNMP Exporter container")

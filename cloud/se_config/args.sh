@@ -106,6 +106,19 @@ if curl ${pushgateway}:9091/metrics | grep "go_gc.*instance=\"${host2}\".*job=\"
 else 
     echo "host2_snmp_on{host=\"${host2}\"} 0";
 fi
+
+####################### SMMP Exporter #################################
+if curl ${pushgateway}:9091/metrics | grep "go_gc.*instance=\"${host1}\".*job=\"node-exporter\".*"; then
+    echo "host1_node_on{host=\"${host1}\"} 1";
+else 
+    echo "host1_node_on{host=\"${host1}\"} 0";
+fi
+if curl ${pushgateway}:9091/metrics | grep "go_gc.*instance=\"${host2}\".*job=\"node-exporter\".*"; then
+    echo "host2_node_on{host=\"${host2}\"} 1";
+else 
+    echo "host2_node_on{host=\"${host2}\"} 0";
+fi
+
 ####################### PAST CODE #################################
 
 # output=$(ping -c 1 "${ip_address}" 2>/dev/null)

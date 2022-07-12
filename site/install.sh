@@ -1,7 +1,15 @@
 #! /bin/bash
 
 # install dependencies
+
+echo "!!    Download go1.18.3"
 yum install -y p7zip p7zip-plugins make
+wget https://dl.google.com/go/go1.18.3.linux-amd64.tar.gz
+rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.3.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+go env -w GO111MODULE=auto
+go version
+
 cd ..
 general_path=$PWD
 cd ./site

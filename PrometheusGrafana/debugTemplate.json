@@ -399,7 +399,7 @@
     },
     {
       "datasource": null,
-      "description": "",
+      "description": "ARP Exporter Metrics Correlation",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -543,7 +543,7 @@
     },
     {
       "datasource": null,
-      "description": "",
+      "description": "SNMP Exporter Metrics Correlation",
       "fieldConfig": {
         "defaults": {
           "color": {

@@ -10,8 +10,10 @@ print("Starting script...")
 print("Parsing config file...")
 data = {}
 with open(sys.argv[1], 'r') as stream:
-    data = yaml.safe_load(stream)
-
+    try:
+        data = yaml.safe_load(stream)
+    except yaml.YAMLError as exc:
+        print("\n USAGE: python3 dynamic.py <config-file> \n \n Tip: Ensure that the Python script dynamic.py, the supporting files, and the config file are in one directory without subdirectories or other hierarchies.\n")
 print("Collecting SNMP generator template...")
 with open('generatorTemplate.yml') as inGen, open('generator.yml', 'w') as outGen:
         for line in inGen:

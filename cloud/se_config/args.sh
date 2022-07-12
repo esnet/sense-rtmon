@@ -33,12 +33,12 @@ switch_ip1=$5
 switch_ip2=$6
 
 # check if ARP exporters are on
-if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*"; then
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*job=\"arpMetrics\".*"; then
     echo "host1_arp_on{host=\"${host1}\"} 1";
 else 
     echo "host1_arp_on{host=\"${host1}\"} 0";
 fi
-if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*"; then
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*job=\"arpMetrics\".*"; then
     echo "host2_arp_on{host=\"${host2}\"} 1";
 else 
     echo "host2_arp_on{host=\"${host2}\"} 0";

@@ -32,6 +32,8 @@ switch_ip1=$5
 # netowrk element 2 ip address
 switch_ip2=$6
 
+####################### ARP Exporter #################################
+
 # check if ARP exporters are on
 if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*job=\"arpMetrics\".*"; then
     echo "host1_arp_on{host=\"${host1}\"} 1";
@@ -93,7 +95,17 @@ fi
 #         echo "host2_snmp_mac_status2{host=\"${host2}\"} 0"
 #     fi
 # fi
-
+####################### SMMP Exporter #################################
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*job=\"snmp-exporter\".*"; then
+    echo "host1_snmp_on{host=\"${host1}\"} 1";
+else 
+    echo "host1_snmp_on{host=\"${host1}\"} 0";
+fi
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*job=\"snmp-exporter\".*"; then
+    echo "host2_snmp_on{host=\"${host2}\"} 1";
+else 
+    echo "host2_snmp_on{host=\"${host2}\"} 0";
+fi
 ####################### PAST CODE #################################
 
 # output=$(ping -c 1 "${ip_address}" 2>/dev/null)

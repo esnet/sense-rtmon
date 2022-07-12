@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import yaml
 import sys
 import fileinput
@@ -22,15 +20,18 @@ with open('generatorTemplate.yml') as inGen, open('generator.yml', 'w') as outGe
             outGen.write(line)
 print("Reading SNMP OIDs/Interfaces/Scrape Duration/Scrape Time from config file...")
 oids = set(data['oids'])
-for i in range(len(oids)):
-    oid = next(iter(oids))
-    snip = "      - " + str(oid) + "\n"
-    with open('generator.yml', 'r') as gen:
+
+# read all oids in first then add to generator file
+snip = ""
+for oid in oids:
+    snip = snip + "      - " + str(oid) + "\n"
+    # oids.remove(oid)
+with open('generator.yml', 'r') as gen:
         text = gen.readlines()
-    text[3+i] = snip
-    with open('generator.yml', 'w') as genOut:
-        genOut.writelines(text)
-    oids.remove(oid)
+text[3] = snip
+with open('generator.yml', 'w') as genOut:
+    genOut.writelines(text)
+    
 replacements = {'RETRY': str(data['retries']),
                 'TIMEOUT': str(data['scrapeTimeout']),
                 'COMMUNITYREADSTRING': str(data['communityString'])}
@@ -46,9 +47,10 @@ print("Writing SNMP Exporter generator config file...")
 with open('generator.yml', 'w') as file:
     file.write(filedata)
 print("Configuring SNMP Exporter Generator...")
+
 subprocess.run("sudo yum -y install p7zip p7zip-plugins gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel", shell=True)
-subprocess.run("wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz", shell=True)
-subprocess.run("sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz", shell=True)
+# subprocess.run("wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz", shell=True)
+# subprocess.run("sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz", shell=True)
 #subprocess.run("export PATH=$PATH:/usr/local/go/bin", shell=True)
 os.environ["PATH"] += os.pathsep + os.pathsep.join(["/usr/local/go/bin"])
 dir = str(os.getcwd())

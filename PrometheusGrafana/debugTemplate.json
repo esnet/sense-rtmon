@@ -319,6 +319,7 @@
       "transparent": true,
       "type": "stat"
     },
+    
     {
       "datasource": null,
       "description": "Remote Host MAC Address (Obtained from ARP Table)",
@@ -397,6 +398,7 @@
       "transparent": true,
       "type": "stat"
     },
+
     {
       "datasource": null,
       "description": "ARP Exporter Metrics Correlation",
@@ -541,6 +543,7 @@
       "transparent": true,
       "type": "state-timeline"
     },
+
     {
       "datasource": null,
       "description": "SNMP Exporter Metrics Correlation",
@@ -614,7 +617,7 @@
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "SNMP Exporter Running",
+          "legendFormat": "Host1 SNMP Exporter Running",
           "refId": "A"
         },
         {
@@ -623,7 +626,7 @@
           "hide": false,
           "instant": false,
           "interval": "",
-          "legendFormat": "SNMP Exporter Running",
+          "legendFormat": "Host2 SNMP Exporter Running",
           "refId": "B"
         },
         {
@@ -735,7 +738,7 @@
           "refId": "B"
         }
       ],
-      "title": "SNMP Exporter Debugger",
+      "title": "Node Exporter Debugger",
       "transparent": true,
       "type": "state-timeline"
     },

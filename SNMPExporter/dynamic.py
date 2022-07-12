@@ -1,6 +1,5 @@
 import yaml
 import sys
-import fileinput
 import subprocess
 import os
 from datetime import datetime

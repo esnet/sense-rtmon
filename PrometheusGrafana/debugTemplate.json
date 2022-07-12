@@ -648,6 +648,98 @@
       "transparent": true,
       "type": "state-timeline"
     },
+
+    {
+      "datasource": null,
+      "description": "Node Exporter Status",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 0
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "FAILURE"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "SUCCESS"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 2,
+      "options": {
+        "alignValue": "left",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "always",
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.2.3",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "host1_node_on",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "Host1 Node Exporter",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "host2_node_on",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "Host2 Node Exporter",
+          "refId": "B"
+        }
+      ],
+      "title": "SNMP Exporter Debugger",
+      "transparent": true,
+      "type": "state-timeline"
+    },
+
     {
       "datasource": null,
       "description": "Summary of Layer 2 Debugging Script Results",

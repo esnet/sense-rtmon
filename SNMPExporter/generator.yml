@@ -16,4 +16,3 @@ modules:
         lookup: ifAlias
       - source_indexes: [ifIndex]
         lookup: ifDescr 
- 

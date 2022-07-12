@@ -55,7 +55,7 @@ dir = str(os.getcwd())
 os.putenv("GOPATH", dir)
 subprocess.run("go get github.com/prometheus/snmp_exporter/generator", shell=True)
 genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
-genCmd = "sudo mv generator.yml " + genLoc
+genCmd = "yes | cp -rfa generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)
 subprocess.run("go build", shell=True, cwd=genLoc)
 subprocess.run("make mibs", shell=True, cwd=genLoc)

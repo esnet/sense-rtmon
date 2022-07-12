@@ -47,7 +47,6 @@ print("Writing SNMP Exporter generator config file...")
 with open('generator.yml', 'w') as file:
     file.write(filedata)
 print("Configuring SNMP Exporter Generator...")
-
 subprocess.run("sudo yum -y install p7zip p7zip-plugins gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel", shell=True)
 subprocess.run("wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz", shell=True)
 subprocess.run("sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz", shell=True)
@@ -57,7 +56,7 @@ dir = str(os.getcwd())
 os.putenv("GOPATH", dir)
 subprocess.run("go get github.com/prometheus/snmp_exporter/generator", shell=True)
 genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
-genCmd = "yes | cp -rfa generator.yml " + genLoc
+genCmd = "sudo mv generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)
 subprocess.run("go build", shell=True, cwd=genLoc)
 subprocess.run("make mibs", shell=True, cwd=genLoc)

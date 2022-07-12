@@ -1,19 +1,24 @@
 import yaml
 import sys
-import fileinput
 import subprocess
 import os
-from datetime import datetime
 
 print("Starting script...")
 # Load yaml config file as dict
 print("Parsing config file...")
 data = {}
 with open(sys.argv[1], 'r') as stream:
-    try:
-        data = yaml.safe_load(stream)
-    except yaml.YAMLError as exc:
-        print("\n USAGE: python3 dynamic.py <config-file> \n \n Tip: Ensure that the Python script dynamic.py, the supporting files, and the config file are in one directory without subdirectories or other hierarchies.\n")
+    data = yaml.safe_load(stream)
+
+# read from main config.yml
+# data = {}
+# owd = os.getcwd()
+# os.chdir("..")
+# infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
+# os.chdir(owd)
+# with open(infpth, 'r') as stream:
+#     data = yaml.safe_load(stream)
+
 print("Collecting SNMP generator template...")
 with open('generatorTemplate.yml') as inGen, open('generator.yml', 'w') as outGen:
         for line in inGen:
@@ -25,7 +30,7 @@ oids = set(data['oids'])
 snip = ""
 for oid in oids:
     snip = snip + "      - " + str(oid) + "\n"
-    # oids.remove(oid)
+
 with open('generator.yml', 'r') as gen:
         text = gen.readlines()
 text[3] = snip
@@ -35,7 +40,8 @@ with open('generator.yml', 'w') as genOut:
 replacements = {'RETRY': str(data['retries']),
                 'TIMEOUT': str(data['scrapeTimeout']),
                 'COMMUNITYREADSTRING': str(data['communityString'])}
-    # Iteratively find and replace in one go 
+# Iteratively find and replace in one go 
+
 # Read in the file
 with open('generator.yml', 'r') as file:
     filedata = file.read()
@@ -49,9 +55,6 @@ with open('generator.yml', 'w') as file:
 print("Configuring SNMP Exporter Generator...")
 
 subprocess.run("sudo yum -y install p7zip p7zip-plugins gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel", shell=True)
-# subprocess.run("wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz", shell=True)
-# subprocess.run("sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz", shell=True)
-#subprocess.run("export PATH=$PATH:/usr/local/go/bin", shell=True)
 os.environ["PATH"] += os.pathsep + os.pathsep.join(["/usr/local/go/bin"])
 dir = str(os.getcwd())
 os.putenv("GOPATH", dir)

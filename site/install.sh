@@ -1,9 +1,9 @@
 #! /bin/bash
 
 # install dependencies
-
+echo "!!    Dependencies for SNMP"
 echo "!!    Download go1.18.3"
-yum install -y p7zip p7zip-plugins make
+yum install -y p7zip p7zip-plugins make gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
 wget https://dl.google.com/go/go1.18.3.linux-amd64.tar.gz
 rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.3.linux-amd64.tar.gz
 export PATH=$PATH:/usr/local/go/bin

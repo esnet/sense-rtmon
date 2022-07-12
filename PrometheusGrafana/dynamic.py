@@ -2,12 +2,10 @@
 
 import yaml
 import sys
-import fileinput
 import subprocess
 import os
 from datetime import datetime
 
-# try:
 print("Parsing config file...")
 # Load yaml config file as dict
 owd = os.getcwd()
@@ -200,7 +198,3 @@ else:
     cmd = "sudo python3 api.py out.json outDebug.json"
     subprocess.run(cmd, shell=True)
     print("Loaded Grafana dashboard")
-# except KeyboardInterrupt:
-#     print("Interrupt detected")
-#     print("Shutting down SNMP Exporter instance to save resources...")
-

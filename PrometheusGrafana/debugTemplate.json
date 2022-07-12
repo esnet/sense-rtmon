@@ -610,7 +610,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "SNMP_on",
+          "expr": "host1_snmp_on",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -619,12 +619,21 @@
         },
         {
           "exemplar": true,
+          "expr": "host2_snmp_on",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "SNMP Exporter Running",
+          "refId": "B"
+        },
+        {
+          "exemplar": true,
           "expr": "switch_host1_mac",
           "hide": false,
           "instant": false,
           "interval": "",
           "legendFormat": "Switch Contains Host1 Mac Address",
-          "refId": "B"
+          "refId": "C"
         },
         {
           "exemplar": true,
@@ -632,7 +641,7 @@
           "hide": false,
           "interval": "",
           "legendFormat": "Switch Contains Host2 MAC Address",
-          "refId": "C"
+          "refId": "D"
         }
       ],
       "title": "SNMP Exporter Debugger",

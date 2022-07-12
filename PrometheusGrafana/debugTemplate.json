@@ -319,7 +319,7 @@
       "transparent": true,
       "type": "stat"
     },
-    
+
     {
       "datasource": null,
       "description": "Remote Host MAC Address (Obtained from ARP Table)",
@@ -595,7 +595,7 @@
         "x": 0,
         "y": 17
       },
-      "id": 2,
+      "id": 100,
       "options": {
         "alignValue": "left",
         "legend": {
@@ -703,7 +703,7 @@
         "x": 0,
         "y": 17
       },
-      "id": 2,
+      "id": 101,
       "options": {
         "alignValue": "left",
         "legend": {

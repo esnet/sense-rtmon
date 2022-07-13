@@ -26,7 +26,7 @@ services:
   snmp-exporter:
     image: prom/snmp-exporter:latest
     container_name: snmp-exporter
-    network_mode: "host"
+    # network_mode: "host"
     volumes:
       - ../SNMPExporter/src/github.com/prometheus/generator/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
     command: 

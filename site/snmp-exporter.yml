@@ -21,3 +21,5 @@ services:
     #   placement:
     #     constraints:
     #       - node.role == worker
+
+# sudo docker run -d --name snmp-exporter -p 9116:9116     -v ../SNMPExporter/src/github.com/prometheus/snmp_exporter/generator/snmp.yml:/etc/snmp_exporter/snmp.yml prom/snmp-exporter

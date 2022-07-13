@@ -23,7 +23,7 @@ services:
   # snmp-exporter:
   #   image: prom/snmp-exporter
   #   volumes:
-  #     - ../SNMPExporter/src/github.com/prometheus/generator/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+  #     - ../SNMPExporter/src/github.com/prometheus/snmp_exporter/generator/snmp.yml:/etc/snmp_exporter/snmp.yml
   #   command: 
   #     - '--config.file=/etc/snmp_exporter/snmp.yml'
   #   ports:

@@ -35,21 +35,23 @@ services:
       - 9116:9116
     restart: always
 
-  arp-exporter:
-    build: 
-      context: ../Metrics
-      dockerfile: arp.Dockerfile
-    container_name: arp-exporter
-    network_mode: "host"
-    restart: always
-    volumes:
-      - ../config.yml:/etc/arp_exporter/arp.yml
-      - ../Metrics/ARPMetrics/jsonFiles:/jsonFiles
-    ports:
-      - 9192:9192
-    deploy:
-      restart_policy:
-        condition: on-failure
+  # arp-exporter:
+  #   build: 
+  #     context: ../Metrics
+  #     dockerfile: arp.Dockerfile
+  #   container_name: arp-exporter
+  #   network_mode: "host"
+  #   restart: always
+  #   volumes:
+  #     - ../config.yml:/etc/arp_exporter/arp.yml
+  #     - ../Metrics/ARPMetrics/jsonFiles:/jsonFiles
+  #     - ../Metrics/ARPMetrics/arpFiles:/arpFiles
+  #     - ../Metrics/ARPMetrics/pingStat:/pingStat
+  #   ports:
+  #     - 9192:9192
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
 
   # tcp-exporter:
   #   build: 

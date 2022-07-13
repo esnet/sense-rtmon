@@ -1,7 +1,7 @@
 version: '3.8'
 
-networks:
-  site-net:
+# networks:
+#   site-net:
 
 services:
 
@@ -13,11 +13,11 @@ services:
       - '--config.file=/etc/snmp_exporter/snmp.yml'
     ports:
       - 9116:9116
-    networks:
-      - site-net
-    deploy:
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints:
-          - node.role == worker
+    # networks:
+    #   - site-net
+    # deploy:
+    #   restart_policy:
+    #     condition: on-failure
+    #   placement:
+    #     constraints:
+    #       - node.role == worker

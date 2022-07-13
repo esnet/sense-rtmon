@@ -80,11 +80,13 @@ fi
         echo "push_snmp_exporter_metrics.sh already exits"
         chmod +x /root/push_snmp_exporter_metrics.sh
     else
+        read -r -p "Enter switch IP :" switchIP
         touch /root/push_snmp_exporter_metrics.sh
         chmod +x /root/push_snmp_exporter_metrics.sh
         sudo tee /root/push_snmp_exporter_metrics.sh<<EOF
 #! /bin/bash
-curl -s ${MYIP}:9116/metrics | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/instance/$MYIP
+curl -o snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
+cat snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/instance/$MYIP
 EOF
 fi
 

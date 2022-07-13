@@ -96,18 +96,27 @@ fi
 #     fi
 # fi
 ####################### SMMP Exporter #################################
-if curl ${pushgateway}:9091/metrics | grep "go_gc.*instance=\"${host1}\".*job=\"snmp-exporter\".*"; then
+if curl ${pushgateway}:9091/metrics | grep "dot1.*instance=\"${host1}\".*job=\"snmp-exporter\".*"; then
     echo "host1_snmp_on{host=\"${host1}\"} 1";
 else 
     echo "host1_snmp_on{host=\"${host1}\"} 0";
 fi
-if curl ${pushgateway}:9091/metrics | grep "go_gc.*instance=\"${host2}\".*job=\"snmp-exporter\".*"; then
+if curl ${pushgateway}:9091/metrics | grep "dot1.*instance=\"${host2}\".*job=\"snmp-exporter\".*"; then
     echo "host2_snmp_on{host=\"${host2}\"} 1";
 else 
     echo "host2_snmp_on{host=\"${host2}\"} 0";
 fi
 
-####################### SMMP Exporter #################################
+inter_host1_mac="$(curl ${pushgateway}:9091/metrics | grep \".*instance=\"${host2}\".*ip_address=\"${host1}\".*\" | awk 'NR==1' 2>/dev/null)"
+inter2="$(echo \"${inter_host1_mac#*mac_address=\"}\")"
+host1_mac="$(echo \"${inter2%\"*}\")"
+
+host1mac= "$(curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${host1}\".*" | sed -E -n 's/.*mac_address=')"
+
+host2mac= 
+
+
+####################### NODE Exporter #################################
 if curl ${pushgateway}:9091/metrics | grep "go_gc.*instance=\"${host1}\".*job=\"node-exporter\".*"; then
     echo "host1_node_on{host=\"${host1}\"} 1";
 else 

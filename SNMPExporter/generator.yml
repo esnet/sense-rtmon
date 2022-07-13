@@ -1,7 +1,7 @@
 modules:
   if_mib:
     walk: # List of OIDs to walk. Can also be SNMP object names or specific
-      - 1.3.6.1.2.1.31
+      - 1.3.6.1.2.1.2.2
                          # May need to be reduced for buggy devices.
     retries: 3   # How many times to retry a failed request, defaults to 3.
     timeout: 5s  # Timeout for each individual SNMP request, defaults to 5s.

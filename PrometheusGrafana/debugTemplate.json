@@ -642,21 +642,21 @@
         },
         {
           "exemplar": true,
-          "expr": "host2_snmp_on",
-          "hide": false,
-          "instant": false,
-          "interval": "",
-          "legendFormat": "Host2 SNMP Exporter Running",
-          "refId": "B"
-        },
-        {
-          "exemplar": true,
           "expr": "switch_host1_mac",
           "hide": false,
           "instant": false,
           "interval": "",
           "legendFormat": "Switch Contains Host1 Mac Address",
           "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "host2_snmp_on",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "Host2 SNMP Exporter Running",
+          "refId": "B"
         },
         {
           "exemplar": true,

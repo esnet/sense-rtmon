@@ -70,6 +70,14 @@ class JsonCollector(object):
           else:
             requests.post(ping_url, data="Success_1_failure_0 0\n")
           delete_list.append(ping_url)
+          
+          # switch_ping = ping_lines[1].strip()
+          # switch_url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/ping_this_ip/{str(switch_ping)}"
+          # if switch_ping[-1] == "1":
+          #   requests.post(switch_url, data="Success_1_failure_0 1\n")
+          # else:
+          #   requests.post(switch_url, data="Success_1_failure_0 0\n")
+          # delete_list.append(switch_url)
 
       # post to pushgateway website
       for entry in response:

@@ -445,7 +445,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 12,
+        "h": 18,
         "w": 24,
         "x": 0,
         "y": 17
@@ -483,6 +483,16 @@
           "interval": "",
           "legendFormat": "Host1 Ping Host2",
           "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "host1_ping_switch",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "Host1 Ping Switch",
+          "refId": "I"
         },
         {
           "exemplar": true,
@@ -537,6 +547,16 @@
           "interval": "",
           "legendFormat": "Host2 Contains Host1 IP",
           "refId": "H"
+        },
+        {
+          "exemplar": true,
+          "expr": "host2_ping_switch",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "Host2 Ping Switch",
+          "refId": "J"
         }
       ],
       "title": "ARP Exporter Debugger",

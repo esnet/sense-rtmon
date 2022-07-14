@@ -65,8 +65,7 @@ genCmd = "yes | cp -rfa generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)
 subprocess.run("go build", shell=True, cwd=genLoc)
 subprocess.run("make mibs", shell=True, cwd=genLoc)
-print("Generating dynamic SNMP config file...")
-subprocess.run("./generator generate", shell=True, cwd=genLoc)
 
-subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
+# subprocess.run("./generator generate", shell=True, cwd=genLoc)
+# subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
 print("Success! Configured custom SNMP Exporter container")

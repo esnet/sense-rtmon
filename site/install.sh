@@ -1,18 +1,10 @@
 #! /bin/bash
-
-# install dependencies
-echo "!!    Dependencies for SNMP"
-echo "!!    Download go1.18.3"
-yum install -y p7zip p7zip-plugins make gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
-wget https://dl.google.com/go/go1.18.3.linux-amd64.tar.gz
-rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.3.linux-amd64.tar.gz
-export PATH=$PATH:/usr/local/go/bin
-go env -w GO111MODULE=auto
-go version
-
 cd ..
 general_path=$PWD
 cd ./site
+
+############################## DOCKER SETUP ##############################
+
 # check docker 
 if [ -x "$(command -v docker)" ]; then
     echo "||        Found docker..."
@@ -37,6 +29,8 @@ else
     # exit 1
 fi
 
+############################## DOCKER SWARM and PUSHGATEWAY ##############################
+
 # get correct IP address
 MYIP=$(hostname -I | head -n1 | awk '{print $1;}')
 read -r -p "Is ${MYIP} your IP address [y/N]: " correct_ip
@@ -53,132 +47,122 @@ if [ "$push_docker" == "y" ] || [ "$push_docker" == "Y" ]; then
     read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
     echo "!!    Initialize Docker Swarm"
     echo "$MYIP is used for docker swarm advertise"
-    docker swarm init --advertise-addr $MYIP
+
+    read -r -p "Init Docker Swarm [y/N (Enter)]: " swarm_init
+    if [ "$swarm_init" == "y" ] || [ "$swarm_init" == "Y" ]; then
+        docker swarm init --advertise-addr $MYIP
+    fi
 else 
     echo "Skip pushgateway and docker swarm"
 fi 
 
+############################## INSTALL GO & SNMP DEPENDENCIES ##############################
+read -r -p "Install SNMP Exporter [y/N (Enter)]: " snmp_install
+    if [ "$snmp_install" == "y" ] || [ "$snmp_install" == "Y" ]; then
+    echo "!!    Install SNMP dependencies"
+    echo "!!    Download go1.18.3"
+    yum install -y p7zip p7zip-plugins make gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
+    wget https://dl.google.com/go/go1.18.3.linux-amd64.tar.gz
+    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.3.linux-amd64.tar.gz # old go deleted
+    export PATH=$PATH:/usr/local/go/bin
+    go env -w GO111MODULE=auto
+    go version
+
+    # Make mibs, and install SNMP exporter. Config could be done late
+    echo "!!    Go build and Make mibs.."
+    cd ..
+    cd ./SNMPExporter
+    python3 dynamic.py
+    cd ..
+    cd ./site
+fi
+
+############################## AUTOPUSH BASH SCRIPTS SETUP ##############################
 
 read -r -p "Set up bash script? [y/N (Enter)]: " bashstart
 if [ "$bashstart" == "y" ] || [ "$bashstart" == "Y" ]; then
     echo "creating bash scripts"
     echo "!!    Setting up bash files to autopush Node and SNMP metrics to Pushgateway"
-    if [ -f "/root/push_node_exporter_metrics.sh" ]; then
-        echo "push_node_exporter_metrics.sh already exits"
-        chmod +x /root/push_node_exporter_metrics.sh
-    else
-        touch /root/push_node_exporter_metrics.sh
-        chmod +x /root/push_node_exporter_metrics.sh
-        sudo tee /root/push_node_exporter_metrics.sh<<EOF
+    > ./crontabs/push_node_exporter_metrics.sh
+    chmod +x ./crontabs/push_node_exporter_metrics.sh
+    sudo tee ./crontabs/push_node_exporter_metrics.sh<<EOF
 #! /bin/bash
 curl -s ${MYIP}:9100/metrics | curl --data-binary @- $pushgateway_server/metrics/job/node-exporter/instance/$MYIP
 EOF
-fi
 
-    echo ""
-    if [ -f "/root/push_snmp_exporter_metrics.sh" ]; then
-        echo "push_snmp_exporter_metrics.sh already exits"
-        chmod +x /root/push_snmp_exporter_metrics.sh
-    else
-        read -r -p "Enter switch IP :" switchIP
-        touch /root/push_snmp_exporter_metrics.sh
-        chmod +x /root/push_snmp_exporter_metrics.sh
-        sudo tee /root/push_snmp_exporter_metrics.sh<<EOF
+    # if [ -f "/root/push_snmp_exporter_metrics.sh" ]; then
+
+    read -r -p "Enter switch IP :" switchIP
+    touch ./crontabs/push_snmp_exporter_metrics.sh
+    chmod +x ./crontabs/push_snmp_exporter_metrics.sh
+    sudo tee ./crontabs/push_snmp_exporter_metrics.sh<<EOF
 #! /bin/bash
 curl -o snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
 cat snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/instance/$MYIP
 EOF
-fi
 
     echo ""
-    if [ -f "../Metrics/update_arp_exporter.sh" ]; then
-        echo "update_arp_exporter.sh already exits"
-        chmod +x /Metrics/update_arp_exporter.sh
-        mkdir ../Metrics/ARPMetrics/jsonFiles
-        mkdir ../Metrics/ARPMetrics/arpFiles
-        touch ../Metrics/ARPMetrics/arpFiles/arpOut.txt
-        touch ../Metrics/ARPMetrics/jsonFiles/arpOut.json
-        touch ../Metrics/ARPMetrics/jsonFiles/delete.json
-        touch ../Metrics/ARPMetrics/jsonFiles/prev.json
-        touch ../Metrics/ARPMetrics/pingStat/ping_status.txt
-    else
-        mkdir ../Metrics/ARPMetrics/jsonFiles
-        mkdir ../Metrics/ARPMetrics/arpFiles
-        touch ../Metrics/ARPMetrics/arpFiles/arpOut.txt
-        touch ../Metrics/ARPMetrics/jsonFiles/arpOut.json
-        touch ../Metrics/ARPMetrics/update_arp_exporter.sh
-        touch ../Metrics/ARPMetrics/jsonFiles/delete.json
-        touch ../Metrics/ARPMetrics/jsonFiles/prev.json
-        touch ../Metrics/ARPMetrics/pingStat/ping_status.txt
-        chmod +x ../Metrics/ARPMetrics/update_arp_exporter.sh
-        sudo tee ../Metrics/ARPMetrics/update_arp_exporter.sh<<EOF
-#! /bin/bash
-/sbin/arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt
-sleep 0.25
-python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json
-
-ping -c 1 $host2IP
-if [ $? -eq 0 ]; then 
-  echo "1" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
-else
-  echo "0" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
-fi
-EOF
-    fi
+    mkdir ../Metrics/ARPMetrics/jsonFiles
+    mkdir ../Metrics/ARPMetrics/arpFiles
+    touch ../Metrics/ARPMetrics/arpFiles/arpOut.txt
+    touch ../Metrics/ARPMetrics/jsonFiles/arpOut.json
+    touch ../Metrics/ARPMetrics/jsonFiles/delete.json
+    touch ../Metrics/ARPMetrics/jsonFiles/prev.json
+    touch ../Metrics/ARPMetrics/pingStat/ping_status.txt
+    touch ./crontabs/update_arp_exporter.sh
+    chmod +x ./crontabs/update_arp_exporter.sh
 
 else 
     echo "Nothing installed"
 fi
+
+############################## AUTOPUSH CRONTAB SETUP ##############################
 
 read -r -p "Set up crontab? [y/N (Enter)]: " crontab
 if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
     echo "Satring Crontab setup"
     # create a temporary copy paste file
     echo ""
-    if [ -f "/root/cron_autopush" ]; then
-        echo "cron_autopush already exits"
-    else
-        touch /root/cron_autopush
-        touch /root/cron_history
-    fi
+    > ./crontabs/cron_autopush
+    > ./crontabs/cron_history
 
     echo "!!    copy paste crontab to a temporary file"
-    crontab -l > /root/cron_autopush
-    crontab -l > /root/cron_history
+    crontab -l > ./crontabs/cron_autopush
+    crontab -l > ./crontabs/cron_history
 
     # check if job is alread in
-    if grep -F "/root/push_snmp_exporter_metrics.sh" /root/cron_autopush 
+    if grep -F "push_snmp_exporter_metrics.sh" ./crontabs/cron_autopush 
     then
         echo "task is already in cron, type crontab -e to check"
     else
-        echo "#Puppet Name: snmp exporter data to pushgateway every 15 seconds" >> /root/cron_autopush
-        echo "MAILTO=""" >> /root/cron_autopush
-        echo "* * * * * for i in 0 1 2; do /root/push_snmp_exporter_metrics.sh & sleep 15; done; /root/push_snmp_exporter_metrics.sh" >> /root/cron_autopush
+        echo "#Puppet Name: snmp exporter data to pushgateway every 15 seconds" >> ./crontabs/cron_autopush
+        echo "MAILTO=""" >> ./crontabs/cron_autopush
+        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/push_snmp_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_snmp_exporter_metrics.sh" >> ./crontabs/cron_autopush
     fi
 
-    if grep -F "/root/push_node_exporter_metrics.sh" /root/cron_autopush
+    if grep -F "push_node_exporter_metrics.sh" ./crontabs/cron_autopush
     then    
         echo "task is already in cron, type crontab -e to check"
     else
-        echo "#Puppet Name: node exporter data to pushgateway every 15 seconds" >> /root/cron_autopush
-        echo "MAILTO=""" >> /root/cron_autopush
-        echo "* * * * * for i in 0 1 2; do /root/push_node_exporter_metrics.sh & sleep 15; done; /root/push_node_exporter_metrics.sh" >> /root/cron_autopush
+        echo "#Puppet Name: node exporter data to pushgateway every 15 seconds" >> ./crontabs/cron_autopush
+        echo "MAILTO=""" >> ./crontabs/cron_autopush
+        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/push_node_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_node_exporter_metrics.sh" >> ./crontabs/cron_autopush
     fi
 
-    if grep -F "/update_arp_exporter.sh" /root/cron_autopush
+    if grep -F "update_arp_exporter.sh" ./crontabs/cron_autopush
     then    
         echo "task is already in cron, type crontab -e to check"
     else
-        echo "#Puppet Name: check update on arp table every 15 seconds" >> /root/cron_autopush
-        echo "MAILTO=""" >> /root/cron_autopush
-        echo "* * * * * for i in 0 1 2; do $general_path/Metrics/ARPMetrics/update_arp_exporter.sh & sleep 15; done; $general_path/Metrics/ARPMetrics/update_arp_exporter.sh" >> /root/cron_autopush
+        echo "#Puppet Name: check update on arp table every 15 seconds" >> ./crontabs/cron_autopush
+        echo "MAILTO=""" >> ./crontabs/cron_autopush
+        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/update_arp_exporter.sh & sleep 15; done; $PWD/crontabs/update_arp_exporter.sh" >> ./crontabs/cron_autopush
         # * * * * * /root/awsvm/DynamicDashboard/Metrics/ARPMetrics/update_arp_exporter.sh
         # every minute instead of 15 seconds
     fi
 
     echo ""
-    crontab /root/cron_autopush
-    rm -f /root/cron_autopush
+    crontab ./crontabs/cron_autopush
+    rm -f ./crontabs/cron_autopush
     echo "!!    crontab set up successfuly"
 else 
     echo "Skip crontab, crontab is needed to push metrics successfully"

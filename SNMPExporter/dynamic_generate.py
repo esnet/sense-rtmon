@@ -53,6 +53,7 @@ genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
 genCmd = "yes | cp -rfa generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)
 
+print("Generating dynamic SNMP config file...")
 subprocess.run("./generator generate", shell=True, cwd=genLoc)
 subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
 print("Success! Configured custom SNMP Exporter container")

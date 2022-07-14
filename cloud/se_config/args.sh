@@ -117,12 +117,13 @@ inter2="$(echo \"${inter_host2_mac#*mac_address=\"}\")"
 host2_mac=$(echo ${inter2%\}*})
 
 # find host1 and host2 mac addressed on SNMP metrics from switch
-if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac}.*"; then
-    echo "host1_snmp_on{host=\"${switch_ip1}\"} 1";
+# ^^ makes the mac addresses in upper case. SNMP mac addresses are in uppercase
+if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*"; then
+    echo "switch_host1_mac{host=\"${switch_ip1}\"} 1";
 else 
-    echo "host1_snmp_on{host=\"${switch_ip1}\"} 0";
+    echo "switch_host1_mac{host=\"${switch_ip1}\"} 0";
 fi
-if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac}.*"; then
+if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*"; then
     echo "switch_host2_mac{host=\"${switch_ip1}\"} 1";
 else 
     echo "switch_host2_mac{host=\"${switch_ip1}\"} 0";

@@ -27,7 +27,7 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     echo "!!    DynamicDashboard/SNMPExporter/snmpConfig.yml"
     read -p "Press enter to continue"
     cd ../SNMPExporter
-    python3 dynamic_config.py snmpConfig.yml
+    python3 dynamic_config.py
     cd ../site
     echo "Satring SNMP Exporter Service"
     # docker stack deploy -c snmp-exporter.yml site

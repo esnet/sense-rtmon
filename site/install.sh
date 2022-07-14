@@ -67,7 +67,7 @@ read -r -p "Install SNMP Exporter [y/N (Enter)]: " snmp_install
     export PATH=$PATH:/usr/local/go/bin
     go env -w GO111MODULE=auto
     go version
-
+    rm -rf go1.18.3.linux-amd64.tar.gz
     # Make mibs, and install SNMP exporter. Config could be done late
     echo "!!    Go build and Make mibs.."
     cd ..
@@ -97,7 +97,11 @@ EOF
     chmod +x ./crontabs/push_snmp_exporter_metrics.sh
     sudo tee ./crontabs/push_snmp_exporter_metrics.sh<<EOF
 #! /bin/bash
-curl -o snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
+if curl 198.32.43.16:9116/metrics | grep ".*"; then
+    curl -o snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
+else
+    > snmp_temp.txt	
+fi
 cat snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/instance/$MYIP
 EOF
 

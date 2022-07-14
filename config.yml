@@ -60,9 +60,20 @@ hostB:
   switchPort: 
     ifName: 'TenGigabitEthernet 0/45'
     ifIndex: 1054340
+switchData:
+  job_name: 'snmp1'
+  # The IP of the host which is running the SNMP Exporter container
+  SNMPHostIP: 198.32.43.16
+  # Scrape interval/duration time
+  scrapeInterval: 15s
+  scrapeDuration: 5h
+  target: 172.16.1.1
+  vlan: holder
+  #if-mib and F10-IF-EXTENSION-MIB
+  params: ['if_mib']
 snmpMetrics:
   # IP address of switch to configure
-  switchIP: 198.32.43.1
+  switchIP: 172.16.1.1
   # Scrape interval/duration time
   scrapeInterval: 15s
   scrapeDuration: 5h

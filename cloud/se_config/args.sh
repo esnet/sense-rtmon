@@ -107,14 +107,26 @@ else
     echo "host2_snmp_on{host=\"${host2}\"} 0";
 fi
 
+# get mac address of host 1 and host 2
 inter_host1_mac="$(curl ${pushgateway}:9091/metrics | grep \".*instance=\"${host2}\".*ip_address=\"${host1}\".*\" | awk 'NR==1' 2>/dev/null)"
-inter2="$(echo \"${inter_host1_mac#*mac_address=\"}\")"
-host1_mac="$(echo \"${inter2%\"*}\")"
+inter1="$(echo \"${inter_host1_mac#*mac_address=\"}\")"
+host1_mac=$(echo ${inter1%\}*})
 
-host1mac= "$(curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${host1}\".*" | sed -E -n 's/.*mac_address=')"
+inter_host2_mac="$(curl ${pushgateway}:9091/metrics | grep \".*instance=\"${host1}\".*ip_address=\"${host2}\".*\" | awk 'NR==1' 2>/dev/null)"
+inter2="$(echo \"${inter_host2_mac#*mac_address=\"}\")"
+host2_mac=$(echo ${inter2%\}*})
 
-host2mac= 
-
+# find host1 and host2 mac addressed on SNMP metrics from switch
+if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac}.*"; then
+    echo "host1_snmp_on{host=\"${switch_ip1}\"} 1";
+else 
+    echo "host1_snmp_on{host=\"${switch_ip1}\"} 0";
+fi
+if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac}.*"; then
+    echo "switch_host2_mac{host=\"${switch_ip1}\"} 1";
+else 
+    echo "switch_host2_mac{host=\"${switch_ip1}\"} 0";
+fi
 
 ####################### NODE Exporter #################################
 if curl ${pushgateway}:9091/metrics | grep "go_gc.*instance=\"${host1}\".*job=\"node-exporter\".*"; then

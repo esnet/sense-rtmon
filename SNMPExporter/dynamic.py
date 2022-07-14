@@ -6,25 +6,26 @@ import os
 print("Starting script...")
 # Load yaml config file as dict
 print("Parsing config file...")
-data = {}
-with open(sys.argv[1], 'r') as stream:
-    data = yaml.safe_load(stream)
+
+# data = {}
+# with open(sys.argv[1], 'r') as stream:
+#     data = yaml.safe_load(stream)
 
 # read from main config.yml
-# data = {}
-# owd = os.getcwd()
-# os.chdir("..")
-# infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
-# os.chdir(owd)
-# with open(infpth, 'r') as stream:
-#     data = yaml.safe_load(stream)
+data = {}
+owd = os.getcwd()
+os.chdir("..")
+infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
+os.chdir(owd)
+with open(infpth, 'r') as stream:
+    data = yaml.safe_load(stream)
 
 print("Collecting SNMP generator template...")
 with open('generatorTemplate.yml') as inGen, open('generator.yml', 'w') as outGen:
         for line in inGen:
             outGen.write(line)
 print("Reading SNMP OIDs/Interfaces/Scrape Duration/Scrape Time from config file...")
-oids = set(data['oids'])
+oids = set(data['snmpMetrics']['oids'])
 
 # read all oids in first then add to generator file
 snip = ""
@@ -37,9 +38,9 @@ text[3] = snip
 with open('generator.yml', 'w') as genOut:
     genOut.writelines(text)
     
-replacements = {'RETRY': str(data['retries']),
-                'TIMEOUT': str(data['scrapeTimeout']),
-                'COMMUNITYREADSTRING': str(data['communityString'])}
+replacements = {'RETRY': str(data['snmpMetrics']['retries']),
+                'TIMEOUT': str(data['snmpMetrics']['scrapeTimeout']),
+                'COMMUNITYREADSTRING': str(data['snmpMetrics']['communityString'])}
 # Iteratively find and replace in one go 
 
 # Read in the file

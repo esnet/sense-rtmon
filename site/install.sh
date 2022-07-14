@@ -61,14 +61,23 @@ read -r -p "Install SNMP Exporter [y/N (Enter)]: " snmp_install
     if [ "$snmp_install" == "y" ] || [ "$snmp_install" == "Y" ]; then
     echo "!!    Install SNMP dependencies"
     echo "!!    Download go1.18.3"
-    yum install -y p7zip p7zip-plugins make gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
     wget https://dl.google.com/go/go1.18.3.linux-amd64.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.3.linux-amd64.tar.gz # old go deleted
     export PATH=$PATH:/usr/local/go/bin
     go env -w GO111MODULE=auto
     go version
     rm -rf go1.18.3.linux-amd64.tar.gz
+    sleep 0.2
+    
+    dnf update -y
+    yum update -y 
+
+    dnf install kernel-devel make gcc gcc-c++ -y --disableexcludes=all
+    yum install -y p7zip p7zip-plugins make gcc gcc-c++ net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
+    yum install gcc gcc-c+
     # Make mibs, and install SNMP exporter. Config could be done late
+    
+    sleep 0.2
     echo "!!    Go build and Make mibs.."
     cd ..
     cd ./SNMPExporter

@@ -60,17 +60,6 @@ hostB:
   switchPort: 
     ifName: 'TenGigabitEthernet 0/45'
     ifIndex: 1054340
-# Prometheus source specifics
-switchData:
-  job_name: 'snmp1'
-  # The IP of the host which is running the SNMP Exporter container
-  SNMPHostIP: 198.32.43.16
-  # Scrape interval/duration time
-  scrapeInterval: 15s
-  scrapeDuration: 5h
-  target: 172.16.1.14
-  #if-mib and F10-IF-EXTENSION-MIB
-  params: ['if_mib']
 snmpMetrics:
   # IP address of switch to configure
   switchIP: 198.32.43.1
@@ -78,7 +67,7 @@ snmpMetrics:
   scrapeInterval: 15s
   scrapeDuration: 5h
   # OIDs to scrape
-  oids: [1.3.6.1.2.1.31]
+  oids: [1.3.6.1.2.1.17.4.3.1.1, 1.3.6.1.2.1.31]
   # SNMP community read string
   communityString: "COMMUNITYSTRING"
   # Scrape timeout default is 5s

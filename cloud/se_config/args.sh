@@ -34,11 +34,11 @@ switch_ip2=$6
 
 ####################### ARP Exporter #################################
 # get switch 1 mac address 
-inter_switch_mac="$(curl ${pushgateway}:9091/metrics | grep \".*ip_address=\"${switch_ip1}\".*\" | awk 'NR==1' 2>/dev/null)"
-inter_switch="$(echo \"${inter_switch_mac#*mac_address=\"}\")"
-switch1_mac=$(echo ${inter_switch%\}*})
-switch1_mac=$(echo ${switch1_mac%\"*})
-switch1_mac=$(echo ${switch1_mac#*\"})
+# inter_switch_mac="$(curl ${pushgateway}:9091/metrics | grep \".*ip_address=\"${switch_ip1}\".*\" | awk 'NR==1' 2>/dev/null)"
+# inter_switch="$(echo \"${inter_switch_mac#*mac_address=\"}\")"
+# switch1_mac=$(echo ${inter_switch%\}*})
+# switch1_mac=$(echo ${switch1_mac%\"*})
+# switch1_mac=$(echo ${switch1_mac#*\"})
 
 # check if ARP exporters are on
 if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*job=\"arpMetrics\".*"; then

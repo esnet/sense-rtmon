@@ -167,7 +167,7 @@
     },
     {
       "datasource": null,
-      "description": "Remote Host IP",
+      "description": "Host1 MAC address (Obtained from ARP Table)",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -231,7 +231,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "remote_host_mac",
+          "expr": "host1_mac",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -239,13 +239,13 @@
           "refId": "A"
         }
       ],
-      "title": "Remote Host IP",
+      "title": "Host1 MAC",
       "transparent": true,
       "type": "stat"
     },
     {
       "datasource": null,
-      "description": "Remote Host Interface (Obtained from ARP Table)",
+      "description": "Swtich MAC address (Obtained from ARP Table)",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -307,7 +307,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "remote_host_mac",
+          "expr": "switch1_mac",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -315,14 +315,14 @@
           "refId": "A"
         }
       ],
-      "title": "Remote Host Interface",
+      "title": "Switch MAC",
       "transparent": true,
       "type": "stat"
     },
 
     {
       "datasource": null,
-      "description": "Remote Host MAC Address (Obtained from ARP Table)",
+      "description": "Host2 MAC Address (Obtained from ARP Table)",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -386,7 +386,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "remote_host_mac",
+          "expr": "host2_mac",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -394,7 +394,7 @@
           "refId": "A"
         }
       ],
-      "title": "Remote Host MAC Address",
+      "title": "Host2 MAC",
       "transparent": true,
       "type": "stat"
     },

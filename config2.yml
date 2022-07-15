@@ -5,7 +5,7 @@ dashTitle: "Top Flow Dashboard"
 # L2 Debugging Dashboard Title
 debugTitle: "Top Flow L2 Debugging Dashboard"
 # Flow number
-flow: "flow 2 "
+flow: " flow 2 "
 # vlan flow
 vlan flow: 2000
 # This host's IP address

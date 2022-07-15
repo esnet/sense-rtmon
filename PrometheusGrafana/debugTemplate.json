@@ -198,21 +198,20 @@
       },
       "id": 8,
       "options": {
+        "reduceOptions": {
+          "values": true,
+          "calcs": [
+            "diffperc"
+          ],
+          "fields": "/^Value$/",
+          "limit": 5
+        },
+        "orientation": "auto",
+        "textMode": "name",
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "valueSize": 32
-        },
-        "textMode": "name"
+        "text": {}
       },
       "pluginVersion": "8.2.3",
       "targets": [
@@ -263,19 +262,20 @@
       },
       "id": 7,
       "options": {
+        "reduceOptions": {
+          "values": true,
+          "calcs": [
+            "diffperc"
+          ],
+          "fields": "/^Value$/",
+          "limit": 5
+        },
+        "orientation": "auto",
+        "textMode": "name",
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "name"
+        "text": {}
       },
       "pluginVersion": "8.2.3",
       "targets": [
@@ -327,21 +327,20 @@
       },
       "id": 6,
       "options": {
+        "reduceOptions": {
+          "values": true,
+          "calcs": [
+            "diffperc"
+          ],
+          "fields": "/^Value$/",
+          "limit": 5
+        },
+        "orientation": "auto",
+        "textMode": "name",
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "valueSize": 32
-        },
-        "textMode": "name"
+        "text": {}
       },
       "pluginVersion": "8.2.3",
       "targets": [

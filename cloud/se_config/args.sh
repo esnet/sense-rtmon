@@ -34,11 +34,11 @@ switch_ip2=$6
 
 ####################### ARP Exporter #################################
 # get switch 1 mac address 
-# inter_switch_mac="$(curl ${pushgateway}:9091/metrics | grep \".*ip_address=\"${switch_ip1}\".*\" | awk 'NR==1' 2>/dev/null)"
-# inter_switch="$(echo \"${inter_switch_mac#*mac_address=\"}\")"
-# switch1_mac=$(echo ${inter_switch%\}*})
-# switch1_mac=$(echo ${switch1_mac%\"*})
-# switch1_mac=$(echo ${switch1_mac#*\"})
+inter_switch_mac="$(curl ${pushgateway}:9091/metrics | grep \".*ip_address=\"${switch_ip1}\".*\" | awk 'NR==1' 2>/dev/null)"
+inter_switch="$(echo \"${inter_switch_mac#*mac_address=\"}\")"
+switch1_mac=$(echo ${inter_switch%\}*})
+switch1_mac_no_quote=$(echo ${switch1_mac%\"*})
+switch1_mac_no_quote=$(echo ${switch1_mac_no_quote#*\"})
 
 # check if ARP exporters are on
 if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*job=\"arpMetrics\".*"; then
@@ -79,13 +79,13 @@ fi
 # SNMP mac address check switch 1
 if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip1}\".*mac_address.*"; then
     echo "host1_snmp_mac_status{host=\"${host1}\"} 1"
-    echo "switch1_mac{mac=\"${switch1_mac}\"} ${switch1_mac}"
+    echo "switch1_mac{mac=\"${switch1_mac_no_quote}\"} 1"
 else 
     echo "host1_snmp_mac_status{host=\"${host1}\"} 0"
 fi
 if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip1}\".*mac_address.*"; then
     echo "host2_snmp_mac_status{host=\"${host2}\"} 1"
-    echo "switch1_mac{mac=\"${switch1_mac}\"} ${switch1_mac}"
+    echo "switch1_mac{mac=\"${switch1_mac_no_quote}\"} 1"
 else 
     echo "host2_snmp_mac_status{host=\"${host2}\"} 0"
 fi

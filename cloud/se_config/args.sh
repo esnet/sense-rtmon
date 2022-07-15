@@ -34,11 +34,11 @@ switch_ip2=$6
 
 ####################### ARP Exporter #################################
 # get switch 1 mac address 
-inter_switch_mac="$(curl ${pushgateway}:9091/metrics | grep \".*ip_address=\"${switch_ip1}\".*\" | awk 'NR==1' 2>/dev/null)"
-inter_switch="$(echo \"${inter_switch_mac#*mac_address=\"}\")"
-switch1_mac=$(echo ${inter_switch%\}*})
-switch1_mac=$(echo ${switch1_mac%\"*})
-switch1_mac=$(echo ${switch1_mac#*\"})
+# inter_switch_mac="$(curl ${pushgateway}:9091/metrics | grep \".*ip_address=\"${switch_ip1}\".*\" | awk 'NR==1' 2>/dev/null)"
+# inter_switch="$(echo \"${inter_switch_mac#*mac_address=\"}\")"
+# switch1_mac=$(echo ${inter_switch%\}*})
+# switch1_mac=$(echo ${switch1_mac%\"*})
+# switch1_mac=$(echo ${switch1_mac#*\"})
 
 # check if ARP exporters are on
 if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*job=\"arpMetrics\".*"; then
@@ -130,26 +130,26 @@ fi
 inter_host1_mac="$(curl ${pushgateway}:9091/metrics | grep \".*instance=\"${host2}\".*ip_address=\"${host1}\".*\" | awk 'NR==1' 2>/dev/null)"
 inter1="$(echo \"${inter_host1_mac#*mac_address=\"}\")"
 host1_mac=$(echo ${inter1%\}*})
-host1_mac_no_quote=$(echo ${host1_mac%\"*})
-host1_mac_no_quote=$(echo ${host1_mac_no_quote#*\"})
+# host1_mac_no_quote=$(echo ${host1_mac%\"*})
+# host1_mac_no_quote=$(echo ${host1_mac_no_quote#*\"})
 
 inter_host2_mac="$(curl ${pushgateway}:9091/metrics | grep \".*instance=\"${host1}\".*ip_address=\"${host2}\".*\" | awk 'NR==1' 2>/dev/null)"
 inter2="$(echo \"${inter_host2_mac#*mac_address=\"}\")"
 host2_mac=$(echo ${inter2%\}*})
-host2_mac_no_quote=$(echo ${host2_mac%\"*})
-host2_mac_no_quote=$(echo ${host2_mac_no_quote#*\"})
+# host2_mac_no_quote=$(echo ${host2_mac%\"*})
+# host2_mac_no_quote=$(echo ${host2_mac_no_quote#*\"})
 
 # find host1 and host2 mac addressed on SNMP metrics from switch
 # ^^ makes the mac addresses in upper case. SNMP mac addresses are in uppercase
 if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*"; then
     echo "switch_host1_mac{host=\"${switch_ip1}\"} 1";
-    echo "host1_mac{mac=\"${host1_mac_no_quote}\"} 1"
+    # echo "host1_mac{mac=\"${host1_mac_no_quote}\"} 1"
 else 
     echo "switch_host1_mac{host=\"${switch_ip1}\"} 0";
 fi
 if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*"; then
     echo "switch_host2_mac{host=\"${switch_ip1}\"} 1";
-    echo "host2_mac{mac=\"${host2_mac_no_quote}\"} ${host2_mac_no_quote}"
+    # echo "host2_mac{mac=\"${host2_mac_no_quote}\"} ${host2_mac_no_quote}"
 else 
     echo "switch_host2_mac{host=\"${switch_ip1}\"} 0";
 fi

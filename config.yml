@@ -14,7 +14,7 @@ grafanaHostIP: 'dev2.virnao.com'
 # Default is 3000
 grafanaPort: 3000
 # Grafana API Token
-grafanaAPIToken: "Bearer eyJrIjoiRjRpazhiRVRKUG1USjBGbkNQNU9XdjlIUmRWRmpJSVoiLCJuIjoiYWRtaW4iLCJpZCI6MX0="
+grafanaAPIToken: "Bearer eyJrIjoiNWYwWEFzVTRUUHQ5TWg3cVBUdHpMV01PREo1aWJmeUkiLCJuIjoiMDcvMTQiLCJpZCI6MX0="
 # TCP/ARP Data
 tcpMetrics:
   port: 9191

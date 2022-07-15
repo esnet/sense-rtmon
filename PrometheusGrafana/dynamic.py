@@ -52,6 +52,7 @@ if data['switchNum'] == 1:
                     'SNMPNAME': str(data['switchData']['job_name']),
                     'SCRAPEINTERVAL': str(data['switchData']['scrapeInterval']),
                     'PARAMS': str(data['switchData']['params']),
+                    'SWITCHIF': str(data['switchData']['switchif']),
                     'SNMPHOSTIP': str(data['switchData']['SNMPHostIP']),
                     'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + timeTxt,
                     'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + timeTxt}
@@ -107,6 +108,7 @@ else:
                         'TCPNAME': str(data['tcpMetrics']['job_name']),
                         'IPSWITCHA': str(data['switchDataA']['target']),
                         'IPSWITCHB': str(data['switchDataB']['target']),
+                        'SWITCHIF': str(data['switchData']['switchif']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
                         'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + timeTxt,
                         'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + timeTxt}
@@ -142,6 +144,7 @@ else:
                         'IPSWITCHA': str(data['switchDataA']['target']), 
                         'IPSWITCHB': str(data['switchDataB']['target']),
                         'IPSWITCHC': str(data['switchDataC']['target']),
+                        'SWITCHIF': str(data['switchData']['switchif']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
                         'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + timeTxt,
                         'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + timeTxt}
@@ -182,6 +185,7 @@ else:
                         'IPSWITCHB': str(data['switchDataB']['target']),
                         'IPSWITCHC': str(data['switchDataC']['target']),
                         'IPSWITCHD': str(data['switchDataD']['target']),
+                        'SWITCHIF': str(data['switchData']['switchif']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
                         'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + timeTxt,
                         'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + timeTxt}

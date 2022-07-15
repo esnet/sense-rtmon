@@ -5,9 +5,9 @@ dashTitle: "Top Flow Dashboard"
 # L2 Debugging Dashboard Title
 debugTitle: "Top Flow L2 Debugging Dashboard"
 # Flow number
-flow: "flow 1 "
+flow: "flow 2 "
 # vlan flow
-vlan flow: 1000
+vlan flow: 2000
 # This host's IP address
 hostIP: 198.32.43.16
 # Prometheus Port
@@ -25,7 +25,7 @@ hostA:
   interfaceName: 'enp4s0f0'
   interfaceIP: '10.10.100.1'
   nodeName: 'sdn-dtn-2-10.ultralight.org'
-  vlan: 1000
+  vlan: 2000
   nodeExporterPort: 9100
   switchPort: 
     ifName: 'TenGigabitEthernet 0/46'
@@ -36,7 +36,7 @@ hostB:
   interfaceName: 'enp4s0f0'
   interfaceIP: '10.10.100.2'
   nodeName: 'sdn-dtn-2-11.ultralight.org'
-  vlan: 1000
+  vlan: 2000
   nodeExporterPort: 9100
   switchPort: 
     ifName: 'TenGigabitEthernet 0/45'

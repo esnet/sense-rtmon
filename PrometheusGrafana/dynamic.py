@@ -51,8 +51,8 @@ if data['switchNum'] == 1:
                     'SCRAPEINTERVAL': str(data['switchData']['scrapeInterval']),
                     'PARAMS': str(data['switchData']['params']),
                     'SNMPHOSTIP': str(data['switchData']['SNMPHostIP']),
-                    'DASHTITLE': str(data['dashTitle']) + timeTxt,
-                    'DEBUGTITLE': str(data['debugTitle']) + timeTxt}
+                    'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + timeTxt,
+                    'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + timeTxt}
     print("Creating custom Grafana JSON Dashboard...")
     print("Creating custom L2 Debugging Dashboard...")
     # Iteratively find and replace in one go 
@@ -104,8 +104,8 @@ else:
                         'IPSWITCHA': str(data['switchDataA']['target']),
                         'IPSWITCHB': str(data['switchDataB']['target']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
-                        'DASHTITLE':str(data['dashTitle']) + timeTxt,
-                        'DEBUGTITLE': str(data['debugTitle']) + timeTxt}
+                        'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + timeTxt,
+                        'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + timeTxt}
     elif data['switchNum'] == 3:
         replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                         'IPHOSTB': str(data['hostB']['IP']),
@@ -137,8 +137,8 @@ else:
                         'IPSWITCHB': str(data['switchDataB']['target']),
                         'IPSWITCHC': str(data['switchDataC']['target']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
-                        'DASHTITLE':str(data['dashTitle']) + timeTxt,
-                        'DEBUGTITLE': str(data['debugTitle']) + timeTxt}
+                        'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + timeTxt,
+                        'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + timeTxt}
     else:
         replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                         'IPHOSTB': str(data['hostB']['IP']),
@@ -175,8 +175,8 @@ else:
                         'IPSWITCHC': str(data['switchDataC']['target']),
                         'IPSWITCHD': str(data['switchDataD']['target']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
-                        'DASHTITLE':str(data['dashTitle']) + timeTxt,
-                        'DEBUGTITLE': str(data['debugTitle']) + timeTxt}
+                        'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + timeTxt,
+                        'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + timeTxt}
     print("Creating custom Grafana JSON Dashboard...")
     print("Creating custom L2 Debugging JSON Dashboard...")
     # Iteratively find and replace in one go 

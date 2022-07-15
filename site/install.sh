@@ -6,29 +6,31 @@ cd ./site
 ############################## DOCKER SETUP ##############################
 
 # check docker 
-if [ -x "$(command -v docker)" ]; then
-    echo "||        Found docker..."
-    echo "||        Running docker login..."
-    docker login
-else
-    echo "!!    Docker command not found."
-    echo "!!    Please visit https://docs.docker.com/install/ for installation instructions."
-    exit 1
-fi
+read -r -p "Login to Docker [y/N enter]: " docker_login
+if [ "$docker_login" == "y" ] || [ "$docker_login" == "Y" ]; then
+    if [ -x "$(command -v docker)" ]; then
+        echo "||        Found docker..."
+        echo "||        Running docker login..."
+        docker login
+    else
+        echo "!!    Docker command not found."
+        echo "!!    Please visit https://docs.docker.com/install/ for installation instructions."
+        exit 1
+    fi
 
-# check docker compose
-if [ -x "$(command -v docker compose)" ]; then
-    echo "||        Found docker compose..."
-    echo "||        Running docker login..."
-    docker login
-else
-    echo "!!    Docker compose command not found."
-    echo "!!    Installing docker compose"
-    suod yum install -y docker-compose-plugin
-    docker login
-    # exit 1
+    # check docker compose
+    if [ -x "$(command -v docker compose)" ]; then
+        echo "||        Found docker compose..."
+        echo "||        Running docker login..."
+        docker login
+    else
+        echo "!!    Docker compose command not found."
+        echo "!!    Installing docker compose"
+        suod yum install -y docker-compose-plugin
+        docker login
+        # exit 1
+    fi
 fi
-
 ############################## DOCKER SWARM and PUSHGATEWAY ##############################
 
 # get correct IP address
@@ -37,6 +39,7 @@ read -r -p "Is ${MYIP} your IP address [y/N]: " correct_ip
 if [ "$correct_ip" == "N" ] || [ "$correct_ip" == "n" ]; then
     read -r -p "Type in your ip address: " MYIP
 fi
+read -r -p "Enter VLAN (e.g. 1000): " VLAN
 
 # get host2 IP address
 read -r -p "Enter host2 IP address (if needed): " host2IP
@@ -102,16 +105,16 @@ EOF
     # if [ -f "/root/push_snmp_exporter_metrics.sh" ]; then
 
     read -r -p "Enter switch IP :" switchIP
-    touch ./crontabs/push_snmp_exporter_metrics.sh
-    chmod +x ./crontabs/push_snmp_exporter_metrics.sh
-    sudo tee ./crontabs/push_snmp_exporter_metrics.sh<<EOF
+    touch ./crontabs/push_snmp_exporter_metrics_$VLAN.sh
+    chmod +x ./crontabs/push_snmp_exporter_metrics_$VLAN.sh
+    sudo tee ./crontabs/push_snmp_exporter_metrics_$VLAN.sh<<EOF
 #! /bin/bash
 if curl 198.32.43.16:9116/metrics | grep ".*"; then
     curl -o snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
 else
     > snmp_temp.txt	
 fi
-cat snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/instance/$MYIP
+cat snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/vlan/$VLAN/instance/$MYIP
 EOF
 
     echo ""
@@ -144,20 +147,20 @@ if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
     crontab -l > ./crontabs/cron_history
 
     # check if job is alread in
-    if grep -F "push_snmp_exporter_metrics.sh" ./crontabs/cron_autopush 
+    if grep -F "push_snmp_exporter_metrics_$VLAN.sh" ./crontabs/cron_autopush 
     then
         echo "task is already in cron, type crontab -e to check"
     else
-        echo "#Puppet Name: snmp exporter data to pushgateway every 15 seconds" >> ./crontabs/cron_autopush
+        echo "#Puppet Name: snmp exporter vlan $VLAN send data to pushgateway every 15 seconds" >> ./crontabs/cron_autopush
         echo "MAILTO=""" >> ./crontabs/cron_autopush
-        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/push_snmp_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_snmp_exporter_metrics.sh" >> ./crontabs/cron_autopush
+        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/push_snmp_exporter_metrics_$VLAN.sh & sleep 15; done; $PWD/crontabs/push_snmp_exporter_metrics_$VLAN.sh" >> ./crontabs/cron_autopush
     fi
 
     if grep -F "push_node_exporter_metrics.sh" ./crontabs/cron_autopush
     then    
         echo "task is already in cron, type crontab -e to check"
     else
-        echo "#Puppet Name: node exporter data to pushgateway every 15 seconds" >> ./crontabs/cron_autopush
+        echo "#Puppet Name: node exporter send data to pushgateway every 15 seconds" >> ./crontabs/cron_autopush
         echo "MAILTO=""" >> ./crontabs/cron_autopush
         echo "* * * * * for i in 0 1 2; do $PWD/crontabs/push_node_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_node_exporter_metrics.sh" >> ./crontabs/cron_autopush
     fi

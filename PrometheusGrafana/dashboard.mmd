@@ -1,0 +1,35 @@
+# Mermaid for grafana panel diagram editing
+graph LR
+      
+    subgraph h1 ["Host 1"]
+        h1ip{{IP: 10.10.100.1 - VLAN: 1000}}
+        h1e1(enp4s0f0)
+        style h1e1 fill: #66cc66
+    end
+
+    h1e1 ---- sw1s1if
+      
+    subgraph sw1 ["Switch 1"]
+        subgraph sw1s1 ["interface 1"]
+            sw1s1vlan{{IP:172.16.1.1 - VLAN: 1000}}
+            sw1s1if[TenGigabitEthernet 0/46]
+            style sw1s1if fill: #66cc66
+        end
+        subgraph sw1s2 ["interface 2"]
+            sw1s2if[TenGigabitEthernet 0/45]
+            sw1s2vlan{{IP:172.16.1.1 - VLAN: 1000}}
+            style sw1s2if fill: #66cc66
+        end
+        style sw1 fill: #282828
+    end
+
+    subgraph h2 ["Host 2"]
+        h2ip2{{IP: 10.10.100.2 - VLAN: 1000}}
+        h2e2(enp4s0f0)
+        style h2e2 fill: #66cc66
+    end
+
+    sw1s2if ---- h2e2
+
+
+"content": "graph LR\n subgraph h1 [\"Host 1\"]\n h1ip{{IP: DATAPLANEIPA - VLAN: VLANA}}\n h1e1(IFNAMEHOSTA)\n style h1e1 fill: #50C878\n end\nh1e1 --------- sw1s1if\n subgraph sw1 [\"Switch 1\"]\n subgraph sw1s1 [\"interface 1\"]\n sw1s1vlan{{IP: DATAPLANEIPA - VLAN: VLANA}}\n sw1s1if[NAMEIFSWITCHA]\n style sw1s1if fill: #50C878\n end\n subgraph sw1s2 [\"interface 2\"]\n sw1s2if[NAMEIFSWITCHB]\n sw1s2vlan{{IP: DATAPLANEIPB -VLAN: VLANB}}\n style sw1s2if fill: #50C878\n end\n end\n style sw1 fill: #282828\n subgraph h2 [\"Host 2\"]\n h2ip2{{IP: DATAPLANEIPB - VLAN: VLANB}}\n h2e2(IFNAMEHOSTB)\n style h2e2 fill: #50C878\n end\n sw1s2if ---------  h2e2 \n",

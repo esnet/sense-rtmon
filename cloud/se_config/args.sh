@@ -27,10 +27,12 @@ host1=$2
 host2=$3
 # number of network elemenet
 switch_num=$4
+# vlan number 
+vlan_num=$6
 # network element ip address
-switch_ip1=$5
+switch_ip1=$6
 # netowrk element 2 ip address
-switch_ip2=$6
+switch_ip2=$7
 
 ####################### ARP Exporter #################################
 # get switch 1 mac address 
@@ -141,13 +143,13 @@ host2_mac_no_quote=$(echo ${host2_mac_no_quote#*\"})
 
 # find host1 and host2 mac addressed on SNMP metrics from switch
 # ^^ makes the mac addresses in upper case. SNMP mac addresses are in uppercase
-if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*"; then
+if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*vlan=\"${vlan_num}\".*"; then
     echo "switch_host1_mac{host=\"${switch_ip1}\"} 1";
     echo "host1_mac{mac=\"${host1_mac_no_quote}\"} 1"
 else 
     echo "switch_host1_mac{host=\"${switch_ip1}\"} 0";
 fi
-if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*"; then
+if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*vlan=\"${vlan_num}\".*"; then
     echo "switch_host2_mac{host=\"${switch_ip1}\"} 1";
     echo "host2_mac{mac=\"${host2_mac_no_quote}\"} 1"
 else 

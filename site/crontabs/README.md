@@ -1,1 +1,1 @@
-This is a place holder folder contains all the script files that will be filled during the install process.
+This is a place holder folder contains all the script files that will be filled during the install process (./site/install.sh).

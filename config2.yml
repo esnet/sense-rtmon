@@ -7,7 +7,7 @@ debugTitle: "Top Flow L2 Debugging Dashboard"
 # Flow number
 flow: " flow 2 "
 # vlan flow
-vlan flow: 2000
+vlan_to_swtich: 1001
 # This host's IP address
 hostIP: 198.32.43.16
 # Prometheus Port
@@ -23,7 +23,7 @@ grafanaAPIToken: "Bearer eyJrIjoiNWYwWEFzVTRUUHQ5TWg3cVBUdHpMV01PREo1aWJmeUkiLCJ
 hostA:
   IP: 198.32.43.16
   interfaceName: 'enp4s0f0'
-  interfaceIP: '10.10.100.1'
+  interfaceIP: '10.10.101.1'
   nodeName: 'sdn-dtn-2-10.ultralight.org'
   vlan: 2000
   nodeExporterPort: 9100
@@ -34,7 +34,7 @@ hostA:
 hostB:
   IP: 198.32.43.15
   interfaceName: 'enp4s0f0'
-  interfaceIP: '10.10.100.2'
+  interfaceIP: '10.10.101.2'
   nodeName: 'sdn-dtn-2-11.ultralight.org'
   vlan: 2000
   nodeExporterPort: 9100
@@ -49,6 +49,7 @@ switchData:
   scrapeInterval: 15s
   scrapeDuration: 5h
   target: 172.16.1.1
+  switchif: "optional"
   vlan: holder
   #if-mib and F10-IF-EXTENSION-MIB
   params: ['if_mib']

@@ -13,11 +13,23 @@ os.chdir("..")
 infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
 os.chdir(owd)
 data = {}
-with open(infpth, 'r') as stream:
-    try:
-        data = yaml.safe_load(stream)
-    except yaml.YAMLError as exc:
-        print("\n Config file 'config.yml' could not be found in the DynamicDashboard directory\n")
+
+# argument given
+if len(sys.argv) > 1:
+    file_name = sys.argv[1]
+    with open(file_name, 'r') as stream:
+        try:
+            data = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(f"\n Config file {file_name} could not be found in the DynamicDashboard directory\n")
+else: # default config file
+    with open(infpth, 'r') as stream:
+        try:
+            data = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print("\n Config file 'config.yml' could not be found in the DynamicDashboard directory\n")
+
+
 
 print("Starting script...")
 now = datetime.now()
@@ -54,8 +66,8 @@ if data['switchNum'] == 1:
                     'PARAMS': str(data['switchData']['params']),
                     'SWITCHIF': str(data['switchData']['switchif']),
                     'SNMPHOSTIP': str(data['switchData']['SNMPHostIP']),
-                    'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + timeTxt,
-                    'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + timeTxt}
+                    'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
+                    'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
     print("Creating custom Grafana JSON Dashboard...")
     print("Creating custom L2 Debugging Dashboard...")
     # Iteratively find and replace in one go 
@@ -110,8 +122,8 @@ else:
                         'IPSWITCHB': str(data['switchDataB']['target']),
                         'SWITCHIF': str(data['switchData']['switchif']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
-                        'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + timeTxt,
-                        'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + timeTxt}
+                        'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
+                        'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
     elif data['switchNum'] == 3:
         replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                         'IPHOSTB': str(data['hostB']['IP']),
@@ -146,8 +158,8 @@ else:
                         'IPSWITCHC': str(data['switchDataC']['target']),
                         'SWITCHIF': str(data['switchData']['switchif']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
-                        'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + timeTxt,
-                        'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + timeTxt}
+                        'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
+                        'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
     else:
         replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                         'IPHOSTB': str(data['hostB']['IP']),
@@ -187,8 +199,8 @@ else:
                         'IPSWITCHD': str(data['switchDataD']['target']),
                         'SWITCHIF': str(data['switchData']['switchif']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
-                        'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + timeTxt,
-                        'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + timeTxt}
+                        'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
+                        'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
     print("Creating custom Grafana JSON Dashboard...")
     print("Creating custom L2 Debugging JSON Dashboard...")
     # Iteratively find and replace in one go 

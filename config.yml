@@ -5,9 +5,9 @@ dashTitle: "Top Flow Dashboard"
 # L2 Debugging Dashboard Title
 debugTitle: "Top Flow L2 Debugging Dashboard"
 # Flow number
-flow: "flow 1 "
+flow: " flow 1 "
 # vlan flow
-vlan flow: 1000
+vlan_to_swtich: 1000
 # This host's IP address
 hostIP: 198.32.43.16
 # Prometheus Port
@@ -49,6 +49,7 @@ switchData:
   scrapeInterval: 15s
   scrapeDuration: 5h
   target: 172.16.1.1
+  switchif: "optional"
   vlan: holder
   #if-mib and F10-IF-EXTENSION-MIB
   params: ['if_mib']

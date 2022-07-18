@@ -19,6 +19,7 @@ data = {}
 if len(sys.argv) > 1:
     file_name = str(sys.argv[1])
     file_path = config_path + "/" + file_name
+    print(f"\n Config file {file_path}\n")
     with open(file_path, 'r') as stream:
         try:
             data = yaml.safe_load(stream)

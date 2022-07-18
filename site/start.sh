@@ -61,16 +61,16 @@ if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     sudo tee ./crontabs/update_arp_exporter.sh<<EOF
 #! /bin/bash
 /sbin/arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt
-sleep 0.1
+sleep 0.25
 python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json
-sleep 0.1
+sleep 0.25
 ping -c 1 $host2IP
 if [ $? -eq 0 ]; then 
   echo "$host2IP/ping_status/1" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
 else
   echo "$host2IP/ping_status/0" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
 fi
-# sleep 0.1
+# sleep 0.25
 # ping -c 1 $switchIP
 # if [ $? -eq 0 ]; then 
 #   echo "$switchIP/switch_ping_status/1" >> $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt

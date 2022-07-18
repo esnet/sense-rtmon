@@ -19,17 +19,17 @@ data = {}
 if len(sys.argv) > 1:
     file_name = str(sys.argv[1])
     file_path = config_path + file_name
-    with open(file_name, 'r') as stream:
+    with open(file_path, 'r') as stream:
         try:
             data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
-            print(f"\n Config file {file_name} could not be found in the DynamicDashboard directory\n")
+            print(f"\n Config file {file_path} could not be found in the DynamicDashboard directory\n")
 else: # default config file
     with open(infpth, 'r') as stream:
         try:
             data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
-            print("\n Config file 'config.yml' could not be found in the DynamicDashboard directory\n")
+            print(f"\n Config file {infpth} could not be found in the DynamicDashboard directory\n")
 
 print("Starting script...")
 now = datetime.now()

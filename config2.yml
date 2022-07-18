@@ -7,7 +7,7 @@ debugTitle: "Top Flow L2 Debugging Dashboard"
 # Flow number
 flow: " flow 2 "
 # vlan flow
-vlan_to_swtich: 1001
+vlan_to_switch: 1001
 # This host's IP address
 hostIP: 198.32.43.16
 # Prometheus Port
@@ -49,7 +49,8 @@ switchData:
   scrapeInterval: 15s
   scrapeDuration: 5h
   target: 172.16.1.1
-  switchif: "optional"
+  # switch if format: " - IF: optional"
+  switchif: ""
   vlan: holder
   #if-mib and F10-IF-EXTENSION-MIB
   params: ['if_mib']

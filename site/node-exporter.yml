@@ -3,7 +3,6 @@ version: '3.8'
 networks:
   site-net:
     attachable: true
-    gateway: "172.17.0.1"
 
 services:
 

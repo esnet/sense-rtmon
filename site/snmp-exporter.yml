@@ -1,9 +1,8 @@
 version: '3.8'
 
-networks:
-  site-net:
-    attachable: true
-    gateway: "172.17.0.1"
+# networks:
+#   site-net:
+#     attachable: true
 
 services:
 
@@ -12,7 +11,7 @@ services:
     volumes:
       - ../SNMPExporter/src/github.com/prometheus/snmp_exporter/generator/snmp.yml:/etc/snmp_exporter/snmp.yml
     restart: always
-    network_mode: "host"
+    network_mode: "test1"
     ports:
       - 9116:9116
     

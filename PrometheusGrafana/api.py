@@ -18,10 +18,10 @@ with open(infpth, 'r') as stream:
         pass
 
 # http or https depending on Grafana setting
-# if data['encrypted']:
-server = "https://" + str(data['grafanaHostIP']) + ":" + str(data['grafanaPort'])
-# else:
-#     server = "http://" + str(data['grafanaHostIP']) + ":" + str(data['grafanaPort'])
+if data['encrypted']:
+    server = "https://" + str(data['grafanaHostIP']) + ":" + str(data['grafanaPort'])
+else:
+    server = "http://" + str(data['grafanaHostIP']) + ":" + str(data['grafanaPort'])
     
 # Get Default Home Dashboard
 url = server + "/api/dashboards/db"

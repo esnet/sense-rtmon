@@ -6,19 +6,14 @@ services:
     image: prom/snmp-exporter
     volumes:
       - ../SNMPExporter/src/github.com/prometheus/snmp_exporter/generator/snmp.yml:/etc/snmp_exporter/snmp.yml
-    ports:
-      - target: 9116
-        published: 9116
-        protocol: tcp
-        mode: host
     restart: always
+    network_mode: "host"
+    ports:
+      - 9116:9116
     
-    # network_mode: "host"
     # command: 
     #   - '--config.file=/etc/snmp_exporter/snmp.yml'
-    # ports:
-    #   - 9116:9116
-
+    
     # networks:
     #   - site-net
     # deploy:

@@ -16,7 +16,8 @@ data = {}
 
 # argument given
 if len(sys.argv) > 1:
-    file_name = sys.argv[1]
+    file_name = str(sys.argv[1])
+    file_path = str(os.path.abspath(os.curdir)) + file_name
     with open(file_name, 'r') as stream:
         try:
             data = yaml.safe_load(stream)
@@ -28,8 +29,6 @@ else: # default config file
             data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             print("\n Config file 'config.yml' could not be found in the DynamicDashboard directory\n")
-
-
 
 print("Starting script...")
 now = datetime.now()

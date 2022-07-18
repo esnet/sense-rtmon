@@ -105,16 +105,17 @@ EOF
     # if [ -f "/root/push_snmp_exporter_metrics.sh" ]; then
 
     read -r -p "Enter switch IP :" switchIP
+    > ./crontabs/snmp_temp.txt
     touch ./crontabs/push_snmp_exporter_metrics_$VLAN.sh
     chmod +x ./crontabs/push_snmp_exporter_metrics_$VLAN.sh
     sudo tee ./crontabs/push_snmp_exporter_metrics_$VLAN.sh<<EOF
 #! /bin/bash
 if curl 198.32.43.16:9116/metrics | grep ".*"; then
-    curl -o snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
+    curl -o $general_path/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
 else
-    > snmp_temp.txt	
+    > $general_path/site/crontabs/snmp_temp.txt	
 fi
-cat snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/vlan/$VLAN/instance/$MYIP
+cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/vlan/$VLAN/instance/$MYIP
 EOF
 
     echo ""

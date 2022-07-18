@@ -32,7 +32,14 @@ read -r -p "Generate Grafana Dashboar? [y/N enter]: " grafana
 if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
     cd ..
     cd PrometheusGrafana
-    python3 dynamic.py
+    read -r -p "Config file [config.yml/Enter]: " config_file
+    if [ "$config_file" == "" ]; then
+        echo "!!    config.yml"
+        python3 dynamic.py
+    else 
+        echo "!!    $config_file"
+        python3 $config_file
+    fi
 else 
     echo "Skip Grafana Dashboard Generation"
 fi

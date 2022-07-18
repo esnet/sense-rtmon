@@ -10,14 +10,15 @@ print("Parsing config file...")
 # Load yaml config file as dict
 owd = os.getcwd()
 os.chdir("..")
-infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
+config_path = str(os.path.abspath(os.curdir))
+infpth = config_path + "/config.yml"
 os.chdir(owd)
 data = {}
 
 # argument given
 if len(sys.argv) > 1:
     file_name = str(sys.argv[1])
-    file_path = str(os.path.abspath(os.curdir)) + file_name
+    file_path = config_path + file_name
     with open(file_name, 'r') as stream:
         try:
             data = yaml.safe_load(stream)

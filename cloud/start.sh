@@ -38,7 +38,7 @@ if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
         python3 dynamic.py
     else 
         echo "!!    $config_file"
-        python3 $config_file
+        python3 dynamic.py $config_file
     fi
 else 
     echo "Skip Grafana Dashboard Generation"

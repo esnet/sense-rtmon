@@ -33,7 +33,7 @@ flow_vlan=$5
 switch_ip1=$6
 # netowrk element 2 ip address
 switch_ip2=$7
-
+echo $flow_vlan
 ####################### ARP Exporter #################################
 # get switch 1 mac address 
 inter_switch_mac="$(curl ${pushgateway}:9091/metrics | grep \".*ip_address=\"${switch_ip1}\".*\" | awk 'NR==1' 2>/dev/null)"

@@ -10,7 +10,7 @@ services:
     image: prom/snmp-exporter
     volumes:
       - ../SNMPExporter/src/github.com/prometheus/snmp_exporter/generator/snmp.yml:/etc/snmp_exporter/snmp.yml
-    restart: always
+    netowrk_mode: "ingress"
     ports:
       - 9116:9116
     

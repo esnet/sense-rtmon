@@ -12,7 +12,8 @@ services:
       - ../SNMPExporter/src/github.com/prometheus/snmp_exporter/generator/snmp.yml:/etc/snmp_exporter/snmp.yml
     restart: always
     ports:
-      - 198.32.43.16:9116:9116
+      - 9116:9116
+      - 127.0.0.1:80:80
     dns:
       - 8.8.8.8
     

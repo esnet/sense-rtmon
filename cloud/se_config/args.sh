@@ -28,7 +28,7 @@ host2=$3
 # number of network elemenet
 switch_num=$4
 # vlan number 
-vlan_num=$6
+vlan_num=$5
 # network element ip address
 switch_ip1=$6
 # netowrk element 2 ip address

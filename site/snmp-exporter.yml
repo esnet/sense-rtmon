@@ -13,9 +13,6 @@ services:
     restart: always
     ports:
       - 9116:9116
-      - 127.0.0.1:80:80
-    dns:
-      - 8.8.8.8
     
     # docker network create --driver=overlay --subnet=172.25.0.0/25 --gateway=172.25.0.1 --attachable=true test1
     # docker network create --driver=overlay --subnet=172.17.0.0/16 --gateway=172.17.0.1 --attachable=true --aux-address="my-switch=172.16.1.1" site3

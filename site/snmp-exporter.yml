@@ -11,12 +11,13 @@ services:
     volumes:
       - ../SNMPExporter/src/github.com/prometheus/snmp_exporter/generator/snmp.yml:/etc/snmp_exporter/snmp.yml
     restart: always
-    network_mode: "site3"
     ports:
-      - 9116:9116
+      - 198.32.43.16:9116:9116
+    dns:
+      - 8.8.8.8
     
     # docker network create --driver=overlay --subnet=172.25.0.0/25 --gateway=172.25.0.1 --attachable=true test1
-    # docker network create --driver=overlay --subnet=172.16.1.0/25 --gateway=172.16.1.1 --attachable=true --aux-address="my-switch=172.16.1.1" site3
+    # docker network create --driver=overlay --subnet=172.17.0.0/16 --gateway=172.17.0.1 --attachable=true --aux-address="my-switch=172.16.1.1" site3
 
 
     # command: 

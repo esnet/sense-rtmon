@@ -1,15 +1,19 @@
 #! /bin/bash
+pushgateway=$1
+host1=$2
+host2=$3
+switch_num=$4
+flow_vlan=$5
+switch_ip1=$6
+switch_ip2=$7
 
-# scrape_configs:
-#   - job_name: 'script_args'
-#     metrics_path: /probe
-#     params:
-#       script: [args]
-#       params: ["arg3,arg4"]
-#       arg3: [test3]
-#       arg4: [test4]
-#     static_configs:
-#       - targets: ["localhost:9469"]
+# Check ping status
+# from which host
+# contains which host
+# number of network elemenet
+# vlan number 
+# network element ip address
+# netowrk element 2 ip address
 
 echo "!!    args.sh takes in 6 argument"
 echo "!!    1. pushgateway's ip address (not localhost)"
@@ -19,21 +23,6 @@ echo "!!    4. number of network elements"
 echo "!!    5. network element 1's IP address"
 echo "!!    optional 6. if more than one network element input the second one"
 
-# Check ping status
-pushgateway=$1
-# from which host
-host1=$2
-# contains which host
-host2=$3
-# number of network elemenet
-switch_num=$4
-# vlan number 
-flow_vlan=$5
-# network element ip address
-switch_ip1=$6
-# netowrk element 2 ip address
-switch_ip2=$7
-echo $flow_vlan
 ####################### ARP Exporter #################################
 # get switch 1 mac address 
 inter_switch_mac="$(curl ${pushgateway}:9091/metrics | grep \".*ip_address=\"${switch_ip1}\".*\" | awk 'NR==1' 2>/dev/null)"

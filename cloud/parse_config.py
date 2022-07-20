@@ -22,19 +22,30 @@ pushgateway_ip = str(config_data['hostIP'])
 switch_num = str(config_data['switchNum'])
 host1 = str(config_data['hostA']['IP'])
 host2 = str(config_data['hostB']['IP'])
-vlan_num = str(config_data['vlan_to_switch'])
-with open('se_config/config.yaml', 'r') as file:
+flow_vlan = str(config_data['vlan_to_switch'])
+
+
+with open('se_config/args.sh', 'r') as file:
     data = file.readlines()
+
+data[1] = f"pushgateway={pushgateway_ip}"
+data[2] = f"host1={host1}"
+data[3] = f"host2={host2}"
+data[4] = f"switch_num={switch_num}"
+data[5] = f"flow_vlan={flow_vlan}"
+
 
 if switch_num == "1":
     print("1 switch detected")
     switch_ip1 = str(config_data['switchData']['SNMPHostIP'])
-    data[-1] = f"    script: ./examples/args.sh {pushgateway_ip} {host1} {host2} {switch_num} {vlan_num} {switch_ip1} 0" # means no second switch 
+    data[6] = f"switch_ip1={switch_ip1}"
+    data[7] = f"switch_ip2=0" # means no second switch 
 elif switch_num == "2":
     print("2 switch detected")
     switch_ip1 = str(config_data['switchDataA']['SNMPHostIP'])
     switch_ip2 = str(config_data['switchDataB']['SNMPHostIP'])
-    data[-1] = f"    script: ./examples/args.sh {pushgateway_ip} {host1} {host2} {switch_num} {vlan_num} {switch_ip1} {switch_ip2}" 
+    data[6] = f"switch_ip1={switch_ip1}"
+    data[7] = f"switch_ip2={switch_ip2}" # means no second switch 
 else:
     print("Wrong Number of Switches Detected")
     print("No modification made")

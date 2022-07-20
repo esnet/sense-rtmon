@@ -42,4 +42,4 @@ scripts:
     script: ./examples/multiDef.sh
   # make sure defaul it the last line
   - name: default
-    script: ./examples/args.sh 
+    script: ./examples/args.sh

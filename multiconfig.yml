@@ -1,9 +1,9 @@
 # Number of switches
 switchNum: 2
 # Grafana Dashboard Title   
-dashTitle: "Top Flow Dashboard"
+dashTitle: "Multi Switch Flow Dashboard"
 # L2 Debugging Dashboard Title
-debugTitle: "Top Flow L2 Debugging Dashboard"
+debugTitle: "Multi Switch Flow L2 Debugging Dashboard"
 # Flow number
 flow: " flow 1 "
 # vlan flow
@@ -117,7 +117,7 @@ tcpMetrics:
   scrapeInterval: 30
   # Receiving end IP Address, where pushgateway located
   receiverIP: 'localhost' #change it
-  
+
 arpMetrics:
   port: 9192
   job_name: 'arpmetrics'

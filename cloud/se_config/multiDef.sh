@@ -81,6 +81,20 @@ else
     echo "m_host2_snmp_mac_status{host=\"${host2}\"} 0"
 fi
 
+# SNMP mac address check switch 2
+if $switch_num == "2"; then  
+    if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
+        echo "m_host1_snmp_mac_status2{host=\"${host1}\"} 1"
+    else 
+        echo "m_host1_snmp_mac_status2{host=\"${host1}\"} 0"
+    fi
+    if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
+        echo "m_host2_snmp_mac_status2{host=\"${host2}\"} 1"
+    else 
+        echo "m_host2_snmp_mac_status2{host=\"${host2}\"} 0"
+    fi
+fi
+
 # ARP IP check
 if curl ${pushgateway}:9091/metrics | grep "instance=\"${host1}\",ip_address=\"${host2}\""; then
     echo "m_host1_has_host2_arp{host=\"${host1}\"} 1";
@@ -92,19 +106,7 @@ if curl ${pushgateway}:9091/metrics | grep "instance=\"${host2}\",ip_address=\"$
 else 
     echo "m_host2_has_host1_arp{host=\"${host2}\"} 0";
 fi
-# # SNMP mac address check switch 2
-# if $switch_num == "2"; then  
-#     if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
-#         echo "host1_snmp_mac_status2{host=\"${host1}\"} 1"
-#     else 
-#         echo "host1_snmp_mac_status2{host=\"${host1}\"} 0"
-#     fi
-#     if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
-#         echo "host2_snmp_mac_status2{host=\"${host2}\"} 1"
-#     else 
-#         echo "host2_snmp_mac_status2{host=\"${host2}\"} 0"
-#     fi
-# fi
+
 ####################### SMMP Exporter #################################
 if curl ${pushgateway}:9091/metrics | grep "dot1.*instance=\"${host1}\".*job=\"snmp-exporter\".*vlan=\"${flow_vlan}\".*"; then
     echo "m_host1_snmp_on_${flow_vlan}{host=\"${host1}\"} 1";

@@ -82,17 +82,15 @@ else
 fi
 
 # SNMP mac address check switch 2
-if $switch_num == "2"; then  
-    if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
-        echo "m_host1_snmp_mac_status2{host=\"${host1}\"} 1"
-    else 
-        echo "m_host1_snmp_mac_status2{host=\"${host1}\"} 0"
-    fi
-    if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
-        echo "m_host2_snmp_mac_status2{host=\"${host2}\"} 1"
-    else 
-        echo "m_host2_snmp_mac_status2{host=\"${host2}\"} 0"
-    fi
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
+    echo "m_host1_snmp_mac_status2{host=\"${host1}\"} 1"
+else 
+    echo "m_host1_snmp_mac_status2{host=\"${host1}\"} 0"
+fi
+if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
+    echo "m_host2_snmp_mac_status2{host=\"${host2}\"} 1"
+else 
+    echo "m_host2_snmp_mac_status2{host=\"${host2}\"} 0"
 fi
 
 # ARP IP check

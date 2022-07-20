@@ -50,5 +50,6 @@ fi
 echo "!!    Deploy promethues and pushgateway"
 docker stack deploy -c docker-stack.yml cloud
 
+sleep 0.2
 echo "!!    Deploy script exporter"
 yes | cp -rfa se_config/. script_exporter/examples

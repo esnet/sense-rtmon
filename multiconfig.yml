@@ -4,6 +4,10 @@ switchNum: 2
 dashTitle: "Top Flow Dashboard"
 # L2 Debugging Dashboard Title
 debugTitle: "Top Flow L2 Debugging Dashboard"
+# Flow number
+flow: " flow 1 "
+# vlan flow
+vlan_to_switch: 1000
 # This host's IP address
 hostIP: 198.32.43.16
 # Prometheus Port
@@ -14,30 +18,9 @@ grafanaHostIP: 'dev2.virnao.com'
 # Default is 3000
 grafanaPort: 3000
 # Grafana API Token
-grafanaAPIToken: "Bearer eyJrIjoiVlFDdEdvWUpQenp0cWxUQ3VESnJQcjlTVDVnOWhCNU8iLCJuIjoiYWRtaW4iLCJpZCI6MX0="
-# TCP/ARP Data
-tcpMetrics:
-  port: 9191
-  job_name: 'tcpmetrics'
-  # Collect all packets continuously over the scrape interval
-  # Not recommended for general use cases, but provides additional information if set to True
-  # Defaults to False, collects the most recent burst (1 second's worth of data) at the current scrape interval
-  continuousCollect: False
-  # How long to scrape host-level data (in seconds)
-  scrapeDuration: 900
-  # Scrape interval duration (in seconds)
-  scrapeInterval: 30
-  # Receiving end IP Address, where pushgateway located
-  receiverIP: 'localhost' #change it
-arpMetrics:
-  port: 9192
-  job_name: 'arpmetrics'
-  # How long to scrape host-level data (in seconds)
-  scrapeDuration: 900
-  # Scrape interval duration (in seconds)
-  scrapeInterval: 30
-  # Receiving end IP Address, where pushgateway located
-  receiverIP: 'localhost' #change it
+grafanaAPIToken: "Bearer eyJrIjoiNWYwWEFzVTRUUHQ5TWg3cVBUdHpMV01PREo1aWJmeUkiLCJuIjoiMDcvMTQiLCJpZCI6MX0="
+encrypted: True
+
 # Host 1 Specifics 
 hostA:
   IP: 198.32.43.16
@@ -49,6 +32,7 @@ hostA:
   switchPort: 
     ifName: 'TenGigabitEthernet 0/46'
     ifIndex: 1054468
+
 # Host 2 Specifics
 hostB:
   IP: 198.32.43.15
@@ -70,6 +54,8 @@ switchDataA:
   scrapeInterval: 15s
   scrapeDuration: 5h
   target: 172.16.1.1
+  # switch if format: " - IF: optional"
+  switchif: ""
   #if-mib and F10-IF-EXTENSION-MIB
   params: ['if_mib']
   portIn: 
@@ -89,6 +75,8 @@ switchDataB:
   scrapeInterval: 15s
   scrapeDuration: 5h
   target: 172.16.1.14
+  # switch if format: " - IF: optional"
+  switchif: ""
   #if-mib and F10-IF-EXTENSION-MIB
   params: ['if_mib']
   portIn: 
@@ -114,3 +102,28 @@ snmpMetrics:
   scrapeTimeout: 5s
   # Max retries default is 3
   retries: 3
+
+# TCP/ARP Data
+tcpMetrics:
+  port: 9191
+  job_name: 'tcpmetrics'
+  # Collect all packets continuously over the scrape interval
+  # Not recommended for general use cases, but provides additional information if set to True
+  # Defaults to False, collects the most recent burst (1 second's worth of data) at the current scrape interval
+  continuousCollect: False
+  # How long to scrape host-level data (in seconds)
+  scrapeDuration: 900
+  # Scrape interval duration (in seconds)
+  scrapeInterval: 30
+  # Receiving end IP Address, where pushgateway located
+  receiverIP: 'localhost' #change it
+  
+arpMetrics:
+  port: 9192
+  job_name: 'arpmetrics'
+  # How long to scrape host-level data (in seconds)
+  scrapeDuration: 900
+  # Scrape interval duration (in seconds)
+  scrapeInterval: 30
+  # Receiving end IP Address, where pushgateway located
+  receiverIP: 'localhost' #change it

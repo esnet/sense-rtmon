@@ -125,7 +125,6 @@ else:
                         'TCPNAME': str(data['tcpMetrics']['job_name']),
                         'IPSWITCHA': str(data['switchDataA']['target']),
                         'IPSWITCHB': str(data['switchDataB']['target']),
-                        'SWITCHIF': str(data['switchData']['switchif']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
                         'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
                         'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
@@ -161,7 +160,6 @@ else:
                         'IPSWITCHA': str(data['switchDataA']['target']), 
                         'IPSWITCHB': str(data['switchDataB']['target']),
                         'IPSWITCHC': str(data['switchDataC']['target']),
-                        'SWITCHIF': str(data['switchData']['switchif']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
                         'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
                         'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
@@ -202,7 +200,6 @@ else:
                         'IPSWITCHB': str(data['switchDataB']['target']),
                         'IPSWITCHC': str(data['switchDataC']['target']),
                         'IPSWITCHD': str(data['switchDataD']['target']),
-                        'SWITCHIF': str(data['switchData']['switchif']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
                         'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
                         'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}

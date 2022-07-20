@@ -46,6 +46,7 @@ else
         echo "Skip Grafana Dashboard Generation"
     fi
 fi
+
 cd ../cloud
 echo "!!    Deploy script exporter"
 yes | cp -rfa se_config/. script_exporter/examples

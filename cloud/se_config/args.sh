@@ -107,14 +107,14 @@ fi
 # fi
 ####################### SMMP Exporter #################################
 if curl ${pushgateway}:9091/metrics | grep "dot1.*instance=\"${host1}\".*job=\"snmp-exporter\".*vlan=\"${flow_vlan}\".*"; then
-    echo "host1_snmp_on{host=\"${host1}\"} 1";
+    echo "host1_snmp_on_${flow_vlan}{host=\"${host1}\"} 1";
 else 
-    echo "host1_snmp_on{host=\"${host1}\"} 0";
+    echo "host1_snmp_on_${flow_vlan}{host=\"${host1}\"} 0";
 fi
 if curl ${pushgateway}:9091/metrics | grep "dot1.*instance=\"${host2}\".*job=\"snmp-exporter\".*vlan=\"${flow_vlan}\".*"; then
-    echo "host2_snmp_on{host=\"${host2}\"} 1";
+    echo "host2_snmp_on_${flow_vlan}{host=\"${host2}\"} 1";
 else 
-    echo "host2_snmp_on{host=\"${host2}\"} 0";
+    echo "host2_snmp_on_${flow_vlan}{host=\"${host2}\"} 0";
 fi
 
 # get mac address of host 1 and host 2
@@ -133,16 +133,16 @@ host2_mac_no_quote=$(echo ${host2_mac_no_quote#*\"})
 # find host1 and host2 mac addressed on SNMP metrics from switch
 # ^^ makes the mac addresses in upper case. SNMP mac addresses are in uppercase
 if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*vlan=\"${flow_vlan}\".*"; then
-    echo "switch_host1_mac{host=\"${switch_ip1}\"} 1";
+    echo "switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
     echo "host1_mac{mac=\"${host1_mac_no_quote}\"} 1"
 else 
-    echo "switch_host1_mac{host=\"${switch_ip1}\"} 0";
+    echo "switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
 fi
 if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*vlan=\"${flow_vlan}\".*"; then
-    echo "switch_host2_mac{host=\"${switch_ip1}\"} 1";
+    echo "switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
     echo "host2_mac{mac=\"${host2_mac_no_quote}\"} 1"
 else 
-    echo "switch_host2_mac{host=\"${switch_ip1}\"} 0";
+    echo "switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
 fi
 
 ####################### NODE Exporter #################################

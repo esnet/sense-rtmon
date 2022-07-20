@@ -67,10 +67,10 @@ if data['switchNum'] == 1:
                     'PARAMS': str(data['switchData']['params']),
                     'SWITCHIF': str(data['switchData']['switchif']),
                     'SNMPHOSTIP': str(data['switchData']['SNMPHostIP']),
-                    # 'HOSTA_SNMP_ON': "host1_snmp_on_" + str(data['hostA']['vlan']),
-                    # 'HOSTB_SNMP_ON': "host2_snmp_on_" + str(data['hostB']['vlan']),
-                    # 'SWITCH_HOSTA_MAC': "switch_host1_mac_" + str(data['hostA']['vlan']),
-                    # 'SWITCH_HOSTB_MAC': "switch_host2_mac_" + str(data['hostB']['vlan']),
+                    'HOSTA_SNMP_ON': "host1_snmp_on_" + str(data['hostA']['vlan']),
+                    'HOSTB_SNMP_ON': "host2_snmp_on_" + str(data['hostB']['vlan']),
+                    'SWITCH_HOSTA_MAC': "switch_host1_mac_" + str(data['hostA']['vlan']),
+                    'SWITCH_HOSTB_MAC': "switch_host2_mac_" + str(data['hostB']['vlan']),
                     'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
                     'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
     print("Creating custom Grafana JSON Dashboard...")

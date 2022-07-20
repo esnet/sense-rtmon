@@ -15,37 +15,40 @@ echo "!!    Remove previous stack"
 docker stack rm could
 echo "!!    Previous stack revmoed"
 
-echo "!!    Parsing config.yml"
-python3 parse_config.py
-sleep 0.2
-
-echo "!!    Deploy script exporter"
-yes | cp -rfa se_config/. script_exporter/examples
-
 echo "!!    Start Grafana-server"
 sudo systemctl start grafana-server
+
+read -r -p "Config file [config.yml/Enter]: " config_file
+read -r -p "Generate Grafana Dashboar? [y/N enter]: " grafana
+
+if [ "$config_file" == "" ]; then
+    echo "!!    config.yml"
+    echo "!!    Parsing config.yml"
+    python3 parse_config.py
+    sleep 0.2
+    if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
+        cd ..
+        cd PrometheusGrafana
+        python3 dynamic.py
+    else 
+        echo "Skip Grafana Dashboard Generation"
+    fi
+else 
+    echo "!!    $config_file"
+    echo "!!    Parsing $config_file"
+    python3 parse_config.py $config_file
+    sleep 0.2
+    if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
+        cd ..
+        cd PrometheusGrafana
+        python3 dynamic.py $config_file
+    else 
+        echo "Skip Grafana Dashboard Generation"
+    fi
+fi
 
 echo "!!    Deploy promethues and pushgateway"
 docker stack deploy -c docker-stack.yml cloud
 
-read -r -p "Generate Grafana Dashboar? [y/N enter]: " grafana
-if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
-    cd ..
-    cd PrometheusGrafana
-    read -r -p "Config file [config.yml/Enter]: " config_file
-    if [ "$config_file" == "" ]; then
-        echo "!!    config.yml"
-        python3 dynamic.py
-    else 
-        echo "!!    $config_file"
-        python3 dynamic.py $config_file
-    fi
-else 
-    echo "Skip Grafana Dashboard Generation"
-fi
-
-# read -r -p "Start script exporter? [y/N]: " script
-
-# if [ "$script" == "y" ] || [ "$script" == "Y" ]; then
-
-# fi
+echo "!!    Deploy script exporter"
+yes | cp -rfa se_config/. script_exporter/examples

@@ -1,13 +1,32 @@
 # parsing the main config.yml and dynamically create layer 2 arguments
 import os
 import yaml
+import sys
         
 config_data ={}
 owd = os.getcwd()
 os.chdir("..")
-infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
+config_path = str(os.path.abspath(os.curdir))
+infpth = config_path + "/config.yml"
 os.chdir(owd)
 
+# argument given
+if len(sys.argv) > 1:
+    file_name = str(sys.argv[1])
+    file_path = config_path + "/" + file_name
+    print(f"\n Config file {file_path}\n")
+    with open(file_path, 'r') as stream:
+        try:
+            data = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(f"\n Config file {file_path} could not be found in the DynamicDashboard directory\n")
+else: # default config file
+    with open(infpth, 'r') as stream:
+        try:
+            data = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(f"\n Config file {infpth} could not be found in the DynamicDashboard directory\n")
+            
 print("Loading Configuration File")
 with open(infpth, 'r') as stream:
     try:

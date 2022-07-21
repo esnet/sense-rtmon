@@ -41,7 +41,7 @@ if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*job=\"arpMe
     echo "m_host2_arp_on{host=\"${host2}\"} 1";
 else 
     echo "m_host2_arp_on{host=\"${host2}\"} 0";
-fi
+fi 
 
 # ping check
 if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ping_status=\"1\".*ping_this_ip=\"${host2}\".*"; then 

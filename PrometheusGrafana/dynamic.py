@@ -126,6 +126,10 @@ else:
                         'IPSWITCHA': str(data['switchDataA']['target']),
                         'IPSWITCHB': str(data['switchDataB']['target']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
+                        'HOSTA_SNMP_ON': "m_host1_snmp_on_" + str(data['hostA']['vlan']),
+                        'HOSTB_SNMP_ON': "m_host2_snmp_on_" + str(data['hostB']['vlan']),
+                        'SWITCH_HOSTA_MAC': "m_switch_host1_mac_" + str(data['hostA']['vlan']),
+                        'SWITCH_HOSTB_MAC': "m_switch_host2_mac_" + str(data['hostB']['vlan']),
                         'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
                         'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
     elif data['switchNum'] == 3:

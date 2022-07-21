@@ -1,9 +1,5 @@
 version: '3.8'
 
-networks:
-  site-net:
-    attachable: true
-
 services:
 
   node-exporter:

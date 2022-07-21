@@ -5,7 +5,7 @@ host2=$3
 switch_num=$4
 flow_vlan=$5
 switch_ip1=$6
-switch_ip2=$7
+# switch_ip2=$7
 
 # Check ping status
 # from which host

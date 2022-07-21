@@ -145,6 +145,19 @@ else
     echo "m_switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
 fi
 
+if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*vlan=\"${flow_vlan}\".*"; then
+    echo "m_switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
+    # echo "host1_mac{mac=\"${host1_mac_no_quote}\"} 1"
+else 
+    echo "m_switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
+fi
+if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*vlan=\"${flow_vlan}\".*"; then
+    echo "m_switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
+    # echo "host2_mac{mac=\"${host2_mac_no_quote}\"} 1"
+else 
+    echo "m_switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
+fi
+
 ####################### NODE Exporter #################################
 if curl ${pushgateway}:9091/metrics | grep "go_gc.*instance=\"${host1}\".*job=\"node-exporter\".*"; then
     echo "m_host1_node_on{host=\"${host1}\"} 1";

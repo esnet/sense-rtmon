@@ -47,7 +47,7 @@ if switch_num == "1":
     data[5] = f"flow_vlan={flow_vlan}\n"
     switch_ip1 = str(config_data['switchData']['target'])
     data[6] = f"switch_ip1={switch_ip1}\n"
-    data[7] = f"switch_ip2=0\n" # means no second switch
+    # data[7] = f"switch_ip2=0\n" # means no second switch
     with open('se_config/args.sh', 'w') as file:
         file.writelines(data)
      

@@ -17,12 +17,12 @@ read -r -p "Enter your IP address (e.g. 198.32.43.16): " MYIP
 read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
 ############################# NODE #############################
 read -r -p "Start Node Exporter? [y/N (Enter)]: " start_node
-if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
-    echo "Satring Node Exporter Service"
-    docker stack deploy -c node-exporter.yml site
-else 
-    echo "Skip Node Exporter"
-fi
+# if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
+#     echo "Satring Node Exporter Service"
+#     # docker stack deploy -c node-exporter.yml site
+# else 
+#     echo "Skip Node Exporter"
+# fi
 
 ############################# SNMP #############################
 read -r -p "Start SNMP Exporter? [y/N]: " start_snmp
@@ -78,7 +78,13 @@ if [ "$VLANB3" != "" ] || then
 fi 
 
 EOF
-
+    if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
+        echo "Satring Node Exporter Service"
+        # docker stack deploy -c node-exporter.yml site
+        docker compose -f snmp-exporter.yml -f node-exporter.yml up -d 
+    else 
+        echo "Skip Node Exporter"
+    fi
     docker compose -f snmp-exporter.yml up -d 
 else 
     echo "Skip SNMP Exporter"

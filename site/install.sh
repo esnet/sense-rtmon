@@ -106,9 +106,9 @@ EOF
 
     read -r -p "Enter switch IP :" switchIP
     > ./crontabs/snmp_temp.txt
-    touch ./crontabs/push_snmp_exporter_metrics_$VLAN.sh
-    chmod +x ./crontabs/push_snmp_exporter_metrics_$VLAN.sh
-    sudo tee ./crontabs/push_snmp_exporter_metrics_$VLAN.sh<<EOF
+    touch ./crontabs/push_snmp_exporter_metrics.sh
+    chmod +x ./crontabs/push_snmp_exporter_metrics.sh
+    sudo tee ./crontabs/push_snmp_exporter_metrics.sh<<EOF
 #! /bin/bash
 if curl ${MYIP}:9116/metrics | grep ".*"; then
     curl -o $general_path/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
@@ -148,13 +148,13 @@ if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
     crontab -l > ./crontabs/cron_history
 
     # check if job is alread in
-    if grep -F "push_snmp_exporter_metrics_$VLAN.sh" ./crontabs/cron_autopush 
+    if grep -F "push_snmp_exporter_metrics.sh" ./crontabs/cron_autopush 
     then
         echo "task is already in cron, type crontab -e to check"
     else
-        echo "#Puppet Name: snmp exporter vlan $VLAN send data to pushgateway every 15 seconds" >> ./crontabs/cron_autopush
+        echo "#Puppet Name: snmp exporter send data to pushgateway every 15 seconds" >> ./crontabs/cron_autopush
         echo "MAILTO=""" >> ./crontabs/cron_autopush
-        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/push_snmp_exporter_metrics_$VLAN.sh & sleep 15; done; $PWD/crontabs/push_snmp_exporter_metrics_$VLAN.sh" >> ./crontabs/cron_autopush
+        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/push_snmp_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_snmp_exporter_metrics.sh" >> ./crontabs/cron_autopush
     fi
 
     if grep -F "push_node_exporter_metrics.sh" ./crontabs/cron_autopush

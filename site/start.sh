@@ -90,8 +90,8 @@ EOF
         docker compose -f snmp-exporter.yml -f node-exporter.yml up -d 
     else 
         echo "Skip Node Exporter"
+        docker compose -f snmp-exporter.yml up -d 
     fi
-    docker compose -f snmp-exporter.yml up -d 
 else 
     echo "Skip SNMP Exporter"
 fi

@@ -76,12 +76,12 @@ if data['switchNum'] == 1:
     print("Creating custom Grafana JSON Dashboard...")
     print("Creating custom L2 Debugging Dashboard...")
     # Iteratively find and replace in one go 
-    with open('newTemplate.json') as infile, open('out.json', 'w') as outfile:
+    with open('./templates/newTemplate.json') as infile, open('out.json', 'w') as outfile:
         for line in infile:
             for src, target in replacements.items():
                 line = line.replace(src, target)
             outfile.write(line)
-    with open('debugTemplate.json') as infile, open('outDebug.json', 'w') as outfile:
+    with open('./templates/debugTemplate.json') as infile, open('outDebug.json', 'w') as outfile:
         for line in infile:
             for src, target in replacements.items():
                 line = line.replace(src, target)
@@ -210,8 +210,8 @@ else:
     print("Creating custom Grafana JSON Dashboard...")
     print("Creating custom L2 Debugging JSON Dashboard...")
     # Iteratively find and replace in one go 
-    fname = "template" + str(data['switchNum']) + ".json"
-    dname = "debugTemplate" + str(data['switchNum']) + ".json"
+    fname = "./templates/template" + str(data['switchNum']) + ".json"
+    dname = "./templates/debugTemplate" + str(data['switchNum']) + ".json"
     with open(fname) as infile, open('out.json', 'w') as outfile:
         for line in infile:
             for src, target in replacements.items():

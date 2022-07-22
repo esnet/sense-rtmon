@@ -2,6 +2,8 @@
 cd ..
 general_path=$PWD
 cd ./site
+# MYIP=
+# pushgateway_server=
 
 echo "!!    Please edit config.yml for single switch or multiconfig.yml for multiple switches under DynamicDashboard before procceding"
 # read -p "Press enter to continue"
@@ -42,9 +44,9 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     fi
     > ./crontabs/snmp_temp.txt
     > ./crontabs/snmp_temp2.txt
-    touch ./crontabs/push_snmp_exporter_metrics_$VLAN.sh
-    chmod +x ./crontabs/push_snmp_exporter_metrics_$VLAN.sh
-    sudo tee ./crontabs/push_snmp_exporter_metrics_$VLAN.sh<<EOF
+    touch ./crontabs/push_snmp_exporter_metrics.sh
+    chmod +x ./crontabs/push_snmp_exporter_metrics.sh
+    sudo tee ./crontabs/push_snmp_exporter_metrics.sh<<EOF
 #! /bin/bash
 if curl ${MYIP}:9116/metrics | grep ".*"; then
     curl -o $general_path/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
@@ -60,7 +62,7 @@ if [ "$VLANA2" != "" ] || then
 fi 
 
 if [ "$VLANA3" != "" ] || then
-cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP/vlan/$VLANA3/instance/$MYIP
+    cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP/vlan/$VLANA3/instance/$MYIP
 fi 
 
 if [ "$VLANB1" != "" ] || then
@@ -72,7 +74,7 @@ if [ "$VLANB2" != "" ] || then
 fi 
 
 if [ "$VLANB3" != "" ] || then
-cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/vlan/$VLANB3/instance/$MYIP
+    cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/vlan/$VLANB3/instance/$MYIP
 fi 
 
 EOF

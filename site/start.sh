@@ -12,7 +12,7 @@ sudo lsof -i -P -n | grep 9100
 echo "!!    Check Port 9116 for snmp exporter"
 sudo lsof -i -P -n | grep 9116
 read -r -p "Enter your IP address (e.g. 198.32.43.16): " MYIP
-
+read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
 ############################# NODE #############################
 read -r -p "Start Node Exporter? [y/N (Enter)]: " start_node
 if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
@@ -48,7 +48,7 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
 #! /bin/bash
 if curl ${MYIP}:9116/metrics | grep ".*"; then
     curl -o $general_path/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
-    curl -o $general_path/site/crontabs/snmp_temp2.txt ${MYIP}:9116/snmp?target=$switchIP2&module=if_mib
+    curl -o $general_path/site/crontabs/snmp_temp2.txt ${MYIP}:9116/snmp?target=$switchIP2&module=if_mib2
 else
     > $general_path/site/crontabs/snmp_temp.txt	
     > $general_path/site/crontabs/snmp_temp2.txt	

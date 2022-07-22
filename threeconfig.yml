@@ -140,6 +140,21 @@ snmpMetricsB:
   # Max retries default is 3
   retries: 3
 
+snmpMetricsC:
+  # IP address of switch to configure
+  switchIP: 172.16.1.4
+  # Scrape interval/duration time
+  scrapeInterval: 15s
+  scrapeDuration: 5h
+  # OIDs to scrape
+  oids: [1.3.6.1.2.1.17.4.3.1.1, 1.3.6.1.2.1.31]
+  # SNMP community read string
+  communityString: "COMMUNITYSTRING"
+  # Scrape timeout default is 5s
+  scrapeTimeout: 5s
+  # Max retries default is 3
+  retries: 3
+
 # TCP/ARP Data
 tcpMetrics:
   port: 9191

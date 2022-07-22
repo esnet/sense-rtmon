@@ -11,6 +11,10 @@ echo "!!    Check Port 9100 for node exporter"
 sudo lsof -i -P -n | grep 9100
 echo "!!    Check Port 9116 for snmp exporter"
 sudo lsof -i -P -n | grep 9116
+read -r -p "Is ${MYIP} your IP address [y/N]: " correct_ip
+if [ "$correct_ip" == "N" ] || [ "$correct_ip" == "n" ]; then
+    read -r -p "Type in your ip address: " MYIP
+fi
 
 ############################# NODE #############################
 read -r -p "Start Node Exporter? [y/N (Enter)]: " start_node
@@ -39,7 +43,7 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     chmod +x ./crontabs/push_snmp_exporter_metrics_$VLAN.sh
     sudo tee ./crontabs/push_snmp_exporter_metrics_$VLAN.sh<<EOF
 #! /bin/bash
-if curl 198.32.43.16:9116/metrics | grep ".*"; then
+if curl ${MYIP}:9116/metrics | grep ".*"; then
     curl -o $general_path/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
 else
     > $general_path/site/crontabs/snmp_temp.txt	

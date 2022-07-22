@@ -110,7 +110,7 @@ EOF
     chmod +x ./crontabs/push_snmp_exporter_metrics_$VLAN.sh
     sudo tee ./crontabs/push_snmp_exporter_metrics_$VLAN.sh<<EOF
 #! /bin/bash
-if curl 198.32.43.16:9116/metrics | grep ".*"; then
+if curl ${MYIP}:9116/metrics | grep ".*"; then
     curl -o $general_path/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
 else
     > $general_path/site/crontabs/snmp_temp.txt	

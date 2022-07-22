@@ -25,8 +25,7 @@ fi
 ############################# SNMP #############################
 read -r -p "Start SNMP Exporter? [y/N]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
-    echo "!!    Please configuring switch in snmpConfig.yml if needed"
-    echo "!!    DynamicDashboard/SNMPExporter/snmpConfig.yml"
+    echo "!!    Please configuring switch in config.yml if needed"
     read -p "Press enter to continue"
     cd ../SNMPExporter
     python3 dynamic_generate.py
@@ -35,17 +34,28 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     # docker stack deploy -c snmp-exporter.yml site
     read -r -p "Enter VLAN (e.g. 1000): " VLAN
     read -r -p "Enter switch IP :" switchIP
+
+    read -r -p "Second switch [y/N]? " second_switch
+    if [ "$second_switch" == "y" ] || [ "$second_switch" == "Y" ]; then
+        read -r -p "Enter VLAN (e.g. 1000): " VLAN2
+        read -r -p "Enter switch IP :" switchIP2
+    fi
     > ./crontabs/snmp_temp.txt
+    > ./crontabs/snmp_temp2.txt
     touch ./crontabs/push_snmp_exporter_metrics_$VLAN.sh
     chmod +x ./crontabs/push_snmp_exporter_metrics_$VLAN.sh
     sudo tee ./crontabs/push_snmp_exporter_metrics_$VLAN.sh<<EOF
 #! /bin/bash
 if curl ${MYIP}:9116/metrics | grep ".*"; then
     curl -o $general_path/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
+    curl -o $general_path/site/crontabs/snmp_temp2.txt ${MYIP}:9116/snmp?target=$switchIP2&module=if_mib
 else
     > $general_path/site/crontabs/snmp_temp.txt	
+    > $general_path/site/crontabs/snmp_temp2.txt	
 fi
 cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP/vlan/$VLAN/instance/$MYIP
+cat $general_path/site/crontabs/snmp_temp2.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/vlan/$VLAN2/instance/$MYIP
+
 EOF
 
     docker compose -f snmp-exporter.yml up -d 

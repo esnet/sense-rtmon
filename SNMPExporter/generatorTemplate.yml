@@ -17,41 +17,41 @@ modules:
       - source_indexes: [ifIndex]
         lookup: ifDescr
   
-  if_mib2:
-    walk: # List of OIDs to walk. Can also be SNMP object names or specific
-    max_repetitions: 25  # How many objects to request with GET/GETBULK, defaul$
-                         # May need to be reduced for buggy devices.
-    retries: RETRY2   # How many times to retry a failed request, defaults to 3.
-    timeout: TIMEOUT2  # Timeout for each individual SNMP request, defaults to 5s.
+  # if_mib2:
+  #   walk: # List of OIDs to walk. Can also be SNMP object names or specific
+  #   max_repetitions: 25  # How many objects to request with GET/GETBULK, defaul$
+  #                        # May need to be reduced for buggy devices.
+  #   retries: RETRY2   # How many times to retry a failed request, defaults to 3.
+  #   timeout: TIMEOUT2  # Timeout for each individual SNMP request, defaults to 5s.
 
-    auth:
-      # Community string is used with SNMP v1 and v2. Defaults to "public".
-      # Replace with your network element's SNMP community read string. 
-      community: COMMUNITYREADSTRING2
+  #   auth:
+  #     # Community string is used with SNMP v1 and v2. Defaults to "public".
+  #     # Replace with your network element's SNMP community read string. 
+  #     community: COMMUNITYREADSTRING2
 
-    lookups:  # Optional list of lookups to perform.
-      - source_indexes: [ifIndex2]
-        lookup: ifAlias2
-      - source_indexes: [ifIndex2]
-        lookup: ifDescr2
+  #   lookups:  # Optional list of lookups to perform.
+  #     - source_indexes: [ifIndex2]
+  #       lookup: ifAlias2
+  #     - source_indexes: [ifIndex2]
+  #       lookup: ifDescr2
 
-  if_mib3:
-    walk: # List of OIDs to walk. Can also be SNMP object names or specific
-    max_repetitions: 25  # How many objects to request with GET/GETBULK, defaul$
-                         # May need to be reduced for buggy devices.
-    retries: RETRY2   # How many times to retry a failed request, defaults to 3.
-    timeout: TIMEOUT2  # Timeout for each individual SNMP request, defaults to 5s.
+  # if_mib3:
+  #   walk: # List of OIDs to walk. Can also be SNMP object names or specific
+  #   max_repetitions: 25  # How many objects to request with GET/GETBULK, defaul$
+  #                        # May need to be reduced for buggy devices.
+  #   retries: RETRY2   # How many times to retry a failed request, defaults to 3.
+  #   timeout: TIMEOUT2  # Timeout for each individual SNMP request, defaults to 5s.
 
-    auth:
-      # Community string is used with SNMP v1 and v2. Defaults to "public".
-      # Replace with your network element's SNMP community read string. 
-      community: COMMUNITYREADSTRING2
+  #   auth:
+  #     # Community string is used with SNMP v1 and v2. Defaults to "public".
+  #     # Replace with your network element's SNMP community read string. 
+  #     community: COMMUNITYREADSTRING2
 
-    lookups:  # Optional list of lookups to perform.
-      - source_indexes: [ifIndex2]
-        lookup: ifAlias2
-      - source_indexes: [ifIndex2]
-        lookup: ifDescr2
+  #   lookups:  # Optional list of lookups to perform.
+  #     - source_indexes: [ifIndex2]
+  #       lookup: ifAlias2
+  #     - source_indexes: [ifIndex2]
+  #       lookup: ifDescr2
 
   # mac_address:
   #   walk: # List of OIDs to walk. Can also be SNMP object names or specific

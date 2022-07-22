@@ -1,6 +1,7 @@
 import sys
 import subprocess
 import os
+import yaml
 
 print("INSTALL SNMP")
 print("Parsing config file...")

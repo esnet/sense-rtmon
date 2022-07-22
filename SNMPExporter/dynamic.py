@@ -30,13 +30,13 @@ else: # default config file
             print(f"\n Config file {infpth} could not be found in the DynamicDashboard directory\n")
 
 print("Collecting SNMP generator template...")
-with open('generatorTemplate.yml') as inGen, open('generator.yml', 'w') as outGen:
-        for line in inGen:
-            outGen.write(line)
 print("Reading SNMP OIDs/Interfaces/Scrape Duration/Scrape Time from config file...")
 
 # SNMP scraps 1 switche
 if(data['switchNum']) == 1:
+    with open('./templates/generatorTemplate.yml') as inGen, open('generator.yml', 'w') as outGen:
+        for line in inGen:
+            outGen.write(line)
     oids = set(data['snmpMetrics']['oids'])
     # read all oids in first then add to generator file
     snip = ""
@@ -54,6 +54,9 @@ if(data['switchNum']) == 1:
                     'COMMUNITYREADSTRING': str(data['snmpMetrics']['communityString'])}
 # SNMP scraps 2 switches
 elif(data['switchNum']) == 2:
+    with open('./templates/generatorTemplate2.yml') as inGen, open('generator.yml', 'w') as outGen:
+        for line in inGen:
+            outGen.write(line)
     oidsA = set(data['snmpMetricsA']['oids'])
     oidsB = set(data['snmpMetricsB']['oids'])
     # read all oids in first then add to generator file
@@ -79,6 +82,9 @@ elif(data['switchNum']) == 2:
                     'TIMEOUT2': str(data['snmpMetricsB']['scrapeTimeout']),
                     'COMMUNITYREADSTRING2': str(data['snmpMetricsB']['communityString'])}
 elif(data['switchNum']) == 3:
+    with open('./templates/generatorTemplate3.yml') as inGen, open('generator.yml', 'w') as outGen:
+        for line in inGen:
+            outGen.write(line)
     oidsA = set(data['snmpMetricsA']['oids'])
     oidsB = set(data['snmpMetricsB']['oids'])
     oidsC = set(data['snmpMetricsC']['oids'])

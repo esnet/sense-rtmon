@@ -11,10 +11,7 @@ echo "!!    Check Port 9100 for node exporter"
 sudo lsof -i -P -n | grep 9100
 echo "!!    Check Port 9116 for snmp exporter"
 sudo lsof -i -P -n | grep 9116
-read -r -p "Is ${MYIP} your IP address [y/N]: " correct_ip
-if [ "$correct_ip" == "N" ] || [ "$correct_ip" == "n" ]; then
-    read -r -p "Type in your ip address: " MYIP
-fi
+read -r -p "Enter your IP address (e.g. 198.32.43.16): " MYIP
 
 ############################# NODE #############################
 read -r -p "Start Node Exporter? [y/N (Enter)]: " start_node

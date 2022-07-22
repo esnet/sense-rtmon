@@ -78,9 +78,9 @@ elif(data['switchNum']) == 2:
     replacements = {'RETRY': str(data['snmpMetricsA']['retries']),
                     'TIMEOUT': str(data['snmpMetricsA']['scrapeTimeout']),
                     'COMMUNITYREADSTRING': str(data['snmpMetricsA']['communityString']),
-                    'RETRY2': str(data['snmpMetricsB']['retries']),
-                    'TIMEOUT2': str(data['snmpMetricsB']['scrapeTimeout']),
-                    'COMMUNITYREADSTRING2': str(data['snmpMetricsB']['communityString'])}
+                    'RETRYB': str(data['snmpMetricsB']['retries']),
+                    'TIMEOUTB': str(data['snmpMetricsB']['scrapeTimeout']),
+                    'COMMUNITYREADSTRINGB': str(data['snmpMetricsB']['communityString'])}
 elif(data['switchNum']) == 3:
     with open('./templates/generatorTemplate3.yml') as inGen, open('generator.yml', 'w') as outGen:
         for line in inGen:
@@ -111,12 +111,12 @@ elif(data['switchNum']) == 3:
     replacements = {'RETRY': str(data['snmpMetricsA']['retries']),
                     'TIMEOUT': str(data['snmpMetricsA']['scrapeTimeout']),
                     'COMMUNITYREADSTRING': str(data['snmpMetricsA']['communityString']),
-                    'RETRY2': str(data['snmpMetricsB']['retries']),
-                    'TIMEOUT2': str(data['snmpMetricsB']['scrapeTimeout']),
-                    'COMMUNITYREADSTRING2': str(data['snmpMetricsB']['communityString']),
-                    'RETRY3': str(data['snmpMetricsC']['retries']),
-                    'TIMEOUT3': str(data['snmpMetricsC']['scrapeTimeout']),
-                    'COMMUNITYREADSTRING3': str(data['snmpMetricsC']['communityString'])}
+                    'RETRYB': str(data['snmpMetricsB']['retries']),
+                    'TIMEOUTB': str(data['snmpMetricsB']['scrapeTimeout']),
+                    'COMMUNITYREADSTRINGB': str(data['snmpMetricsB']['communityString']),
+                    'RETRYC': str(data['snmpMetricsC']['retries']),
+                    'TIMEOUTC': str(data['snmpMetricsC']['scrapeTimeout']),
+                    'COMMUNITYREADSTRINGC': str(data['snmpMetricsC']['communityString'])}
     
 else:
     print("invilad switch number")

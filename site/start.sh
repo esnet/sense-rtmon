@@ -25,10 +25,10 @@ fi
 ############################# SNMP #############################
 read -r -p "Start SNMP Exporter? [y/N]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
-    echo "!!    Please configuring switch in config.yml if needed"
-    read -p "Press enter to continue"
+    echo "!!    Please configuring switch in you config file (default: config.yml) if needed"
+    read -r -p "Enter the config file: [config.yml/Enter]: " snmp_config
     cd ../SNMPExporter
-    python3 dynamic_generate.py
+    python3 dynamic.py $snmp_config
     cd ../site
     echo "Satring SNMP Exporter Service"
     # docker stack deploy -c snmp-exporter.yml site

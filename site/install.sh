@@ -84,7 +84,7 @@ read -r -p "Install SNMP Exporter [y/N (Enter)]: " snmp_install
     echo "!!    Go build and Make mibs.."
     cd ..
     cd ./SNMPExporter
-    python3 dynamic.py
+    python3 install_snmp.py
     cd ..
     cd ./site
 fi

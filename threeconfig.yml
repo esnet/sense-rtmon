@@ -1,5 +1,5 @@
 # Number of switches
-switchNum: 2
+switchNum: 3
 # Grafana Dashboard Title   
 dashTitle: "Multi Switch Flow Dashboard"
 # L2 Debugging Dashboard Title
@@ -79,6 +79,28 @@ switchDataB:
   switchif: ""
   #if-mib and F10-IF-EXTENSION-MIB
   params: ['if_mib2']
+  portIn: 
+    ifName: 'TenGigabitEthernet 0/43'
+    ifIndex: 1054084
+    vlan: holder
+  portOut: 
+    ifName: 'TenGigabitEthernet 0/8'
+    ifIndex: 1049604
+    vlan: holder
+
+
+switchDataC:
+  job_name: 'snmp3'
+  # The IP of the host which is running the SNMP Exporter container
+  SNMPHostIP: 198.32.43.16
+  # Scrape interval/duration time
+  scrapeInterval: 15s
+  scrapeDuration: 5h
+  target: 172.16.1.14
+  # switch if format: " - IF: optional"
+  switchif: ""
+  #if-mib and F10-IF-EXTENSION-MIB
+  params: ['if_mib3']
   portIn: 
     ifName: 'TenGigabitEthernet 0/43'
     ifIndex: 1054084

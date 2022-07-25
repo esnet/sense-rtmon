@@ -1093,7 +1093,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(ifIndex{job=~\"$job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}) by (ifIndex)",
+          "expr": "sum(ifIndex{job=~\"$Job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1104,7 +1104,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifName{job=~\"$job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}) by (ifIndex,ifName)",
+          "expr": "sum(ifName{job=~\"$Job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifName)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1115,7 +1115,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifType_info{job=~\"$job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}) by (ifIndex,ifType)",
+          "expr": "sum(ifType_info{job=~\"$Job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifType)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1126,7 +1126,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifPhysAddress{job=~\"$job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}) by (ifIndex,ifPhysAddress)",
+          "expr": "sum(ifPhysAddress{job=~\"$Job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifPhysAddress)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1137,7 +1137,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifOperStatus{job=~\"$job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}) by (ifIndex)",
+          "expr": "sum(ifOperStatus{job=~\"$Job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1148,7 +1148,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifMtu{job=~\"$job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}) by (ifIndex)",
+          "expr": "sum(ifMtu{job=~\"$Job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1267,7 +1267,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$job\", ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1277,7 +1277,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$job\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1287,7 +1287,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCInMulticastPkts{job=\"$job\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}[1m]) + irate(ifHCInUcastPkts{job=\"$job\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}[1m]) + irate(ifHCInBroadcastPkts{job=\"$job\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}[1m]) ",
+          "expr": "irate(ifHCInMulticastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInUcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInBroadcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1297,7 +1297,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutMulticastPkts{job=\"$job\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}[1m]) + irate(ifHCOutUcastPkts{job=\"$job\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}[1m]) + irate(ifHCOutBroadcastPkts{job=\"$job\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}[1m]) ",
+          "expr": "irate(ifHCOutMulticastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutUcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutBroadcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1394,7 +1394,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$job\", ifIndex=~\"IFNAMESWITCHHOSTA\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -1403,7 +1403,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$job\", ifIndex=~\"IFNAMESWITCHHOSTA\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{job=\"$Job\", ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -1508,7 +1508,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$job\", ifIndex=~\"IFNAMESWITCHHOSTB\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"IFINDEXSWITCHHOSTB\"}[1m])*8",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -1517,7 +1517,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$job\", ifIndex=~\"IFNAMESWITCHHOSTB\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{job=\"$Job\", ifIndex=~\"IFINDEXSWITCHHOSTB\"}[1m])*8",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -5955,7 +5955,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "max(delta(ifHCInOctets{job=\"$job\"}[$__range]))",
+          "expr": "max(delta(ifHCInOctets{job=\"$Job\"}[$__range]))",
           "instant": false,
           "interval": "",
           "legendFormat": "In",
@@ -6050,7 +6050,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "max(delta(ifHCOutOctets{job=\"$job\"}[$__range]))",
+          "expr": "max(delta(ifHCOutOctets{job=\"$Job\"}[$__range]))",
           "interval": "",
           "legendFormat": "Out",
           "refId": "A"
@@ -6144,7 +6144,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "max(irate(ifHCInOctets{job=\"$job\"}[5m]))",
+          "expr": "max(irate(ifHCInOctets{job=\"$Job\"}[5m]))",
           "interval": "",
           "legendFormat": "In",
           "refId": "A"
@@ -6238,7 +6238,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "max(irate(ifHCOutOctets{job=\"$job\"}[5m]))",
+          "expr": "max(irate(ifHCOutOctets{job=\"$Job\"}[5m]))",
           "instant": false,
           "interval": "",
           "legendFormat": "Out",
@@ -6309,7 +6309,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "f10IfInVlanPkts{ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}",
+          "expr": "f10IfInVlanPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}",
           "interval": "",
           "legendFormat": "{{ifDescr}}",
           "refId": "A"
@@ -6407,7 +6407,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "f10IfOutVlanPkts{ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}",
+          "expr": "f10IfOutVlanPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}",
           "instant": false,
           "interval": "",
           "legendFormat": "",
@@ -8066,13 +8066,13 @@
           },
           {
             "selected": false,
-            "text": "IFNAMESWITCHHOSTB",
-            "value": "IFNAMESWITCHHOSTB"
+            "text": "IFINDEXSWITCHHOSTB",
+            "value": "IFINDEXSWITCHHOSTB"
           },
           {
             "selected": false,
-            "text": "IFNAMESWITCHHOSTA",
-            "value": "IFNAMESWITCHHOSTA"
+            "text": "IFINDEXSWITCHHOSTA",
+            "value": "IFINDEXSWITCHHOSTA"
           },
           {
             "selected": false,

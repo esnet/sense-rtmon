@@ -7825,7 +7825,7 @@
           ]
         },
         "datasource": null,
-        "definition": "query_result(ifIndex{job=~\"$job\",instance=\"$instance\"})",
+        "definition": "query_result(ifIndex{job=~\"$Job\",instance=\"$instance\"})",
         "description": null,
         "error": null,
         "hide": 0,
@@ -8301,7 +8301,7 @@
           }
         ],
         "query": {
-          "query": "query_result(ifIndex{job=~\"$job\",instance=\"$instance\"})",
+          "query": "query_result(ifIndex{job=~\"$Job\",instance=\"$instance\"})",
           "refId": "StandardVariableQuery"
         },
         "refresh": 0,

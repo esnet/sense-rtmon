@@ -43,8 +43,8 @@ grep1 = subprocess.check_output(cmd1,shell=True).decode()
 cmd2 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostB']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostB']['switchPort']['ifName'])}\".*'"
 grep2 = subprocess.check_output(cmd2,shell=True).decode()
 
-if_index1 = re.search('ifIndex="(.+?)\"',grep1)
-if_index2 = re.search('ifIndex="(.+?)\"',grep2)
+if_index1 = re.search('ifIndex="(.+?)\"',grep1).group(1)
+if_index2 = re.search('ifIndex="(.+?)\"',grep2).group(1)
 
 print("Starting script...")
 now = datetime.now()

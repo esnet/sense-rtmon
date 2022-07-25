@@ -37,10 +37,10 @@ print("find correct index from snmp exporter")
 myip = data['hostIP']
 pushgateway_metrics = f"{myip}:9091/metrics"
 
-cmd1 = f"curl f{pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostA']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostA']['switchPort']['ifIndex'])}\".*'"
+cmd1 = f"curl f{pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostA']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostA']['switchPort']['ifName'])}\".*'"
 grep1 = subprocess.check_output(cmd1,shell=True).decode()
 
-cmd2 = f"curl f{pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostB']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostB']['switchPort']['ifIndex'])}\".*'"
+cmd2 = f"curl f{pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostB']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostB']['switchPort']['ifName'])}\".*'"
 grep2 = subprocess.check_output(cmd2,shell=True).decode()
 
 if_index1 = re.search('ifIndex="(.+?)\"',grep1)

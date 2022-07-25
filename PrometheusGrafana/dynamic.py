@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import re
 import yaml
 import sys
 import subprocess
@@ -32,6 +32,20 @@ else: # default config file
         except yaml.YAMLError as exc:
             print(f"\n Config file {infpth} could not be found in the DynamicDashboard directory\n")
 
+print("find correct index from snmp exporter")
+# find correct inter face index from SNMP exporter
+myip = data['hostIP']
+pushgateway_metrics = f"{myip}:9091/metrics"
+
+cmd1 = f"curl f{pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostA']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostA']['switchPort']['ifIndex'])}\".*'"
+grep1 = subprocess.check_output(cmd1,shell=True).decode()
+
+cmd2 = f"curl f{pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostB']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostB']['switchPort']['ifIndex'])}\".*'"
+grep2 = subprocess.check_output(cmd2,shell=True).decode()
+
+if_index1 = re.search('ifIndex="(.+?)\"',grep1)
+if_index2 = re.search('ifIndex="(.+?)\"',grep2)
+
 print("Starting script...")
 now = datetime.now()
 current_time = now.strftime("%d/%m/%Y_%H:%M")
@@ -45,10 +59,10 @@ if data['switchNum'] == 1:
                     'IPHOSTB': str(data['hostB']['IP']),
                     'IFNAMEHOSTA': str(data['hostA']['interfaceName']),
                     'IFNAMEHOSTB': str(data['hostB']['interfaceName']),
-                    'IFNAMESWITCHHOSTA': str(data['hostA']['switchPort']['ifIndex']),
+                    'IFINDEXSWITCHHOSTA': str(if_index1),
                     'NAMEIFSWITCHA': str(data['hostA']['switchPort']['ifName']),
                     'NAMEIFSWITCHB': str(data['hostB']['switchPort']['ifName']),
-                    'IFNAMESWITCHHOSTB': str(data['hostB']['switchPort']['ifIndex']),
+                    'IFINDEXSWITCHHOSTB': str(if_index2),
                     'DATAPLANEIPA': str(data['hostA']['interfaceIP']),
                     'DATAPLANEIPB': str(data['hostB']['interfaceIP']),
                     'NODENAMEA': str(data['hostA']['nodeName']),
@@ -103,8 +117,8 @@ else:
                         'IPHOSTB': str(data['hostB']['IP']),
                         'IFNAMEHOSTA': str(data['hostA']['interfaceName']),
                         'IFNAMEHOSTB': str(data['hostB']['interfaceName']),
-                        'IFNAMESWITCHHOSTA': str(data['hostA']['switchPort']['ifIndex']),
-                        'IFNAMESWITCHHOSTB': str(data['hostB']['switchPort']['ifIndex']),
+                        'IFINDEXSWITCHHOSTA': str(if_index1),
+                        'IFINDEXSWITCHHOSTB': str(if_index2),
                         'SWITCHBINCOMING': str(data['switchDataB']['portIn']['ifIndex']),
                         'SWITCHAOUTGOING': str(data['switchDataA']['portOut']['ifIndex']),
                         'NAMEIFAIN': str(data['hostA']['switchPort']['ifName']),
@@ -139,12 +153,12 @@ else:
                         'VLANB': str(data['hostB']['vlan']),
                         'IFNAMEHOSTA': str(data['hostA']['interfaceName']),
                         'IFNAMEHOSTB': str(data['hostB']['interfaceName']),
-                        'IFNAMESWITCHHOSTA': str(data['hostA']['switchPort']['ifIndex']),
+                        'IFINDEXSWITCHHOSTA': str(if_index1),
                         'SWITCHAOUTGOING': str(data['switchDataA']['portOut']['ifIndex']),
                         'SWITCHBINCOMING': str(data['switchDataB']['portIn']['ifIndex']),
                         'SWITCHBOUTGOING': str(data['switchDataB']['portOut']['ifIndex']),
                         'SWITCHCINCOMING': str(data['switchDataC']['portIn']['ifIndex']),
-                        'IFNAMESWITCHHOSTB': str(data['hostB']['switchPort']['ifIndex']),
+                        'IFINDEXSWITCHHOSTB': str(if_index2),
                         'NAMEIFAIN': str(data['switchDataA']['portIn']['ifName']),
                         'NAMEIFAOUT': str(data['switchDataA']['portOut']['ifName']),
                         'NAMEIFBIN': str(data['switchDataB']['portIn']['ifName']),
@@ -174,14 +188,14 @@ else:
                         'VLANB': str(data['hostB']['vlan']),
                         'IFNAMEHOSTA': str(data['hostA']['interfaceName']),
                         'IFNAMEHOSTB': str(data['hostB']['interfaceName']),
-                        'IFNAMESWITCHHOSTA': str(data['hostA']['switchPort']['ifIndex']),
+                        'IFINDEXSWITCHHOSTA': str(if_index1),
                         'SWITCHAOUTGOING': str(data['switchDataA']['portOut']['ifIndex']),
                         'SWITCHBINCOMING': str(data['switchDataB']['portIn']['ifIndex']),
                         'SWITCHBOUTGOING': str(data['switchDataB']['portOut']['ifIndex']),
                         'SWITCHCINCOMING': str(data['switchDataC']['portIn']['ifIndex']),
                         'SWITCHCOUTGOING': str(data['switchDataC']['portOut']['ifIndex']),
                         'SWITCHDINCOMING': str(data['switchDataD']['portIn']['ifIndex']),
-                        'IFNAMESWITCHHOSTB': str(data['hostB']['switchPort']['ifIndex']),
+                        'IFINDEXSWITCHHOSTB': str(if_index2),
                         'NAMEIFAIN': str(data['switchDataA']['portIn']['ifName']),
                         'NAMEIFAOUT': str(data['switchDataA']['portOut']['ifName']),
                         'NAMEIFBIN': str(data['switchDataB']['portIn']['ifName']),

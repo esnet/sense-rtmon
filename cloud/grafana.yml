@@ -6,22 +6,22 @@ services:
     container_name: grafana
     ports:
       - "3000:3000"
-    # environment:
+    environment:
       # VIRTUAL_HOST: dev2.virnao.com # adjust to match your domain name
       # VIRTUAL_PROTO: https
       # VIRTUAL_PORT: 3000
       # LETSENCRYPT_HOST: YOUR.DOMAIN.TEST # adjust to match your domain name
       # LETSENCRYPT_EMAIL: YOUR.EMAIL@ADDRESS.TEST # adjust to match your email
 
-      # GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem # adjust to match your domain name
-      # GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem # adjust to match your domain name
+      GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem # adjust to match your domain name
+      GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem # adjust to match your domain name
       # GF_SERVER_PROTOCOL: https
 
       # GF_SERVER_DOMAIN: dev2.virnao.com # adjust to match your domain name
       # GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
       # GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
-    volumes:
-      # - /etc/grafana/:/etc/grafana/
-      - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
-      - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
-      - /etc/grafana/grafana.ini:/etc/grafana/grafana.ini
+    # volumes:
+    #   # - /etc/grafana/:/etc/grafana/
+    #   - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
+    #   - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
+    #   - /etc/grafana/grafana.ini:/etc/grafana/grafana.ini

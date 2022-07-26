@@ -5,13 +5,11 @@ cd ./site
 
 
 
-
+# DO NOT MOVE THE LINE NUMBERS ON THEM PYTHON SCRIPT FILLS THEM IN
 # MYIP=
 # pushgateway_server=
 # host2IP=
-
-read -r -p "Enter configuration file [config.yml (Enter)]: " top_level_config_file
-
+# top_level_config_file=
 
 echo "!!    Please edit config.yml for single switch or multiconfig.yml for multiple switches under DynamicDashboard before procceding"
 # read -p "Press enter to continue"

@@ -31,6 +31,7 @@ else: # default config file
 hostip = data['hostIP']
 pushgateway_server = f"{data['grafanaHostIP']}:9091" 
 host2IP = data['hostB']['IP']
+top_level_config_file = data['configFile']
 
 with open('start.sh', 'r') as file:
     write_data = file.readlines()
@@ -38,6 +39,7 @@ with open('start.sh', 'r') as file:
 write_data[8] = f"MYIP={hostip}\n"
 write_data[9] = f"pushgateway_server={pushgateway_server}\n"
 write_data[10] = f"host2IP={host2IP}\n"
+write_data[11] = f"top_level_config_file={top_level_config_file}\n"
 
 # data[7] = f"switch_ip2=0\n" # means no second switch
 with open('start.sh', 'w') as file:

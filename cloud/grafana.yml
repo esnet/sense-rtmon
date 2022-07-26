@@ -13,14 +13,14 @@ services:
       # LETSENCRYPT_HOST: YOUR.DOMAIN.TEST # adjust to match your domain name
       # LETSENCRYPT_EMAIL: YOUR.EMAIL@ADDRESS.TEST # adjust to match your email
 
-      GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem # adjust to match your domain name
-      GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem # adjust to match your domain name
-      GF_SERVER_PROTOCOL: https
+      # GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem # adjust to match your domain name
+      # GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem # adjust to match your domain name
+      # GF_SERVER_PROTOCOL: https
 
       # GF_SERVER_DOMAIN: dev2.virnao.com # adjust to match your domain name
       # GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
       # GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
-    # volumes:
+    volumes:
     #   - /etc/grafana/fullchain.pem:/var/ssl/server.crt
     #   - /etc/grafana/privkey.pem:/var/ssl/server.key
-    #   - /etc/grafana/grafana.ini:/usr/share/grafana/conf/defaults.ini
+      - /etc/grafana/grafana.ini:/usr/share/grafana/conf/defaults.ini

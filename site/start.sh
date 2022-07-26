@@ -2,8 +2,16 @@
 cd ..
 general_path=$PWD
 cd ./site
+
+read -r -p "Enter configuration file [config.yml (Enter)]: " top_level_config_file
+python3 fill.py $top_level_config_file 
+sleep 0.25
 # MYIP=
 # pushgateway_server=
+# host2IP=
+
+
+sleep 0.25
 
 echo "!!    Please edit config.yml for single switch or multiconfig.yml for multiple switches under DynamicDashboard before procceding"
 # read -p "Press enter to continue"
@@ -13,8 +21,8 @@ echo "!!    Check Port 9100 for node exporter"
 sudo lsof -i -P -n | grep 9100
 echo "!!    Check Port 9116 for snmp exporter"
 sudo lsof -i -P -n | grep 9116
-read -r -p "Enter your IP address (e.g. 198.32.43.16): " MYIP
-read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
+# read -r -p "Enter your IP address (e.g. 198.32.43.16): " MYIP
+# read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
 ############################# NODE #############################
 read -r -p "Start Node Exporter? [y/N (Enter)]: " start_node
 if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
@@ -37,9 +45,9 @@ read -r -p "Start SNMP Exporter? [y/N]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     starting_snmp="-f snmp-exporter.yml" 
     echo "!!    Please configuring switch in you config file (default: config.yml) if needed"
-    read -r -p "Enter the config file: [config.yml/Enter]: " snmp_config
+    # read -r -p "Enter the config file: [config.yml/Enter]: " snmp_config
     cd ../SNMPExporter
-    python3 dynamic.py $snmp_config
+    python3 dynamic.py $top_level_config_file
     cd ../site
     echo "Satring SNMP Exporter Service"
     # docker stack deploy -c snmp-exporter.yml site
@@ -98,7 +106,7 @@ read -r -p "Start ARP Exporter? [y/N]: " start_arp
 if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     starting_arp="-f arp-exporter.yml" 
     # delete everything first
-    read -r -p "Enter host2 IP address (e.g. 198.32.43.15): " host2IP
+    # read -r -p "Enter host2 IP address (e.g. 198.32.43.15): " host2IP
 
     rm -rf ../Metrics/ARPMetrics/jsonFiles ../Metrics/ARPMetrics/arpFiles ../Metrics/ARPMetrics/pingStat ./crontabs/update_arp_exporter
 

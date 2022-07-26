@@ -3,15 +3,15 @@ cd ..
 general_path=$PWD
 cd ./site
 
-read -r -p "Enter configuration file [config.yml (Enter)]: " top_level_config_file
-python3 fill.py $top_level_config_file 
-sleep 0.25
+
+
+
 # MYIP=
 # pushgateway_server=
 # host2IP=
 
+read -r -p "Enter configuration file [config.yml (Enter)]: " top_level_config_file
 
-sleep 0.25
 
 echo "!!    Please edit config.yml for single switch or multiconfig.yml for multiple switches under DynamicDashboard before procceding"
 # read -p "Press enter to continue"

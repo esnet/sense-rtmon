@@ -27,7 +27,8 @@ else: # default config file
             data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             print(f"\n Config file {infpth} could not be found in the DynamicDashboard directory\n")
-            
+
+switchNum = data['switchNum']
 hostip = data['hostIP']
 pushgateway_server = f"{data['grafanaHostIP']}:9091" 
 host2IP = data['hostB']['IP']
@@ -41,6 +42,14 @@ write_data[9] = f"pushgateway_server={pushgateway_server}\n"
 write_data[10] = f"host2IP={host2IP}\n"
 write_data[11] = f"top_level_config_file={top_level_config_file}\n"
 
-# data[7] = f"switch_ip2=0\n" # means no second switch
+if switchNum == 1:
+    switch_target1 = data['switchData']['target']
+    write_data[12] = f"switch_target1={switch_target1}\n"
+elif switchNum == 2:
+    switch_target1 = data['switchDataA']['target']
+    switch_target2 = data['switchDataB']['target']
+    write_data[12] = f"switch_target1={switch_target1}\n"
+    write_data[13] = f"switch_target2={switch_target2}\n"
+    
 with open('start.sh', 'w') as file:
     file.writelines(write_data)

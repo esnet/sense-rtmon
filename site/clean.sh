@@ -14,7 +14,8 @@ rm -rf ./crontabs/push_snmp_exporter_metrics*.sh ./crontabs/push_node_exporter_m
 read -r -p "Erase Metrics [y/N]: " erase
 if [ "$erase" == "y" ] || [ "$erase" == "Y" ]; then
     echo "!!    Erase pushgateway urls sent from this host"
-    python3 erase_pushgateway.py
+    read -r -p "Enter the config file used to start: [config.yml/Enter]: " erase_config
+    python3 erase_pushgateway.py erase_config
     echo "!!    Cleanning Complete"
 else 
     echo "Nothing Erased"

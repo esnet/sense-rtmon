@@ -28,7 +28,7 @@ curl -s ${MYIP}:9100/metrics | curl --data-binary @- $pushgateway_server/metrics
 EOF
     # docker stack deploy -c node-exporter.yml site
 else
-    starting_node="" 
+    starting_node=" " 
     echo "Skip Node Exporter"
 fi
 
@@ -89,7 +89,7 @@ fi
 EOF
 
 else
-    starting_snmp="" 
+    starting_snmp=" " 
     echo "Skip SNMP Exporter"
 fi
 
@@ -142,7 +142,7 @@ EOF
     cd ../site
     # docker compose -f arp-exporter.yml up -d
 else
-    starting_arp="" 
+    starting_arp=" " 
     echo "Skip ARP Exporter"
 fi
 
@@ -156,7 +156,7 @@ if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
     cd ../site
     # docker compose -f tcp-exporter.yml up -d
 else
-    starting_tcp="" 
+    starting_tcp=" " 
     echo "Skip TCP Exporter"
 fi
 
@@ -170,4 +170,5 @@ echo "!!    to remove site stack run ./clean.sh"
 # echo "docker stack deploy -c arp-exporter.yml site"
 # echo "docker stack deploy -c tcp-exporter.yml site"
 
+echo "docker compose $starting_node $starting_snmp $start_arp $start_tcp up -d"
 docker compose $starting_node $starting_snmp $start_arp $start_tcp up -d

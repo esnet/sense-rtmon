@@ -18,6 +18,7 @@ read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:909
 ############################# NODE #############################
 read -r -p "Start Node Exporter? [y/N (Enter)]: " start_node
 if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
+    starting_node="-f node-exporter.yml" 
     echo "Satring Node Exporter Service"
     > ./crontabs/push_node_exporter_metrics.sh
     chmod +x ./crontabs/push_node_exporter_metrics.sh
@@ -26,13 +27,15 @@ if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
 curl -s ${MYIP}:9100/metrics | curl --data-binary @- $pushgateway_server/metrics/job/node-exporter/instance/$MYIP
 EOF
     # docker stack deploy -c node-exporter.yml site
-else 
+else
+    starting_node="" 
     echo "Skip Node Exporter"
 fi
 
 ############################# SNMP #############################
 read -r -p "Start SNMP Exporter? [y/N]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
+    starting_snmp="-f snmp-exporter.yml" 
     echo "!!    Please configuring switch in you config file (default: config.yml) if needed"
     read -r -p "Enter the config file: [config.yml/Enter]: " snmp_config
     cd ../SNMPExporter
@@ -84,21 +87,16 @@ if [ "$VLANB3" != "" ] || then
 fi 
 
 EOF
-    if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
-        echo "Satring Node Exporter Service"
-        # docker stack deploy -c node-exporter.yml site
-        docker compose -f snmp-exporter.yml -f node-exporter.yml up -d 
-    else 
-        echo "Skip Node Exporter"
-        docker compose -f snmp-exporter.yml up -d 
-    fi
-else 
+
+else
+    starting_snmp="" 
     echo "Skip SNMP Exporter"
 fi
 
 ############################# ARP #############################
 read -r -p "Start ARP Exporter? [y/N]: " start_arp
 if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
+    starting_arp="-f arp-exporter.yml" 
     # delete everything first
     read -r -p "Enter host2 IP address (e.g. 198.32.43.15): " host2IP
 
@@ -142,20 +140,23 @@ EOF
     docker image rm -f arp_exporter:latest
     docker build -t arp_exporter -f arp.Dockerfile .
     cd ../site
-    docker compose -f arp-exporter.yml up -d
-else 
+    # docker compose -f arp-exporter.yml up -d
+else
+    starting_arp="" 
     echo "Skip ARP Exporter"
 fi
 
 read -r -p "Start TCP Exporter? [y/N]: " start_tcp
 if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
+    starting_tcp="-f tcp-exporter.yml" 
     echo "Satring TCP Exporter Service"
     cd ../Metrics
     docker image rm -f tcp_exporter:latest
     docker build -t tcp_exporter -f tcp.Dockerfile .
     cd ../site
-    docker compose -f tcp-exporter.yml up -d
-else 
+    # docker compose -f tcp-exporter.yml up -d
+else
+    starting_tcp="" 
     echo "Skip TCP Exporter"
 fi
 
@@ -169,3 +170,4 @@ echo "!!    to remove site stack run ./clean.sh"
 # echo "docker stack deploy -c arp-exporter.yml site"
 # echo "docker stack deploy -c tcp-exporter.yml site"
 
+docker compose $starting_node $starting_snmp $start_arp $start_tcp up -d

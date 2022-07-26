@@ -31,7 +31,7 @@ else: # default config file
             print(f"\n Config file {infpth} could not be found in the DynamicDashboard directory\n")
 
 print("Collecting SNMP generator template...")
-with open('generatorTemplate.yml') as inGen, open('generator.yml', 'w') as outGen:
+with open('templates/generatorTemplate.yml') as inGen, open('templates/generator.yml', 'w') as outGen:
         for line in inGen:
             outGen.write(line)
 print("Reading SNMP OIDs/Interfaces/Scrape Duration/Scrape Time from config file...")

@@ -21,6 +21,7 @@ services:
       # GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
       # GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
     volumes:
-    #   - /etc/grafana/fullchain.pem:/var/ssl/server.crt
-    #   - /etc/grafana/privkey.pem:/var/ssl/server.key
-      - /etc/grafana/grafana.ini:/usr/share/grafana/conf/defaults.ini
+      - /etc/grafana/:/etc/grafana/
+      # - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
+      # - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
+      # - /etc/grafana/grafana.ini:/etc/grafana/grafana.ini

@@ -35,9 +35,9 @@ host2IP = data['hostB']['IP']
 with open('start.sh', 'r') as file:
     write_data = file.readlines()
     
-data[8] = f"MYIP={hostip}\n"
-data[9] = f"pushgateway_server={pushgateway_server}\n"
-data[10] = f"host2IP={host2IP}\n"
+write_data[8] = f"MYIP={hostip}\n"
+write_data[9] = f"pushgateway_server={pushgateway_server}\n"
+write_data[10] = f"host2IP={host2IP}\n"
 
 # data[7] = f"switch_ip2=0\n" # means no second switch
 with open('start.sh', 'w') as file:

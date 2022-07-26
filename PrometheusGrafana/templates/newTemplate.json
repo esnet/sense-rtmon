@@ -1093,7 +1093,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(ifIndex{job=~\"$Job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
+          "expr": "sum(ifIndex{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1104,7 +1104,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifName{job=~\"$Job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifName)",
+          "expr": "sum(ifName{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifName)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1115,7 +1115,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifType_info{job=~\"$Job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifType)",
+          "expr": "sum(ifType{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifType)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1126,7 +1126,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifPhysAddress{job=~\"$Job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifPhysAddress)",
+          "expr": "sum(ifPhysAddress{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifPhysAddress)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1137,7 +1137,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifOperStatus{job=~\"$Job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
+          "expr": "sum(ifOperStatus{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1148,7 +1148,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifMtu{job=~\"$Job\",exported_instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
+          "expr": "sum(ifMtu{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,

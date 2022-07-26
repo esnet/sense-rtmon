@@ -9,7 +9,7 @@ docker rm -f site-node-exporter-1 site-snmp-exporter-1 site-arp-exporter-1 site-
 # docker image rm -f quay.io/prometheus/node-exporter prom/snmp-exporter
 docker image rm -f site_tcp-exporter site_arp-exporter site_tcp-exporter arp_exporter:latest tcp_exporter:latest
 
-rm -rf ./crontabs/push_snmp_exporter_metrics*.sh ./crontabs/push_node_exporter_metrics*.sh 
+rm -rf ./crontabs/push_snmp_exporter_metrics*.sh ./crontabs/push_node_exporter_metrics*.sh  ./crontabs/update_arp_exporter*
 
 read -r -p "Erase Metrics [y/N]: " erase
 if [ "$erase" == "y" ] || [ "$erase" == "Y" ]; then

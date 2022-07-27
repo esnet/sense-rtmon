@@ -1,82 +1,87 @@
-# version: "3"
-
-# services:
-#   grafana:
-#     labels:
-#       # SSL redirect requires a separate router (https://github.com/containous/traefik/issues/4688#issuecomment-477800500)
-#       - "traefik.http.routers.some-name.entryPoints=port80"
-#       - "traefik.http.routers.some-name.rule=host(`dev2.virnao.com:3000`)"
-#       - "traefik.http.middlewares.some-name-redirect.redirectScheme.scheme=https"
-#       - "traefik.http.middlewares.some-name-redirect.redirectScheme.permanent=true"
-#       - "traefik.http.routers.some-name.middlewares=some-name-redirect"
-#       # SSL endpoint
-#       - "traefik.http.routers.some-name-ssl.entryPoints=port443"
-#       - "traefik.http.routers.some-name-ssl.rule=host(`dev2.virnao.com:3000`)"
-#       - "traefik.http.routers.some-name-ssl.tls=true"
-#       - "traefik.http.routers.some-name-ssl.tls.certResolver=le-ssl"
-#       - "traefik.http.routers.some-name-ssl.service=some-name-ssl"
-#       - "traefik.http.services.some-name-ssl.loadBalancer.server.port=3000"
-#     image: grafana/grafana:latest # or probably any other version
-#     volumes:
-#       - grafana-data:/var/lib/grafana
-#     environment:
-#       - GF_SERVER_ROOT_URL=https://dev2.virnao.com:3000
-#       - GF_SERVER_DOMAIN=dev2.virnao.com:3000
-#       - GF_USERS_ALLOW_SIGN_UP=false
-#       - GF_SECURITY_ADMIN_USER=admin
-#       - GF_SECURITY_ADMIN_PASSWORD=sense
-
-#   traefik:
-#     image: traefik:v2.8.1
-#     ports:
-#       - "80:80"
-#       - "443:443"
-#       # expose port below only if you need access to the Traefik API
-#       #- "8080:8080"
-#     command:
-#       #- "--log.level=DEBUG"
-#       #- "--api=true"
-#       - "--providers.docker=true"
-
-#       - "--entryPoints.port443.address=:443"
-#       - "--entryPoints.port80.address=:80"
-
-#       - "--certificatesResolvers.le-ssl.acme.tlsChallenge=true"
-#       - "--certificatesResolvers.le-ssl.acme.email=YOUR_EMAIL_ADDRESS"
-#       - "--certificatesResolvers.le-ssl.acme.storage=/letsencrypt/acme.json"
-#     volumes:
-#       - traefik-data:/letsencrypt/
-#       - /var/run/docker.sock:/var/run/docker.sock
-
-# volumes:
-#   traefik-data:
-#   grafana-data:
-
-version: '3.8'
+version: "3"
 
 services:
   grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
+    labels:
+      # SSL redirect requires a separate router (https://github.com/containous/traefik/issues/4688#issuecomment-477800500)
+      - "traefik.http.routers.some-name.entryPoints=port80"
+      - "traefik.http.routers.some-name.rule=host(`dev2.virnao.com:3000`)"
+      - "traefik.http.middlewares.some-name-redirect.redirectScheme.scheme=https"
+      - "traefik.http.middlewares.some-name-redirect.redirectScheme.permanent=true"
+      - "traefik.http.routers.some-name.middlewares=some-name-redirect"
+      # SSL endpoint
+      - "traefik.http.routers.some-name-ssl.entryPoints=port443"
+      - "traefik.http.routers.some-name-ssl.rule=host(`dev2.virnao.com:3000`)"
+      - "traefik.http.routers.some-name-ssl.tls=true"
+      - "traefik.http.routers.some-name-ssl.tls.certResolver=le-ssl"
+      - "traefik.http.routers.some-name-ssl.service=some-name-ssl"
+      - "traefik.http.services.some-name-ssl.loadBalancer.server.port=3000"
+    image: grafana/grafana:latest # or probably any other version
     ports:
       - "3000:3000"
-    environment:
-      VIRTUAL_HOST: dev2.virnao.com
-      VIRTUAL_PROTO: https
-      VIRTUAL_PORT: 3000
-      LETSENCRYPT_HOST: dev2.virnao.com
-      LETSENCRYPT_EMAIL: tlehman@es.net
-
-      GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem
-      GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem
-      GF_SERVER_PROTOCOL: https
-      GF_SERVER_ROOT_URL: https://dev2.virnao.com
-      # GF_INSTALL_PLUGINS: jdbranham-diagram-panel
-      GF_SERVER_DOMAIN: dev2.virnao.com # adjust to match your domain name
-      GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
-      GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
     volumes:
+      - grafana-data:/var/lib/grafana
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
       - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
+    environment:
+      - GF_SERVER_ROOT_URL=https://dev2.virnao.com:3000
+      - GF_SERVER_DOMAIN=dev2.virnao.com:3000
+      - GF_SERVER_CERT_FILE=/etc/grafana/fullchain.pem
+      - GF_SERVER_CERT_KEY=/etc/grafana/privkey.pem
+      - GF_SERVER_PROTOCOL=https
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=sense
+
+  traefik:
+    image: traefik:v2.8.1
+    ports:
+      - "80:80"
+      - "443:443"
+    command:
+      #- "--log.level=DEBUG"
+      #- "--api=true"
+      - "--providers.docker=true"
+
+      - "--entryPoints.port443.address=:443"
+      - "--entryPoints.port80.address=:80"
+
+      - "--certificatesResolvers.le-ssl.acme.tlsChallenge=true"
+      - "--certificatesResolvers.le-ssl.acme.email=YOUR_EMAIL_ADDRESS"
+      - "--certificatesResolvers.le-ssl.acme.storage=/letsencrypt/acme.json"
+    volumes:
+      - traefik-data:/letsencrypt/
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  traefik-data:
+  grafana-data:
+
+# version: '3.8'
+
+# services:
+#   grafana:
+#     image: grafana/grafana:latest
+#     container_name: grafana
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       VIRTUAL_HOST: dev2.virnao.com:3000
+#       VIRTUAL_PROTO: https
+#       VIRTUAL_PORT: 3000
+#       LETSENCRYPT_HOST: dev2.virnao.com
+#       # LETSENCRYPT_EMAIL: YOUR.EMAIL@ADDRESS.TEST
+
+#       GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem
+#       GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem
+#       GF_SERVER_PROTOCOL: https
+#       GF_SERVER_ROOT_URL: https://dev2.virnao.com:3000
+#       # GF_INSTALL_PLUGINS: jdbranham-diagram-panel
+#       GF_SERVER_DOMAIN: dev2.virnao.com:3000 # adjust to match your domain name
+#       GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
+#       GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
+#     volumes:
+#       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
+#       - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
 
     #   - /etc/grafana/grafana.ini:/etc/grafana/grafana.ini

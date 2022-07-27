@@ -13,8 +13,8 @@ services:
     # Persist and share NGINX configuration data 
     volumes:
       - ./nginx/conf/:/etc/nginx/conf.d/
-      - ./certbot/www:/var/www/certbot/
-      - ./certbot/conf/:/etc/nginx/ssl/
+      - ./certbot/www/:/var/www/certbot/
+      - /etc/grafana/:/etc/nginx/ssl/
 # Certbot service
   # certbot:
   #   image: certbot/certbot:latest

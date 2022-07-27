@@ -64,8 +64,8 @@ services:
       VIRTUAL_HOST: dev2.virnao.com:3000
       VIRTUAL_PROTO: https
       VIRTUAL_PORT: 3000
-      # LETSENCRYPT_HOST: YOUR.DOMAIN.TEST # adjust to match your domain name
-      # LETSENCRYPT_EMAIL: YOUR.EMAIL@ADDRESS.TEST # adjust to match your email
+      LETSENCRYPT_HOST: dev2.virnao.com
+      LETSENCRYPT_EMAIL: tlehman@es.net
 
       GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem
       GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem

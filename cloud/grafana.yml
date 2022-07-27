@@ -61,7 +61,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      VIRTUAL_HOST: dev2.virnao.com:3000
+      VIRTUAL_HOST: dev2.virnao.com
       VIRTUAL_PROTO: https
       VIRTUAL_PORT: 3000
       LETSENCRYPT_HOST: dev2.virnao.com
@@ -70,9 +70,9 @@ services:
       GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem
       GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem
       GF_SERVER_PROTOCOL: https
-      GF_SERVER_ROOT_URL: https://dev2.virnao.com:3000
+      GF_SERVER_ROOT_URL: https://dev2.virnao.com
       # GF_INSTALL_PLUGINS: jdbranham-diagram-panel
-      GF_SERVER_DOMAIN: dev2.virnao.com:3000 # adjust to match your domain name
+      GF_SERVER_DOMAIN: dev2.virnao.com # adjust to match your domain name
       GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
       GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
     volumes:

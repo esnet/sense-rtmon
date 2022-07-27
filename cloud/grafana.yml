@@ -16,7 +16,7 @@ services:
       GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem # adjust to match your domain name
       GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem # adjust to match your domain name
       # GF_SERVER_PROTOCOL: https
-      GF_SERVER_ROOT_URL: http://dev2.virnao.com:3000
+      GF_SERVER_ROOT_URL: http://localhost:3000
       
       # GF_SERVER_DOMAIN: dev2.virnao.com # adjust to match your domain name
       # GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account

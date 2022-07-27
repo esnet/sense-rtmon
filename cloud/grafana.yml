@@ -23,4 +23,4 @@ services:
     volumes:
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
       - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
-    #   - /etc/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - /etc/grafana/grafana.ini:/etc/grafana/grafana.ini

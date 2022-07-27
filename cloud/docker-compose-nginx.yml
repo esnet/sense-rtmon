@@ -1,5 +1,5 @@
 version: '3'
-
+project_name: nginx
 services:
 # NGINX service
   nginx:

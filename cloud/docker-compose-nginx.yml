@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+# NGINX service
+  nginx:
+    # NGINX uses the latest image
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    # NGINX service restart policy set to "always"
+    restart: always
+    # Persist and share NGINX configuration data 
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d/
+      - ./certbot/www:/var/www/certbot/
+      - ./certbot/conf/:/etc/nginx/ssl/
+# Certbot service
+  certbot:
+    image: certbot/certbot:latest
+    # Persist and share Certbot configuration data
+    volumes:
+      - ./certbot/www/:/var/www/certbot/
+      - ./certbot/conf/:/etc/letsencrypt/

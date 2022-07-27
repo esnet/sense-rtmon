@@ -60,7 +60,7 @@ services:
     container_name: grafana
     ports:
       - "3000:3000"
-    # environment:
+    environment:
       # VIRTUAL_HOST: dev2.virnao.com # adjust to match your domain name
       # VIRTUAL_PROTO: https
       # VIRTUAL_PORT: 3000

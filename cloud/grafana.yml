@@ -67,15 +67,16 @@ services:
       # LETSENCRYPT_HOST: YOUR.DOMAIN.TEST # adjust to match your domain name
       # LETSENCRYPT_EMAIL: YOUR.EMAIL@ADDRESS.TEST # adjust to match your email
 
-      # GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem
-      # GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem
+      GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem
+      GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem
       # GF_SERVER_PROTOCOL: https
       # GF_SERVER_ROOT_URL: http://localhost:3000
       # GF_INSTALL_PLUGINS: jdbranham-diagram-panel
       # GF_SERVER_DOMAIN: dev2.virnao.com:3000 # adjust to match your domain name
       # GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
       # GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
-    # volumes:
-    #   # - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
-    #   - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
+    volumes:
+      - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
+      - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
+
     #   - /etc/grafana/grafana.ini:/etc/grafana/grafana.ini

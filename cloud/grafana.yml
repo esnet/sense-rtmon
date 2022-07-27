@@ -22,7 +22,7 @@ services:
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
       - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
     environment:
-      - GF_SERVER_ROOT_URL=https://dev2.virnao.com:3000
+      - GF_SERVER_ROOT_URL=https://dev2.virnao.com
       - GF_SERVER_DOMAIN=dev2.virnao.com
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SECURITY_ADMIN_USER=admin

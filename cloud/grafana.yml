@@ -21,14 +21,14 @@ services:
     #   - "3000:3000"
     volumes:
       - grafana-data:/var/lib/grafana
-      - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
-      - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
+      # - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
+      # - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
     environment:
       - GF_SERVER_ROOT_URL=https://dev2.virnao.com:3000
       - GF_SERVER_DOMAIN=dev2.virnao.com:3000
-      - GF_SERVER_CERT_FILE=/etc/grafana/fullchain.pem
-      - GF_SERVER_CERT_KEY=/etc/grafana/privkey.pem
-      - GF_SERVER_PROTOCOL=https
+      # - GF_SERVER_CERT_FILE=/etc/grafana/fullchain.pem
+      # - GF_SERVER_CERT_KEY=/etc/grafana/privkey.pem
+      # - GF_SERVER_PROTOCOL=https
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=sense

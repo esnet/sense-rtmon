@@ -16,9 +16,9 @@ services:
       - ./certbot/www:/var/www/certbot/
       - ./certbot/conf/:/etc/nginx/ssl/
 # Certbot service
-  certbot:
-    image: certbot/certbot:latest
-    # Persist and share Certbot configuration data
-    volumes:
-      - ./certbot/www/:/var/www/certbot/
-      - ./certbot/conf/:/etc/letsencrypt/
+  # certbot:
+  #   image: certbot/certbot:latest
+  #   # Persist and share Certbot configuration data
+  #   volumes:
+  #     - ./certbot/www/:/var/www/certbot/
+  #     - ./certbot/conf/:/etc/letsencrypt/

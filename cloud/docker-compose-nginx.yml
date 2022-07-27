@@ -9,7 +9,7 @@ services:
       - 80:80
       - 443:443
     # NGINX service restart policy set to "always"
-    restart: always
+    # restart: always
     # Persist and share NGINX configuration data 
     volumes:
       - ./nginx/conf/:/etc/nginx/conf.d/

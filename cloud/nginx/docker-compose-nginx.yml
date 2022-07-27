@@ -1,5 +1,4 @@
 version: '3'
-project_name: nginx
 services:
 # NGINX service
   nginx:
@@ -12,7 +11,7 @@ services:
     # restart: always
     # Persist and share NGINX configuration data 
     volumes:
-      - ./nginx/conf/:/etc/nginx/conf.d/
+      - ./conf/:/etc/nginx/conf.d/
       - /etc/grafana/:/etc/nginx/ssl/
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
       - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem

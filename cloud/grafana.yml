@@ -17,8 +17,8 @@ services:
       - "traefik.http.routers.some-name-ssl.service=some-name-ssl"
       - "traefik.http.services.some-name-ssl.loadBalancer.server.port=3000"
     image: grafana/grafana:latest # or probably any other version
-    ports:
-      - "3000:3000"
+    # ports:
+    #   - "3000:3000"
     volumes:
       - grafana-data:/var/lib/grafana
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem

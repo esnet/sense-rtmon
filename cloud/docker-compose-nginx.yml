@@ -13,15 +13,6 @@ services:
     # Persist and share NGINX configuration data 
     volumes:
       - ./nginx/conf/:/etc/nginx/conf.d/
-      - ./certbot/www/:/var/www/certbot/
       - /etc/grafana/:/etc/nginx/ssl/
-# Certbot service
-  certbot:
-    image: certbot/certbot:latest
-    # Persist and share Certbot configuration data
-    # command: certonly --webroot --webroot-path=/user/share/nginx/letsencrypt --email zhenboyan@lbl.gov --agree-tos --no-eff-email -d dev2.virnao.com 
-    volumes:
-      - ./certbot/www/:/var/www/certbot/
-      - ./certbot/conf/:/etc/letsencrypt/
-      # - ./certbot/conf:/etc/letsencrypt
-      # - ./certbot/www /
+      - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
+      - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem

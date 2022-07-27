@@ -61,9 +61,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      # VIRTUAL_HOST: dev2.virnao.com # adjust to match your domain name
-      # VIRTUAL_PROTO: https
-      # VIRTUAL_PORT: 3000
+      VIRTUAL_HOST: dev2.virnao.com:3000
+      VIRTUAL_PROTO: https
+      VIRTUAL_PORT: 3000
       # LETSENCRYPT_HOST: YOUR.DOMAIN.TEST # adjust to match your domain name
       # LETSENCRYPT_EMAIL: YOUR.EMAIL@ADDRESS.TEST # adjust to match your email
 

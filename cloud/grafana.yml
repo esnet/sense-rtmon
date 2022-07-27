@@ -5,13 +5,13 @@ services:
     labels:
       # SSL redirect requires a separate router (https://github.com/containous/traefik/issues/4688#issuecomment-477800500)
       - "traefik.http.routers.some-name.entryPoints=port80"
-      - "traefik.http.routers.some-name.rule=host(`dev2.virnao.com:3000`)"
+      - "traefik.http.routers.some-name.rule=host(`dev2.virnao.com`)"
       - "traefik.http.middlewares.some-name-redirect.redirectScheme.scheme=https"
       - "traefik.http.middlewares.some-name-redirect.redirectScheme.permanent=true"
       - "traefik.http.routers.some-name.middlewares=some-name-redirect"
       # SSL endpoint
       - "traefik.http.routers.some-name-ssl.entryPoints=port443"
-      - "traefik.http.routers.some-name-ssl.rule=host(`dev2.virnao.com:3000`)"
+      - "traefik.http.routers.some-name-ssl.rule=host(`dev2.virnao.com`)"
       - "traefik.http.routers.some-name-ssl.tls=true"
       - "traefik.http.routers.some-name-ssl.tls.certResolver=le-ssl"
       - "traefik.http.routers.some-name-ssl.service=some-name-ssl"
@@ -21,7 +21,7 @@ services:
       - grafana-data:/var/lib/grafana
     environment:
       - GF_SERVER_ROOT_URL=https://dev2.virnao.com:3000
-      - GF_SERVER_DOMAIN=dev2.virnao.com:3000
+      - GF_SERVER_DOMAIN=dev2.virnao.com
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=sense

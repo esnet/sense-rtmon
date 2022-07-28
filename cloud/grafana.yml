@@ -64,12 +64,12 @@ services:
     container_name: grafana
     depends_on:
       - nginx
-    # ports:
-    #   - "3000:3000"
+    ports:
+      - "3000:3000"
     environment:
       VIRTUAL_HOST: dev2.virnao.com
       VIRTUAL_PROTO: http
-      VIRTUAL_PORT: 3000
+      # VIRTUAL_PORT: 3000
       LETSENCRYPT_HOST: dev2.virnao.com
     #   # LETSENCRYPT_EMAIL: YOUR.EMAIL@ADDRESS.TEST
 

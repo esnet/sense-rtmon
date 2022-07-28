@@ -62,7 +62,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
-    ports:
+    # ports:
       # - "3000:3000"
     environment:
       # VIRTUAL_HOST: dev2.virnao.com:3000
@@ -80,6 +80,7 @@ services:
       GF_SERVER_DOMAIN: dev2.virnao.com # adjust to match your domain name
       GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
       GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
+
     volumes:
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
       - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem

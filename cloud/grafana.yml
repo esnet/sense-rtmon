@@ -87,14 +87,16 @@ services:
 
     #   # - /etc/grafana/grafana.ini:/etc/grafana/grafana.ini
 
-  # nginx:
-  #   hostname: nginx
-  #   image: nginx
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - ./nginx/conf/:/etc/nginx/conf.d/
-  #     - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
-  #     - /etc/grafana/fullchain.pem:/etc/ssl/private/fullchain.pem
-  #     - /etc/grafana/privkey.pem:/etc/ssl/private/privkey.pem
+  nginx:
+    hostname: nginx
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d/
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - /etc/grafana/fullchain.pem:/etc/ssl/private/fullchain.pem
+      - /etc/grafana/privkey.pem:/etc/ssl/private/privkey.pem
   

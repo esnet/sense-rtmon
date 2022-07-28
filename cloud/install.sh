@@ -106,3 +106,39 @@ if [ "$sslmode" == "1" ]; then # Let's Encrypt
         echo "              Please run the following script after installation: sudo /certify.sh $domain" 
     fi
 fi
+
+
+# sudo tee /etc/yum.repos.d/nginx.repo<<EOF
+# [nginx]
+# name=nginx repo
+# baseurl=https://nginx.org/packages/centos/$releasever/$basearch/
+# gpgcheck=0
+# enabled=1
+# EOF
+sudo dnf install nginx
+sudo systemctl enable nginx
+sudo systemctl start nginx
+
+# server {
+#     listen 80;
+#     server_name dev2.virnao.com;
+#     return 301 https://dev2.virnao.com$request_uri;
+# }
+
+# server {
+#     server_name dev2.virnao.com;
+#     listen 443 ssl http2;
+#     listen [::]:443 ssl http2;
+#     ssl on;
+#     ssl_certificate /etc/nginx/ssl-certs/godaddy_cert.crt;
+#     ssl_certificate_key /etc/nginx/ssl-certs/godaddy_key.key;
+#     root /var/www/dev2.virnao.com;
+#     index index.html;
+#     location / {
+#         proxy_pass http://localhost:3000/;
+#         proxy_set_header Host $http_host;
+#         proxy_set_header X-Real-IP $remote_addr;
+#         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#         proxy_set_header X-Forwarded-Proto “https”;
+#     }
+# }

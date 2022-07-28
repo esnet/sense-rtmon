@@ -65,10 +65,10 @@ services:
     # ports:
       # - "3000:3000"
     environment:
-      # VIRTUAL_HOST: dev2.virnao.com:3000
-      # VIRTUAL_PROTO: https
-      # VIRTUAL_PORT: 3000
-      # LETSENCRYPT_HOST: dev2.virnao.com
+      VIRTUAL_HOST: dev2.virnao.com
+      VIRTUAL_PROTO: https
+      VIRTUAL_PORT: 3000
+      LETSENCRYPT_HOST: dev2.virnao.com
     #   # LETSENCRYPT_EMAIL: YOUR.EMAIL@ADDRESS.TEST
 
       GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem
@@ -86,3 +86,14 @@ services:
       - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
 
     #   # - /etc/grafana/grafana.ini:/etc/grafana/grafana.ini
+
+  nginx:
+    hostname: nginx
+    image: nginx
+    ports:
+      - 3000:3000
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d/
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+
+      - /opt/stackv/tls:/etc/ssl/private

@@ -71,9 +71,9 @@ services:
     #   LETSENCRYPT_HOST: dev2.virnao.com
     #   # LETSENCRYPT_EMAIL: YOUR.EMAIL@ADDRESS.TEST
 
-    #   GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem
-    #   GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem
-    #   GF_SERVER_PROTOCOL: https
+      GF_SERVER_CERT_FILE: /etc/grafana/fullchain.pem
+      GF_SERVER_CERT_KEY: /etc/grafana/privkey.pem
+      GF_SERVER_PROTOCOL: https
       GF_SERVER_ROOT_URL: https://dev2.virnao.com:3000
       
     #   # GF_INSTALL_PLUGINS: jdbranham-diagram-panel

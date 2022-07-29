@@ -18,6 +18,10 @@ echo "!!    Previous stack revmoed"
 echo "!!    Start Grafana-server"
 sudo systemctl start grafana-server
 
+echo "!!    Make sure SNMP exporter is running. Dashboard can't be generated without SNMP Exporter"
+read -r -p "Press Enter to continue: " enter_continue 
+
+
 read -r -p "Config file [config.yml/Enter]: " config_file
 read -r -p "Generate Grafana Dashboar? [y/N enter]: " grafana
 

@@ -48,7 +48,7 @@ if_index2 = re.search('ifIndex="(.+?)\"',grep2).group(1)
 
 print("Starting script...")
 now = datetime.now()
-current_time = now.strftime("%d/%m/%Y_%H:%M")
+current_time = now.strftime("%d/%m_%H:%M")
 timeTxt = " ( " + str(current_time) + " )"
 # timeTxt = ""
 if data['switchNum'] == 1:
@@ -85,8 +85,12 @@ if data['switchNum'] == 1:
                     'HOSTB_SNMP_ON': "host2_snmp_on_" + str(data['hostB']['vlan']),
                     'SWITCH_HOSTA_MAC': "switch_host1_mac_" + str(data['hostA']['vlan']),
                     'SWITCH_HOSTB_MAC': "switch_host2_mac_" + str(data['hostB']['vlan']),
-                    'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
+                    'SWITCHAINCOMING': str(data['switchData']['portIn']['ifName']),
+                    'SWITCHAOUTGOING': str(data['switchData']['portOut']['ifName']),
+                    # 'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
+                    'DASHTITLE': f"{str(data['dashTitle'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchData']['portIn']['ifName'])}--{str(data['switchData']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}",
                     'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
+    
     print("Creating custom Grafana JSON Dashboard...")
     print("Creating custom L2 Debugging Dashboard...")
     # Iteratively find and replace in one go 
@@ -119,8 +123,10 @@ else:
                         'IFNAMEHOSTB': str(data['hostB']['interfaceName']),
                         'IFINDEXSWITCHHOSTA': str(if_index1),
                         'IFINDEXSWITCHHOSTB': str(if_index2),
-                        'SWITCHBINCOMING': str(data['switchDataB']['portIn']['ifIndex']),
-                        'SWITCHAOUTGOING': str(data['switchDataA']['portOut']['ifIndex']),
+                        'SWITCHAINCOMING': str(data['switchDataA']['portIn']['ifName']),
+                        'SWITCHBOUTGOING': str(data['switchDataB']['portOut']['ifName']),
+                        'SWITCHBINCOMING': str(data['switchDataB']['portIn']['ifName']),
+                        'SWITCHAOUTGOING': str(data['switchDataA']['portOut']['ifName']),
                         'NAMEIFAIN': str(data['hostA']['switchPort']['ifName']),
                         'NAMEIFAOUT': str(data['switchDataA']['portOut']['ifName']),
                         'NAMEIFBIN': str(data['switchDataB']['portIn']['ifName']),
@@ -154,10 +160,12 @@ else:
                         'IFNAMEHOSTA': str(data['hostA']['interfaceName']),
                         'IFNAMEHOSTB': str(data['hostB']['interfaceName']),
                         'IFINDEXSWITCHHOSTA': str(if_index1),
-                        'SWITCHAOUTGOING': str(data['switchDataA']['portOut']['ifIndex']),
-                        'SWITCHBINCOMING': str(data['switchDataB']['portIn']['ifIndex']),
-                        'SWITCHBOUTGOING': str(data['switchDataB']['portOut']['ifIndex']),
-                        'SWITCHCINCOMING': str(data['switchDataC']['portIn']['ifIndex']),
+                        'SWITCHAOUTGOING': str(data['switchDataA']['portOut']['ifName']),
+                        'SWITCHAINCOMING': str(data['switchDataA']['portIN']['ifName']),
+                        'SWITCHBINCOMING': str(data['switchDataB']['portIn']['ifName']),
+                        'SWITCHBOUTGOING': str(data['switchDataB']['portOut']['ifName']),
+                        'SWITCHCINCOMING': str(data['switchDataC']['portIn']['ifName']),
+                        'SWITCHCOUTGOING': str(data['switchDataC']['portOut']['ifName']),
                         'IFINDEXSWITCHHOSTB': str(if_index2),
                         'NAMEIFAIN': str(data['switchDataA']['portIn']['ifName']),
                         'NAMEIFAOUT': str(data['switchDataA']['portOut']['ifName']),
@@ -189,12 +197,14 @@ else:
                         'IFNAMEHOSTA': str(data['hostA']['interfaceName']),
                         'IFNAMEHOSTB': str(data['hostB']['interfaceName']),
                         'IFINDEXSWITCHHOSTA': str(if_index1),
-                        'SWITCHAOUTGOING': str(data['switchDataA']['portOut']['ifIndex']),
-                        'SWITCHBINCOMING': str(data['switchDataB']['portIn']['ifIndex']),
-                        'SWITCHBOUTGOING': str(data['switchDataB']['portOut']['ifIndex']),
-                        'SWITCHCINCOMING': str(data['switchDataC']['portIn']['ifIndex']),
-                        'SWITCHCOUTGOING': str(data['switchDataC']['portOut']['ifIndex']),
-                        'SWITCHDINCOMING': str(data['switchDataD']['portIn']['ifIndex']),
+                        'SWITCHAOUTGOING': str(data['switchDataA']['portOut']['ifName']),
+                        'SWITCHAINCOMING': str(data['switchDataA']['portIn']['ifName']),
+                        'SWITCHBINCOMING': str(data['switchDataB']['portIn']['ifName']),
+                        'SWITCHBOUTGOING': str(data['switchDataB']['portOut']['ifName']),
+                        'SWITCHCINCOMING': str(data['switchDataC']['portIn']['ifName']),
+                        'SWITCHCOUTGOING': str(data['switchDataC']['portOut']['ifName']),
+                        'SWITCHDINCOMING': str(data['switchDataD']['portIn']['ifName']),
+                        'SWITCHDOUTGOING': str(data['switchDataD']['portOut']['ifName']),
                         'IFINDEXSWITCHHOSTB': str(if_index2),
                         'NAMEIFAIN': str(data['switchDataA']['portIn']['ifName']),
                         'NAMEIFAOUT': str(data['switchDataA']['portOut']['ifName']),

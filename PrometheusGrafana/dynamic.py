@@ -48,7 +48,7 @@ if_index2 = re.search('ifIndex="(.+?)\"',grep2).group(1)
 
 print("Starting script...")
 now = datetime.now()
-current_time = now.strftime("%d/%m_%H:%M")
+current_time = now.strftime("%m/%d__%H:%M")
 timeTxt = " ( " + str(current_time) + " )"
 # timeTxt = ""
 if data['switchNum'] == 1:
@@ -87,9 +87,11 @@ if data['switchNum'] == 1:
                     'SWITCH_HOSTB_MAC': "switch_host2_mac_" + str(data['hostB']['vlan']),
                     'SWITCHAINCOMING': str(data['switchData']['portIn']['ifName']),
                     'SWITCHAOUTGOING': str(data['switchData']['portOut']['ifName']),
+                    'SWITCHAINVLAN': str(data['switchData']['portIn']['vlan']),
+                    'SWITCHAOUTVLAN': str(data['switchData']['portOut']['vlan']),
                     # 'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
                     'DASHTITLE': f"{str(data['dashTitle'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchData']['portIn']['ifName'])}--{str(data['switchData']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}",
-                    'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
+                    'DEBUGTITLE':  f"{str(data['debugTitle'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchData']['portIn']['ifName'])}--{str(data['switchData']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}"}
     
     print("Creating custom Grafana JSON Dashboard...")
     print("Creating custom L2 Debugging Dashboard...")
@@ -150,8 +152,12 @@ else:
                         'HOSTB_SNMP_ON': "m_host2_snmp_on_" + str(data['hostB']['vlan']),
                         'SWITCH_HOSTA_MAC': "m_switch_host1_mac_" + str(data['hostA']['vlan']),
                         'SWITCH_HOSTB_MAC': "m_switch_host2_mac_" + str(data['hostB']['vlan']),
-                        'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
-                        'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
+                        'SWITCHAINVLAN': str(data['switchDataA']['portIn']['vlan']),
+                        'SWITCHAOUTVLAN': str(data['switchDataA']['portOut']['vlan']),
+                        'SWITCHBINVLAN': str(data['switchDataB']['portIn']['vlan']),
+                        'SWITCHBOUTVLAN': str(data['switchDataB']['portOut']['vlan']),
+                        'DASHTITLE': f"{str(data['dashTitle'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}",
+                        'DEBUGTITLE':  f"{str(data['debug'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}"}
     elif data['switchNum'] == 3:
         replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                         'IPHOSTB': str(data['hostB']['IP']),
@@ -187,8 +193,14 @@ else:
                         'IPSWITCHB': str(data['switchDataB']['target']),
                         'IPSWITCHC': str(data['switchDataC']['target']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
-                        'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
-                        'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
+                        'SWITCHAINVLAN': str(data['switchDataA']['portIn']['vlan']),
+                        'SWITCHAOUTVLAN': str(data['switchDataA']['portOut']['vlan']),
+                        'SWITCHBINVLAN': str(data['switchDataB']['portIn']['vlan']),
+                        'SWITCHBOUTVLAN': str(data['switchDataB']['portOut']['vlan']),
+                        'SWITCHCINVLAN': str(data['switchDataC']['portIn']['vlan']),
+                        'SWITCHCOUTVLAN': str(data['switchDataC']['portOut']['vlan']),
+                        'DASHTITLE': f"{str(data['dashTitle'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['switchDataC']['portIn']['ifName'])}--{str(data['switchDataC']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}",
+                        'DEBUGTITLE': f"{str(data['debugTitle'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['switchDataC']['portIn']['ifName'])}--{str(data['switchDataC']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}"}
     else:
         replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                         'IPHOSTB': str(data['hostB']['IP']),
@@ -229,8 +241,16 @@ else:
                         'IPSWITCHC': str(data['switchDataC']['target']),
                         'IPSWITCHD': str(data['switchDataD']['target']),
                         'SNMPNAME': str(data['switchDataA']['job_name']),
-                        'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
-                        'DEBUGTITLE': str(data['debugTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt}
+                        'SWITCHAINVLAN': str(data['switchDataA']['portIn']['vlan']),
+                        'SWITCHAOUTVLAN': str(data['switchDataA']['portOut']['vlan']),
+                        'SWITCHBINVLAN': str(data['switchDataB']['portIn']['vlan']),
+                        'SWITCHBOUTVLAN': str(data['switchDataB']['portOut']['vlan']),
+                        'SWITCHCINVLAN': str(data['switchDataC']['portIn']['vlan']),
+                        'SWITCHCOUTVLAN': str(data['switchDataC']['portOut']['vlan']),
+                        'SWITCHDINVLAN': str(data['switchDataD']['portIn']['vlan']),
+                        'SWITCHDOUTVLAN': str(data['switchDataD']['portOut']['vlan']),
+                        'DASHTITLE': f"{str(data['dashTitle'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['switchDataC']['portIn']['ifName'])}--{str(data['switchDataC']['portOut']['ifName'])}--{str(data['switchDataD']['portIn']['ifName'])}--{str(data['switchDataD']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}",
+                        'DEBUGTITLE': f"{str(data['debugTitle'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['switchDataC']['portIn']['ifName'])}--{str(data['switchDataC']['portOut']['ifName'])}--{str(data['switchDataD']['portIn']['ifName'])}--{str(data['switchDataD']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}"}
     print("Creating custom Grafana JSON Dashboard...")
     print("Creating custom L2 Debugging JSON Dashboard...")
     # Iteratively find and replace in one go 

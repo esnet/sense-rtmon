@@ -4,8 +4,7 @@ This package will provide everything needed to install and start `Cloud` and `Si
 ## Configuration
 - `config.yml` and `multiconfig.yml` files are configuration examples. 
 - Both `Cloud` and `Site` stacks use the same configuration files. In future iterations, this might change to stack-specific.
-- **NOTE: PLEASE FILL IN CONFIG FILES FIRST BEFORE EXECUTING THE BELOW STEPS**. 
-- The installation and start scripts depend on the configuration file.
+**NOTE: PLEASE FILL IN CONFIG FILES FIRST BEFORE EXECUTING THE BELOW STEPS**. The installation and start scripts depend on the configuration file.
 
 ## Installation
 - Under `cloud` and `site` stack there's an `install.sh` file. 

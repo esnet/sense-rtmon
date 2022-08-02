@@ -277,7 +277,6 @@ else:
     subprocess.run(cmd, shell=True)
     # print("Loaded Grafana dashboard")
 
-print("\n\nIf you do not see:")
-print("{'id':#, 'slug': 'title', 'status': 'success', ...'title', 'version': 1")
-print("PLEASE RUN ./start.sh AGAIN")
-print("Else the dashboards are generated successfully\n\n")
+print("\n\n!!   Please ignore: InsecureRequestWarning")
+print("!!   If you do not see: {'id':#, 'slug': 'title', 'status': 'success', ...'title', 'version': 1")
+print("!!   PLEASE RUN ./start.sh AGAIN, else the dashboards are generated successfully\n")

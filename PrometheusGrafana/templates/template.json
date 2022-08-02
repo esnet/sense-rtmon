@@ -758,7 +758,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(ifIndex{job=~\"$job\",instance=\"IPSWITCH\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}) by (ifIndex)",
+          "expr": "sum(ifIndex{job=~\"$job\",instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -769,7 +769,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifName{job=~\"$job\",instance=\"IPSWITCH\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}) by (ifIndex,ifName)",
+          "expr": "sum(ifName{job=~\"$job\",instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifName)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -780,7 +780,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifType_info{job=~\"$job\",instance=\"IPSWITCH\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}) by (ifIndex,ifType)",
+          "expr": "sum(ifType_info{job=~\"$job\",instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifType)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -791,7 +791,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifPhysAddress{job=~\"$job\",instance=\"IPSWITCH\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}) by (ifIndex,ifPhysAddress)",
+          "expr": "sum(ifPhysAddress{job=~\"$job\",instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifPhysAddress)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -802,7 +802,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifMtu{job=~\"$job\",instance=\"IPSWITCH\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}) by (ifIndex)",
+          "expr": "sum(ifMtu{job=~\"$job\",instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -813,7 +813,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifOperStatus{job=~\"$job\",instance=\"IPSWITCH\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}) by (ifIndex)",
+          "expr": "sum(ifOperStatus{job=~\"$job\",instance=\"IPSWITCH\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1317,7 +1317,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$job\", ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}[5m])*8",
+          "expr": "irate(ifHCInOctets{job=\"$job\", ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[5m])*8",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -1738,7 +1738,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$job\",ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}[5m])*8",
+          "expr": "irate(ifHCOutOctets{job=\"$job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[5m])*8",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2148,7 +2148,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "rate(ifHCInOctets{job=\"$job\", ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}[10m])",
+          "expr": "rate(ifHCInOctets{job=\"$job\", ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[10m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2562,7 +2562,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$job\", ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}[15m])",
+          "expr": "irate(ifHCOutOctets{job=\"$job\", ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[15m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -7022,7 +7022,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "f10IfInVlanPkts{ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}",
+          "expr": "f10IfInVlanPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}",
           "interval": "",
           "legendFormat": "{{ifDescr}}",
           "refId": "A"
@@ -7120,7 +7120,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "f10IfOutVlanPkts{ifIndex=~\"IFNAMESWITCHHOSTB|IFNAMESWITCHHOSTA\"}",
+          "expr": "f10IfOutVlanPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}",
           "instant": false,
           "interval": "",
           "legendFormat": "",
@@ -8779,13 +8779,13 @@
           },
           {
             "selected": false,
-            "text": "IFNAMESWITCHHOSTB",
-            "value": "IFNAMESWITCHHOSTB"
+            "text": "IFINDEXSWITCHHOSTB",
+            "value": "IFINDEXSWITCHHOSTB"
           },
           {
             "selected": false,
-            "text": "IFNAMESWITCHHOSTA",
-            "value": "IFNAMESWITCHHOSTA"
+            "text": "IFINDEXSWITCHHOSTA",
+            "value": "IFINDEXSWITCHHOSTA"
           },
           {
             "selected": false,

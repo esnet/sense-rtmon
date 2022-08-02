@@ -277,7 +277,7 @@ else:
     subprocess.run(cmd, shell=True)
     # print("Loaded Grafana dashboard")
 
-print("If you do not see:")
+print("\n\nIf you do not see:")
 print("{'id':#, 'slug': 'title', 'status': 'success', ...'title', 'version': 1")
 print("PLEASE RUN ./start.sh AGAIN")
-print("Else the dashboards are generated successfully")
+print("Else the dashboards are generated successfully\n\n")

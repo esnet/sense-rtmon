@@ -31,6 +31,7 @@ else: # default config file
 switchNum = data['switchNum']
 hostip = data['hostIP']
 pushgateway_server = f"{data['grafanaHostIP']}:9091" 
+host1IP = data['hostA']['IP']
 host2IP = data['hostB']['IP']
 top_level_config_file = data['configFile']
 
@@ -39,7 +40,15 @@ with open('start2.sh', 'r') as file:
     
 write_data[8] = f"MYIP={hostip}\n"
 write_data[9] = f"pushgateway_server={pushgateway_server}\n"
-write_data[10] = f"host2IP={host2IP}\n"
+
+if hostip == host2IP and hostip == host1IP:
+    print("host1 and host2 cannot have the same IP address in the config file. Exiting...")
+    exit
+elif hostip == host1IP: # if this machine is host1 then the other is host2
+    write_data[10] = f"host2IP={host2IP}\n"
+elif hostip == host2IP: # if this machine is host2 then the other is host1
+    write_data[10] = f"host2IP={host1IP}\n"
+
 write_data[11] = f"top_level_config_file={top_level_config_file}\n"
 
 if switchNum == 1:

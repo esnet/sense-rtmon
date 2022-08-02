@@ -6,7 +6,7 @@ import subprocess
 import os
 from datetime import datetime
 
-print("Parsing config file...")
+print("\n\nParsing config file...")
 # Load yaml config file as dict
 owd = os.getcwd()
 os.chdir("..")
@@ -32,7 +32,7 @@ else: # default config file
         except yaml.YAMLError as exc:
             print(f"\n Config file {infpth} could not be found in the DynamicDashboard directory\n")
 
-print("find correct index from snmp exporter")
+print("find correct index from snmp exporter\n\n")
 # find correct inter face index from SNMP exporter
 myip = data['hostIP']
 pushgateway_metrics = f"{myip}:9091/metrics"
@@ -50,14 +50,14 @@ subprocess.run("echo \"grep 2\"",shell=True) # acts as enter in command line
 if_index1 = re.search('ifIndex="(.+?)\"',grep1).group(1)
 if_index2 = re.search('ifIndex="(.+?)\"',grep2).group(1)
 
-print("Starting script...")
+print("\n\n")
 now = datetime.now()
 current_time = now.strftime("%m/%d_%H:%M")
 timeTxt = " | [" + str(current_time) + "]"
 # timeTxt = ""
 if data['switchNum'] == 1:
     print("Single Network Element Flow Detected")
-    print("Collecting dashboard template...")
+    # print("Collecting dashboard template...")
     # Map of replacements to complete from template.json to out.json
     replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                     'IPHOSTB': str(data['hostB']['IP']),
@@ -97,8 +97,8 @@ if data['switchNum'] == 1:
                     'DASHTITLE': f" | {str(data['dashTitle'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchData']['portIn']['ifName'])}--{str(data['switchData']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}",
                     'DEBUGTITLE': f" | {str(data['debugTitle'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchData']['portIn']['ifName'])}--{str(data['switchData']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}"}
     
-    print("Creating custom Grafana JSON Dashboard...")
-    print("Creating custom L2 Debugging Dashboard...")
+    # print("Creating custom Grafana JSON Dashboard...")
+    # print("Creating custom L2 Debugging Dashboard...")
     # Iteratively find and replace in one go 
     with open('./templates/newTemplate.json') as infile, open('out.json', 'w') as outfile:
         for line in infile:
@@ -111,15 +111,15 @@ if data['switchNum'] == 1:
                 line = line.replace(src, target)
             outfile.write(line)
 
-    print("Applying dashboard JSON to Grafana API...")
+    # print("Applying dashboard JSON to Grafana API...")
     # Run the API script to convert output JSON to Grafana dashboard automatically
-    print("Loading Grafana dashboard on Grafana server...")
+    # print("Loading Grafana dashboard on Grafana server...")
     cmd = "sudo python3 api.py out.json outDebug.json"
     subprocess.run(cmd, shell=True)
-    print("Loaded Grafana dashboard")
+    # print("Loaded Grafana dashboard")
 else:
     print("Multiple Network Element Flow Detected")
-    print("Collecting dashboard template...")
+    # print("Collecting dashboard template...")
     # Map of replacements to complete from template.json to out.json
     replacements = {}
     if data['switchNum'] == 2:

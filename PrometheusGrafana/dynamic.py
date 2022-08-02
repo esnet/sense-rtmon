@@ -278,5 +278,5 @@ else:
     # print("Loaded Grafana dashboard")
 
 print("\n\n!!   Please ignore: InsecureRequestWarning")
-print("!!   If you do not see: {'id':#, 'slug': 'title', 'status': 'success', ...'title', 'version': 1")
+print("!!   If you do not see: {'id':#, 'slug': <title>, 'status': 'success', 'uid':<>, 'url':<title>, 'version': 1}")
 print("!!   PLEASE RUN ./start.sh AGAIN, else the dashboards are generated successfully\n")

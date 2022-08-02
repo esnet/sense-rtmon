@@ -38,10 +38,14 @@ myip = data['hostIP']
 pushgateway_metrics = f"{myip}:9091/metrics"
 
 cmd1 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostA']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostA']['switchPort']['ifName'])}\".*'"
+subprocess.run(cmd1,shell=True)
+subprocess.run("echo \"trial run\"",shell=True)
 grep1 = subprocess.check_output(cmd1,shell=True).decode()
+subprocess.run("echo \"grep 1\"",shell=True) # acts as enter in command line
 
 cmd2 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostB']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostB']['switchPort']['ifName'])}\".*'"
 grep2 = subprocess.check_output(cmd2,shell=True).decode()
+subprocess.run("echo \"grep 2\"",shell=True) # acts as enter in command line
 
 if_index1 = re.search('ifIndex="(.+?)\"',grep1).group(1)
 if_index2 = re.search('ifIndex="(.+?)\"',grep2).group(1)
@@ -251,8 +255,8 @@ else:
                         'SWITCHDOUTVLAN': str(data['switchDataD']['portOut']['vlan']),
                         'DASHTITLE': f"{str(data['dashTitle'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['switchDataC']['portIn']['ifName'])}--{str(data['switchDataC']['portOut']['ifName'])}--{str(data['switchDataD']['portIn']['ifName'])}--{str(data['switchDataD']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}",
                         'DEBUGTITLE': f"{str(data['debugTitle'])} {str(data['flow'])} {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['switchDataC']['portIn']['ifName'])}--{str(data['switchDataC']['portOut']['ifName'])}--{str(data['switchDataD']['portIn']['ifName'])}--{str(data['switchDataD']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}"}
-    print("Creating custom Grafana JSON Dashboard...")
-    print("Creating custom L2 Debugging JSON Dashboard...")
+    # print("Creating custom Grafana JSON Dashboard...")
+    # print("Creating custom L2 Debugging JSON Dashboard...")
     # Iteratively find and replace in one go 
     fname = "./templates/template" + str(data['switchNum']) + ".json"
     dname = "./templates/debugTemplate" + str(data['switchNum']) + ".json"
@@ -266,9 +270,14 @@ else:
             for src, target in replacements.items():
                 line = line.replace(src, target)
             outfile.write(line)              
-    print("Applying dashboard JSON to Grafana API...")
+    # print("Applying dashboard JSON to Grafana API...")
     # Run the API script to convert output JSON to Grafana dashboard automatically
-    print("Loading Grafana dashboard on Grafana server...")
+    # print("Loading Grafana dashboard on Grafana server...")
     cmd = "sudo python3 api.py out.json outDebug.json"
     subprocess.run(cmd, shell=True)
-    print("Loaded Grafana dashboard")
+    # print("Loaded Grafana dashboard")
+
+print("If you do not see:")
+print("{'id':#, 'slug': 'title', 'status': 'success', ...'title', 'version': 1")
+print("PLEASE RUN ./start.sh AGAIN")
+print("Else the dashboards are generated successfully")

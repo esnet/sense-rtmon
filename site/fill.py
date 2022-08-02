@@ -34,7 +34,7 @@ pushgateway_server = f"{data['grafanaHostIP']}:9091"
 host2IP = data['hostB']['IP']
 top_level_config_file = data['configFile']
 
-with open('start.sh', 'r') as file:
+with open('start2.sh', 'r') as file:
     write_data = file.readlines()
     
 write_data[8] = f"MYIP={hostip}\n"
@@ -51,5 +51,5 @@ elif switchNum == 2:
     write_data[12] = f"switch_target1={switch_target1}\n"
     write_data[13] = f"switch_target2={switch_target2}\n"
     
-with open('start.sh', 'w') as file:
+with open('start2.sh', 'w') as file:
     file.writelines(write_data)

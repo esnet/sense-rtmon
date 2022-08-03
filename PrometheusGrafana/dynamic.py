@@ -258,7 +258,7 @@ else:
     # print("Creating custom Grafana JSON Dashboard...")
     # print("Creating custom L2 Debugging JSON Dashboard...")
     # Iteratively find and replace in one go 
-    fname = "./templates/template" + str(data['switchNum']) + ".json"
+    fname = "./templates/newTemplate" + str(data['switchNum']) + ".json"
     dname = "./templates/debugTemplate" + str(data['switchNum']) + ".json"
     with open(fname) as infile, open('out.json', 'w') as outfile:
         for line in infile:

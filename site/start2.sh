@@ -52,12 +52,12 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     echo "Satring SNMP Exporter Service"
     # docker stack deploy -c snmp-exporter.yml site
     # read -r -p "Enter switch IP :" switchIP
-    read -r -p "Enter VLAN for $switch_target1 seprated by space (e.g. 1000 1001): " VLANA1 VLANA2 VLANA3
+    # read -r -p "Enter VLAN for $switch_target1 seprated by space (e.g. 1000 1001): " VLANA1 VLANA2 VLANA3
 
     read -r -p "Second switch [y/N]? " second_switch
     if [ "$second_switch" == "y" ] || [ "$second_switch" == "Y" ]; then
         read -r -p "Enter switch IP :" switchIP2
-        read -r -p "Enter VLAN seprated by space (e.g. 1000 1001): " VLANB1 VLANB2 VLANB3
+        # read -r -p "Enter VLAN seprated by space (e.g. 1000 1001): " VLANB1 VLANB2 VLANB3
     fi
     > ./crontabs/snmp_temp.txt
     > ./crontabs/snmp_temp2.txt
@@ -72,27 +72,8 @@ else
     > $general_path/site/crontabs/snmp_temp.txt	
     > $general_path/site/crontabs/snmp_temp2.txt	
 fi
-cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/vlan/$VLANA1/instance/$MYIP
-
-if [ "$VLANA2" != "" ] || then
-    cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/vlan/$VLANA2/instance/$MYIP
-fi 
-
-if [ "$VLANA3" != "" ] || then
-    cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/vlan/$VLANA3/instance/$MYIP
-fi 
-
-if [ "$VLANB1" != "" ] || then
-    cat $general_path/site/crontabs/snmp_temp2.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/vlan/$VLAN2/instance/$MYIP
-fi 
-
-if [ "$VLANB2" != "" ] || then
-    cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/vlan/$VLANB2/instance/$MYIP
-fi 
-
-if [ "$VLANB3" != "" ] || then
-    cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/vlan/$VLANB3/instance/$MYIP
-fi 
+cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/instance/$MYIP
+cat $general_path/site/crontabs/snmp_temp2.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/instance/$MYIP
 
 EOF
 
@@ -180,3 +161,23 @@ echo "!!    to remove site stack run ./clean.sh"
 
 echo "docker compose $starting_node $starting_snmp $starting_arp $starting_tcp up -d"
 docker compose $starting_node $starting_snmp $starting_arp $starting_tcp up -d
+
+# if [ "$VLANA2" != "" ] || then
+#     cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/vlan/$VLANA2/instance/$MYIP
+# fi 
+
+# if [ "$VLANA3" != "" ] || then
+#     cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/vlan/$VLANA3/instance/$MYIP
+# fi 
+
+# if [ "$VLANB1" != "" ] || then
+#     cat $general_path/site/crontabs/snmp_temp2.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/vlan/$VLAN2/instance/$MYIP
+# fi 
+
+# if [ "$VLANB2" != "" ] || then
+#     cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/vlan/$VLANB2/instance/$MYIP
+# fi 
+
+# if [ "$VLANB3" != "" ] || then
+#     cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/vlan/$VLANB3/instance/$MYIP
+# fi 

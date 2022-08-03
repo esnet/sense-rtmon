@@ -106,12 +106,12 @@ else
 fi
 
 ####################### SMMP Exporter #################################
-if curl ${pushgateway}:9091/metrics | grep "dot1.*instance=\"${host1}\".*job=\"snmp-exporter\".*vlan=\"${flow_vlan}\".*"; then
+if curl ${pushgateway}:9091/metrics | grep "dot1.*instance=\"${host1}\".*job=\"snmp-exporter\".*"; then
     echo "m_host1_snmp_on_${flow_vlan}{host=\"${host1}\"} 1";
 else 
     echo "m_host1_snmp_on_${flow_vlan}{host=\"${host1}\"} 0";
 fi
-if curl ${pushgateway}:9091/metrics | grep "dot1.*instance=\"${host2}\".*job=\"snmp-exporter\".*vlan=\"${flow_vlan}\".*"; then
+if curl ${pushgateway}:9091/metrics | grep "dot1.*instance=\"${host2}\".*job=\"snmp-exporter\".*"; then
     echo "m_host2_snmp_on_${flow_vlan}{host=\"${host2}\"} 1";
 else 
     echo "m_host2_snmp_on_${flow_vlan}{host=\"${host2}\"} 0";
@@ -132,26 +132,26 @@ host2_mac_no_quote=$(echo ${host2_mac_no_quote#*\"})
 
 # find host1 and host2 mac addressed on SNMP metrics from switch
 # ^^ makes the mac addresses in upper case. SNMP mac addresses are in uppercase
-if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*vlan=\"${flow_vlan}\".*"; then
+if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*"; then
     echo "m_switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
     # echo "host1_mac{mac=\"${host1_mac_no_quote}\"} 1"
 else 
     echo "m_switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
 fi
-if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*vlan=\"${flow_vlan}\".*"; then
+if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*"; then
     echo "m_switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
     # echo "host2_mac{mac=\"${host2_mac_no_quote}\"} 1"
 else 
     echo "m_switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
 fi
 
-if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*vlan=\"${flow_vlan}\".*"; then
+if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*"; then
     echo "m_switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
     # echo "host1_mac{mac=\"${host1_mac_no_quote}\"} 1"
 else 
     echo "m_switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
 fi
-if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*vlan=\"${flow_vlan}\".*"; then
+if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*"; then
     echo "m_switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
     # echo "host2_mac{mac=\"${host2_mac_no_quote}\"} 1"
 else 

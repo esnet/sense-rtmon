@@ -1580,7 +1580,7 @@
           "x": 0,
           "y": 30
         },
-        "id": 131,
+        "id": 231,
         "panels": [],
         "title": "Flow Summary - Switch 2",
         "type": "row"
@@ -1598,7 +1598,7 @@
           "x": 0,
           "y": 31
         },
-        "id": 133,
+        "id": 233,
         "options": {
           "content": "```\n Switch 2 (DellS4810)   NAMEIFSWITCHA   NAMEIFSWITCHB   IPSWITCH\n ```",
           "mode": "markdown"
@@ -1624,7 +1624,7 @@
           "x": 0,
           "y": 34
         },
-        "id": 135,
+        "id": 235,
         "links": [],
         "pageSize": null,
         "scroll": true,
@@ -2130,56 +2130,56 @@
           "overrides": [
             {
               "matcher": {
-                "id": "byName",
+                "id": "byName2",
                 "options": "ifDescr"
               },
               "properties": [
                 {
-                  "id": "custom.width",
+                  "id": "custom.width2",
                   "value": 197
                 }
               ]
             },
             {
               "matcher": {
-                "id": "byName",
+                "id": "byName2",
                 "options": "Receive Packets"
               },
               "properties": [
                 {
-                  "id": "unit",
+                  "id": "unit2",
                   "value": "short"
                 },
                 {
-                  "id": "decimals",
+                  "id": "decimals2",
                   "value": 0
                 }
               ]
             },
             {
               "matcher": {
-                "id": "byName",
+                "id": "byName2",
                 "options": "Transmit Packets"
               },
               "properties": [
                 {
-                  "id": "unit",
+                  "id": "unit2",
                   "value": "short"
                 },
                 {
-                  "id": "decimals",
+                  "id": "decimals2",
                   "value": 0
                 }
               ]
             },
             {
               "matcher": {
-                "id": "byName",
+                "id": "byName2",
                 "options": "Interface"
               },
               "properties": [
                 {
-                  "id": "custom.width",
+                  "id": "custom.width2",
                   "value": 200
                 }
               ]
@@ -2192,7 +2192,7 @@
           "x": 0,
           "y": 38
         },
-        "id": 137,
+        "id": 237,
         "options": {
           "frameIndex": 2,
           "showHeader": true,
@@ -2246,17 +2246,17 @@
         "title": "Switch 2 Packets, Bytes Receive/Transmit",
         "transformations": [
           {
-            "id": "seriesToColumns",
+            "id": "seriesToColumns2",
             "options": {
               "byField": "ifIndex"
             }
           },
           {
-            "id": "labelsToFields",
+            "id": "labelsToFields2",
             "options": {}
           },
           {
-            "id": "organize",
+            "id": "organize2",
             "options": {
               "excludeByName": {
                 "ifIndex": true,
@@ -2295,7 +2295,7 @@
           "y": 42
         },
         "hiddenSeries": false,
-        "id": 139,
+        "id": 239,
         "legend": {
           "avg": false,
           "current": false,
@@ -2409,7 +2409,7 @@
           "y": 49
         },
         "hiddenSeries": false,
-        "id": 141,
+        "id": 241,
         "legend": {
           "avg": false,
           "current": false,

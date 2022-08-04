@@ -50,6 +50,11 @@ subprocess.run("echo \"grep 2\"",shell=True) # acts as enter in command line
 if_index1 = re.search('ifIndex="(.+?)\"',grep1).group(1)
 if_index2 = re.search('ifIndex="(.+?)\"',grep2).group(1)
 
+cmd3 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['ifVlan1'])}\".*ifName=\"{str(data['ifVlan1'])}\".*'"
+grep3 = subprocess.check_output(cmd3,shell=True).decode()
+subprocess.run("echo \"grep 3\"",shell=True) # acts as enter in command line
+vlan_if_index1 = re.search('ifIndex="(.+?)\"',grep3).group(1)
+
 print("\n\n")
 now = datetime.now()
 current_time = now.strftime("%m/%d_%H:%M")
@@ -63,6 +68,7 @@ if data['switchNum'] == 1:
                     'IPHOSTB': str(data['hostB']['IP']),
                     'IFNAMEHOSTA': str(data['hostA']['interfaceName']),
                     'IFNAMEHOSTB': str(data['hostB']['interfaceName']),
+                    'MONITORVLAN1': str(vlan_if_index1),
                     'IFINDEXSWITCHHOSTA': str(if_index1),
                     'NAMEIFSWITCHA': str(data['hostA']['switchPort']['ifName']),
                     'NAMEIFSWITCHB': str(data['hostB']['switchPort']['ifName']),

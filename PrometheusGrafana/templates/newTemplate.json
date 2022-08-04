@@ -1651,18 +1651,6 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(ifMtu{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "E"
-        },
-
-        {
-          "exemplar": true,
           "expr": "sum(ifIndex{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
@@ -1952,6 +1940,185 @@
       ],
       "type": "table"
     },
+
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ifDescr"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 197
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Receive Packets"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Transmit Packets"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Interface"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 200
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 38
+      },
+      "id": 137,
+      "options": {
+        "frameIndex": 2,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.5.4",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "AA"
+        },
+        {
+          "exemplar": true,
+          "expr": "irate(ifHCOutOctets{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "AB"
+        },
+        {
+          "exemplar": true,
+          "expr": "irate(ifHCInMulticastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInUcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInBroadcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "AC"
+        },
+        {
+          "exemplar": true,
+          "expr": "irate(ifHCOutMulticastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutUcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutBroadcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "AD"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "VLAN Packets, Bytes Receive/Transmit",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "ifIndex"
+          }
+        },
+        {
+          "id": "labelsToFields",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ifIndex": true,
+              "instance": true,
+              "job": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Value #A": "Receive Bytes",
+              "Value #B": "Transmit Bytes",
+              "Value #C": "Receive Packets",
+              "Value #D": "Transmit Packets",
+              "ifDescr": "Interface"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+
     {
       "aliasColors": {},
       "bars": false,
@@ -2066,6 +2233,7 @@
         "alignLevel": null
       }
     },
+
     {
       "aliasColors": {},
       "bars": false,
@@ -2180,6 +2348,237 @@
         "alignLevel": null
       }
     },
+
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "hiddenSeries": false,
+      "id": 139,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv NAMEIFSWITCHA",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN1\"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "irate(ifHCOutOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN1\"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "VLAN 1 Flow Summary - Bandwidth Graph",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "hiddenSeries": false,
+      "id": 139,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.4",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv NAMEIFSWITCHA",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN2\"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "irate(ifHCOutOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN2\"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "VLAN 2 Flow Summary - Bandwidth Graph (if exists)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+
     {
       "collapsed": false,
       "datasource": null,

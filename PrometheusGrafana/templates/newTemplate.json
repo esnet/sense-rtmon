@@ -1759,7 +1759,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1769,7 +1769,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1779,7 +1779,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCInMulticastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInUcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInBroadcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
+          "expr": "irate(ifHCInMulticastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInUcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInBroadcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1789,7 +1789,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutMulticastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutUcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutBroadcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
+          "expr": "irate(ifHCOutMulticastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutUcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutBroadcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
           "format": "table",
           "hide": false,
           "instant": true,

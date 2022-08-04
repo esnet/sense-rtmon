@@ -59,18 +59,18 @@ vlan_if_index2 = "MONITORVLAN2"
 vlan_if_index3 = "MONITORVLAN3"
 
 # if second VLAN is available
-if str(data['ifVlan2']) != str(data['ifVlan1']) and str(data['ifVlan2']) != str(data['ifVlan3']) and str(data['ifVlan2']) != "":
+if str(data['ifVlan2']) != str(data['ifVlan1']) and str(data['ifVlan2']) != "":
     cmd4 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['ifVlan2'])}\".*ifName=\"{str(data['ifVlan2'])}\".*'"
     grep4 = subprocess.check_output(cmd4,shell=True).decode()
     subprocess.run("echo \"grep 4\"",shell=True) # acts as enter in command line
-    vlan_if_index2 = re.search('ifIndex="(.+?)\"',grep3).group(1)
+    vlan_if_index2 = re.search('ifIndex="(.+?)\"',grep4).group(1)
 
 # if third VLAN is available
 if str(data['ifVlan3']) != str(data['ifVlan1']) and str(data['ifVlan2']) != str(data['ifVlan3']) and str(data['ifVlan3']) != "":
     cmd5 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['ifVlan3'])}\".*ifName=\"{str(data['ifVlan3'])}\".*'"
     grep5 = subprocess.check_output(cmd5,shell=True).decode()
     subprocess.run("echo \"grep 5\"",shell=True) # acts as enter in command line
-    vlan_if_index2 = re.search('ifIndex="(.+?)\"',grep3).group(1)  
+    vlan_if_index2 = re.search('ifIndex="(.+?)\"',grep5).group(1)  
     
 
 print("\n\n")

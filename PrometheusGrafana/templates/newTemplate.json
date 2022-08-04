@@ -1943,7 +1943,7 @@
           "instant": true,
           "interval": "",
           "legendFormat": "",
-          "refId": "AA"
+          "refId": "A"
         },
         {
           "exemplar": true,
@@ -1953,7 +1953,7 @@
           "instant": true,
           "interval": "",
           "legendFormat": "",
-          "refId": "AB"
+          "refId": "B"
         },
         {
           "exemplar": true,
@@ -1963,7 +1963,7 @@
           "instant": true,
           "interval": "",
           "legendFormat": "",
-          "refId": "AC"
+          "refId": "C"
         },
         {
           "exemplar": true,
@@ -1973,7 +1973,7 @@
           "instant": true,
           "interval": "",
           "legendFormat": "",
-          "refId": "AD"
+          "refId": "D"
         }
       ],
       "timeFrom": null,

@@ -1156,73 +1156,6 @@
           "intervalFactor": 1,
           "legendFormat": "",
           "refId": "E"
-        },
-
-        {
-          "exemplar": true,
-          "expr": "sum(ifIndex{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "AA"
-        },
-        {
-          "exemplar": true,
-          "expr": "sum(ifName{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifName)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "AB"
-        },
-        {
-          "exemplar": true,
-          "expr": "sum(ifType{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifType)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "AC"
-        },
-        {
-          "exemplar": true,
-          "expr": "sum(ifPhysAddress{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifPhysAddress)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "AD"
-        },
-        {
-          "exemplar": true,
-          "expr": "sum(ifOperStatus{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "AE"
-        },
-        {
-          "exemplar": true,
-          "expr": "sum(ifMtu{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "AF"
         }
       ],
       "timeFrom": null,
@@ -1658,7 +1591,7 @@
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "",
-          "refId": "AA"
+          "refId": "M"
         },
         {
           "exemplar": true,
@@ -1669,7 +1602,7 @@
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "",
-          "refId": "AB"
+          "refId": "I"
         },
         {
           "exemplar": true,
@@ -1680,7 +1613,7 @@
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "",
-          "refId": "AC"
+          "refId": "G"
         },
         {
           "exemplar": true,
@@ -1691,7 +1624,7 @@
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "",
-          "refId": "AD"
+          "refId": "C"
         },
         {
           "exemplar": true,
@@ -1702,7 +1635,7 @@
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "",
-          "refId": "AE"
+          "refId": "D"
         },
         {
           "exemplar": true,
@@ -1713,7 +1646,7 @@
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "",
-          "refId": "AF"
+          "refId": "E"
         }
       ],
       "timeFrom": null,
@@ -1826,7 +1759,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1836,7 +1769,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1846,7 +1779,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCInMulticastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInUcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInBroadcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
+          "expr": "irate(ifHCInMulticastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInUcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInBroadcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1856,53 +1789,13 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutMulticastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutUcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutBroadcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "D"
-        },
-        {
-          "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "AA"
-        },
-        {
-          "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "AB"
-        },
-        {
-          "exemplar": true,
-          "expr": "irate(ifHCInMulticastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInUcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInBroadcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "AC"
-        },
-        {
-          "exemplar": true,
           "expr": "irate(ifHCOutMulticastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutUcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutBroadcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
           "format": "table",
           "hide": false,
           "instant": true,
           "interval": "",
           "legendFormat": "",
-          "refId": "AD"
+          "refId": "D"
         }
       ],
       "timeFrom": null,

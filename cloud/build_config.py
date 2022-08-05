@@ -32,60 +32,34 @@ else: # default config file
         except yaml.YAMLError as exc:
             print(f"\n Config file {infpth} could not be found in the DynamicDashboard directory\n")
 
-data['flow'] = "abc"
-with open('cloud_generated_config.yml', 'w') as outfile:
+data['configFile'] = "cloud_config.yml"
+data['flow'] = input("Please enter a flow ID: ")
+data['hostIP'] = input("Enter ip of this host: ")
+data['grafanaHostIP'] =  input("Grafana Host DNS (e.g. dev2.virnao.com): ")
+data['grafanaAPIToken'] =  input("Grafana APIToken (Visit Google Doc for Grafana API Key instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub): ")
+
+data['hostA']['IP'] = input("Host 1 IP (198.32.43.16): ")
+data['hostA']['vlan'] = input("Host 1 VLAN: ")
+data['hostA']['switchPort']['ifName'] = input("switch interface name: ")
+data['hostA']['switchPort']['ifVlan'] = f"Vlan {str(data['hostA']['vlan'])}"
+
+
+data['hostB']['IP'] = input("Host 2 IP (198.32.43.15): ")
+data['hostB']['vlan'] = input("Host 2 VLAN: ")
+data['hostB']['switchPort']['ifName'] = input("switch interface name: ")
+data['hostB']['switchPort']['ifVlan'] = f"Vlan {str(data['hostB']['vlan'])}"
+
+print("config switch information:")
+data['switchData']['SNMPHostIP'] = input("IP address where SNMP Exporter is running on: ")
+data['switchData']['target'] = input("Switch IP: ")
+data['portIn']['ifName'] = input("PortIn interface name: ")
+data['portIn']['vlan'] = input("PortIn VLAN: ")
+data['portIn']['ifVlan'] = f"Vlan {str(data['portIn']['vlan'])}"
+
+data['portOut']['ifName'] = input("PortOut interface name: ")
+data['portOut']['vlan'] = input("PortOut VLAN: ")
+data['portOut']['ifVlan'] = f"Vlan {str(data['portOut']['vlan'])}"
+
+print("\n Yaml Dumping to cloud_config.yml\n")
+with open('../cloud_config.yml', 'w') as outfile:
     yaml.dump(data, outfile, default_flow_style=False)
-    
-# # Flow number
-# flow: " flow 2 "
-# # This host's IP address
-# hostIP: 198.32.43.16
-# grafanaHostIP: 'dev2.virnao.com'
-# grafanaAPIToken: "Bearer eyJrIjoiNWYwWEFzVTRUUHQ5TWg3cVBUdHpMV01PREo1aWJmeUkiLCJuIjoiMDcvMTQiLCJpZCI6MX0="
-# configFile: "config.yml"
-
-# # Host 1 Specifics 
-# hostA:
-#   IP: 198.32.43.16
-#   interfaceName: 'ens2f0np0.1000'
-#   interfaceIP: '10.10.100.1'
-#   nodeName: 'sdn-dtn-2-10.ultralight.org'
-#   vlan: 1000
-#   nodeExporterPort: 9100
-#   switchPort: 
-#     ifName: 'hundredGigE 1/27'
-#     ifVlan: 'Vlan 1000'
-
-# # Host 2 Specifics
-# hostB:
-#   IP: 198.32.43.15
-#   interfaceName: 'ens2f0.1000'
-#   interfaceIP: '10.10.100.2'
-#   nodeName: 'sdn-dtn-2-11.ultralight.org'
-#   vlan: 1000
-#   nodeExporterPort: 9100
-#   switchPort: 
-#     ifName: 'hundredGigE 1/31'
-#     ifVlan: 'Vlan 1000'
-
-# switchData:
-#   job_name: 'snmp1'
-#   # The IP of the host which is running the SNMP Exporter container
-#   SNMPHostIP: 198.32.43.16
-#   # Scrape interval/duration time
-#   scrapeInterval: 15s
-#   scrapeDuration: 5h
-#   target: 172.16.1.1
-#   # switch if format: " - IF: optional"
-#   switchif: ""
-#   #if-mib and F10-IF-EXTENSION-MIB
-#   params: ['if_mib']
-#   portIn: 
-#     ifName: 'hundredGigE 1/27'
-#     vlan: 1000
-#     vlanName: 'Vlan 1000'
-#   portOut: 
-#     ifName: 'hundredGigE 1/31'
-#     vlan: 1000
-#     vlanName: 'Vlan 1000'
-

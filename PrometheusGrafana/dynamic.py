@@ -59,9 +59,9 @@ vlan_if_index5 = "MONITORVLAN5"
 vlan_if_index6 = "MONITORVLAN6"
 
 # monitor per vlan. If same, avoid duplicates monitoring
-if data['switchNum'] == 1:
-    switch_vlan_1_in = str(data['switchData']['portIn']['Vlan 1000'])
-    switch_vlan_1_out = str(data['switchData']['portOut']['Vlan 1000'])
+if data['switchNum'] == 1: # 1 switch possibly 1 vlan
+    switch_vlan_1_in = str(data['switchData']['portIn']['ifVlan'])
+    switch_vlan_1_out = str(data['switchData']['portOut']['ifVlan'])
     cmd3 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{switch_vlan_1_in}\".*ifName=\"{switch_vlan_1_in}\".*'"
     grep3 = subprocess.check_output(cmd3,shell=True).decode()
     subprocess.run("echo \"grep 3\"",shell=True) # acts as an enter in command line
@@ -72,11 +72,12 @@ if data['switchNum'] == 1:
         subprocess.run("echo \"grep 4 \"",shell=True) # acts as an enter in command line
         vlan_if_index2 = re.search('ifIndex="(.+?)\"',grep4).group(1)
 
+# 2 switches possibly 4 vlans
 if data['switchNum'] == 2:
-    switch_vlan_1_in = str(data['switchDataA']['portIn']['Vlan 1000'])
-    switch_vlan_1_out = str(data['switchDataA']['portOut']['Vlan 1000'])
-    switch_vlan_2_in = str(data['switchDataB']['portIn']['Vlan 1000'])
-    switch_vlan_2_out = str(data['switchDataB']['portOut']['Vlan 1000'])
+    switch_vlan_1_in = str(data['switchDataA']['portIn']['ifVlan'])
+    switch_vlan_1_out = str(data['switchDataA']['portOut']['ifVlan'])
+    switch_vlan_2_in = str(data['switchDataB']['portIn']['ifVlan'])
+    switch_vlan_2_out = str(data['switchDataB']['portOut']['ifVlan'])
     cmd5 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{switch_vlan_1_in}\".*ifName=\"{switch_vlan_1_in}\".*'"
     grep5 = subprocess.check_output(cmd5,shell=True).decode()
     subprocess.run("echo \"grep 5 \"",shell=True) # acts as an enter in command line
@@ -86,22 +87,16 @@ if data['switchNum'] == 2:
         grep6 = subprocess.check_output(cmd6,shell=True).decode()
         subprocess.run("echo \"grep 6 \"",shell=True) # acts as an enter in command line
         vlan_if_index4 = re.search('ifIndex="(.+?)\"',grep6).group(1)
-
-
-
-# if second VLAN is available
-if str(data['ifVlan2']) != str(data['ifVlan1']) and str(data['ifVlan2']) != "":
-    cmd4 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['ifVlan2'])}\".*ifName=\"{str(data['ifVlan2'])}\".*'"
-    grep4 = subprocess.check_output(cmd4,shell=True).decode()
-    subprocess.run("echo \"grep 4\"",shell=True) # acts as enter in command line
-    vlan_if_index2 = re.search('ifIndex="(.+?)\"',grep4).group(1)
-
-# if third VLAN is available
-if str(data['ifVlan3']) != str(data['ifVlan1']) and str(data['ifVlan2']) != str(data['ifVlan3']) and str(data['ifVlan3']) != "":
-    cmd5 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['ifVlan3'])}\".*ifName=\"{str(data['ifVlan3'])}\".*'"
-    grep5 = subprocess.check_output(cmd5,shell=True).decode()
-    subprocess.run("echo \"grep 5\"",shell=True) # acts as enter in command line
-    vlan_if_index2 = re.search('ifIndex="(.+?)\"',grep5).group(1)  
+    if switch_vlan_2_in != switch_vlan_1_in and switch_vlan_2_in != switch_vlan_1_out:
+        cmd7 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{switch_vlan_2_in}\".*ifName=\"{switch_vlan_2_in}\".*'"
+        grep7 = subprocess.check_output(cmd7,shell=True).decode()
+        subprocess.run("echo \"grep 7 \"",shell=True) # acts as an enter in command line
+        vlan_if_index5 = re.search('ifIndex="(.+?)\"',grep7).group(1)
+    if switch_vlan_2_out != switch_vlan_1_in and switch_vlan_2_out != switch_vlan_1_out and switch_vlan_2_out != switch_vlan_2_in:
+        cmd8 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{switch_vlan_2_out}\".*ifName=\"{switch_vlan_2_out}\".*'"
+        grep8 = subprocess.check_output(cmd8,shell=True).decode()
+        subprocess.run("echo \"grep 8 \"",shell=True) # acts as an enter in command line
+        vlan_if_index6 = re.search('ifIndex="(.+?)\"',grep8).group(1)
     
 
 print("\n\n")
@@ -119,7 +114,6 @@ if data['switchNum'] == 1:
                     'IFNAMEHOSTB': str(data['hostB']['interfaceName']),
                     'MONITORVLAN1': str(vlan_if_index1),
                     'MONITORVLAN2': str(vlan_if_index2),
-                    'MONITORVLAN3': str(vlan_if_index3),
                     'IFINDEXSWITCHHOSTA': str(if_index1),
                     'NAMEIFSWITCHA': str(data['hostA']['switchPort']['ifName']),
                     'NAMEIFSWITCHB': str(data['hostB']['switchPort']['ifName']),
@@ -186,9 +180,10 @@ else:
                         'IFNAMEHOSTB': str(data['hostB']['interfaceName']),
                         'SNMPHOSTIP': str(data['switchDataA']['SNMPHostIP']),
                         'SNMP2HOSTIP': str(data['switchDataB']['SNMPHostIP']),
-                        'MONITORVLAN1': str(vlan_if_index1),
-                        'MONITORVLAN2': str(vlan_if_index2),
-                        'MONITORVLAN3': str(vlan_if_index3),
+                        'MONITORVLAN1': str(vlan_if_index3),
+                        'MONITORVLAN2': str(vlan_if_index4),
+                        'MONITORVLAN3': str(vlan_if_index5),
+                        'MONITORVLAN4': str(vlan_if_index6),
                         'IFINDEXSWITCHHOSTA': str(if_index1),
                         'IFINDEXSWITCHHOSTB': str(if_index2),
                         'SWITCHAINCOMING': str(data['switchDataA']['portIn']['ifName']),
@@ -235,9 +230,10 @@ else:
                         'SNMP2HOSTIP': str(data['switchDataB']['SNMPHostIP']),
                         'SNMP3HOSTIP': str(data['switchDataC']['SNMPHostIP']),
                         'IFINDEXSWITCHHOSTA': str(if_index1),
-                        'MONITORVLAN1': str(vlan_if_index1),
-                        'MONITORVLAN2': str(vlan_if_index2),
-                        'MONITORVLAN3': str(vlan_if_index3),
+                        'MONITORVLAN1': str(vlan_if_index3),
+                        'MONITORVLAN2': str(vlan_if_index4),
+                        'MONITORVLAN3': str(vlan_if_index5),
+                        'MONITORVLAN4': str(vlan_if_index6),
                         'SWITCHAOUTGOING': str(data['switchDataA']['portOut']['ifName']),
                         'SWITCHAINCOMING': str(data['switchDataA']['portIN']['ifName']),
                         'SWITCHBINCOMING': str(data['switchDataB']['portIn']['ifName']),

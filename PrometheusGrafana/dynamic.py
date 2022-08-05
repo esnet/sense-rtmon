@@ -73,7 +73,7 @@ if data['switchNum'] == 1: # 1 switch possibly 1 vlan
         vlan_if_index2 = re.search('ifIndex="(.+?)\"',grep4).group(1)
 
 # 2 switches possibly 4 vlans
-if data['switchNum'] == 2:
+if data['switchNum'] == 2 or data['switchNum'] == 3:
     switch_vlan_1_in = str(data['switchDataA']['portIn']['ifVlan'])
     switch_vlan_1_out = str(data['switchDataA']['portOut']['ifVlan'])
     switch_vlan_2_in = str(data['switchDataB']['portIn']['ifVlan'])

@@ -41,13 +41,13 @@ data['grafanaAPIToken'] =  input("Grafana APIToken (Visit Google Doc for Grafana
 print("Host 1: ")
 data['hostA']['IP'] = input("Host 1 IP (198.32.43.16): ")
 data['hostA']['vlan'] = input("Host 1 VLAN: ")
-data['hostA']['switchPort']['ifName'] = input("switch interface name: ")
+data['hostA']['switchPort']['ifName'] = input("switch port interface name: ")
 data['hostA']['switchPort']['ifVlan'] = f"Vlan {str(data['hostA']['vlan'])}"
 
 print("Host 2: ")
 data['hostB']['IP'] = input("Host 2 IP (198.32.43.15): ")
 data['hostB']['vlan'] = input("Host 2 VLAN: ")
-data['hostB']['switchPort']['ifName'] = input("switch interface name: ")
+data['hostB']['switchPort']['ifName'] = input("switch port interface name: ")
 data['hostB']['switchPort']['ifVlan'] = f"Vlan {str(data['hostB']['vlan'])}"
 
 print("config switch information:")

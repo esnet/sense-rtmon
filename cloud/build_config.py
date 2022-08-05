@@ -63,4 +63,4 @@ data['switchData']['portOut']['ifVlan'] = f"Vlan {str(data['switchData']['portOu
 
 print("\n Yaml Dumping to cloud_config.yml\n")
 with open('../cloud_config.yml', 'w') as outfile:
-    yaml.dump(data, outfile, default_flow_style=False)
+    yaml.dump(data, outfile)

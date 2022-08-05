@@ -50,13 +50,44 @@ subprocess.run("echo \"grep 2\"",shell=True) # acts as enter in command line
 if_index1 = re.search('ifIndex="(.+?)\"',grep1).group(1)
 if_index2 = re.search('ifIndex="(.+?)\"',grep2).group(1)
 
-cmd3 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['ifVlan1'])}\".*ifName=\"{str(data['ifVlan1'])}\".*'"
-grep3 = subprocess.check_output(cmd3,shell=True).decode()
-subprocess.run("echo \"grep 3\"",shell=True) # acts as enter in command line
-vlan_if_index1 = re.search('ifIndex="(.+?)\"',grep3).group(1)
-
+# holders for interface index
+vlan_if_index1 = "MONITORVLAN1"
 vlan_if_index2 = "MONITORVLAN2"
 vlan_if_index3 = "MONITORVLAN3"
+vlan_if_index4 = "MONITORVLAN4"
+vlan_if_index5 = "MONITORVLAN5"
+vlan_if_index6 = "MONITORVLAN6"
+
+# monitor per vlan. If same, avoid duplicates monitoring
+if data['switchNum'] == 1:
+    switch_vlan_1_in = str(data['switchData']['portIn']['Vlan 1000'])
+    switch_vlan_1_out = str(data['switchData']['portOut']['Vlan 1000'])
+    cmd3 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{switch_vlan_1_in}\".*ifName=\"{switch_vlan_1_in}\".*'"
+    grep3 = subprocess.check_output(cmd3,shell=True).decode()
+    subprocess.run("echo \"grep 3\"",shell=True) # acts as an enter in command line
+    vlan_if_index1 = re.search('ifIndex="(.+?)\"',grep3).group(1)
+    if switch_vlan_1_out != switch_vlan_1_in:
+        cmd4 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{switch_vlan_1_out}\".*ifName=\"{switch_vlan_1_out}\".*'"
+        grep4 = subprocess.check_output(cmd4,shell=True).decode()
+        subprocess.run("echo \"grep 4 \"",shell=True) # acts as an enter in command line
+        vlan_if_index2 = re.search('ifIndex="(.+?)\"',grep4).group(1)
+
+if data['switchNum'] == 2:
+    switch_vlan_1_in = str(data['switchDataA']['portIn']['Vlan 1000'])
+    switch_vlan_1_out = str(data['switchDataA']['portOut']['Vlan 1000'])
+    switch_vlan_2_in = str(data['switchDataB']['portIn']['Vlan 1000'])
+    switch_vlan_2_out = str(data['switchDataB']['portOut']['Vlan 1000'])
+    cmd5 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{switch_vlan_1_in}\".*ifName=\"{switch_vlan_1_in}\".*'"
+    grep5 = subprocess.check_output(cmd5,shell=True).decode()
+    subprocess.run("echo \"grep 5 \"",shell=True) # acts as an enter in command line
+    vlan_if_index3 = re.search('ifIndex="(.+?)\"',grep5).group(1)
+    if switch_vlan_1_out != switch_vlan_1_in:
+        cmd6 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{switch_vlan_1_out}\".*ifName=\"{switch_vlan_1_out}\".*'"
+        grep6 = subprocess.check_output(cmd6,shell=True).decode()
+        subprocess.run("echo \"grep 6 \"",shell=True) # acts as an enter in command line
+        vlan_if_index4 = re.search('ifIndex="(.+?)\"',grep6).group(1)
+
+
 
 # if second VLAN is available
 if str(data['ifVlan2']) != str(data['ifVlan1']) and str(data['ifVlan2']) != "":

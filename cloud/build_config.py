@@ -38,12 +38,13 @@ data['hostIP'] = input("Enter ip of this host: ")
 data['grafanaHostIP'] =  input("Grafana Host DNS (e.g. dev2.virnao.com): ")
 data['grafanaAPIToken'] =  input("Grafana APIToken (Visit Google Doc for Grafana API Key instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub): \n")
 
+print("Host 1: ")
 data['hostA']['IP'] = input("Host 1 IP (198.32.43.16): ")
 data['hostA']['vlan'] = input("Host 1 VLAN: ")
 data['hostA']['switchPort']['ifName'] = input("switch interface name: ")
 data['hostA']['switchPort']['ifVlan'] = f"Vlan {str(data['hostA']['vlan'])}"
 
-
+print("Host 2: ")
 data['hostB']['IP'] = input("Host 2 IP (198.32.43.15): ")
 data['hostB']['vlan'] = input("Host 2 VLAN: ")
 data['hostB']['switchPort']['ifName'] = input("switch interface name: ")

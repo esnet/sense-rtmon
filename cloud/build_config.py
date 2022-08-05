@@ -36,7 +36,7 @@ data['configFile'] = "cloud_config.yml"
 data['flow'] = input("Please enter a flow ID: ")
 data['hostIP'] = input("Enter ip of this host: ")
 data['grafanaHostIP'] =  input("Grafana Host DNS (e.g. dev2.virnao.com): ")
-data['grafanaAPIToken'] =  input("Grafana APIToken (Visit Google Doc for Grafana API Key instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub): ")
+data['grafanaAPIToken'] =  input("Grafana APIToken (Visit Google Doc for Grafana API Key instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub): \n")
 
 data['hostA']['IP'] = input("Host 1 IP (198.32.43.16): ")
 data['hostA']['vlan'] = input("Host 1 VLAN: ")
@@ -52,13 +52,13 @@ data['hostB']['switchPort']['ifVlan'] = f"Vlan {str(data['hostB']['vlan'])}"
 print("config switch information:")
 data['switchData']['SNMPHostIP'] = input("IP address where SNMP Exporter is running on: ")
 data['switchData']['target'] = input("Switch IP: ")
-data['portIn']['ifName'] = input("PortIn interface name: ")
-data['portIn']['vlan'] = input("PortIn VLAN: ")
-data['portIn']['ifVlan'] = f"Vlan {str(data['portIn']['vlan'])}"
+data['switchData']['portIn']['ifName'] = input("PortIn interface name: ")
+data['switchData']['portIn']['vlan'] = input("PortIn VLAN: ")
+data['switchData']['portIn']['ifVlan'] = f"Vlan {str(data['portIn']['vlan'])}"
 
-data['portOut']['ifName'] = input("PortOut interface name: ")
-data['portOut']['vlan'] = input("PortOut VLAN: ")
-data['portOut']['ifVlan'] = f"Vlan {str(data['portOut']['vlan'])}"
+data['switchData']['portOut']['ifName'] = input("PortOut interface name: ")
+data['switchData']['portOut']['vlan'] = input("PortOut VLAN: ")
+data['switchData']['portOut']['ifVlan'] = f"Vlan {str(data['portOut']['vlan'])}"
 
 print("\n Yaml Dumping to cloud_config.yml\n")
 with open('../cloud_config.yml', 'w') as outfile:

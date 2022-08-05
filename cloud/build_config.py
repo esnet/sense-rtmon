@@ -55,11 +55,11 @@ data['switchData']['SNMPHostIP'] = input("IP address where SNMP Exporter is runn
 data['switchData']['target'] = input("Switch IP: ")
 data['switchData']['portIn']['ifName'] = input("PortIn interface name: ")
 data['switchData']['portIn']['vlan'] = input("PortIn VLAN: ")
-data['switchData']['portIn']['ifVlan'] = f"Vlan {str(data['portIn']['vlan'])}"
+data['switchData']['portIn']['ifVlan'] = f"Vlan {str(data['switchData']['portIn']['vlan'])}"
 
 data['switchData']['portOut']['ifName'] = input("PortOut interface name: ")
 data['switchData']['portOut']['vlan'] = input("PortOut VLAN: ")
-data['switchData']['portOut']['ifVlan'] = f"Vlan {str(data['portOut']['vlan'])}"
+data['switchData']['portOut']['ifVlan'] = f"Vlan {str(data['switchData']['portOut']['vlan'])}"
 
 print("\n Yaml Dumping to cloud_config.yml\n")
 with open('../cloud_config.yml', 'w') as outfile:

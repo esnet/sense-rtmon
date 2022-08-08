@@ -5,9 +5,8 @@ services:
     # NGINX uses the latest image
     image: nginx:latest
     ports:
-      - 80:80
       - 443:443
-      - 3000:3000
+      - 3000
     # NGINX service restart policy set to "always"
     # restart: always
     # Persist and share NGINX configuration data 
@@ -16,3 +15,4 @@ services:
       - /etc/grafana/:/etc/nginx/ssl/
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
       - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
+      - /etc/letsencrypt/live/dev2.virnao.com:/etc/letsencrypt/live/dev2.virnao.com

@@ -65,10 +65,8 @@ services:
     depends_on:
       - nginx
     ports:
-      - "3000:3000"
+      - "3000"
     environment:
-      VIRTUAL_HOST: dev2.virnao.com
-      VIRTUAL_PROTO: http
       # VIRTUAL_PORT: 3000
       LETSENCRYPT_HOST: dev2.virnao.com
     #   # LETSENCRYPT_EMAIL: YOUR.EMAIL@ADDRESS.TEST
@@ -92,11 +90,11 @@ services:
     hostname: nginx
     image: nginx:latest
     ports:
-      - 80:80
       - 443:443
-      - 8080:8080
+      - 3000
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
       - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
+      - /etc/letsencrypt/live/dev2.virnao.com:/etc/letsencrypt/live/dev2.virnao.com
   

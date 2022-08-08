@@ -89,8 +89,6 @@ read -r -p "Install SNMP Exporter [y/N (Enter)]: " snmp_install
     cd ./site
 
     read -r -p "Enter MIB folder (default /usr/share/snmp/mibs): " mibfolder
-
-
     echo "!!    Download MIBS"
     echo "!!    MIBFOLDER: $mibfolder"
     export MIBDIRS=$mibfolder

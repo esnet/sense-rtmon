@@ -95,7 +95,7 @@ services:
       - 443:443
       - 3000
     volumes:
-      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      # - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
       - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
       - /etc/letsencrypt/live/dev2.virnao.com:/etc/letsencrypt/live/dev2.virnao.com

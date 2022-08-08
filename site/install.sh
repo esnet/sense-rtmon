@@ -87,6 +87,10 @@ read -r -p "Install SNMP Exporter [y/N (Enter)]: " snmp_install
     python3 install_snmp.py
     cd ..
     cd ./site
+
+    echo "!!    Download MIBS"
+    wget -O /usr/share/snmp/mibs/FORCE10-SMI https://www.circitor.fr/Mibs/Mib/F/FORCE10-SMI.mib
+    wget -O /usr/share/snmp/mibs/F10-IF-EXTENSION-MIB https://www.circitor.fr/Mibs/Mib/F/F10-IF-EXTENSION-MIB.mib
 fi
 
 ############################## AUTOPUSH BASH SCRIPTS SETUP ##############################

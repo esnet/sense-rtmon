@@ -15,8 +15,8 @@ echo "!!    Remove previous stack"
 docker stack rm could
 echo "!!    Previous stack revmoed"
 
-echo "!!    Start Grafana-server"
-sudo systemctl start grafana-server
+# echo "!!    Start Grafana-server"
+# sudo systemctl start grafana-server
 
 echo "!!    Make sure SNMP exporter is running. Dashboard can't be generated without SNMP Exporter"
 read -r -p "Press Enter to continue: " enter_continue 

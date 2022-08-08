@@ -36,7 +36,7 @@ curl -s ${MYIP}:9100/metrics | curl --data-binary @- $pushgateway_server/metrics
 EOF
     # docker stack deploy -c node-exporter.yml site
 else
-    starting_node="-f nothing" 
+    starting_node=" " 
     echo "Skip Node Exporter"
 fi
 
@@ -78,7 +78,7 @@ cat $general_path/site/crontabs/snmp_temp2.txt | curl --data-binary @- $pushgate
 EOF
 
 else
-    starting_snmp="-f nothing" 
+    starting_snmp=" " 
     echo "Skip SNMP Exporter"
 fi
 
@@ -131,7 +131,7 @@ EOF
     cd ../site
     # docker compose -f arp-exporter.yml up -d
 else
-    starting_arp="-f nothing" 
+    starting_arp=" " 
     echo "Skip ARP Exporter"
 fi
 
@@ -145,7 +145,7 @@ if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
     cd ../site
     # docker compose -f tcp-exporter.yml up -d
 else
-    starting_tcp="-f nothing" 
+    starting_tcp=" " 
     echo "Skip TCP Exporter"
 fi
 
@@ -160,8 +160,9 @@ echo "!!    to remove site stack run ./clean.sh"
 # echo "docker stack deploy -c tcp-exporter.yml site"
 
 echo "docker compose $starting_node $starting_snmp $starting_arp $starting_tcp up -d"
-docker compose $starting_node $starting_snmp $starting_arp $starting_tcp up -d
-
+if [ "$starting_node" != " " ] && [ "$starting_snmp" != " " ] && [ "$starting_arp" != " " ] && [ "$starting_tcp" != " " ]; then
+    docker compose $starting_node $starting_snmp $starting_arp $starting_tcp up -d
+fi
 # if [ "$VLANA2" != "" ] || then
 #     cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/vlan/$VLANA2/instance/$MYIP
 # fi 

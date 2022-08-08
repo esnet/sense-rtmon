@@ -54,7 +54,35 @@ services:
         condition: on-failure
     networks:
       - monitor-net 
+      
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    # network_mode: "host"
+    depends_on:
+      - nginx
+    ports:
+      - "3000"
+    environment:
+      LETSENCRYPT_HOST: dev2.virnao.com
+      # GF_INSTALL_PLUGINS: jdbranham-diagram-panel
+      
+      GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
+      GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
 
+  nginx:
+    hostname: nginx
+    image: nginx:latest
+    # network_mode: "host"
+    ports:
+      - 443:443
+      - 3000
+    volumes:
+      - $PWD/nginx/conf/:/etc/nginx/conf.d/
+      - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
+      - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
+      - /etc/letsencrypt/live/dev2.virnao.com:/etc/letsencrypt/live/dev2.virnao.com
+  
 # script exporter is stand alone in script_exporter file 
 
   # script_exporter:

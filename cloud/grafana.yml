@@ -77,7 +77,7 @@ services:
   nginx:
     hostname: nginx
     image: nginx:latest
-    network_mode: "host"
+    # network_mode: "host"
     ports:
       - 443:443
       - 3000

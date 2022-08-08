@@ -63,8 +63,6 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     network_mode: "host" # grafana needs to be on host network. Find fix to move it to stack
-    depends_on:
-      - nginx
     ports:
       - "3000"
     environment:
@@ -74,16 +72,16 @@ services:
       GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
       GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
 
-  nginx:
-    hostname: nginx
-    image: nginx:latest
-    # network_mode: "host"
-    ports:
-      - 443:443
-      - 3000
-    volumes:
-      - $PWD/nginx/conf/:/etc/nginx/conf.d/
-      - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
-      - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
-      - /etc/letsencrypt/live/dev2.virnao.com:/etc/letsencrypt/live/dev2.virnao.com
+  # nginx:
+  #   hostname: nginx
+  #   image: nginx:latest
+  #   # network_mode: "host"
+  #   ports:
+  #     - 443:443
+  #     - 3000
+  #   volumes:
+  #     - $PWD/nginx/conf/:/etc/nginx/conf.d/
+  #     - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
+  #     - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
+  #     - /etc/letsencrypt/live/dev2.virnao.com:/etc/letsencrypt/live/dev2.virnao.com
   

@@ -62,7 +62,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
-    network_mode: "host"
+    network_mode: "host" # grafana needs to be on host network. Find fix to move it to stack
     depends_on:
       - nginx
     ports:

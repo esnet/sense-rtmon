@@ -160,9 +160,13 @@ echo "!!    to remove site stack run ./clean.sh"
 # echo "docker stack deploy -c tcp-exporter.yml site"
 
 echo "docker compose $starting_node $starting_snmp $starting_arp $starting_tcp up -d"
-if [ "$starting_node" != " " ] && [ "$starting_snmp" != " " ] && [ "$starting_arp" != " " ] && [ "$starting_tcp" != " " ]; then
+# run nothing
+if [ "$starting_node" == " " ] && [ "$starting_snmp" == " " ] && [ "$starting_arp" == " " ] && [ "$starting_tcp" == " " ]; then
+    echo "!!    nothing started"
+else 
     docker compose $starting_node $starting_snmp $starting_arp $starting_tcp up -d
 fi
+
 # if [ "$VLANA2" != "" ] || then
 #     cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/vlan/$VLANA2/instance/$MYIP
 # fi 

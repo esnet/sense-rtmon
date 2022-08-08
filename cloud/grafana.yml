@@ -62,7 +62,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
-    # network_mode: "host"
+    network_mode: "host"
     depends_on:
       - nginx
     ports:

@@ -91,6 +91,9 @@ read -r -p "Install SNMP Exporter [y/N (Enter)]: " snmp_install
     echo "!!    Download MIBS"
     wget -O /usr/share/snmp/mibs/FORCE10-SMI https://www.circitor.fr/Mibs/Mib/F/FORCE10-SMI.mib
     wget -O /usr/share/snmp/mibs/F10-IF-EXTENSION-MIB https://www.circitor.fr/Mibs/Mib/F/F10-IF-EXTENSION-MIB.mib
+    echo "!!    To download addtional mibs follow this instruction: "
+    echo "!!    wget -O /usr/share/snmp/mibs/<MIBS_name> https://www.circitor.fr/Mibs/Mib/<First_letter_of_MIBS_name>/<MIBS_name>.mib"
+    echo "!!    Example: wget -O /usr/share/snmp/mibs/F10-IF-EXTENSION-MIB https://www.circitor.fr/Mibs/Mib/F/F10-IF-EXTENSION-MIB.mib"
 fi
 
 ############################## AUTOPUSH BASH SCRIPTS SETUP ##############################

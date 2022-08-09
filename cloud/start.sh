@@ -17,7 +17,7 @@ sudo lsof -i -P -n | grep 9469
 
 echo "!!    Start Grafana-server"
 docker stack deploy -c grafana.yml cloud
-
+sleep 0.5
 # sudo systemctl start grafana-server
 
 echo "!!    Make sure SNMP exporter is running. Dashboard can't be generated without SNMP Exporter"

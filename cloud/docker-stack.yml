@@ -60,7 +60,7 @@ services:
     container_name: grafana
     # network_mode: "host" # grafana needs to be on host network. Find fix to move it to stack
     ports:
-      - 3000
+      - 3000:3000
     environment:
       GF_INSTALL_PLUGINS: jdbranham-diagram-panel
 

@@ -59,7 +59,7 @@ services:
     image: grafana/grafana-enterprise:latest
     container_name: grafana
     ports:
-      - 3000 # :3000 is optional when composing
+      - 3000:3000 # :3000 is optional when composing
     environment:
       GF_INSTALL_PLUGINS: jdbranham-diagram-panel
 

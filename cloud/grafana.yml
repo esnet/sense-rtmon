@@ -69,8 +69,8 @@ services:
       LETSENCRYPT_HOST: dev2.virnao.com
       # GF_INSTALL_PLUGINS: jdbranham-diagram-panel
       
-      GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
-      GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
+      # GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
+      # GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
 
   # nginx:
   #   hostname: nginx

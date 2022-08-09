@@ -11,12 +11,13 @@ sudo lsof -i -P -n | grep 9091
 echo "!!    Check Port 9469"
 sudo lsof -i -P -n | grep 9469
 
-echo "!!    Remove previous stack"
-docker stack rm could
-echo "!!    Previous stack revmoed"
+# echo "!!    Remove previous stack"
+# docker stack rm could
+# echo "!!    Previous stack revmoed"
 
 echo "!!    Start Grafana-server"
-docker compose -f grafana.yml up -d 
+docker stack deploy -c grafana.yml cloud
+
 # sudo systemctl start grafana-server
 
 echo "!!    Make sure SNMP exporter is running. Dashboard can't be generated without SNMP Exporter"

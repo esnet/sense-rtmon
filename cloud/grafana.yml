@@ -9,18 +9,3 @@ services:
       - "3000"
     environment:
       GF_INSTALL_PLUGINS: jdbranham-diagram-panel
-      
-
-  # nginx:
-  #   hostname: nginx
-  #   image: nginx:latest
-  #   # network_mode: "host"
-  #   ports:
-  #     - 443:443
-  #     - 3000
-  #   volumes:
-  #     - $PWD/nginx/conf/:/etc/nginx/conf.d/
-  #     - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
-  #     - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
-  #     - /etc/letsencrypt/live/dev2.virnao.com:/etc/letsencrypt/live/dev2.virnao.com
-  

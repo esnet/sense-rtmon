@@ -58,7 +58,6 @@ services:
   grafana:
     image: grafana/grafana-enterprise:latest
     container_name: grafana
-    # network_mode: "host" # grafana needs to be on host network. Find fix to move it to stack
     ports:
       - 3000
     environment:
@@ -75,23 +74,5 @@ services:
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
       - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
       - /etc/letsencrypt/live/dev2.virnao.com:/etc/letsencrypt/live/dev2.virnao.com
-  
-# script exporter is stand alone in script_exporter file 
 
-  # script_exporter:
-  #   image: 'ricoberger/script_exporter:v2.4.0'
-  #   volumes:
-  #     - './script_exporter/examples:bin/examples'
-  #   command:
-  #     - '-config.file=/bin/examples/config.yaml'
-  #     - '-web.listen-address=:9469'
-  #   ports:
-  #     - '9469:9469'
-  #   deploy:
-  #     placement:
-  #       constraints:
-  #         - node.role==manager
-  #     restart_policy:
-  #       condition: on-failure
-  #   networks:
-  #     - monitor-net 
+  # nginx reverse proxy grafana to https

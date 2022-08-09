@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   grafana:
-    image: grafana/grafana-enterprise:8.5.4
+    image: grafana/grafana-enterprise
     container_name: grafana
     network_mode: "host" # grafana needs to be on host network. Find fix to move it to stack
     ports:

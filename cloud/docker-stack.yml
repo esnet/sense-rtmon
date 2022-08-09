@@ -64,7 +64,6 @@ services:
     environment:
       GF_INSTALL_PLUGINS: jdbranham-diagram-panel
 
-
   nginx:
     hostname: nginx
     image: nginx:latest

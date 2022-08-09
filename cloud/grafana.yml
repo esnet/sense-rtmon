@@ -65,12 +65,10 @@ services:
     network_mode: "host" # grafana needs to be on host network. Find fix to move it to stack
     ports:
       - "3000"
-    environment:
-      LETSENCRYPT_HOST: dev2.virnao.com
+    # environment:
+      # LETSENCRYPT_HOST: dev2.virnao.com
       # GF_INSTALL_PLUGINS: jdbranham-diagram-panel
       
-      # GF_SECURITY_ADMIN_USER: admin # adjust to create Grafana admin account
-      # GF_SECURITY_ADMIN_PASSWORD: sense # adjust to set Grafana admin password
 
   # nginx:
   #   hostname: nginx

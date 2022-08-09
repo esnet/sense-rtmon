@@ -69,6 +69,7 @@ services:
     ports:
       - 443:443
       - 3000
+      - 9091
     volumes:
       - $PWD/nginx/conf/:/etc/nginx/conf.d/
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem

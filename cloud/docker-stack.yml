@@ -72,8 +72,10 @@ services:
       # - 9090
     volumes:
       - $PWD/nginx/conf/:/etc/nginx/conf.d/
-      # - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
-      # - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
-      - /etc/letsencrypt/live/dev2.virnao.com:/etc/letsencrypt/live/dev2.virnao.com
+      - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
+      - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
+      - /etc/letsencrypt/live/dev2.virnao.com/fullchain.pem:/etc/letsencrypt/live/dev2.virnao.com/fullchain.pem
+      - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
+      
 
   # nginx reverse proxy grafana to https

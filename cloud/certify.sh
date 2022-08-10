@@ -28,11 +28,11 @@ if [ $# = 1 ]; then
             --register-unsafely-without-email \
             --domains $domain
         if [ -f "/etc/letsencrypt/live/$domain/fullchain.pem" ]; then
-            # cp /etc/letsencrypt/live/$domain/*.pem /etc/grafana/
+            cp /etc/letsencrypt/live/$domain/*.pem /etc/grafana/
             # chown :grafana /etc/grafana/fullchain.pem
             # chown :grafana /etc/grafana/privkey.pem
-            chown :$domain /etc/letsencrypt/live/$domain/fullchain.pem
-            chown :$domain /etc/letsencrypt/live/$domain/etc/grafana/privkey.pem
+            chown grafana /etc/letsencrypt/live/$domain/fullchain.pem
+            chown grafana /etc/letsencrypt/live/$domain/etc/grafana/privkey.pem
             chmod 640 /etc/letsencrypt/live/$domain/fullchain.pem
             chmod 640 /etc/letsencrypt/live/$domain/etc/grafana/privkey.pem
 

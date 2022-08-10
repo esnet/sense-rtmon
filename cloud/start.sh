@@ -57,5 +57,5 @@ yes | cp -rfa se_config/. script_exporter/examples
 echo "!!    Deploy promethues and pushgateway"
 docker stack deploy -c docker-stack.yml cloud
 
-echo "!!    Wait for the containers to get started"
-sleep 1.5
+# echo "!!    Wait for the containers to get started"
+# sleep 1.5

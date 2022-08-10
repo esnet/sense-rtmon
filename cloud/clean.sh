@@ -5,5 +5,5 @@ echo "!!    Stop grafana-server service"
 docker stack rm cloud
 sudo systemctl stop grafana-server
 
-echo "!!    Wait for the containers to shut down"
-sleep 1.5
+# echo "!!    Wait for the containers to shut down"
+# sleep 1.5

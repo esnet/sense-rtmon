@@ -68,8 +68,8 @@ services:
     ports:
       - 443:443
       - 3000
-      - 9091
-      - 9090
+      # - 9091
+      # - 9090
     volumes:
       - $PWD/nginx/conf/:/etc/nginx/conf.d/
       - /etc/letsencrypt/live/dev2.virnao.com:/etc/letsencrypt/live/dev2.virnao.com

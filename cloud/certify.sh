@@ -31,8 +31,8 @@ if [ $# = 1 ]; then
             cp /etc/letsencrypt/live/$domain/*.pem /etc/grafana/
             # chown :grafana /etc/grafana/fullchain.pem
             # chown :grafana /etc/grafana/privkey.pem
-            chown grafana /etc/letsencrypt/live/$domain/fullchain.pem
-            chown grafana /etc/letsencrypt/live/$domain/etc/grafana/privkey.pem
+            chown :grafana /etc/letsencrypt/live/$domain/fullchain.pem
+            chown :grafana /etc/letsencrypt/live/$domain/etc/grafana/privkey.pem
             chmod 640 /etc/letsencrypt/live/$domain/fullchain.pem
             chmod 640 /etc/letsencrypt/live/$domain/etc/grafana/privkey.pem
 

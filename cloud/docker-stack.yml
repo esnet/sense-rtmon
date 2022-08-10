@@ -69,6 +69,7 @@ services:
       - 443:443
       - 3000
       - 9091
+      - 9092:9092
       # - 9090
     volumes:
       - $PWD/nginx/conf/:/etc/nginx/conf.d/

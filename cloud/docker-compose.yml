@@ -5,7 +5,7 @@ services:
     image: prom/prometheus:v2.2.1
     container_name: prometheus
     volumes:
-      - ../PrometheusGrafana/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./dashboard/prometheus.yml:/etc/prometheus/prometheus.yml
     expose:
       - 9090
     ports:

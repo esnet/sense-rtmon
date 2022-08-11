@@ -1,8 +1,5 @@
 version: '3'
 
-volumes:
-    prometheus_data: {}
-
 networks:
   monitor-net:
 
@@ -11,8 +8,7 @@ services:
   prometheus:
     image: prom/prometheus:v2.2.1
     volumes:
-      - ../dashboard/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus
+      - ./dashboard/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     networks:

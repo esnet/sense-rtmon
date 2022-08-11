@@ -1,0 +1,107 @@
+# Number of switches
+switchNum: 1
+# Grafana Dashboard Title   
+dashTitle: "Top Flow Dashboard"
+# L2 Debugging Dashboard Title
+debugTitle: "Top Flow L2 Debugging Dashboard"
+# Flow number
+flow: " flow 1 "
+# This host's IP address
+hostIP: 198.32.43.16
+# Prometheus Port
+prometheusPort: 9090
+# The IP of the host which is running the Grafana container
+grafanaHostIP: 'dev2.virnao.com'
+# The port which the Grafana container is listening on
+# Default is 3000
+grafanaPort: 3000
+# Grafana API Token
+grafanaAPIToken: "Bearer eyJrIjoiNWYwWEFzVTRUUHQ5TWg3cVBUdHpMV01PREo1aWJmeUkiLCJuIjoiMDcvMTQiLCJpZCI6MX0="
+# if HTTPS enabled and certified during the install process
+# encrypted: False
+encrypted: True
+# indicate the config file that's used
+configFile: "config.yml"
+
+# Host 1 Specifics 
+hostA:
+  IP: 198.32.43.16
+  interfaceName: 'ens2f0np0.1000'
+  interfaceIP: '10.10.100.1'
+  nodeName: 'sdn-dtn-2-10.ultralight.org'
+  vlan: 1000
+  nodeExporterPort: 9100
+  switchPort: 
+    ifName: 'hundredGigE 1/27'
+    ifVlan: 'Vlan 1000'
+
+# Host 2 Specifics
+hostB:
+  IP: 198.32.43.15
+  interfaceName: 'ens2f0.1000'
+  interfaceIP: '10.10.100.2'
+  nodeName: 'sdn-dtn-2-11.ultralight.org'
+  vlan: 1000
+  nodeExporterPort: 9100
+  switchPort: 
+    ifName: 'hundredGigE 1/31'
+    ifVlan: 'Vlan 1000'
+
+switchData:
+  job_name: 'snmp1'
+  # The IP of the host which is running the SNMP Exporter container
+  SNMPHostIP: 198.32.43.16
+  # Scrape interval/duration time
+  scrapeInterval: 15s
+  scrapeDuration: 5h
+  target: 172.16.1.1
+  # switch if format: " - IF: optional"
+  switchif: ""
+  #if-mib and F10-IF-EXTENSION-MIB
+  params: ['if_mib']
+  portIn: 
+    ifName: 'hundredGigE 1/27'
+    vlan: 1000
+    vlanName: 'Vlan 1000'
+  portOut: 
+    ifName: 'hundredGigE 1/31'
+    vlan: 1000
+    vlanName: 'Vlan 1000'
+
+####################################### CLOUD ONLY NEEDS THE ABOVE INFORMATION ######################################
+
+snmpMetrics:
+  # IP address of switch to configure
+  switchIP: 172.16.1.1
+  # OIDs to scrape
+  oids: [1.3.6.1.2.1.17.4.3.1.1, 1.3.6.1.2.1.31, 1.3.6.1.2.1.2.2.1.4, 1.3.6.1.2.1.2.2.1.8, 1.3.6.1.2.1.2.2.1.6, 1.3.6.1.2.1.2.2.1.1, 1.3.6.1.2.1.2.2.1.3, 1.3.6.1.4.1.6027.3.11.1.2.1.1.1, 1.3.6.1.4.1.6027.3.11.1.2.1.1.13, 1.3.6.1.2.1.2.2.1]
+  # SNMP community read string
+  communityString: "COMMUNITYSTRING"
+  # Scrape interval/duration time
+  scrapeInterval: 15s
+  scrapeDuration: 5h
+  # Scrape timeout default is 5s
+  scrapeTimeout: 5s
+  # Max retries default is 3
+  retries: 3
+
+# TCP/ARP Data
+tcpMetrics:
+  port: 9191
+  job_name: 'tcpmetrics'
+  # Collect all packets continuously over the scrape interval
+  # Not recommended for general use cases, but provides additional information if set to True
+  # Defaults to False, collects the most recent burst (1 second's worth of data) at the current scrape interval
+  continuousCollect: False
+  # How long to scrape host-level data (in seconds)
+  scrapeDuration: 900
+  # Scrape interval duration (in seconds)
+  scrapeInterval: 30
+
+arpMetrics:
+  port: 9192
+  job_name: 'arpmetrics'
+  # How long to scrape host-level data (in seconds)
+  scrapeDuration: 900
+  # Scrape interval duration (in seconds)
+  scrapeInterval: 30

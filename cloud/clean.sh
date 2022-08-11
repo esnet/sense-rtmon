@@ -1,5 +1,5 @@
 #! /bin/bash
-echo "!!    Delete pushgateway and promethues containers"
+echo "!!    Delete Cloud Stack"
 echo "!!    Stop grafana-server service"
 # docker rm -f startpush startprom startgrafana
 docker stack rm cloud

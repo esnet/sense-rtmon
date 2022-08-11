@@ -21,6 +21,21 @@ if len(sys.argv) > 1:
             data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             print(f"\n Config file {file_path} could not be found in the DynamicDashboard directory\n")
+            
+    # change volume/config file in ARP docker file    
+    with open("arp-docker-compose.yml", 'r') as gen:
+        text = gen.readlines()
+    text[8] = f"      - ../config/{file_name}:/etc/arp_exporter/arp.yml"
+    with open('arp-docker-compose.yml', 'w') as genOut:
+        genOut.writelines(text)
+        
+    # change volume/config file in TCP docker file    
+    with open("tcp-docker-compose.yml", 'r') as gen:
+            text = gen.readlines()
+    text[8] = f"      - ../config/{file_name}:/etc/tcp_exporter/tcp.yml"
+    with open('tcp-docker-compose.yml', 'w') as genOut:
+        genOut.writelines(text)
+    
 else: # default config file
     with open(infpth, 'r') as stream:
         try:
@@ -64,18 +79,4 @@ elif switchNum == 2:
 # write out yaml file
 with open('dynamic_start.sh', 'w') as file:
     file.writelines(write_data)
-
-if len(sys.argv) > 1:
-    # change volume/config file in ARP docker file    
-    with open("arp-exporter.yml", 'r') as gen:
-        text = gen.readlines()
-    text[8] = f"      - ../config/{file_name}:/etc/arp_exporter/arp.yml"
-    with open('arp-exporter.yml', 'w') as genOut:
-        genOut.writelines(text)
-        
-    # change volume/config file in TCP docker file    
-    with open("tcp-exporter.yml", 'r') as gen:
-            text = gen.readlines()
-    text[8] = f"      - ../config/{file_name}:/etc/tcp_exporter/tcp.yml"
-    with open('tcp-exporter.yml', 'w') as genOut:
-        genOut.writelines(text)
+    

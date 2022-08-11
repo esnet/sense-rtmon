@@ -285,7 +285,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_network_info{exported_instance=\"IPHOSTA\",job=\"$Job\",device=\"IFNAMEHOSTA\"}",
+          "expr": "node_network_info{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -295,7 +295,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_uname_info{exported_instance=\"IPHOSTA\",job=\"$Job\"}",
+          "expr": "node_uname_info{exported_instance=\"IPHOSTA\"}",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -305,7 +305,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_network_mtu_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\",device=\"IFNAMEHOSTA\"}",
+          "expr": "node_network_mtu_bytes{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -444,7 +444,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_network_receive_bytes_total{exported_instance=\"IPHOSTA\",job=\"$Job\",device=\"IFNAMEHOSTA\"}",
+          "expr": "node_network_receive_bytes_total{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -454,7 +454,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_network_transmit_bytes_total{exported_instance=\"IPHOSTA\",job=\"$Job\",device=\"IFNAMEHOSTA\"}",
+          "expr": "node_network_transmit_bytes_total{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -464,7 +464,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_network_receive_packets_total{exported_instance=\"IPHOSTA\",job=\"$Job\",device=\"IFNAMEHOSTA\"}",
+          "expr": "node_network_receive_packets_total{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -474,7 +474,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_network_transmit_packets_total{exported_instance=\"IPHOSTA\",job=\"$Job\",device=\"IFNAMEHOSTA\"}",
+          "expr": "node_network_transmit_packets_total{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -575,7 +575,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_network_receive_bytes_total{exported_instance=\"IPHOSTA\",job=\"$Job\", device=\"IFNAMEHOSTA\"}[1m])*8",
+          "expr": "irate(node_network_receive_bytes_total{exported_instance=\"IPHOSTA\", device=\"IFNAMEHOSTA\"}[1m])*8",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -584,7 +584,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"IPHOSTA\",job=\"$Job\",device=\"IFNAMEHOSTA\"}[1m])*8",
+          "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}[1m])*8",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -2593,7 +2593,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_network_info{exported_instance=\"IPHOSTB\",job=\"$Job\",device=\"IFNAMEHOSTB\"}",
+          "expr": "node_network_info{exported_instance=\"IPHOSTB\",device=\"IFNAMEHOSTB\"}",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -2603,7 +2603,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_uname_info{exported_instance=\"IPHOSTB\",job=\"$Job\"}",
+          "expr": "node_uname_info{exported_instance=\"IPHOSTB\"}",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -2613,7 +2613,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_network_mtu_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\",device=\"IFNAMEHOSTB\"}",
+          "expr": "node_network_mtu_bytes{exported_instance=\"IPHOSTB\",device=\"IFNAMEHOSTB\"}",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -2752,7 +2752,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_network_receive_bytes_total{exported_instance=\"IPHOSTB\",job=\"$Job\",device=\"IFNAMEHOSTB\"}",
+          "expr": "node_network_receive_bytes_total{exported_instance=\"IPHOSTB\",device=\"IFNAMEHOSTB\"}",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -2762,7 +2762,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_network_transmit_bytes_total{exported_instance=\"IPHOSTB\",job=\"$Job\",device=\"IFNAMEHOSTB\"}",
+          "expr": "node_network_transmit_bytes_total{exported_instance=\"IPHOSTB\",device=\"IFNAMEHOSTB\"}",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -2772,7 +2772,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_network_receive_packets_total{exported_instance=\"IPHOSTB\",job=\"$Job\",device=\"IFNAMEHOSTB\"}",
+          "expr": "node_network_receive_packets_total{exported_instance=\"IPHOSTB\",device=\"IFNAMEHOSTB\"}",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -2782,7 +2782,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_network_transmit_packets_total{exported_instance=\"IPHOSTB\",job=\"$Job\",device=\"IFNAMEHOSTB\"}",
+          "expr": "node_network_transmit_packets_total{exported_instance=\"IPHOSTB\",device=\"IFNAMEHOSTB\"}",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -2883,7 +2883,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_network_receive_bytes_total{exported_instance=\"IPHOSTB\",job=\"$Job\", device=\"IFNAMEHOSTB\"}[1m])*8",
+          "expr": "irate(node_network_receive_bytes_total{exported_instance=\"IPHOSTB\", device=\"IFNAMEHOSTB\"}[1m])*8",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -2892,7 +2892,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"IPHOSTB\",job=\"$Job\",device=\"IFNAMEHOSTB\"}[1m])*8",
+          "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"IPHOSTB\",device=\"IFNAMEHOSTB\"}[1m])*8",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -3028,7 +3028,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_InSegs{exported_instance='IPHOSTA',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Tcp_InSegs{exported_instance='IPHOSTA'}[5m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -3039,7 +3039,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_OutSegs{exported_instance='IPHOSTA',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Tcp_OutSegs{exported_instance='IPHOSTA'}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -3162,7 +3162,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_InSegs{exported_instance='IPHOSTB',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Tcp_InSegs{exported_instance='IPHOSTB'}[5m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -3173,7 +3173,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_OutSegs{exported_instance='IPHOSTB',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Tcp_OutSegs{exported_instance='IPHOSTB'}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -3285,7 +3285,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_TcpExt_ListenOverflows{exported_instance='IPHOSTA',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_TcpExt_ListenOverflows{exported_instance='IPHOSTA'}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3296,7 +3296,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_TcpExt_ListenDrops{exported_instance='IPHOSTA',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_TcpExt_ListenDrops{exported_instance='IPHOSTA'}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3307,7 +3307,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_TcpExt_TCPSynRetrans{exported_instance='IPHOSTA',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_TcpExt_TCPSynRetrans{exported_instance='IPHOSTA'}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -3317,14 +3317,14 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_RetransSegs{exported_instance='IPHOSTA',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Tcp_RetransSegs{exported_instance='IPHOSTA'}[5m])",
           "interval": "",
           "legendFormat": "RetransSegs - Segments retransmitted - that is, the number of TCP segments transmitted containing one or more previously transmitted octets",
           "refId": "D"
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_InErrs{exported_instance='IPHOSTA',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Tcp_InErrs{exported_instance='IPHOSTA'}[5m])",
           "interval": "",
           "legendFormat": "InErrs - Segments received in error (e.g., bad TCP checksums)",
           "refId": "E"
@@ -3433,7 +3433,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_TcpExt_ListenOverflows{exported_instance='IPHOSTB',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_TcpExt_ListenOverflows{exported_instance='IPHOSTB'}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3444,7 +3444,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_TcpExt_ListenDrops{exported_instance='IPHOSTB',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_TcpExt_ListenDrops{exported_instance='IPHOSTB'}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3455,7 +3455,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_TcpExt_TCPSynRetrans{exported_instance='IPHOSTB',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_TcpExt_TCPSynRetrans{exported_instance='IPHOSTB'}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -3465,14 +3465,14 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_RetransSegs{exported_instance='IPHOSTB',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Tcp_RetransSegs{exported_instance='IPHOSTB'}[5m])",
           "interval": "",
           "legendFormat": "RetransSegs - Segments retransmitted - that is, the number of TCP segments transmitted containing one or more previously transmitted octets",
           "refId": "D"
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_InErrs{exported_instance='IPHOSTB',job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Tcp_InErrs{exported_instance='IPHOSTB'}[5m])",
           "interval": "",
           "legendFormat": "InErrs - Segments received in error (e.g., bad TCP checksums)",
           "refId": "E"
@@ -3585,7 +3585,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_netstat_Tcp_CurrEstab{exported_instance=\"IPHOSTA\",job=\"$Job\"}",
+          "expr": "node_netstat_Tcp_CurrEstab{exported_instance=\"IPHOSTA\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3596,7 +3596,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_netstat_Tcp_MaxConn{exported_instance=\"IPHOSTA\",job=\"$Job\"}",
+          "expr": "node_netstat_Tcp_MaxConn{exported_instance=\"IPHOSTA\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3713,7 +3713,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_netstat_Tcp_CurrEstab{exported_instance=\"IPHOSTB\",job=\"$Job\"}",
+          "expr": "node_netstat_Tcp_CurrEstab{exported_instance=\"IPHOSTB\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3724,7 +3724,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_netstat_Tcp_MaxConn{exported_instance=\"IPHOSTB\",job=\"$Job\"}",
+          "expr": "node_netstat_Tcp_MaxConn{exported_instance=\"IPHOSTB\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3843,7 +3843,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_TcpExt_SyncookiesFailed{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_TcpExt_SyncookiesFailed{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3854,7 +3854,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_TcpExt_SyncookiesRecv{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_TcpExt_SyncookiesRecv{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3865,7 +3865,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_TcpExt_SyncookiesSent{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_TcpExt_SyncookiesSent{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3984,7 +3984,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_TcpExt_SyncookiesFailed{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_TcpExt_SyncookiesFailed{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3995,7 +3995,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_TcpExt_SyncookiesRecv{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_TcpExt_SyncookiesRecv{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -4006,7 +4006,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_TcpExt_SyncookiesSent{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_TcpExt_SyncookiesSent{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -4116,7 +4116,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_ActiveOpens{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Tcp_ActiveOpens{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -4126,7 +4126,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_PassiveOpens{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Tcp_PassiveOpens{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -4235,7 +4235,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_ActiveOpens{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Tcp_ActiveOpens{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -4245,7 +4245,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_PassiveOpens{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Tcp_PassiveOpens{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -4350,7 +4350,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_arp_entries{exported_instance=\"IPHOSTA\",job=\"$Job\", device=\"IFNAMEHOSTA\"}",
+          "expr": "node_arp_entries{exported_instance=\"IPHOSTA\", device=\"IFNAMEHOSTA\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -4455,7 +4455,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_arp_entries{exported_instance=\"IPHOSTB\",job=\"$Job\", device=\"IFNAMEHOSTB\"}",
+          "expr": "node_arp_entries{exported_instance=\"IPHOSTB\", device=\"IFNAMEHOSTB\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -4581,7 +4581,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_network_transmit_errs_total{exported_instance=\"IPHOSTA\",job=\"$Job\", device=\"IFNAMEHOSTA\"}[5m])",
+          "expr": "irate(node_network_transmit_errs_total{exported_instance=\"IPHOSTA\", device=\"IFNAMEHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -4707,7 +4707,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_network_transmit_errs_total{exported_instance=\"IPHOSTB\",job=\"$Job\", device=\"IFNAMEHOSTB\"}[5m])",
+          "expr": "irate(node_network_transmit_errs_total{exported_instance=\"IPHOSTB\", device=\"IFNAMEHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -4840,7 +4840,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "(((count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTA\",job=\"$Job\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTA\",job=\"$Job\"}) by (cpu))",
+          "expr": "(((count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTA\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOSTA\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTA\"}) by (cpu))",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
@@ -4919,7 +4919,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "avg(node_load15{exported_instance=\"IPHOSTA\",job=\"$Job\"}) /  count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTA\",job=\"$Job\"}) by (cpu)) * 100",
+          "expr": "avg(node_load15{exported_instance=\"IPHOSTA\"}) /  count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTA\"}) by (cpu)) * 100",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
@@ -4998,7 +4998,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "(((count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTB\",job=\"$Job\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTB\",job=\"$Job\"}) by (cpu))",
+          "expr": "(((count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTB\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOSTB\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTB\"}) by (cpu))",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
@@ -5077,7 +5077,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "avg(node_load15{exported_instance=\"IPHOSTB\",job=\"$Job\"}) /  count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTB\",job=\"$Job\"}) by (cpu)) * 100",
+          "expr": "avg(node_load15{exported_instance=\"IPHOSTB\"}) /  count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTB\"}) by (cpu)) * 100",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
@@ -5150,7 +5150,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "((node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"}) / (node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"} )) * 100",
+          "expr": "((node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOSTA\"}) / (node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\"} )) * 100",
           "format": "time_series",
           "hide": true,
           "interval": "",
@@ -5161,7 +5161,7 @@
         },
         {
           "exemplar": true,
-          "expr": "100 - ((node_memory_MemAvailable_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"} * 100) / node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"})",
+          "expr": "100 - ((node_memory_MemAvailable_bytes{exported_instance=\"IPHOSTA\"} * 100) / node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -5241,7 +5241,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "((node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"}) / (node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"} )) * 100",
+          "expr": "((node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTA\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOSTA\"}) / (node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTA\"} )) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -5313,7 +5313,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "((node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"}) / (node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"} )) * 100",
+          "expr": "((node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOSTB\"}) / (node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\"} )) * 100",
           "format": "time_series",
           "hide": true,
           "interval": "",
@@ -5324,7 +5324,7 @@
         },
         {
           "exemplar": true,
-          "expr": "100 - ((node_memory_MemAvailable_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"} * 100) / node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"})",
+          "expr": "100 - ((node_memory_MemAvailable_bytes{exported_instance=\"IPHOSTB\"} * 100) / node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -5404,7 +5404,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "((node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"}) / (node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"} )) * 100",
+          "expr": "((node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTB\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOSTB\"}) / (node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTB\"} )) * 100",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -5515,7 +5515,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=\"system\",exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])) * 100",
+          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=\"system\",exported_instance=\"IPHOSTA\"}[5m])) * 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -5526,7 +5526,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='user',exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])) * 100",
+          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='user',exported_instance=\"IPHOSTA\"}[5m])) * 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -5537,7 +5537,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='iowait',exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])) * 100",
+          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='iowait',exported_instance=\"IPHOSTA\"}[5m])) * 100",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -5547,7 +5547,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=~\".*irq\",exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])) * 100",
+          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=~\".*irq\",exported_instance=\"IPHOSTA\"}[5m])) * 100",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -5557,7 +5557,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum (irate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])) * 100",
+          "expr": "sum (irate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',exported_instance=\"IPHOSTA\"}[5m])) * 100",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -5567,7 +5567,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])) * 100",
+          "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOSTA\"}[5m])) * 100",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -5719,7 +5719,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=\"system\",exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])) * 100",
+          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=\"system\",exported_instance=\"IPHOSTB\"}[5m])) * 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -5730,7 +5730,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='user',exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])) * 100",
+          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='user',exported_instance=\"IPHOSTB\"}[5m])) * 100",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -5741,7 +5741,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='iowait',exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])) * 100",
+          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='iowait',exported_instance=\"IPHOSTB\"}[5m])) * 100",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -5751,7 +5751,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=~\".*irq\",exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])) * 100",
+          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=~\".*irq\",exported_instance=\"IPHOSTB\"}[5m])) * 100",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -5761,7 +5761,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum (irate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])) * 100",
+          "expr": "sum (irate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',exported_instance=\"IPHOSTB\"}[5m])) * 100",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -5771,7 +5771,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])) * 100",
+          "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOSTB\"}[5m])) * 100",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -5925,7 +5925,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"}",
+          "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -5936,7 +5936,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"} - (node_memory_Cached_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"})",
+          "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOSTA\"} - (node_memory_Cached_bytes{exported_instance=\"IPHOSTA\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOSTA\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -5947,7 +5947,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_memory_Cached_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"}",
+          "expr": "node_memory_Cached_bytes{exported_instance=\"IPHOSTA\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOSTA\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -5957,7 +5957,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_memory_MemFree_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"}",
+          "expr": "node_memory_MemFree_bytes{exported_instance=\"IPHOSTA\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -5967,7 +5967,7 @@
         },
         {
           "exemplar": true,
-          "expr": "(node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOSTA\",job=\"$Job\"})",
+          "expr": "(node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTA\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOSTA\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -6121,7 +6121,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"}",
+          "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -6132,7 +6132,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"} - (node_memory_Cached_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"})",
+          "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOSTB\"} - (node_memory_Cached_bytes{exported_instance=\"IPHOSTB\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOSTB\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -6143,7 +6143,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_memory_Cached_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"}",
+          "expr": "node_memory_Cached_bytes{exported_instance=\"IPHOSTB\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOSTB\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -6153,7 +6153,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_memory_MemFree_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"}",
+          "expr": "node_memory_MemFree_bytes{exported_instance=\"IPHOSTB\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -6163,7 +6163,7 @@
         },
         {
           "exemplar": true,
-          "expr": "(node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOSTB\",job=\"$Job\"})",
+          "expr": "(node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTB\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOSTB\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -6274,7 +6274,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_schedstat_running_seconds_total{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_schedstat_running_seconds_total{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -6284,7 +6284,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_schedstat_waiting_seconds_total{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_schedstat_waiting_seconds_total{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -6389,7 +6389,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_schedstat_running_seconds_total{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_schedstat_running_seconds_total{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -6399,7 +6399,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_schedstat_waiting_seconds_total{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_schedstat_waiting_seconds_total{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -6516,7 +6516,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_hwmon_temp_celsius{exported_instance=\"IPHOSTA\",job=\"$Job\"}",
+          "expr": "node_hwmon_temp_celsius{exported_instance=\"IPHOSTA\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -6526,7 +6526,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_hwmon_temp_crit_alarm_celsius{exported_instance=\"IPHOSTA\",job=\"$Job\"}",
+          "expr": "node_hwmon_temp_crit_alarm_celsius{exported_instance=\"IPHOSTA\"}",
           "format": "time_series",
           "hide": true,
           "interval": "",
@@ -6537,7 +6537,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_hwmon_temp_crit_celsius{exported_instance=\"IPHOSTA\",job=\"$Job\"}",
+          "expr": "node_hwmon_temp_crit_celsius{exported_instance=\"IPHOSTA\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -6547,7 +6547,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_hwmon_temp_crit_hyst_celsius{exported_instance=\"IPHOSTA\",job=\"$Job\"}",
+          "expr": "node_hwmon_temp_crit_hyst_celsius{exported_instance=\"IPHOSTA\"}",
           "format": "time_series",
           "hide": true,
           "interval": "",
@@ -6558,7 +6558,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_hwmon_temp_max_celsius{exported_instance=\"IPHOSTA\",job=\"$Job\"}",
+          "expr": "node_hwmon_temp_max_celsius{exported_instance=\"IPHOSTA\"}",
           "format": "time_series",
           "hide": true,
           "interval": "",
@@ -6676,7 +6676,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "node_hwmon_temp_celsius{exported_instance=\"IPHOSTB\",job=\"$Job\"}",
+          "expr": "node_hwmon_temp_celsius{exported_instance=\"IPHOSTB\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -6686,7 +6686,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_hwmon_temp_crit_alarm_celsius{exported_instance=\"IPHOSTB\",job=\"$Job\"}",
+          "expr": "node_hwmon_temp_crit_alarm_celsius{exported_instance=\"IPHOSTB\"}",
           "format": "time_series",
           "hide": true,
           "interval": "",
@@ -6697,7 +6697,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_hwmon_temp_crit_celsius{exported_instance=\"IPHOSTB\",job=\"$Job\"}",
+          "expr": "node_hwmon_temp_crit_celsius{exported_instance=\"IPHOSTB\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -6707,7 +6707,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_hwmon_temp_crit_hyst_celsius{exported_instance=\"IPHOSTB\",job=\"$Job\"}",
+          "expr": "node_hwmon_temp_crit_hyst_celsius{exported_instance=\"IPHOSTB\"}",
           "format": "time_series",
           "hide": true,
           "interval": "",
@@ -6718,7 +6718,7 @@
         },
         {
           "exemplar": true,
-          "expr": "node_hwmon_temp_max_celsius{exported_instance=\"IPHOSTB\",job=\"$Job\"}",
+          "expr": "node_hwmon_temp_max_celsius{exported_instance=\"IPHOSTB\"}",
           "format": "time_series",
           "hide": true,
           "interval": "",
@@ -7426,7 +7426,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_IpExt_InOctets{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_IpExt_InOctets{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -7436,7 +7436,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_IpExt_OutOctets{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_IpExt_OutOctets{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -7554,7 +7554,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_IpExt_InOctets{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_IpExt_InOctets{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -7564,7 +7564,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_IpExt_OutOctets{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_IpExt_OutOctets{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -7681,7 +7681,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Icmp_InMsgs{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Icmp_InMsgs{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -7691,7 +7691,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Icmp_OutMsgs{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Icmp_OutMsgs{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -7808,7 +7808,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Icmp_InMsgs{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Icmp_InMsgs{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -7818,7 +7818,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Icmp_OutMsgs{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Icmp_OutMsgs{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -7935,7 +7935,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Icmp_InErrors{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Icmp_InErrors{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8052,7 +8052,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Icmp_InErrors{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Icmp_InErrors{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8174,7 +8174,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Udp_InDatagrams{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Udp_InDatagrams{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8184,7 +8184,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Udp_OutDatagrams{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Udp_OutDatagrams{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8306,7 +8306,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Udp_InDatagrams{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Udp_InDatagrams{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8316,7 +8316,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Udp_OutDatagrams{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Udp_OutDatagrams{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8426,7 +8426,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Udp_InErrors{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Udp_InErrors{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8436,7 +8436,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Udp_NoPorts{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Udp_NoPorts{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8446,14 +8446,14 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_UdpLite_InErrors{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_UdpLite_InErrors{exported_instance=\"IPHOSTA\"}[5m])",
           "interval": "",
           "legendFormat": "InErrors Lite - UDPLite Datagrams that could not be delivered to an application",
           "refId": "C"
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Udp_RcvbufErrors{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Udp_RcvbufErrors{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8463,7 +8463,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Udp_SndbufErrors{exported_instance=\"IPHOSTA\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Udp_SndbufErrors{exported_instance=\"IPHOSTA\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8573,7 +8573,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Udp_InErrors{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Udp_InErrors{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8583,7 +8583,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Udp_NoPorts{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Udp_NoPorts{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8593,14 +8593,14 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_UdpLite_InErrors{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_UdpLite_InErrors{exported_instance=\"IPHOSTB\"}[5m])",
           "interval": "",
           "legendFormat": "InErrors Lite - UDPLite Datagrams that could not be delivered to an application",
           "refId": "C"
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Udp_RcvbufErrors{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Udp_RcvbufErrors{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -8610,7 +8610,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(node_netstat_Udp_SndbufErrors{exported_instance=\"IPHOSTB\",job=\"$Job\"}[5m])",
+          "expr": "irate(node_netstat_Udp_SndbufErrors{exported_instance=\"IPHOSTB\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,

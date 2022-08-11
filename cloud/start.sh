@@ -30,7 +30,7 @@ if [ "$config_file" == "" ]; then
     python3 parse_config.py
     sleep 0.2
     if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
-        cd PrometheusGrafana
+        cd dashboard
         python3 dynamic.py
     else 
         echo "Skip Grafana Dashboard Generation"
@@ -41,7 +41,7 @@ else
     python3 parse_config.py $config_file
     sleep 0.2
     if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
-        cd PrometheusGrafana
+        cd dashboard
         python3 dynamic.py $config_file
     else 
         echo "Skip Grafana Dashboard Generation"

@@ -1,13 +1,12 @@
 version: '3.8'
 
 services:
-
   tcp-exporter:
     image: tcp_exporter
     network_mode: "host"
     restart: always
     volumes:
-      - ../config.yml:/etc/tcp_exporter/tcp.yml
+      - ../config/config.yml:/etc/tcp_exporter/tcp.yml
     ports:
       - 9191:9191
     deploy:

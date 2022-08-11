@@ -10,7 +10,7 @@ services:
     network_mode: "host"
     restart: always
     volumes:
-      - ../config.yml:/etc/arp_exporter/arp.yml
+      - ../config/config.yml:/etc/arp_exporter/arp.yml
       - ../Metrics/ARPMetrics/jsonFiles:/jsonFiles
       - ../Metrics/ARPMetrics/arpFiles:/arpFiles
       - ../Metrics/ARPMetrics/pingStat:/pingStat

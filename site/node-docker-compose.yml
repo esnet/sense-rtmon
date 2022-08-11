@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-
   node-exporter:
     network_mode: "host"
     hostname: "host1"

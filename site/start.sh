@@ -5,4 +5,4 @@ python3 fill.py $top_level_config_file
 
 echo "!!    Running the start script that is filled by config.yml file"
 sleep 0.5 
-./start2.sh
+./dynamic_start.sh

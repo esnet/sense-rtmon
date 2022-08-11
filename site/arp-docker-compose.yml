@@ -1,10 +1,6 @@
 version: '3.8'
 
-# networks:
-#   site-net:
-
 services:
-
   arp-exporter:
     image: arp_exporter
     network_mode: "host"
@@ -19,3 +15,5 @@ services:
     # deploy:
     #   restart_policy:
     #     condition: on-failure
+
+# please do not change the position of volumes. It's dynamically built

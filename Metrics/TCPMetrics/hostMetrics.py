@@ -12,7 +12,7 @@ try:
     owd = os.getcwd()
     os.chdir("..")
     os.chdir("..")
-    infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
+    infpth = str(os.path.abspath(os.curdir)) + "config/config.yml"
     os.chdir(owd)
     data = {}
     with open(infpth, 'r') as stream:

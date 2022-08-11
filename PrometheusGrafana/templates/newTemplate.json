@@ -1093,7 +1093,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(ifIndex{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
+          "expr": "sum(ifIndex{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1104,7 +1104,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifName{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifName)",
+          "expr": "sum(ifName{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifName)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1115,7 +1115,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifType{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifType)",
+          "expr": "sum(ifType{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifType)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1126,7 +1126,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifPhysAddress{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifPhysAddress)",
+          "expr": "sum(ifPhysAddress{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifPhysAddress)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1137,7 +1137,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifOperStatus{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
+          "expr": "sum(ifOperStatus{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1148,7 +1148,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifMtu{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
+          "expr": "sum(ifMtu{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1584,7 +1584,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(ifIndex{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
+          "expr": "sum(ifIndex{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1595,7 +1595,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifName{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifName)",
+          "expr": "sum(ifName{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifName)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1606,7 +1606,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifType{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifType)",
+          "expr": "sum(ifType{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifType)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1617,7 +1617,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifPhysAddress{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifPhysAddress)",
+          "expr": "sum(ifPhysAddress{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifPhysAddress)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1628,7 +1628,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifOperStatus{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
+          "expr": "sum(ifOperStatus{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1639,7 +1639,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifMtu{job=~\"$Job\",exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
+          "expr": "sum(ifMtu{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -8728,7 +8728,7 @@
           ]
         },
         "datasource": null,
-        "definition": "query_result(ifIndex{job=~\"$Job\",instance=\"$instance\"})",
+        "definition": "query_result(ifIndex{instance=\"$instance\"})",
         "description": null,
         "error": null,
         "hide": 0,
@@ -9204,7 +9204,7 @@
           }
         ],
         "query": {
-          "query": "query_result(ifIndex{job=~\"$Job\",instance=\"$instance\"})",
+          "query": "query_result(ifIndex{instance=\"$instance\"})",
           "refId": "StandardVariableQuery"
         },
         "refresh": 0,

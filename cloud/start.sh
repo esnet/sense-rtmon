@@ -42,7 +42,6 @@ else
     python3 parse_config.py $config_file
     sleep 0.2
     if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
-        cd ..
         cd PrometheusGrafana
         python3 dynamic.py $config_file
     else 
@@ -50,7 +49,7 @@ else
     fi
 fi
 
-cd ../cloud
+cd ..
 yes | cp -rfa se_config/. script_exporter/examples
 docker stack deploy -c docker-stack.yml cloud
 

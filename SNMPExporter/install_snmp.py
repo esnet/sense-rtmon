@@ -8,7 +8,7 @@ print("Parsing config file...")
 # Load yaml config file as dict
 owd = os.getcwd()
 os.chdir("..")
-config_path = str(os.path.abspath(os.curdir))
+config_path = str(os.path.abspath(os.curdir)) +"/config"
 infpth = config_path + "/config.yml"
 os.chdir(owd)
 data = {}

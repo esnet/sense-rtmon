@@ -12,7 +12,7 @@ read -r -p "Enter host 2 ip address: " host2
 read -r -p "Enter number of host: " num_switch 
 read -r -p "Enter DNS server name for https, enter ip address for http: " server_ip
 
-sed -i -e "s@.*grafanaHostIP: .*@grafanaHostIP: =${server_ip}@" ../config.yml
+sed -i -e "s@.*grafanaHostIP: .*@grafanaHostIP: =${server_ip}@" ../config/config.yml
 
 sed -i -e "s@.*pushgateway=1.*@pushgateway=${MYIP}@" .se_config/argsDef.sh
 sed -i -e "s@.*instance=1.*@instance=${host1}@" .se_config/argsDef.sh

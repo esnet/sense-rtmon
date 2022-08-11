@@ -12,6 +12,6 @@ read -r -p "Enter host 2 ip address: " host2
 read -r -p "Enter number of host: " num_switch 
 read -r -p "Enter DNS server name for https, enter ip address for http: " server_ip
 
-sed -i -e "s@.*grafanaHostIP: .*@grafanaHostIP: '${server_ip}'@" ../config.yml
+sed -i -e "s@.*grafanaHostIP: .*@grafanaHostIP: '${server_ip}'@" ../config/config.yml
 
-sed -i -e "s@.*hostIP: .*@hostIP: ${MYIP}@" ../config.yml
+sed -i -e "s@.*hostIP: .*@hostIP: ${MYIP}@" ../config/config.yml

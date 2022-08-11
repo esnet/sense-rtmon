@@ -8,7 +8,8 @@ import os
 
 owd = os.getcwd()
 os.chdir("..")
-infpth = str(os.path.abspath(os.curdir)) + "/config.yml"
+config_path = str(os.path.abspath(os.curdir)) +"/config"
+infpth = config_path + "/config.yml"
 os.chdir(owd)
 data = {}
 with open(infpth, 'r') as stream:

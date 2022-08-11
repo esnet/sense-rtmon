@@ -78,7 +78,7 @@ read -r -p "Install SNMP Exporter [y/N (Enter)]: " snmp_install
     dnf install kernel-devel make gcc gcc-c++ -y --disableexcludes=all
     yum install -y p7zip p7zip-plugins make gcc gcc-c++ net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
     yum install gcc gcc-c+
-    # Make mibs, and install SNMP exporter. Config could be done late
+    # Make mibs, and install SNMP exporter. Config could be done later
     
     sleep 0.2
     echo "!!    Go build and Make mibs.."

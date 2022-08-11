@@ -1759,7 +1759,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1769,7 +1769,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1779,7 +1779,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCInMulticastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInUcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInBroadcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
+          "expr": "irate(ifHCInMulticastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInUcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInBroadcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1789,7 +1789,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutMulticastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutUcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutBroadcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
+          "expr": "irate(ifHCOutMulticastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutUcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutBroadcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1800,185 +1800,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Switch 1 Packets, Bytes Receive/Transmit",
-      "transformations": [
-        {
-          "id": "seriesToColumns",
-          "options": {
-            "byField": "ifIndex"
-          }
-        },
-        {
-          "id": "labelsToFields",
-          "options": {}
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "ifIndex": true,
-              "instance": true,
-              "job": true
-            },
-            "indexByName": {},
-            "renameByName": {
-              "Value #A": "Receive Bytes",
-              "Value #B": "Transmit Bytes",
-              "Value #C": "Receive Packets",
-              "Value #D": "Transmit Packets",
-              "ifDescr": "Interface"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-
-    {
-      "datasource": null,
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "ifDescr"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 197
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Receive Packets"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Transmit Packets"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Interface"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 200
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 24,
-        "x": 0,
-        "y": 38
-      },
-      "id": 337,
-      "options": {
-        "frameIndex": 2,
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "7.5.4",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "irate(ifHCInOctets{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        },
-        {
-          "exemplar": true,
-          "expr": "irate(ifHCOutOctets{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "B"
-        },
-        {
-          "exemplar": true,
-          "expr": "irate(ifHCInMulticastPkts{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInUcastPkts{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInBroadcastPkts{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "C"
-        },
-        {
-          "exemplar": true,
-          "expr": "irate(ifHCOutMulticastPkts{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutUcastPkts{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutBroadcastPkts{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "D"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "VLAN Packets, Bytes Receive/Transmit",
+      "title": "Switch 1 Packets, Bytes Receive/Transmit (VLAN included)",
       "transformations": [
         {
           "id": "seriesToColumns",
@@ -2295,7 +2117,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{ifIndex=~\"MONITORVLAN1|MONITORVLAN2\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -2304,7 +2126,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{ifIndex=~\"MONITORVLAN1|MONITORVLAN2\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -2317,7 +2139,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "VLAN 1 & 2 (if exists) Flow Summary - Bandwidth Graph",
+      "title": "VLANs Flow Summary - Bandwidth Graph",
       "tooltip": {
         "shared": true,
         "sort": 0,

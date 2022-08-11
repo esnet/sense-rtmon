@@ -1160,7 +1160,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Switch 1 Information",
+      "title": "Switch 1 Information (VLAN included)",
       "transform": "table",
       "type": "table-old"
     },

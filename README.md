@@ -4,6 +4,7 @@ This package will provide everything needed to install and start `Cloud` and `Si
 ## Configuration
 - `config.yml` and `multiconfig.yml` files are configuration examples. 
 - Both `Cloud` and `Site` stacks use the same configuration files. In future iterations, this might change to stack-specific.
+- To ensure configuration files stay local and no community strings go to the repo run: `git update-index --assume-unchanged *.yml`
 **NOTE: PLEASE FILL IN CONFIG FILES FIRST BEFORE EXECUTING THE BELOW STEPS**. The installation and start scripts depend on the configuration file.
 
 ## Installation

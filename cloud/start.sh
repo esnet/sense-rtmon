@@ -30,7 +30,6 @@ if [ "$config_file" == "" ]; then
     python3 parse_config.py
     sleep 0.2
     if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
-        cd ..
         cd PrometheusGrafana
         python3 dynamic.py
     else 

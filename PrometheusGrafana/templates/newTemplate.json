@@ -1759,7 +1759,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1769,7 +1769,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1779,7 +1779,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCInMulticastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInUcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInBroadcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
+          "expr": "irate(ifHCInMulticastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInUcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInBroadcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1789,7 +1789,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutMulticastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutUcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutBroadcastPkts{job=\"$Job\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
+          "expr": "irate(ifHCOutMulticastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutUcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutBroadcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1937,7 +1937,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1947,7 +1947,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m])*8",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1957,7 +1957,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCInMulticastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInUcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInBroadcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
+          "expr": "irate(ifHCInMulticastPkts{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInUcastPkts{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCInBroadcastPkts{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1967,7 +1967,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutMulticastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutUcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutBroadcastPkts{job=\"$Job\",ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
+          "expr": "irate(ifHCOutMulticastPkts{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutUcastPkts{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) + irate(ifHCOutBroadcastPkts{ifIndex=~\"MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}[1m]) ",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -2065,7 +2065,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -2074,7 +2074,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$Job\", ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -2180,7 +2180,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"IFINDEXSWITCHHOSTB\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOSTB\"}[1m])*8",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -2189,7 +2189,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$Job\", ifIndex=~\"IFINDEXSWITCHHOSTB\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOSTB\"}[1m])*8",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -2295,7 +2295,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN1\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{ifIndex=~\"MONITORVLAN1\"}[1m])*8",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -2304,7 +2304,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN1\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{ifIndex=~\"MONITORVLAN1\"}[1m])*8",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -2410,7 +2410,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "irate(ifHCInOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN2\"}[1m])*8",
+          "expr": "irate(ifHCInOctets{ifIndex=~\"MONITORVLAN2\"}[1m])*8",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -2419,7 +2419,7 @@
         },
         {
           "exemplar": true,
-          "expr": "irate(ifHCOutOctets{job=\"$Job\", ifIndex=~\"MONITORVLAN2\"}[1m])*8",
+          "expr": "irate(ifHCOutOctets{ifIndex=~\"MONITORVLAN2\"}[1m])*8",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -6858,7 +6858,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "max(delta(ifHCInOctets{job=\"$Job\"}[$__range]))",
+          "expr": "max(delta(ifHCInOctets{}[$__range]))",
           "instant": false,
           "interval": "",
           "legendFormat": "In",
@@ -6953,7 +6953,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "max(delta(ifHCOutOctets{job=\"$Job\"}[$__range]))",
+          "expr": "max(delta(ifHCOutOctets{}[$__range]))",
           "interval": "",
           "legendFormat": "Out",
           "refId": "A"
@@ -7047,7 +7047,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "max(irate(ifHCInOctets{job=\"$Job\"}[5m]))",
+          "expr": "max(irate(ifHCInOctets{}[5m]))",
           "interval": "",
           "legendFormat": "In",
           "refId": "A"
@@ -7141,7 +7141,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "max(irate(ifHCOutOctets{job=\"$Job\"}[5m]))",
+          "expr": "max(irate(ifHCOutOctets{}[5m]))",
           "instant": false,
           "interval": "",
           "legendFormat": "Out",

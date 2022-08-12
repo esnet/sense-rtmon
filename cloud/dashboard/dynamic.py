@@ -38,13 +38,16 @@ print("find correct index from snmp exporter\n\n")
 myip = data['hostIP']
 pushgateway_metrics = f"{myip}:9091/metrics"
 
-cmd1 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostA']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostA']['switchPort']['ifName'])}\".*'"
+# cmd1 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostA']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostA']['switchPort']['ifName'])}\".*'"
+cmd1 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifName=\"{str(data['hostA']['switchPort']['ifName'])}\".*'"
 subprocess.run(cmd1,shell=True)
 subprocess.run("echo \"trial run\"",shell=True)
 grep1 = subprocess.check_output(cmd1,shell=True).decode()
 subprocess.run("echo \"grep 1\"",shell=True) # acts as enter in command line
 
-cmd2 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostB']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostB']['switchPort']['ifName'])}\".*'"
+
+# cmd2 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifDescr=\"{str(data['hostB']['switchPort']['ifName'])}\".*ifName=\"{str(data['hostB']['switchPort']['ifName'])}\".*'"
+cmd2 = f"curl {pushgateway_metrics} | grep '.*ifName.*ifName=\"{str(data['hostB']['switchPort']['ifName'])}\".*'"
 grep2 = subprocess.check_output(cmd2,shell=True).decode()
 subprocess.run("echo \"grep 2\"",shell=True) # acts as enter in command line
 

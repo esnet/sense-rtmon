@@ -46,9 +46,9 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     starting_snmp="-f snmp-docker-compose.yml" 
     echo "!!    Please configuring switch in you config file (default: config.yml) if needed"
     # read -r -p "Enter the config file: [config.yml/Enter]: " snmp_config
-    cd ../SNMPExporter
+    cd ./SNMPExporter
     python3 dynamic.py $top_level_config_file
-    cd ../site
+    cd ..
     echo "Satring SNMP Exporter Service"
     # docker stack deploy -c snmp-exporter.yml site
     # read -r -p "Enter switch IP :" switchIP
@@ -89,46 +89,46 @@ if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     # delete everything first
     # read -r -p "Enter host2 IP address (e.g. 198.32.43.15): " host2IP
 
-    rm -rf ../Metrics/ARPMetrics/jsonFiles ../Metrics/ARPMetrics/arpFiles ../Metrics/ARPMetrics/pingStat ./crontabs/update_arp_exporter
+    rm -rf ./Metrics/ARPMetrics/jsonFiles ./Metrics/ARPMetrics/arpFiles ./Metrics/ARPMetrics/pingStat ./crontabs/update_arp_exporter
 
-    mkdir ../Metrics/ARPMetrics/jsonFiles
-    mkdir ../Metrics/ARPMetrics/arpFiles
-    mkdir ../Metrics/ARPMetrics/pingStat
+    mkdir ./Metrics/ARPMetrics/jsonFiles
+    mkdir ./Metrics/ARPMetrics/arpFiles
+    mkdir ./Metrics/ARPMetrics/pingStat
 
-    touch ../Metrics/ARPMetrics/arpFiles/arpOut.txt
-    touch ../Metrics/ARPMetrics/jsonFiles/arpOut.json
-    touch ../Metrics/ARPMetrics/jsonFiles/delete.json
-    touch ../Metrics/ARPMetrics/jsonFiles/prev.json
-    touch ../Metrics/ARPMetrics/pingStat/ping_status.txt
-    touch ../Metrics/ARPMetrics/pingStat/prev_ping_status.txt
+    touch ./Metrics/ARPMetrics/arpFiles/arpOut.txt
+    touch ./Metrics/ARPMetrics/jsonFiles/arpOut.json
+    touch ./Metrics/ARPMetrics/jsonFiles/delete.json
+    touch ./Metrics/ARPMetrics/jsonFiles/prev.json
+    touch ./Metrics/ARPMetrics/pingStat/ping_status.txt
+    touch ./Metrics/ARPMetrics/pingStat/prev_ping_status.txt
     
     touch ./crontabs/update_arp_exporter.sh
     chmod +x ./crontabs/update_arp_exporter.sh
     sudo tee ./crontabs/update_arp_exporter.sh<<EOF
 #! /bin/bash
-/sbin/arp -a > $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt
+/sbin/arp -a > $general_path/site/Metrics/ARPMetrics/arpFiles/arpOut.txt
 sleep 0.5
-python3 $general_path/Metrics/ARPMetrics/convertARP.py $general_path/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/Metrics/ARPMetrics/jsonFiles/arpOut.json
+python3 $general_path/site/Metrics/ARPMetrics/convertARP.py $general_path/site/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/site/Metrics/ARPMetrics/jsonFiles/arpOut.json
 sleep 0.5
 ping -c 1 $host2IP
 if [ $? -eq 0 ]; then 
-  echo "$host2IP/ping_status/1" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
+  echo "$host2IP/ping_status/1" > $general_path/site/Metrics/ARPMetrics/pingStat/ping_status.txt
 else
-  echo "$host2IP/ping_status/0" > $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
+  echo "$host2IP/ping_status/0" > $general_path/site/Metrics/ARPMetrics/pingStat/ping_status.txt
 fi
 # sleep 0.5
 # ping -c 1 $switchIP
 # if [ $? -eq 0 ]; then 
-#   echo "$switchIP/switch_ping_status/1" >> $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
+#   echo "$switchIP/switch_ping_status/1" >> $general_path/site/Metrics/ARPMetrics/pingStat/ping_status.txt
 # else
-#   echo "$switchIP/switch_ping_status/0" >> $general_path/Metrics/ARPMetrics/pingStat/ping_status.txt
+#   echo "$switchIP/switch_ping_status/0" >> $general_path/site/Metrics/ARPMetrics/pingStat/ping_status.txt
 # fi
 EOF
     echo "Satring ARP Exporter Service"
-    cd ../Metrics
+    cd ./Metrics
     docker image rm -f arp_exporter:latest
     docker build -t arp_exporter -f arp.Dockerfile .
-    cd ../site
+    cd ..
     # docker compose -f arp-exporter.yml up -d
 else
     starting_arp=" " 
@@ -139,10 +139,10 @@ read -r -p "Start TCP Exporter? [y/N]: " start_tcp
 if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
     starting_tcp="-f tcp-docker-compose..yml" 
     echo "Satring TCP Exporter Service"
-    cd ../Metrics
+    cd ./Metrics
     docker image rm -f tcp_exporter:latest
     docker build -t tcp_exporter -f tcp.Dockerfile .
-    cd ../site
+    cd ..
     # docker compose -f tcp-exporter.yml up -d
 else
     starting_tcp=" " 
@@ -151,14 +151,6 @@ fi
 
 echo "!!    to remove site stack run ./clean.sh"
 
-# echo "!!    to start any exporter later, enter:"
-# echo "docker stack deploy -c node-exporter.yml site"
-# echo "docker stack deploy -c snmp-exporter.yml site"
-# echo "!!    Please configuring switch in snmpConfig.yml if needed"
-# echo "!!    DynamicDashboard/SNMPExporter/snmpConfig.yml"
-# echo "docker stack deploy -c arp-exporter.yml site"
-# echo "docker stack deploy -c tcp-exporter.yml site"
-
 echo "docker compose $starting_node $starting_snmp $starting_arp $starting_tcp up -d"
 # run nothing
 if [ "$starting_node" == " " ] && [ "$starting_snmp" == " " ] && [ "$starting_arp" == " " ] && [ "$starting_tcp" == " " ]; then
@@ -166,23 +158,3 @@ if [ "$starting_node" == " " ] && [ "$starting_snmp" == " " ] && [ "$starting_ar
 else 
     docker compose $starting_node $starting_snmp $starting_arp $starting_tcp up -d
 fi
-
-# if [ "$VLANA2" != "" ] || then
-#     cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/vlan/$VLANA2/instance/$MYIP
-# fi 
-
-# if [ "$VLANA3" != "" ] || then
-#     cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/vlan/$VLANA3/instance/$MYIP
-# fi 
-
-# if [ "$VLANB1" != "" ] || then
-#     cat $general_path/site/crontabs/snmp_temp2.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/vlan/$VLAN2/instance/$MYIP
-# fi 
-
-# if [ "$VLANB2" != "" ] || then
-#     cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/vlan/$VLANB2/instance/$MYIP
-# fi 
-
-# if [ "$VLANB3" != "" ] || then
-#     cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/vlan/$VLANB3/instance/$MYIP
-# fi 

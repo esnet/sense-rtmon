@@ -4,7 +4,6 @@ networks:
   monitor-net:
 
 services:
-
   prometheus:
     image: prom/prometheus:v2.2.1
     volumes:
@@ -64,9 +63,10 @@ services:
     ports:
       - 443:443
       - 3000
-      - 9091
-      - 9092:9092
+      # - 9091
+      # - 9092:9092
       # - 9090
+      # - 9093:9093
     volumes:
       - $PWD/nginx/:/etc/nginx/conf.d/
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem

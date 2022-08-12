@@ -21,8 +21,8 @@ modules:
     walk: # List of OIDs to walk. Can also be SNMP object names or specific
     max_repetitions: 25  # How many objects to request with GET/GETBULK, defaul$
                          # May need to be reduced for buggy devices.
-    retries: RETRY   # How many times to retry a failed request, defaults to 3.
-    timeout: TIMEOUT  # Timeout for each individual SNMP request, defaults to 5s.
+    retries: RE2   # How many times to retry a failed request, defaults to 3.
+    timeout: TI2  # Timeout for each individual SNMP request, defaults to 5s.
 
     auth:
       # Community string is used with SNMP v1 and v2. Defaults to "public".
@@ -30,7 +30,7 @@ modules:
       community: C2
 
     lookups:  # Optional list of lookups to perform.
-      - source_indexes: [ifIndex2]
-        lookup: ifAlias2
-      - source_indexes: [ifIndex2]
-        lookup: ifDescr2
+      - source_indexes: [ifInd2]
+        lookup: ifA2
+      - source_indexes: [ifInd2]
+        lookup: ifD2

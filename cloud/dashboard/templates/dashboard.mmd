@@ -1,4 +1,7 @@
 # Mermaid for grafana panel diagram editing
+single switch:
+readable version:
+
 graph LR
       
     subgraph h1 ["Host 1"]
@@ -31,8 +34,12 @@ graph LR
 
     sw1s2if ---- h2e2
 
+json version:
 
 "content": "graph LR\n subgraph h1 [\"Host 1\"]\n h1ip{{IP: DATAPLANEIPA - VLAN: VLANA}}\n h1e1(IFNAMEHOSTA)\n style h1e1 fill: #50C878\n end\nh1e1 --------- sw1s1if\n subgraph sw1 [\"Switch 1\"]\n subgraph sw1s1 [\"interface 1\"]\n sw1s1vlan{{VLAN: VLANA SWITCHIF}}\n sw1s1if[NAMEIFSWITCHA]\n style sw1s1if fill: #50C878\n end\n subgraph sw1s2 [\"interface 2\"]\n sw1s2if[NAMEIFSWITCHB]\n sw1s2vlan{{VLAN: VLANB SWITCHIF}}\n style sw1s2if fill: #50C878\n end\n end\n style sw1 fill: #282828\n subgraph h2 [\"Host 2\"]\n h2ip2{{IP: DATAPLANEIPB - VLAN: VLANB}}\n h2e2(IFNAMEHOSTB)\n style h2e2 fill: #50C878\n end\n sw1s2if ---------  h2e2 \n",
+
+multi-switch:
+readable version:
 
 graph LR     
     subgraph h1 ["Host 1"]
@@ -132,3 +139,7 @@ graph LR
         ip2{{VLAN: VLANB - IP: IPHOSTB}} 
         e2(IFNAMEHOSTB)
     end
+
+dashboard version:
+
+graph  LR  \n  subgraph  h1  [\"Host  1\"]\n  style  h1  fill:#575757\n  ip{{VLAN:  VLANA  -  IP:  IPHOSTA}}\n  e(IFNAMEHOSTA)\n  end\n  \n  e(IFNAMEHOSTA)  ----  sw1s1if[NAMEIFAIN]\n\n  subgraph  sw1  [\"Switch  1\"]\n  subgraph  sw1s1  [\"interface  1\"]\n  sw1s1vlan{{VLAN:  VLANA}}\n  sw1s1if[NAMEIFAIN]\n  style  sw1s1if  fill:#1F7728\n  end\n  subgraph  sw1s2  [\"interface  2\"]\n  sw1s2vlan{{VLAN:  VLANA}}\n  sw1s2ifout[NAMEIFAOUT]\n  style  sw1s2ifout  fill:#003262\n\n  end\n  style  sw1  fill:#575757\n  end\n\n  subgraph  sw2  [\"Switch  2\"]\n  subgraph  sw2s1  [\"interface  1\"]\n  sw2s1vlan{{VLAN:  VLANB}}\n  sw2s1if[NAMEIFBIN]\n  style  sw2s1if  fill:  #1F7728\n  end\n  subgraph  sw2s2  [\"interface  2\"]\n  sw2s2vlan{{VLAN:  VLANB}}\n  sw2s2ifout[NAMEIFBOUT]\n  style  sw2s2ifout  fill:#003262\n  end\n  style  sw1  fill:#575757\n  end\n  \n  sw1s2ifout[NAMEIFAOUT]  ----  sw2s1if[NAMEIFBIN]\n  sw2s2ifout[NAMEIFBOUT]  ----  e2(IFNAMEHOSTB)\n  \n  subgraph  h2  [\"Host  2\"]\n  style  h2  fill:#575757  \n  ip2{{VLAN:  VLANB  -  IP:  IPHOSTB}}  \n  e2(IFNAMEHOSTB)\n  end

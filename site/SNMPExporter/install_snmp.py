@@ -148,11 +148,11 @@ mib_dir = genLoc + "/mibs"
 os.chdir(mib_dir)
 subprocess.run("git clone https://github.com/librenms/librenms.git",shell=True, cwd=mib_dir)
 print("To download private MIBs please please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n")
-subprocess.run(f"yes | cp -rfa ./librenms/mibs/*-MIB ./", shell=True, cwd=mib_dir)
+subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*-MIB ./", shell=True, cwd=mib_dir)
 
 ne = input("Enter the name of the Network Element: ")
 print(f"move all {ne} MIBS to mib folder")
-subprocess.run(f"yes | cp -rfa ./librenms/mibs/{ne}/* ./", shell=True, cwd=mib_dir)
+subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne}/* ./", shell=True, cwd=mib_dir)
 
 # subprocess.run("./generator generate", shell=True, cwd=genLoc)
 # subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)

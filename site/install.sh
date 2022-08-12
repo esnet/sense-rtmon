@@ -132,13 +132,13 @@ cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgatew
 EOF
 
     echo ""
-    mkdir ../Metrics/ARPMetrics/jsonFiles
-    mkdir ../Metrics/ARPMetrics/arpFiles
-    touch ../Metrics/ARPMetrics/arpFiles/arpOut.txt
-    touch ../Metrics/ARPMetrics/jsonFiles/arpOut.json
-    touch ../Metrics/ARPMetrics/jsonFiles/delete.json
-    touch ../Metrics/ARPMetrics/jsonFiles/prev.json
-    touch ../Metrics/ARPMetrics/pingStat/ping_status.txt
+    mkdir ./Metrics/ARPMetrics/jsonFiles
+    mkdir ./Metrics/ARPMetrics/arpFiles
+    touch ./Metrics/ARPMetrics/arpFiles/arpOut.txt
+    touch ./Metrics/ARPMetrics/jsonFiles/arpOut.json
+    touch ./Metrics/ARPMetrics/jsonFiles/delete.json
+    touch ./Metrics/ARPMetrics/jsonFiles/prev.json
+    touch ./Metrics/ARPMetrics/pingStat/ping_status.txt
     touch ./crontabs/update_arp_exporter.sh
     chmod +x ./crontabs/update_arp_exporter.sh
 

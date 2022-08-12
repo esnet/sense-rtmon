@@ -32,6 +32,7 @@ if [ "$config_file" == "" ]; then
     if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
         cd dashboard
         python3 dynamic.py
+        cd ..
     else 
         echo "Skip Grafana Dashboard Generation"
     fi
@@ -43,12 +44,12 @@ else
     if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
         cd dashboard
         python3 dynamic.py $config_file
+        cd ..
     else 
         echo "Skip Grafana Dashboard Generation"
     fi
 fi
 
-cd ..
 yes | cp -rfa se_config/. script_exporter/examples
 docker stack deploy -c docker-stack.yml cloud
 

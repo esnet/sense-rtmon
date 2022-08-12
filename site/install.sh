@@ -81,11 +81,9 @@ read -r -p "Install SNMP Exporter [y/N (Enter)]: " snmp_install
     
     sleep 0.2
     echo "!!    Go build and Make mibs.."
-    cd ..
     cd ./SNMPExporter
     python3 install_snmp.py
     cd ..
-    cd ./site
 
     # read -r -p "Enter MIB folder (default /usr/share/snmp/mibs): " mibfolder
     # echo "!!    Download MIBS"
@@ -103,47 +101,47 @@ fi
 
 ############################## AUTOPUSH BASH SCRIPTS SETUP ##############################
 
-read -r -p "Set up bash script? [y/N (Enter)]: " bashstart
-if [ "$bashstart" == "y" ] || [ "$bashstart" == "Y" ]; then
-    echo "creating bash scripts"
-    echo "!!    Setting up bash files to autopush Node and SNMP metrics to Pushgateway"
-    > ./crontabs/push_node_exporter_metrics.sh
-    chmod +x ./crontabs/push_node_exporter_metrics.sh
-    sudo tee ./crontabs/push_node_exporter_metrics.sh<<EOF
-#! /bin/bash
-curl -s ${MYIP}:9100/metrics | curl --data-binary @- $pushgateway_server/metrics/job/node-exporter/instance/$MYIP
-EOF
+# read -r -p "Set up bash script? [y/N (Enter)]: " bashstart
+# if [ "$bashstart" == "y" ] || [ "$bashstart" == "Y" ]; then
+#     echo "creating bash scripts"
+#     echo "!!    Setting up bash files to autopush Node and SNMP metrics to Pushgateway"
+#     > ./crontabs/push_node_exporter_metrics.sh
+#     chmod +x ./crontabs/push_node_exporter_metrics.sh
+#     sudo tee ./crontabs/push_node_exporter_metrics.sh<<EOF
+# #! /bin/bash
+# curl -s ${MYIP}:9100/metrics | curl --data-binary @- $pushgateway_server/metrics/job/node-exporter/instance/$MYIP
+# EOF
 
-    # if [ -f "/root/push_snmp_exporter_metrics.sh" ]; then
+#     # if [ -f "/root/push_snmp_exporter_metrics.sh" ]; then
 
-    read -r -p "Enter switch IP :" switchIP
-    > ./crontabs/snmp_temp.txt
-    touch ./crontabs/push_snmp_exporter_metrics.sh
-    chmod +x ./crontabs/push_snmp_exporter_metrics.sh
-    sudo tee ./crontabs/push_snmp_exporter_metrics.sh<<EOF
-#! /bin/bash
-if curl ${MYIP}:9116/metrics | grep ".*"; then
-    curl -o $general_path/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
-else
-    > $general_path/site/crontabs/snmp_temp.txt	
-fi
-cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/instance/$MYIP
-EOF
+#     read -r -p "Enter switch IP :" switchIP
+#     > ./crontabs/snmp_temp.txt
+#     touch ./crontabs/push_snmp_exporter_metrics.sh
+#     chmod +x ./crontabs/push_snmp_exporter_metrics.sh
+#     sudo tee ./crontabs/push_snmp_exporter_metrics.sh<<EOF
+# #! /bin/bash
+# if curl ${MYIP}:9116/metrics | grep ".*"; then
+#     curl -o $general_path/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=$switchIP&module=if_mib
+# else
+#     > $general_path/site/crontabs/snmp_temp.txt	
+# fi
+# cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/instance/$MYIP
+# EOF
 
-    echo ""
-    mkdir ./Metrics/ARPMetrics/jsonFiles
-    mkdir ./Metrics/ARPMetrics/arpFiles
-    touch ./Metrics/ARPMetrics/arpFiles/arpOut.txt
-    touch ./Metrics/ARPMetrics/jsonFiles/arpOut.json
-    touch ./Metrics/ARPMetrics/jsonFiles/delete.json
-    touch ./Metrics/ARPMetrics/jsonFiles/prev.json
-    touch ./Metrics/ARPMetrics/pingStat/ping_status.txt
-    touch ./crontabs/update_arp_exporter.sh
-    chmod +x ./crontabs/update_arp_exporter.sh
+#     echo ""
+#     mkdir ./Metrics/ARPMetrics/jsonFiles
+#     mkdir ./Metrics/ARPMetrics/arpFiles
+#     touch ./Metrics/ARPMetrics/arpFiles/arpOut.txt
+#     touch ./Metrics/ARPMetrics/jsonFiles/arpOut.json
+#     touch ./Metrics/ARPMetrics/jsonFiles/delete.json
+#     touch ./Metrics/ARPMetrics/jsonFiles/prev.json
+#     touch ./Metrics/ARPMetrics/pingStat/ping_status.txt
+#     touch ./crontabs/update_arp_exporter.sh
+#     chmod +x ./crontabs/update_arp_exporter.sh
 
-else 
-    echo "Nothing installed"
-fi
+# else 
+#     echo "Nothing installed"
+# fi
 
 ############################## AUTOPUSH CRONTAB SETUP ##############################
 

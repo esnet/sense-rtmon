@@ -143,5 +143,21 @@ subprocess.run("./generator generate", shell=True, cwd=genLoc)
 subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
 print("Success! Configured custom SNMP Exporter container")
 
-# subprocess.run("make mibs", shell=True, cwd=genLoc)
-print("Success! Configured custom SNMP Exporter container")
+subprocess.run("make mibs", shell=True, cwd=genLoc)
+subprocess.run("export MIBDIRS=mibs", shell=True, cwd=genLoc)
+print("Success! Configured custom SNMP Exporter container\n\n")
+
+mib_dir = genLoc + "/mibs"
+subprocess.run(f"mv /usr/share/snmp/mibs/* ./", shell=True, cwd=mib_dir)
+
+# download private mibs    
+download_mibs = input("Download private MIBs [y/N]: ")
+download_mibs = download_mibs.lower()
+if download_mibs == 'y' or download_mibs == "yes":
+    os.chdir("mibs")
+    subprocess.run("git clone https://github.com/librenms/librenms.git",shell=True, cwd=mib_dir)
+    print("To download private MIBs please please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n")
+    ne = input("Enter the name of the Network Element: ")
+    print(f"move all {ne} MIBS to mib folder")
+    subprocess.run(f"mv ./librenms/mibs/{ne}/* ./", shell=True, cwd=mib_dir)
+    

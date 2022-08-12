@@ -31,6 +31,7 @@ if [ "$docker_login" == "y" ] || [ "$docker_login" == "Y" ]; then
         # exit 1
     fi
 fi
+
 ############################## DOCKER SWARM and PUSHGATEWAY ##############################
 
 # get correct IP address
@@ -39,8 +40,6 @@ read -r -p "Is ${MYIP} your IP address [y/N]: " correct_ip
 if [ "$correct_ip" == "N" ] || [ "$correct_ip" == "n" ]; then
     read -r -p "Type in your ip address: " MYIP
 fi
-read -r -p "Enter VLAN (e.g. 1000): " VLAN
-
 # get host2 IP address
 read -r -p "Enter host2 IP address (if needed): " host2IP
 
@@ -88,18 +87,18 @@ read -r -p "Install SNMP Exporter [y/N (Enter)]: " snmp_install
     cd ..
     cd ./site
 
-    read -r -p "Enter MIB folder (default /usr/share/snmp/mibs): " mibfolder
-    echo "!!    Download MIBS"
-    echo "!!    MIBFOLDER: $mibfolder"
-    export MIBDIRS=$mibfolder
-    echo "!!    to change mib folder run: export MIBDIRS=<>"
-    wget -O $mibfolder/FORCE10-SMI https://www.circitor.fr/Mibs/Mib/F/FORCE10-SMI.mib
-    wget -O $mibfolder/F10-IF-EXTENSION-MIB https://www.circitor.fr/Mibs/Mib/F/F10-IF-EXTENSION-MIB.mib
-    wget -O $mibfolder/F10-FIB-MIB http://www.circitor.fr/Mibs/Mib/F/F10-FIB-MIB.mib
-    wget -O $mibfolder/F10-FPSTATS-MIB https://www.circitor.fr/Mibs/Mib/F/F10-FPSTATS-MIB.mib
-    echo "!!    To download addtional mibs follow this instruction: "
-    echo "!!    wget -O /usr/share/snmp/mibs/<MIBS_name> https://www.circitor.fr/Mibs/Mib/<First_letter_of_MIBS_name>/<MIBS_name>.mib"
-    echo "!!    Example: wget -O /usr/share/snmp/mibs/F10-IF-EXTENSION-MIB https://www.circitor.fr/Mibs/Mib/F/F10-IF-EXTENSION-MIB.mib"
+    # read -r -p "Enter MIB folder (default /usr/share/snmp/mibs): " mibfolder
+    # echo "!!    Download MIBS"
+    # echo "!!    MIBFOLDER: $mibfolder"
+    # export MIBDIRS=$mibfolder
+    # echo "!!    to change mib folder run: export MIBDIRS=<>"
+    # wget -O $mibfolder/FORCE10-SMI https://www.circitor.fr/Mibs/Mib/F/FORCE10-SMI.mib
+    # wget -O $mibfolder/F10-IF-EXTENSION-MIB https://www.circitor.fr/Mibs/Mib/F/F10-IF-EXTENSION-MIB.mib
+    # wget -O $mibfolder/F10-FIB-MIB http://www.circitor.fr/Mibs/Mib/F/F10-FIB-MIB.mib
+    # wget -O $mibfolder/F10-FPSTATS-MIB https://www.circitor.fr/Mibs/Mib/F/F10-FPSTATS-MIB.mib
+    # echo "!!    To download addtional mibs follow this instruction: "
+    # echo "!!    wget -O /usr/share/snmp/mibs/<MIBS_name> https://www.circitor.fr/Mibs/Mib/<First_letter_of_MIBS_name>/<MIBS_name>.mib"
+    # echo "!!    Example: wget -O /usr/share/snmp/mibs/F10-IF-EXTENSION-MIB https://www.circitor.fr/Mibs/Mib/F/F10-IF-EXTENSION-MIB.mib"
 fi
 
 ############################## AUTOPUSH BASH SCRIPTS SETUP ##############################

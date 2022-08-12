@@ -26,7 +26,7 @@ sudo lsof -i -P -n | grep 9116
 ############################# NODE #############################
 read -r -p "Start Node Exporter? [y/N (Enter)]: " start_node
 if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
-    starting_node="-f node-docker-compose.yml" 
+    starting_node="-f ./compose-files/node-docker-compose.yml" 
     echo "Satring Node Exporter Service"
     > ./crontabs/push_node_exporter_metrics.sh
     chmod +x ./crontabs/push_node_exporter_metrics.sh
@@ -43,7 +43,7 @@ fi
 ############################# SNMP #############################
 read -r -p "Start SNMP Exporter? [y/N]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
-    starting_snmp="-f snmp-docker-compose.yml" 
+    starting_snmp="-f ./compose-files/snmp-docker-compose.yml" 
     echo "!!    Please configuring switch in you config file (default: config.yml) if needed"
     # read -r -p "Enter the config file: [config.yml/Enter]: " snmp_config
     cd ./SNMPExporter
@@ -85,7 +85,7 @@ fi
 ############################# ARP #############################
 read -r -p "Start ARP Exporter? [y/N]: " start_arp
 if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
-    starting_arp="-f arp-docker-compose.yml" 
+    starting_arp="-f ./compose-files/arp-docker-compose.yml" 
     # delete everything first
     # read -r -p "Enter host2 IP address (e.g. 198.32.43.15): " host2IP
 
@@ -137,7 +137,7 @@ fi
 
 read -r -p "Start TCP Exporter? [y/N]: " start_tcp
 if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
-    starting_tcp="-f tcp-docker-compose..yml" 
+    starting_tcp="-f ./compose-files/tcp-docker-compose..yml" 
     echo "Satring TCP Exporter Service"
     cd ./Metrics
     docker image rm -f tcp_exporter:latest

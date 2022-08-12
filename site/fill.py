@@ -68,15 +68,15 @@ with open('dynamic_start.sh', 'w') as file:
     file.writelines(write_data)
 
 # change volume/config file in ARP docker file    
-with open("arp-docker-compose.yml", 'r') as gen:
+with open("./compose-files/arp-docker-compose.yml", 'r') as gen:
     text = gen.readlines()
 text[8] = f"      - ../config/{file_name}:/etc/arp_exporter/arp.yml\n"
-with open('arp-docker-compose.yml', 'w') as genOut:
+with open('./compose-files/arp-docker-compose.yml', 'w') as genOut:
     genOut.writelines(text)
     
 # change volume/config file in TCP docker file    
-with open("tcp-docker-compose.yml", 'r') as gen:
+with open("./compose-files/tcp-docker-compose.yml", 'r') as gen:
         text = gen.readlines()
 text[8] = f"      - ../config/{file_name}:/etc/tcp_exporter/tcp.yml\n"
-with open('tcp-docker-compose.yml', 'w') as genOut:
+with open('./compose-files/tcp-docker-compose.yml', 'w') as genOut:
     genOut.writelines(text)

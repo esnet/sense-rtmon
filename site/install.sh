@@ -128,7 +128,7 @@ if curl ${MYIP}:9116/metrics | grep ".*"; then
 else
     > $general_path/site/crontabs/snmp_temp.txt	
 fi
-cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/vlan/$VLAN/instance/$MYIP
+cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/instance/$MYIP
 EOF
 
     echo ""
@@ -186,8 +186,6 @@ if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
         echo "#Puppet Name: check update on arp table every 15 seconds" >> ./crontabs/cron_autopush
         echo "MAILTO=""" >> ./crontabs/cron_autopush
         echo "* * * * * for i in 0 1 2; do $PWD/crontabs/update_arp_exporter.sh & sleep 15; done; $PWD/crontabs/update_arp_exporter.sh" >> ./crontabs/cron_autopush
-        # * * * * * /root/awsvm/DynamicDashboard/Metrics/ARPMetrics/update_arp_exporter.sh
-        # every minute instead of 15 seconds
     fi
 
     echo ""

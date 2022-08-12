@@ -22,13 +22,13 @@ if len(sys.argv) > 1:
         try:
             data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
-            print(f"\n Config file {file_path} could not be found in the DynamicDashboard directory\n")
+            print(f"\n Config file {file_path} could not be found in the main directory\n")
 else: # default config file
     with open(infpth, 'r') as stream:
         try:
             data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
-            print(f"\n Config file {infpth} could not be found in the DynamicDashboard directory\n")
+            print(f"\n Config file {infpth} could not be found in the main directory\n")
 
 print("Collecting SNMP generator template...")
 print("Reading SNMP OIDs/Interfaces/Scrape Duration/Scrape Time from config file...")

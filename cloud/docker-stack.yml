@@ -68,7 +68,7 @@ services:
       - 9092:9092
       # - 9090
     volumes:
-      - $PWD/nginx/conf/:/etc/nginx/conf.d/
+      - $PWD/nginx/:/etc/nginx/conf.d/
       - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
       - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
       - /etc/letsencrypt/live/dev2.virnao.com/fullchain.pem:/etc/letsencrypt/live/dev2.virnao.com/fullchain.pem

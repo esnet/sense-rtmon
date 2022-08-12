@@ -7211,7 +7211,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "f10IfInVlanPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
+            "expr": "dellNetIfInVlanPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
             "interval": "",
             "legendFormat": "{{ifDescr}}",
             "refId": "A"
@@ -7309,7 +7309,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "f10IfInVlanPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
+            "expr": "dellNetIfInVlanPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
             "instant": false,
             "interval": "",
             "legendFormat": "",

@@ -149,7 +149,7 @@ print("Success! Configured custom SNMP Exporter container\n\n")
 
 # download private mibs    
 mib_dir = genLoc + "/mibs"
-os.chdir("mibs")
+os.chdir(mib_dir)
 subprocess.run("git clone https://github.com/librenms/librenms.git",shell=True, cwd=mib_dir)
 print("To download private MIBs please please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n")
 subprocess.run(f"yes | cp -rfa ./librenms/mibs/*-MIB ./", shell=True, cwd=mib_dir)

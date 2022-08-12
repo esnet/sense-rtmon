@@ -138,10 +138,6 @@ genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
 genCmd = "yes | cp -rfa generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)
 subprocess.run("go build", shell=True, cwd=genLoc)
-# subprocess.run("export MIBDIRS=../../librenms/mibs:../../librenms/mibs/dell", shell=True, cwd=genLoc)
-subprocess.run("./generator generate", shell=True, cwd=genLoc)
-subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
-print("Success! Configured custom SNMP Exporter container")
 
 subprocess.run("make mibs", shell=True, cwd=genLoc)
 subprocess.run("export MIBDIRS=mibs", shell=True, cwd=genLoc)
@@ -157,3 +153,7 @@ subprocess.run(f"yes | cp -rfa ./librenms/mibs/*-MIB ./", shell=True, cwd=mib_di
 ne = input("Enter the name of the Network Element: ")
 print(f"move all {ne} MIBS to mib folder")
 subprocess.run(f"yes | cp -rfa ./librenms/mibs/{ne}/* ./", shell=True, cwd=mib_dir)
+
+# subprocess.run("./generator generate", shell=True, cwd=genLoc)
+# subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
+# print("Success! Configured custom SNMP Exporter container")

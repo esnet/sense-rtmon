@@ -3,10 +3,9 @@ pushgateway=$1
 host1=$2
 host2=$3
 switch_num=$4
-flow_vlan=$5
-switch_ip1=$6
-# switch_ip2=$7
- 
+switch_ip1=$5
+# switch_ip2=$6
+flow_vlan=""
 # Check ping status
 # from which host
 # contains which host
@@ -14,7 +13,7 @@ switch_ip1=$6
 # vlan number 
 # network element ip address
 # netowrk element 2 ip address
-
+########################### THE VLAN IS INCORRECT AND THE SETUP NEEDS TO CHANGE. GET RID OF IT #######
 echo "!!    args.sh takes in 6 argument"
 echo "!!    1. pushgateway's ip address (not localhost)"
 echo "!!    2. instance's ip address (where the arp table is located"

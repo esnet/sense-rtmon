@@ -3,10 +3,9 @@ pushgateway=$1
 host1=$2
 host2=$3
 switch_num=$4
-flow_vlan=$5
-switch_ip1=$6
-switch_ip2=$7
-
+switch_ip1=$5
+switch_ip2=$6
+flow_vlan=""
 # Check ping status
 # from which host
 # contains which host

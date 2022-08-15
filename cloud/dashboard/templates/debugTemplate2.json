@@ -830,7 +830,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "HOSTA_SNMP_ON",
+          "expr": "m_host1_snmp_on_",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -839,7 +839,7 @@
         },
         {
           "exemplar": true,
-          "expr": "SWITCH_HOSTA_MAC",
+          "expr": "m_switch_host1_mac_",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -857,7 +857,7 @@
         },
         {
           "exemplar": true,
-          "expr": "HOSTB_SNMP_ON",
+          "expr": "m_host2_snmp_on_",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -866,7 +866,7 @@
         },
         {
           "exemplar": true,
-          "expr": "SWITCH_HOSTB_MAC",
+          "expr": "m_switch_host2_mac_",
           "hide": false,
           "interval": "",
           "legendFormat": "Switch1 Contains Host2 MAC Address",

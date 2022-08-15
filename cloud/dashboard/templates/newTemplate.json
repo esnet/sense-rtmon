@@ -6429,7 +6429,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "dellNetIfInVlanPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
+          "expr": "f10IfInVlanPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
           "interval": "",
           "legendFormat": "{{ifDescr}}",
           "refId": "A"

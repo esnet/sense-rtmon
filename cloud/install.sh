@@ -20,18 +20,6 @@ else
     exit 1
 fi
 
-# check docker compose
-if [ -x "$(command -v docker compose)" ]; then
-    echo "||        Found docker compose..."
-    echo "||        Running docker login..."
-    docker login
-else
-    echo "!!    Docker compose command not found."
-    echo "!!    Installing docker compose"
-    suod yum install -y docker-compose-plugin
-    docker login
-    # exit 1
-fi
 sleep 0.5
 
 echo "!!    downloading script exporter"
@@ -40,12 +28,16 @@ yes | cp -rfa se_config/. script_exporter/examples
 
 sleep 0.5
 
+dnf update -y
+yum update -y
+suod yum install -y docker-compose-plugin
 sudo yum -y install firewalld
 sudo yum –y install python3
 sudo yum –y install python3-pip
 sudo pip3 install pyyaml
 sudo pip3 install requests
-
+docker login
+ 
 sleep 0.5
 
 # Configuration starts

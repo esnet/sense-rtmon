@@ -44,17 +44,17 @@ with open(delete_file_path,"rt") as fp:
 hostip = data['hostIP']
 node_url = f"http://dev2.virnao.com:9091/metrics/job/node-exporter/instance/{hostip}"
 requests.delete(node_url)
+
             
 if data['switchNum'] == 1:
     target = data['switchData']['target']
-    vlan_to_switch = data['vlan_to_switch']
     snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target}"
     requests.delete(snmp_url)
 elif data['switchNum'] == 2:
     target1 = data['switchDataA']['target']
     target2 = data['switchDataB']['target']
-    vlan1 = data['hostA']['vlan']
-    vlan2 = data['hostB']['vlan']    
     snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target1}"
+    requests.delete(snmp_url)
+    snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target2}"
     requests.delete(snmp_url)
 

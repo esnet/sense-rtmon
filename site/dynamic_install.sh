@@ -147,4 +147,4 @@ else
     echo "Skip crontab, crontab is needed to push metrics successfully"
 fi
 
-echo "install complete run ./start.sh to start exporters"
+echo "install completed run ./start.sh to start exporters\n"

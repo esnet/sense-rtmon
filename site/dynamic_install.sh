@@ -41,17 +41,8 @@ fi
 
 ############################## DOCKER SWARM and PUSHGATEWAY ##############################
 
-# # get correct IP address
-# MYIP=$(hostname -I | head -n1 | awk '{print $1;}')
-# read -r -p "Is ${MYIP} your IP address [Y/n]: " correct_ip
-# if [ "$correct_ip" == "N" ] || [ "$correct_ip" == "n" ]; then
-#     read -r -p "Type in your ip address: " MYIP
-# fi
-# # get host2 IP address
-# read -r -p "Enter host2 IP address (if needed): " host2IP
-
 # get pushgateway server
-read -r -p "Build connection to pushgateway and init Docker Swarm [y/N (Enter)]: " push_docker
+read -r -p "Init Docker Swarm [y/N (Enter)]: " push_docker
 if [ "$push_docker" == "y" ] || [ "$push_docker" == "Y" ]; then
     # read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
     echo "!!    Initialize Docker Swarm"

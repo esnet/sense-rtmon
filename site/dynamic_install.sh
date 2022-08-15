@@ -39,22 +39,22 @@ if [ "$docker_login" == "y" ] || [ "$docker_login" == "Y" ]; then
     fi
 fi
 
-############################## DOCKER SWARM and PUSHGATEWAY ##############################
+############################## DOCKER SWARM ##############################
 
-# get pushgateway server
-read -r -p "Init Docker Swarm [y/N (Enter)]: " push_docker
-if [ "$push_docker" == "y" ] || [ "$push_docker" == "Y" ]; then
-    # read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
-    echo "!!    Initialize Docker Swarm"
-    echo "$MYIP is used for docker swarm advertise"
+# !!! currently SWARM NOT USED 
+# read -r -p "Init Docker Swarm [y/N (Enter)]: " push_docker
+# if [ "$push_docker" == "y" ] || [ "$push_docker" == "Y" ]; then
+#     # read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
+#     echo "!!    Initialize Docker Swarm"
+#     echo "$MYIP is used for docker swarm advertise"
 
-    read -r -p "Init Docker Swarm [y/N (Enter)]: " swarm_init
-    if [ "$swarm_init" == "y" ] || [ "$swarm_init" == "Y" ]; then
-        docker swarm init --advertise-addr $MYIP
-    fi
-else 
-    echo "Skip pushgateway and docker swarm"
-fi 
+#     read -r -p "Init Docker Swarm [y/N (Enter)]: " swarm_init
+#     if [ "$swarm_init" == "y" ] || [ "$swarm_init" == "Y" ]; then
+#         docker swarm init --advertise-addr $MYIP
+#     fi
+# else 
+#     echo "Skip Docker Swarm"
+# fi 
 
 ############################## INSTALL GO & SNMP DEPENDENCIES ##############################
 read -r -p "Install SNMP Exporter [y/N (Enter)]: " snmp_install

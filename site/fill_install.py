@@ -50,7 +50,7 @@ elif hostip == host1IP: # if this machine is host1 then the other is host2
     write_data[8] = f"host2IP={host2IP}\n"
 elif hostip == host2IP: # if this machine is host2 then the other is host1
     write_data[8] = f"host2IP={host1IP}\n"
-s
+
 # write out yaml file
 with open('dynamic_install.sh', 'w') as file:
     file.writelines(write_data)

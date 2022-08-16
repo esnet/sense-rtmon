@@ -89,12 +89,12 @@ with open('./se_config/multiDef.sh', 'w') as file:
     file.writelines(write_data)
     
 # read in promethues.yml file 
-with open('./dashboard/prometheus.sh', 'r') as file:
+with open('./dashboard/prometheus.yml', 'r') as file:
     write_data = file.readlines()
 
 hostip = data['hostIP']
 for each_line in write_data:
     each_line.replace("your_ip", hostip, 1)
         
-with open('./dashboard/prometheus.sh', 'w') as file:
+with open('./dashboard/prometheus.yml', 'w') as file:
     file.writelines(write_data)

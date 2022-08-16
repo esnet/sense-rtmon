@@ -27,7 +27,7 @@ read -r -p "Generate Grafana Dashboar? [y/N enter]: " grafana
 if [ "$config_file" == "" ]; then
     echo "!!    config.yml"
     echo "!!    Parsing config.yml"
-    python3 parse_config.py
+    python3 fill_config.py
     sleep 0.2
     if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
         cd dashboard
@@ -39,7 +39,7 @@ if [ "$config_file" == "" ]; then
 else 
     echo "!!    $config_file"
     echo "!!    Parsing $config_file"
-    python3 parse_config.py $config_file
+    python3 fill_config.py $config_file
     sleep 0.2
     if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
         cd dashboard

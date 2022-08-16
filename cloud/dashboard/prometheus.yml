@@ -31,7 +31,7 @@ scrape_configs:
     scheme: http #s
     static_configs:
       - targets:
-        - your_ip:9091 
+        - your_ip:9091
   - job_name: multi
     metrics_path: /probe
     params:

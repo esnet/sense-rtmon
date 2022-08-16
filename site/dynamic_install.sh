@@ -8,7 +8,6 @@ MYIP=
 pushgateway_server=
 host2IP=
 
-############################# Please don't change the line number
 
 ############################## DOCKER SETUP ##############################
 

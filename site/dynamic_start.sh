@@ -4,13 +4,14 @@ general_path=$PWD
 cd ./site
 
 
-
+############################# PYTHON SCRIPT FILL OUT ####################
 MYIP=
 pushgateway_server=
 host2IP=
 top_level_config_file=
 switch_target1=
 switch_target2=
+############################# PYTHON SCRIPT FILL OUT ####################
 
 echo "!!    Please edit config.yml for single switch or multiconfig.yml for multiple switches under config folder before procceding"
 # read -p "Press enter to continue"

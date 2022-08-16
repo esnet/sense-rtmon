@@ -23,7 +23,10 @@ read -r -p "Config file [config.yml/Enter]: " config_file
 yes | cp -rfa se_config/. script_exporter/examples
 docker stack deploy -c docker-stack.yml cloud
 
-read -r -p "Generate Grafana Dashboar? [y/N enter]: " grafana
+echo "!!    Before Generating Dashboard for the first time:"
+echo "!!    Visit Google Doc for Grafana API and add Promethues as a Data Source Key instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub"
+
+read -r -p "Generate Grafana Dashboard? [y/N enter]: " grafana
 
 if [ "$config_file" == "" ]; then
     echo "!!    config.yml"

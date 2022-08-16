@@ -42,18 +42,18 @@ with open('./se_config/args.sh', 'r') as file:
 
 args_data = []
 for each_line in write_data:
-    each_line = each_line.replace("pushgateway=$1", pushgateway_server, 1)
-    each_line = each_line.replace("host1=$2", host1IP, 1)
-    each_line = each_line.replace("host2=$3", host2IP, 1)
-    each_line = each_line.replace("switch_num=$4", str(switchNum), 1)
+    each_line = each_line.replace("$unique1", pushgateway_server, 1)
+    each_line = each_line.replace("$unique2", host1IP, 1)
+    each_line = each_line.replace("$unique3", host2IP, 1)
+    each_line = each_line.replace("$unique4", str(switchNum), 1)
     if switchNum == 1:
         switch_target1 = data['switchData']['target']
         each_line = each_line.replace("switch_ip1=$5", switch_target1, 1)
     elif switchNum == 2:
         switch_target1 = data['switchDataA']['target']
         switch_target2 = data['switchDataB']['target']
-        each_line = each_line.replace("switch_ip1=$5", switch_target1, 1)
-        each_line = each_line.replace("switch_ip2=$6", switch_target2, 1)
+        each_line = each_line.replace("$unique5", switch_target1, 1)
+        each_line = each_line.replace("$unique6", switch_target2, 1)
     args_data.append(each_line)
     
 with open('./se_config/args.sh', 'w') as file:
@@ -65,18 +65,18 @@ with open('./se_config/multiDef.sh', 'r') as file:
 
 mult_data = []
 for each_line in write_data:
-    each_line = each_line.replace("pushgateway=$1", pushgateway_server, 1)
-    each_line = each_line.replace("host1=$2", host1IP, 1)
-    each_line = each_line.replace("host2=$3", host2IP, 1)
-    each_line = each_line.replace("switch_num=$4", str(switchNum), 1)
+    each_line = each_line.replace("$unique1", pushgateway_server, 1)
+    each_line = each_line.replace("$unique2", host1IP, 1)
+    each_line = each_line.replace("$unique3", host2IP, 1)
+    each_line = each_line.replace("$unique4", str(switchNum), 1)
     if switchNum == 1:
         switch_target1 = data['switchData']['target']
         each_line = each_line.replace("switch_ip1=$5", switch_target1, 1)
     elif switchNum == 2:
         switch_target1 = data['switchDataA']['target']
         switch_target2 = data['switchDataB']['target']
-        each_line = each_line.replace("switch_ip1=$5", switch_target1, 1)
-        each_line = each_line.replace("switch_ip2=$6", switch_target2, 1)
+        each_line = each_line.replace("$unique5", switch_target1, 1)
+        each_line = each_line.replace("$unique6", switch_target2, 1)
     mult_data.append(each_line)
     
 with open('./se_config/multiDef.sh', 'w') as file:

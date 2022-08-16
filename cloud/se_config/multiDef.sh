@@ -1,10 +1,10 @@
 #! /bin/bash
-pushgateway=$1
-host1=$2
-host2=$3
-switch_num=$4
-switch_ip1=$5
-switch_ip2=$6
+pushgateway=$unique1
+host1=$unique2
+host2=$unique3
+switch_num=$unique4
+switch_ip1=$unique5
+switch_ip2=$unique6
 flow_vlan=""
 # Check ping status
 # from which host

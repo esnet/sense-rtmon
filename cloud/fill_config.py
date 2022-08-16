@@ -45,7 +45,7 @@ for each_line in write_data:
     each_line = each_line.replace("pushgateway=$1", pushgateway_server, 1)
     each_line = each_line.replace("host1=$2", host1IP, 1)
     each_line = each_line.replace("host2=$3", host2IP, 1)
-    each_line = each_line.replace("switch_num=$4", switchNum, 1)
+    each_line = each_line.replace("switch_num=$4", str(switchNum), 1)
     if switchNum == 1:
         switch_target1 = data['switchData']['target']
         each_line = each_line.replace("switch_ip1=$5", switch_target1, 1)
@@ -68,7 +68,7 @@ for each_line in write_data:
     each_line = each_line.replace("pushgateway=$1", pushgateway_server, 1)
     each_line = each_line.replace("host1=$2", host1IP, 1)
     each_line = each_line.replace("host2=$3", host2IP, 1)
-    each_line = each_line.replace("switch_num=$4", switchNum, 1)
+    each_line = each_line.replace("switch_num=$4", str(switchNum), 1)
     if switchNum == 1:
         switch_target1 = data['switchData']['target']
         each_line = each_line.replace("switch_ip1=$5", switch_target1, 1)

@@ -6,13 +6,8 @@ switch_num=$unique4
 switch_ip1=$unique5
 # switch_ip2=$unique6
 flow_vlan=""
-# Check ping status
-# from which host
-# contains which host
-# number of network elemenet
-# vlan number 
-# network element ip address
-# netowrk element 2 ip address
+# above lines are filled in by fill_config.py based on the config file used
+
 ########################### THE VLAN IS INCORRECT AND THE SETUP NEEDS TO CHANGE. GET RID OF IT #######
 echo "!!    args.sh takes in 6 argument"
 echo "!!    1. pushgateway's ip address (not localhost)"

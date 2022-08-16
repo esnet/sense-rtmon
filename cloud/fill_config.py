@@ -48,7 +48,7 @@ for each_line in write_data:
     each_line = each_line.replace("$unique4", str(switchNum), 1)
     if switchNum == 1:
         switch_target1 = data['switchData']['target']
-        each_line = each_line.replace("switch_ip1=$5", switch_target1, 1)
+        each_line = each_line.replace("$unique5", switch_target1, 1)
     elif switchNum == 2:
         switch_target1 = data['switchDataA']['target']
         switch_target2 = data['switchDataB']['target']
@@ -71,7 +71,7 @@ for each_line in write_data:
     each_line = each_line.replace("$unique4", str(switchNum), 1)
     if switchNum == 1:
         switch_target1 = data['switchData']['target']
-        each_line = each_line.replace("switch_ip1=$5", switch_target1, 1)
+        each_line = each_line.replace("$unique5", switch_target1, 1)
     elif switchNum == 2:
         switch_target1 = data['switchDataA']['target']
         switch_target2 = data['switchDataB']['target']

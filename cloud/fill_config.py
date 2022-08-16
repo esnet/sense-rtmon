@@ -39,55 +39,50 @@ host2IP = data['hostB']['IP']
 # read in args.sh file
 with open('./se_config/args.sh', 'r') as file:
     write_data = file.readlines()
-    
-write_data[1] = f"pushgateway={pushgateway_server}\n"
-write_data[2] = f"host1={host1IP}\n"
 
-if hostip == host2IP and hostip == host1IP:
-    print("host1 and host2 cannot have the same IP address in the config file. Exiting...")
-    exit
-else:
-    write_data[3] = f"host2={host2IP}\n"
-write_data[4]=f"switch_num={switchNum}\n"
-
-if switchNum == 1:
-    switch_target1 = data['switchData']['target']
-    write_data[5] = f"switch_ip1={switch_target1}\n"
-elif switchNum == 2:
-    switch_target1 = data['switchDataA']['target']
-    switch_target2 = data['switchDataB']['target']
-    write_data[5] = f"switch_ip1={switch_target1}\n"
-    write_data[6] = f"switch_ip2={switch_target2}\n"
+args_data = []
+for each_line in write_data:
+    each_line = each_line.replace("pushgateway=$1", pushgateway_server, 1)
+    each_line = each_line.replace("host1=$2", host1IP, 1)
+    each_line = each_line.replace("host2=$3", host2IP, 1)
+    each_line = each_line.replace("switch_num=$4", switchNum, 1)
+    if switchNum == 1:
+        switch_target1 = data['switchData']['target']
+        each_line = each_line.replace("switch_ip1=$5", switch_target1, 1)
+    elif switchNum == 2:
+        switch_target1 = data['switchDataA']['target']
+        switch_target2 = data['switchDataB']['target']
+        each_line = each_line.replace("switch_ip1=$5", switch_target1, 1)
+        each_line = each_line.replace("switch_ip2=$6", switch_target2, 1)
+    args_data.append(each_line)
     
 with open('./se_config/args.sh', 'w') as file:
-    file.writelines(write_data)
+    file.writelines(args_data)
 
 # read in multiDef.sh file
 with open('./se_config/multiDef.sh', 'r') as file:
     write_data = file.readlines()
-    
-write_data[1] = f"pushgateway={pushgateway_server}\n"
-write_data[2] = f"host1={host1IP}\n"
 
-if hostip == host2IP and hostip == host1IP:
-    print("host1 and host2 cannot have the same IP address in the config file. Exiting...")
-    exit
-else:
-    write_data[3] = f"host2={host2IP}\n"
-write_data[4]=f"switch_num={switchNum}\n"
-
-if switchNum == 1:
-    switch_target1 = data['switchData']['target']
-    write_data[5] = f"switch_ip1={switch_target1}\n"
-elif switchNum == 2:
-    switch_target1 = data['switchDataA']['target']
-    switch_target2 = data['switchDataB']['target']
-    write_data[5] = f"switch_ip1={switch_target1}\n"
-    write_data[6] = f"switch_ip2={switch_target2}\n"
+mult_data = []
+for each_line in write_data:
+    each_line = each_line.replace("pushgateway=$1", pushgateway_server, 1)
+    each_line = each_line.replace("host1=$2", host1IP, 1)
+    each_line = each_line.replace("host2=$3", host2IP, 1)
+    each_line = each_line.replace("switch_num=$4", switchNum, 1)
+    if switchNum == 1:
+        switch_target1 = data['switchData']['target']
+        each_line = each_line.replace("switch_ip1=$5", switch_target1, 1)
+    elif switchNum == 2:
+        switch_target1 = data['switchDataA']['target']
+        switch_target2 = data['switchDataB']['target']
+        each_line = each_line.replace("switch_ip1=$5", switch_target1, 1)
+        each_line = each_line.replace("switch_ip2=$6", switch_target2, 1)
+    mult_data.append(each_line)
     
 with open('./se_config/multiDef.sh', 'w') as file:
-    file.writelines(write_data)
-    
+    file.writelines(mult_data)
+
+
 # read in promethues.yml file 
 with open('./dashboard/prometheus.yml', 'r') as file:
     write_data = file.readlines()

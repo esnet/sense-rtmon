@@ -43,8 +43,8 @@ with open('./se_config/args.sh', 'r') as file:
 args_data = []
 for each_line in write_data:
     each_line = re.sub("pushgateway=.*", f"pushgateway={pushgateway_server}", each_line)
-    each_line = re.sub("host1IP=.*", f"host1IP={host1IP}", each_line)
-    each_line = re.sub("host2IP=.*", f"host2IP={host2IP}", each_line)
+    each_line = re.sub("host1=.*", f"host1IP={host1IP}", each_line)
+    each_line = re.sub("host2=.*", f"host2IP={host2IP}", each_line)
     each_line = re.sub("switch_num=.*", f"switch_num={str(switchNum)}", each_line)
     # if switchNum == 1:
     #     switch_target1 = data['switchData']['target']

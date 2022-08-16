@@ -2,6 +2,7 @@ import json
 import os
 import yaml
 import sys
+import re
 
 # get this host's IP address
 owd = os.getcwd()
@@ -39,18 +40,27 @@ host2IP = data['hostB']['IP']
 # read in yaml file
 with open('dynamic_install.sh', 'r') as file:
     write_data = file.readlines()
-    
-write_data[6] = f"MYIP={hostip}\n"
-write_data[7] = f"pushgateway_server={pushgateway_server}\n"
 
-if hostip == host2IP and hostip == host1IP:
-    print("host1 and host2 cannot have the same IP address in the config file. Exiting...")
-    exit
-elif hostip == host1IP: # if this machine is host1 then the other is host2
-    write_data[8] = f"host2IP={host2IP}\n"
-elif hostip == host2IP: # if this machine is host2 then the other is host1
-    write_data[8] = f"host2IP={host1IP}\n"
+new_data = []
+for each_line in write_data:
+    each_line = re.sub("pushgateway_server=.*", f"pushgateway={pushgateway_server}", each_line)
+    each_line = re.sub("MYIP=.*", f"MYIP={hostip}", each_line)    
+    if switchNum == 1:
+        switch_target1 = data['switchData']['target']
+        each_line = re.sub("switch_target1=.*", f"switch_target1={switch_target1}", each_line)
+    elif switchNum == 2:
+        switch_target1 = data['switchDataA']['target']
+        switch_target2 = data['switchDataB']['target']
+        each_line = re.sub("switch_target1=.*", f"switch_target1={switch_target1}", each_line)
+        each_line = re.sub("switch_target2=.*", f"switch_target2={switch_target2}", each_line)
+    
+    if hostip == host1IP: # if this machine is host1 then the other is host2
+        each_line = re.sub("host2IP=.*", f"host2IP={host2IP}", each_line)
+    elif hostip == host2IP: # if this machine is host2 then the other is host1
+        each_line = re.sub("host2IP=.*", f"host2IP={host1IP}", each_line)
+
+    new_data.append(each_line)
 
 # write out yaml file
 with open('dynamic_install.sh', 'w') as file:
-    file.writelines(write_data)
+    file.writelines(new_data)

@@ -5,13 +5,12 @@ cd ./site
 
 
 
-# DO NOT MOVE THE LINE NUMBERS ON THEM PYTHON SCRIPT FILLS THEM IN
-# MYIP=
-# pushgateway_server=
-# host2IP=
-# top_level_config_file=
-# switch_target1=
-# switch_target2=
+MYIP=
+pushgateway_server=
+host2IP=
+top_level_config_file=
+switch_target1=
+switch_target2=
 
 echo "!!    Please edit config.yml for single switch or multiconfig.yml for multiple switches under config folder before procceding"
 # read -p "Press enter to continue"

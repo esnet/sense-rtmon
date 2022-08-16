@@ -47,7 +47,7 @@ if hostip == host2IP and hostip == host1IP:
     print("host1 and host2 cannot have the same IP address in the config file. Exiting...")
     exit
 else:
-    write_data[3] = f"host1={host2IP}\n"
+    write_data[3] = f"host2={host2IP}\n"
 write_data[4]=f"switch_num={switchNum}\n"
 
 if switchNum == 1:
@@ -73,7 +73,7 @@ if hostip == host2IP and hostip == host1IP:
     print("host1 and host2 cannot have the same IP address in the config file. Exiting...")
     exit
 else:
-    write_data[3] = f"host1={host2IP}\n"
+    write_data[3] = f"host2={host2IP}\n"
 write_data[4]=f"switch_num={switchNum}\n"
 
 if switchNum == 1:
@@ -86,4 +86,15 @@ elif switchNum == 2:
     write_data[6] = f"switch_ip2={switch_target2}\n"
     
 with open('./se_config/multiDef.sh', 'w') as file:
+    file.writelines(write_data)
+    
+# read in promethues.yml file 
+with open('./dashboard/prometheus.sh', 'r') as file:
+    write_data = file.readlines()
+
+hostip = data['hostIP']
+for each_line in write_data:
+    each_line.replace("your_ip", hostip, 1)
+        
+with open('./dashboard/prometheus.sh', 'w') as file:
     file.writelines(write_data)

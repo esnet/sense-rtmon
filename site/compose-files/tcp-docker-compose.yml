@@ -6,8 +6,7 @@ services:
     network_mode: "host"
     restart: always
     volumes:
-
-
+      - ../../config/config.yml:/etc/tcp_exporter/tcp.yml
     ports:
       - 9191:9191
     deploy:

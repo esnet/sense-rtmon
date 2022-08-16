@@ -90,7 +90,7 @@ with open("./compose-files/tcp-docker-compose.yml", 'r') as gen:
 
 new_text = []
 for each_line in text:
-    each_line = re.sub("      - ../../config/.*:/etc/arp_exporter/tcp.yml", f"      - ../../config/{file_name}:/etc/arp_exporter/tcp.yml", each_line)
+    each_line = re.sub("      - ../../config/.*:/etc/tcp_exporter/tcp.yml", f"      - ../../config/{file_name}:/etc/tcp_exporter/tcp.yml", each_line)
     new_text.append(each_line)
     
 with open('./compose-files/tcp-docker-compose.yml', 'w') as genOut:

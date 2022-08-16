@@ -2,6 +2,7 @@ import json
 import os
 import yaml
 import sys
+import re 
 
 # get this host's IP address
 owd = os.getcwd()
@@ -37,46 +38,60 @@ host1IP = data['hostA']['IP']
 host2IP = data['hostB']['IP']
 top_level_config_file = data['configFile']
 
+################################### WRITE DYNAMIC_START ###############################
 # read in yaml file
 with open('dynamic_start.sh', 'r') as file:
     write_data = file.readlines()
     
-write_data[8] = f"MYIP={hostip}\n"
-write_data[9] = f"pushgateway_server={pushgateway_server}\n"
+new_data = []
+for each_line in write_data:
+    each_line = re.sub("pushgateway_server=.*", f"pushgateway={pushgateway_server}", each_line)
+    each_line = re.sub("MYIP=.*", f"MYIP={hostip}", each_line)
+    each_line = re.sub("top_level_config_file=.*", f"top_level_config_file={top_level_config_file}", each_line)
+    
+    if switchNum == 1:
+        switch_target1 = data['switchData']['target']
+        each_line = re.sub("switch_target1=.*", f"switch_target1={switch_target1}", each_line)
+    elif switchNum == 2:
+        switch_target1 = data['switchDataA']['target']
+        switch_target2 = data['switchDataB']['target']
+        each_line = re.sub("switch_target1=.*", f"switch_target1={switch_target1}", each_line)
+        each_line = re.sub("switch_target2=.*", f"switch_target2={switch_target2}", each_line)
+    
+    if hostip == host1IP: # if this machine is host1 then the other is host2
+        each_line = re.sub("host2IP=.*", f"host2IP={host2IP}", each_line)
+    elif hostip == host2IP: # if this machine is host2 then the other is host1
+        each_line = re.sub("host2IP=.*", f"host2IP={host1IP}", each_line)
 
-if hostip == host2IP and hostip == host1IP:
-    print("host1 and host2 cannot have the same IP address in the config file. Exiting...")
-    exit
-elif hostip == host1IP: # if this machine is host1 then the other is host2
-    write_data[10] = f"host2IP={host2IP}\n"
-elif hostip == host2IP: # if this machine is host2 then the other is host1
-    write_data[10] = f"host2IP={host1IP}\n"
-
-write_data[11] = f"top_level_config_file={top_level_config_file}\n"
-
-if switchNum == 1:
-    switch_target1 = data['switchData']['target']
-    write_data[12] = f"switch_target1={switch_target1}\n"
-elif switchNum == 2:
-    switch_target1 = data['switchDataA']['target']
-    switch_target2 = data['switchDataB']['target']
-    write_data[12] = f"switch_target1={switch_target1}\n"
-    write_data[13] = f"switch_target2={switch_target2}\n"
+    new_data.append(each_line)
 
 # write out yaml file
 with open('dynamic_start.sh', 'w') as file:
-    file.writelines(write_data)
+    file.writelines(new_data)
+
+#################################### COMPOSE FILES #################################
 
 # change volume/config file in ARP docker file    
 with open("./compose-files/arp-docker-compose.yml", 'r') as gen:
     text = gen.readlines()
-text[8] = f"      - ../../config/{file_name}:/etc/arp_exporter/arp.yml\n"
+
+new_text = []
+for each_line in text:
+    each_line = re.sub("      - ../../config/.*:/etc/arp_exporter/arp.yml", f"      - ../../config/{file_name}:/etc/arp_exporter/arp.yml", each_line)
+    new_text.append(each_line)
+    
 with open('./compose-files/arp-docker-compose.yml', 'w') as genOut:
-    genOut.writelines(text)
+    genOut.writelines(new_text)
+    
     
 # change volume/config file in TCP docker file    
 with open("./compose-files/tcp-docker-compose.yml", 'r') as gen:
         text = gen.readlines()
-text[8] = f"      - ../../config/{file_name}:/etc/tcp_exporter/tcp.yml\n"
+
+new_text = []
+for each_line in text:
+    each_line = re.sub("      - ../../config/.*:/etc/arp_exporter/tcp.yml", f"      - ../../config/{file_name}:/etc/arp_exporter/tcp.yml", each_line)
+    new_text.append(each_line)
+    
 with open('./compose-files/tcp-docker-compose.yml', 'w') as genOut:
-    genOut.writelines(text)
+    genOut.writelines(new_text)

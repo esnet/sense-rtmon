@@ -19,9 +19,10 @@ sudo lsof -i -P -n | grep 9469
 
 echo "!!    Make sure SNMP exporter is running. Dashboard can't be generated without SNMP Exporter"
 read -r -p "Press Enter to continue: " enter_continue 
-
-
 read -r -p "Config file [config.yml/Enter]: " config_file
+yes | cp -rfa se_config/. script_exporter/examples
+docker stack deploy -c docker-stack.yml cloud
+
 read -r -p "Generate Grafana Dashboar? [y/N enter]: " grafana
 
 if [ "$config_file" == "" ]; then
@@ -50,8 +51,6 @@ else
     fi
 fi
 
-yes | cp -rfa se_config/. script_exporter/examples
-docker stack deploy -c docker-stack.yml cloud
 
 # echo "!!    Wait for the containers to get started"
 # sleep 1.5

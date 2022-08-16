@@ -2,7 +2,7 @@ import json
 import os
 import yaml
 import sys
-
+import re 
 # get this host's IP address
 owd = os.getcwd()
 os.chdir("..")
@@ -42,10 +42,10 @@ with open('./se_config/args.sh', 'r') as file:
 
 args_data = []
 for each_line in write_data:
-    each_line = each_line.replace("$unique1", pushgateway_server, 1)
-    each_line = each_line.replace("$unique2", host1IP, 1)
-    each_line = each_line.replace("$unique3", host2IP, 1)
-    each_line = each_line.replace("$unique4", str(switchNum), 1)
+    each_line = re.sub("pushgateway=.*", f"pushgateway={pushgateway_server}", each_line)
+    each_line = re.sub("host1IP=.*", f"host1IP={host1IP}", each_line)
+    each_line = re.sub("host2IP=.*", f"host2IP={host2IP}", each_line)
+    each_line = re.sub("switch_num=.*", f"switch_num={str(switchNum)}", each_line)
     if switchNum == 1:
         switch_target1 = data['switchData']['target']
         each_line = each_line.replace("$unique5", switch_target1, 1)
@@ -60,27 +60,24 @@ with open('./se_config/args.sh', 'w') as file:
     file.writelines(args_data)
 
 # read in multiDef.sh file
-with open('./se_config/multiDef.sh', 'r') as file:
-    write_data = file.readlines()
+if switchNum >= 2:
+    with open('./se_config/multiDef.sh', 'r') as file:
+        write_data = file.readlines()
 
-mult_data = []
-for each_line in write_data:
-    each_line = each_line.replace("$unique1", pushgateway_server, 1)
-    each_line = each_line.replace("$unique2", host1IP, 1)
-    each_line = each_line.replace("$unique3", host2IP, 1)
-    each_line = each_line.replace("$unique4", str(switchNum), 1)
-    if switchNum == 1:
-        switch_target1 = data['switchData']['target']
-        each_line = each_line.replace("$unique5", switch_target1, 1)
-    elif switchNum == 2:
+    mult_data = []
+    for each_line in write_data:
+        each_line = each_line.replace("$unique1", pushgateway_server, 1)
+        each_line = each_line.replace("$unique2", host1IP, 1)
+        each_line = each_line.replace("$unique3", host2IP, 1)
+        each_line = each_line.replace("$unique4", str(switchNum), 1)
         switch_target1 = data['switchDataA']['target']
         switch_target2 = data['switchDataB']['target']
         each_line = each_line.replace("$unique5", switch_target1, 1)
         each_line = each_line.replace("$unique6", switch_target2, 1)
-    mult_data.append(each_line)
-    
-with open('./se_config/multiDef.sh', 'w') as file:
-    file.writelines(mult_data)
+        mult_data.append(each_line)
+        
+    with open('./se_config/multiDef.sh', 'w') as file:
+        file.writelines(mult_data)
 
 
 # read in promethues.yml file 

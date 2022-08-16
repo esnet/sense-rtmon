@@ -34,7 +34,7 @@ pushgateway_ip = str(config_data['hostIP'])
 switch_num = str(config_data['switchNum'])
 host1 = str(config_data['hostA']['IP'])
 host2 = str(config_data['hostB']['IP'])
-flow_vlan = str(config_data['vlan_to_switch'])
+# flow_vlan = str(config_data['vlan_to_switch'])
 
 if switch_num == "1":
     print("1 switch detected")

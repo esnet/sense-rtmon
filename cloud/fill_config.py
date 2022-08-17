@@ -87,8 +87,8 @@ with open('prometheus.yml', 'r') as file:
 new_data = []
 hostip = data['hostIP']
 for each_line in write_data:
-    each_line = re.sub("      - targets: ['.*:9090']", f"      - targets: ['{hostip}:9090']", each_line)
-    each_line = re.sub("- .*:9090", f"- {hostip}:9090", each_line)
+    each_line = re.sub("'.*:9090", f"'{hostip}:9090", each_line) # different format for 9090
+    each_line = re.sub("- .*:9091", f"- {hostip}:9091", each_line)
     each_line = re.sub("- .*:9469", f"- {hostip}:9469", each_line)
     new_data.append(each_line)
     

@@ -70,7 +70,7 @@ snmpMetrics:
   # OIDs to scrape
   oids: [dot1dTpFdbAddress, ifMIB, ifMtu, ifName, ifOperStatus, ifPhysAddress, ifIndex, ifType, dellNetIfInVlanPkts, f10IfOutVlanPkts] # Site
   # SNMP community read string
-  communityString: "COMMUNITYSTRING" # Site
+  communityString: "COMMUNITYSTRING" # Site keep the quotaion marks only replace COMMUNITYSTRING
   scrapeTimeout: 5s
   retries: 3
 

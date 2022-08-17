@@ -43,7 +43,6 @@ sleep 0.5
 # Configuration starts
 read -r -p "Enter configuration file [config.yml (Enter)]: " top_level_config_file
 python3 fill_config.py $top_level_config_file
-# /bin/bash ./config.sh
 
 # >Certificates
 echo "!!    Start Encryption Script"

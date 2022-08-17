@@ -81,7 +81,7 @@ if switchNum >= 2:
 
 
 # read in promethues.yml file 
-with open('./dashboard/prometheus.yml', 'r') as file:
+with open('prometheus.yml', 'r') as file:
     write_data = file.readlines()
 
 new_data = []
@@ -92,5 +92,5 @@ for each_line in write_data:
     each_line = re.sub("- .*:9469", f"- {hostip}:9469", each_line)
     new_data.append(each_line)
     
-with open('./dashboard/prometheus.yml', 'w') as file:
+with open('prometheus.yml', 'w') as file:
     file.writelines(new_data)

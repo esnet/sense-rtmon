@@ -12,31 +12,32 @@ host2IP=
 ############################## DOCKER SETUP ##############################
 
 # check docker 
-read -r -p "Login to Docker [y/N enter]: " docker_login
-if [ "$docker_login" == "y" ] || [ "$docker_login" == "Y" ]; then
-    if [ -x "$(command -v docker)" ]; then
-        echo "||        Found docker..."
-        echo "||        Running docker login..."
-        docker login
-    else
-        echo "!!    Docker command not found."
-        echo "!!    Please visit https://docs.docker.com/install/ for installation instructions."
-        exit 1
-    fi
+# read -r -p "Login to Docker [y/N enter]: " docker_login
+# if [ "$docker_login" == "y" ] || [ "$docker_login" == "Y" ]; then
+#     if [ -x "$(command -v docker)" ]; then
+#         echo "||        Found docker..."
+#         echo "||        Running docker login..."
+#         docker login
+#     else
+#         echo "!!    Docker command not found."
+#         echo "!!    Please visit https://docs.docker.com/install/ for installation instructions."
+#         exit 1
+#     fi
 
-    # check docker compose
-    if [ -x "$(command -v docker compose)" ]; then
-        echo "||        Found docker compose..."
-        echo "||        Running docker login..."
-        docker login
-    else
-        echo "!!    Docker compose command not found."
-        echo "!!    Installing docker compose"
-        suod yum install -y docker-compose-plugin
-        docker login
-        # exit 1
-    fi
-fi
+#     # check docker compose
+#     if [ -x "$(command -v docker compose)" ]; then
+#         echo "||        Found docker compose..."
+#         echo "||        Running docker login..."
+#         docker login
+#     else
+#         echo "!!    Docker compose command not found."
+#         echo "!!    Installing docker compose"
+#         # suod yum install -y docker-compose-plugin
+#         docker login
+#         # exit 1
+#     fi
+# fi
+suod yum install -y docker-compose-plugin
 
 ############################## DOCKER SWARM ##############################
 
@@ -146,4 +147,4 @@ else
     echo "Skip crontab, crontab is needed to push metrics successfully"
 fi
 
-echo "install completed run ./start.sh to start exporters\n"
+echo "install completed run ./start.sh to start exporters"

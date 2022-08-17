@@ -49,7 +49,7 @@ switchData:
   SNMPHostIP: 198.32.43.16 # BOTH
   scrapeInterval: 15s
   scrapeDuration: 5h
-  target: 172.16.1.14
+  target: 172.16.1.1
   # switch if format: " - IF: optional" 
   switchif: "" # opt
   params: ['if_mib'] # Site
@@ -64,7 +64,7 @@ switchData:
 
 snmpMetrics:
   # IP address of switch to configure
-  switchIP: 172.16.1.14 # Site
+  switchIP: 172.16.1.1 # Site
   scrapeInterval: 15s
   scrapeDuration: 5h
   # OIDs to scrape

@@ -20,8 +20,6 @@ sudo lsof -i -P -n | grep 9469
 echo "!!    Make sure SNMP exporter is running. Dashboard can't be generated without SNMP Exporter"
 read -r -p "Press Enter to continue: " enter_continue 
 read -r -p "Config file [config.yml/Enter]: " config_file
-yes | cp -rfa se_config/. script_exporter/examples
-
 if [ "$config_file" == "" ]; then
     echo "!!    config.yml"
     echo "!!    Parsing config.yml"
@@ -34,6 +32,7 @@ else
     sleep 0.2
 fi
 
+yes | cp -rfa se_config/. script_exporter/examples
 docker stack deploy -c docker-stack.yml cloud
 
 echo "!!    Before Generating Dashboard for the first time:"

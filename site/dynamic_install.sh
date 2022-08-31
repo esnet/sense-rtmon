@@ -37,7 +37,7 @@ host2IP=
 #         # exit 1
 #     fi
 # fi
-suod yum install -y docker-compose-plugin
+sudo yum install -y docker-compose-plugin
 
 ############################## DOCKER SWARM ##############################
 

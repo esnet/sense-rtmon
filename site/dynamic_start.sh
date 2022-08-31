@@ -44,6 +44,7 @@ fi
 read -r -p "Start SNMP Exporter? [y/N]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     starting_snmp="-f ./compose-files/snmp-docker-compose.yml" 
+    starting_snmp2="-f ./compose-files/snmp-docker-compose2.yml" 
     echo "!!    Please configuring switch in you config file (default: config.yml) if needed"
     # read -r -p "Enter the config file: [config.yml/Enter]: " snmp_config
     cd ./SNMPExporter
@@ -54,11 +55,11 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     # read -r -p "Enter switch IP :" switchIP
     # read -r -p "Enter VLAN for $switch_target1 seprated by space (e.g. 1000 1001): " VLANA1 VLANA2 VLANA3
 
-    read -r -p "Second switch [y/N]? " second_switch
-    if [ "$second_switch" == "y" ] || [ "$second_switch" == "Y" ]; then
-        read -r -p "Enter switch IP :" switchIP2
-        # read -r -p "Enter VLAN seprated by space (e.g. 1000 1001): " VLANB1 VLANB2 VLANB3
-    fi
+    # read -r -p "Second switch [y/N]? " second_switch
+    # if [ "$second_switch" == "y" ] || [ "$second_switch" == "Y" ]; then
+    #     # read -r -p "Enter switch IP :" switchIP2
+    #     # read -r -p "Enter VLAN seprated by space (e.g. 1000 1001): " VLANB1 VLANB2 VLANB3
+    # fi
     > ./crontabs/snmp_temp.txt
     > ./crontabs/snmp_temp2.txt
     touch ./crontabs/push_snmp_exporter_metrics.sh
@@ -67,18 +68,19 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
 #! /bin/bash
 if curl ${MYIP}:9116/metrics | grep ".*"; then
     curl -o $general_path/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=$switch_target1&module=if_mib
-    curl -o $general_path/site/crontabs/snmp_temp2.txt ${MYIP}:9116/snmp?target=$switchIP2&module=if_mib2
+    curl -o $general_path/site/crontabs/snmp_temp2.txt ${MYIP}:9116/snmp?target=$switch_target2&module=if_mib2
 else
     > $general_path/site/crontabs/snmp_temp.txt	
     > $general_path/site/crontabs/snmp_temp2.txt	
 fi
 cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/instance/$MYIP
-cat $general_path/site/crontabs/snmp_temp2.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switchIP2/instance/$MYIP
+cat $general_path/site/crontabs/snmp_temp2.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target2/instance/$MYIP
 
 EOF
 
 else
-    starting_snmp=" " 
+    starting_snmp=" "
+    starting_snmp2=" " 
     echo "Skip SNMP Exporter"
 fi
 
@@ -156,5 +158,5 @@ echo "docker compose $starting_node $starting_snmp $starting_arp $starting_tcp u
 if [ "$starting_node" == " " ] && [ "$starting_snmp" == " " ] && [ "$starting_arp" == " " ] && [ "$starting_tcp" == " " ]; then
     echo "!!    nothing started"
 else 
-    docker compose $starting_node $starting_snmp $starting_arp $starting_tcp up -d
+    docker compose $starting_node $starting_snmp $starting_snmp2 $starting_arp $starting_tcp up -d
 fi

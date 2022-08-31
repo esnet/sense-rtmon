@@ -45,7 +45,7 @@ if(data['switchNum']) == 1:
         snip = snip + "      - " + str(oid) + "\n"
 
     with open('generator.yml', 'r') as gen:
-            text = gen.readlines()
+        text = gen.readlines()
     text[3] = snip
     with open('generator.yml', 'w') as genOut:
         genOut.writelines(text)
@@ -53,9 +53,29 @@ if(data['switchNum']) == 1:
     replacements = {'RETRY': str(data['snmpMetrics']['retries']),
                     'TIMEOUT': str(data['snmpMetrics']['scrapeTimeout']),
                     'COMMUNITYREADSTRING': str(data['snmpMetrics']['communityString'])}
+    
+    # Read in the file
+    with open('generator.yml', 'r') as file:
+        filedata = file.read()
+    # Replace the target string
+    for k,v in replacements.items():
+        filedata = filedata.replace(k, v)
+    # Write the file out again
+    with open('generator.yml', 'w') as file:
+        file.write(filedata)
+    dir = str(os.getcwd())
+    genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
+    genCmd = "yes | cp -rfa generator.yml " + genLoc
+    subprocess.run(genCmd, shell=True)
+    print("Generating dynamic SNMP config file...")
+    subprocess.run("./generator generate", shell=True, cwd=genLoc)
+    subprocess.run("yes | cp -rfa snmp.yml ../../../../../snmp.yml", shell=True, cwd=genLoc)
+    print("Success! Configured custom SNMP Exporter container")
+    
 # SNMP scraps 2 switches
 elif(data['switchNum']) == 2:
-    with open('./templates/generatorTemplate2.yml') as inGen, open('generator.yml', 'w') as outGen:
+    # first switch generate snmp.yml file
+    with open('./templates/generatorTemplate.yml') as inGen, open('generator.yml', 'w') as outGen:
         for line in inGen:
             outGen.write(line)
     oidsA = set(data['snmpMetricsA']['oids'])
@@ -70,77 +90,59 @@ elif(data['switchNum']) == 2:
         snipB = snipB + "      - " + str(oid) + "\n"
 
     with open('generator.yml', 'r') as gen:
-            text = gen.readlines()
+        text = gen.readlines()
     text[3] = snipA
-    text[21] = snipB
     with open('generator.yml', 'w') as genOut:
         genOut.writelines(text)
         
     replacements = {'RETRY': str(data['snmpMetricsA']['retries']),
                     'TIMEOUT': str(data['snmpMetricsA']['scrapeTimeout']),
-                    'COMMUNITYREADSTRING': str(data['snmpMetricsA']['communityString']),
-                    'RE2': str(data['snmpMetricsB']['retries']),
-                    'TI2': str(data['snmpMetricsB']['scrapeTimeout']),
-                    'CS2': str(data['snmpMetricsB']['communityString'])}
-# elif(data['switchNum']) == 3:
-#     with open('./templates/generatorTemplate3.yml') as inGen, open('generator.yml', 'w') as outGen:
-#         for line in inGen:
-#             outGen.write(line)
-#     oidsA = set(data['snmpMetricsA']['oids'])
-#     oidsB = set(data['snmpMetricsB']['oids'])
-#     oidsC = set(data['snmpMetricsC']['oids'])
-#     # read all oids in first then add to generator file
-#     snipA = ""
-#     snipB = ""
-#     snipC = ""
-    
-#     for oid in oidsA:
-#         snipA = snipA + "      - " + str(oid) + "\n"
-#     for oid in oidsB:
-#         snipB = snipB + "      - " + str(oid) + "\n"
-#     for oid in oidsC:
-#         snipC = snipC + "      - " + str(oid) + "\n"
+                    'COMMUNITYREADSTRING': str(data['snmpMetricsA']['communityString'])}
 
-#     with open('generator.yml', 'r') as gen:
-#             text = gen.readlines()
-#     text[3] = snipA
-#     text[22] = snipB
-#     text[40] = snipC    
-#     with open('generator.yml', 'w') as genOut:
-#         genOut.writelines(text)
-        
-#     replacements = {'RETRY': str(data['snmpMetricsA']['retries']),
-#                     'TIMEOUT': str(data['snmpMetricsA']['scrapeTimeout']),
-#                     'COMMUNITYREADSTRING': str(data['snmpMetricsA']['communityString']),
-#                     'RE2': str(data['snmpMetricsB']['retries']),
-#                     'TI2': str(data['snmpMetricsB']['scrapeTimeout']),
-#                     'CS2': str(data['snmpMetricsB']['communityString']),
-#                     'RE3': str(data['snmpMetricsC']['retries']),
-#                     'TI3': str(data['snmpMetricsC']['scrapeTimeout']),
-#                     'CS3': str(data['snmpMetricsC']['communityString'])}
+    print("create first snmp.yml file")
+    with open('generator.yml', 'r') as file:
+        filedata = file.read()
+    for k,v in replacements.items():
+        filedata = filedata.replace(k, v)
+    with open('generator.yml', 'w') as file:
+        file.write(filedata)        
+    dir = str(os.getcwd())
+    genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
+    genCmd = "yes | cp -rfa generator.yml " + genLoc
+    subprocess.run(genCmd, shell=True)
+    print("Generating dynamic SNMP config file...")
+    subprocess.run("./generator generate", shell=True, cwd=genLoc)
+    subprocess.run("yes | cp -rfa snmp.yml ../../../../../snmp.yml", shell=True, cwd=genLoc)
     
+    # Second switch generate snmp.yml file
+    print("create second snmp.yml file")
+    with open('./templates/generatorTemplate.yml') as inGen, open('generator.yml', 'w') as outGen:
+        for line in inGen:
+            outGen.write(line)
+    with open('generator.yml', 'r') as gen:
+        text = gen.readlines()
+    text[3] = snipA
+    with open('generator.yml', 'w') as genOut:
+        genOut.writelines(text)
+        
+    replacements = {'RETRY': str(data['snmpMetricsB']['retries']),
+                    'TIMEOUT': str(data['snmpMetricsB']['scrapeTimeout']),
+                    'COMMUNITYREADSTRING': str(data['snmpMetricsB']['communityString'])}
+    
+    with open('generator.yml', 'r') as file:
+        filedata = file.read()
+    for k,v in replacements.items():
+        filedata = filedata.replace(k, v)
+    with open('generator.yml', 'w') as file:
+        file.write(filedata)    
+    dir = str(os.getcwd())
+    genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
+    genCmd = "yes | cp -rfa generator.yml " + genLoc
+    subprocess.run(genCmd, shell=True)
+    print("Generating dynamic SNMP config file...")
+    subprocess.run("./generator generate", shell=True, cwd=genLoc)
+    subprocess.run("yes | cp -rfa snmp.yml ../../../../../snmp2.yml", shell=True, cwd=genLoc)
+    print("Success! Configured custom SNMP Exporter container")
 else:
     print("invilad switch number")
     exit
-    
-    
-# Read in the file
-with open('generator.yml', 'r') as file:
-    filedata = file.read()
-# Replace the target string
-for k,v in replacements.items():
-    filedata = filedata.replace(k, v)
-# Write the file out again
-with open('generator.yml', 'w') as file:
-    file.write(filedata)
-    
-dir = str(os.getcwd())
-genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
-genCmd = "yes | cp -rfa generator.yml " + genLoc
-subprocess.run(genCmd, shell=True)
-
-print("Generating dynamic SNMP config file...")
-
-subprocess.run("./generator generate", shell=True, cwd=genLoc)
-subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
-print("Success! Configured custom SNMP Exporter container")

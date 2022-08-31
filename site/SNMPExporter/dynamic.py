@@ -69,7 +69,7 @@ if(data['switchNum']) == 1:
     subprocess.run(genCmd, shell=True)
     print("Generating dynamic SNMP config file...")
     subprocess.run("./generator generate", shell=True, cwd=genLoc)
-    subprocess.run("yes | cp -rfa snmp.yml ../../../../../snmp.yml", shell=True, cwd=genLoc)
+    subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
     print("Success! Configured custom SNMP Exporter container")
     
 # SNMP scraps 2 switches
@@ -112,7 +112,7 @@ elif(data['switchNum']) == 2:
     subprocess.run(genCmd, shell=True)
     print("Generating dynamic SNMP config file...")
     subprocess.run("./generator generate", shell=True, cwd=genLoc)
-    subprocess.run("yes | cp -rfa snmp.yml ../../../../../snmp.yml", shell=True, cwd=genLoc)
+    subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
     
     # Second switch generate snmp.yml file
     print("create second snmp.yml file")
@@ -135,8 +135,6 @@ elif(data['switchNum']) == 2:
         filedata = filedata.replace(k, v)
     with open('generator.yml', 'w') as file:
         file.write(filedata)    
-    dir = str(os.getcwd())
-    genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
     genCmd = "yes | cp -rfa generator.yml " + genLoc
     subprocess.run(genCmd, shell=True)
     print("Generating dynamic SNMP config file...")

@@ -102,7 +102,7 @@ snmpMetricsA:
   scrapeDuration: 5h
   # OIDs to scrape
   oids: [dot1dTpFdbAddress, ifMIB, ifMtu, ifName, ifOperStatus, ifPhysAddress, ifIndex, ifType, dellNetIfInVlanPkts, f10IfOutVlanPkts]
-  communityString: "mgmt_hep"
+  communityString: "COMMUNITYSTRING"
   # Scrape timeout default is 5s
   scrapeTimeout: 5s
   # Max retries default is 3
@@ -116,7 +116,7 @@ snmpMetricsB:
   scrapeDuration: 5h
   # OIDs to scrape
   oids: [dot1dTpFdbAddress, ifMIB, ifMtu, ifName, ifOperStatus, ifPhysAddress, ifIndex, ifType, dellNetIfInVlanPkts, f10IfOutVlanPkts]
-  communityString: "mgmt_hep"
+  communityString: "COMMUNITYSTRING"
   # Scrape timeout default is 5s
   scrapeTimeout: 5s
   # Max retries default is 3

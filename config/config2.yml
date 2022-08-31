@@ -16,7 +16,7 @@ grafanaHostIP: 'dev2.virnao.com'
 # Default is 3000
 grafanaPort: 3000
 # Grafana API Token
-grafanaAPIToken: "Bearer eyJrIjoiNWYwWEFzVTRUUHQ5TWg3cVBUdHpMV01PREo1aWJmeUkiLCJuIjoiMDcvMTQiLCJpZCI6MX0="
+grafanaAPIToken: "CONFIG"
 # if HTTPS enabled and certified during the install process
 
 # indicate the config file that's used

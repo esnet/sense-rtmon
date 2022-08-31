@@ -45,7 +45,7 @@ with open('dynamic_start.sh', 'r') as file:
     
 new_data = []
 for each_line in write_data:
-    each_line = re.sub("pushgateway_server=.*", f"pushgateway={pushgateway_server}", each_line)
+    each_line = re.sub("pushgateway_server=.*", f"pushgateway_server={pushgateway_server}", each_line)
     each_line = re.sub("MYIP=.*", f"MYIP={hostip}", each_line)
     each_line = re.sub("top_level_config_file=.*", f"top_level_config_file={top_level_config_file}", each_line)
     

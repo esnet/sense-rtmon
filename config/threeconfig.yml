@@ -18,7 +18,7 @@ grafanaHostIP: 'dev2.virnao.com'
 # Default is 3000
 grafanaPort: 3000
 # Grafana API Token
-grafanaAPIToken: "Bearer eyJrIjoiNWYwWEFzVTRUUHQ5TWg3cVBUdHpMV01PREo1aWJmeUkiLCJuIjoiMDcvMTQiLCJpZCI6MX0="
+grafanaAPIToken: "Bearer eyJrIjoiN3M2UkFBODdqdFJ2V3A0SUxpMlI5S2g2QktvdjM2cUwiLCJuIjoiMDgvMTIiLCJpZCI6MX0="
 # if HTTPS enabled and certified during the install process
 # encrypted: False
 encrypted: True
@@ -163,25 +163,17 @@ snmpMetricsC:
 
 # TCP/ARP Data
 tcpMetrics:
-  port: 9191
+  port: 9191 # Site
   job_name: 'tcpmetrics'
   # Collect all packets continuously over the scrape interval
   # Not recommended for general use cases, but provides additional information if set to True
   # Defaults to False, collects the most recent burst (1 second's worth of data) at the current scrape interval
   continuousCollect: False
-  # How long to scrape host-level data (in seconds)
   scrapeDuration: 900
-  # Scrape interval duration (in seconds)
   scrapeInterval: 30
-  # Receiving end IP Address, where pushgateway located
-  receiverIP: 'localhost' #change it
 
 arpMetrics:
   port: 9192
   job_name: 'arpmetrics'
-  # How long to scrape host-level data (in seconds)
   scrapeDuration: 900
-  # Scrape interval duration (in seconds)
   scrapeInterval: 30
-  # Receiving end IP Address, where pushgateway located
-  receiverIP: 'localhost' #change it

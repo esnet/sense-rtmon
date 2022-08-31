@@ -74,7 +74,7 @@ else
     > $general_path/site/crontabs/snmp_temp2.txt	
 fi
 cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/instance/$MYIP
-cat $general_path/site/crontabs/snmp_temp2.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target2/instance/$MYIP
+cat $general_path/site/crontabs/snmp_temp2.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter2/target_switch/$switch_target2/instance/$MYIP
 
 EOF
 

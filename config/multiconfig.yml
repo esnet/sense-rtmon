@@ -18,15 +18,12 @@ grafanaHostIP: 'dev2.virnao.com'
 # Default is 3000
 grafanaPort: 3000
 # Grafana API Token
-grafanaAPIToken: "Bearer eyJrIjoiNWYwWEFzVTRUUHQ5TWg3cVBUdHpMV01PREo1aWJmeUkiLCJuIjoiMDcvMTQiLCJpZCI6MX0="
+grafanaAPIToken: "Bearer eyJrIjoiN3M2UkFBODdqdFJ2V3A0SUxpMlI5S2g2QktvdjM2cUwiLCJuIjoiMDgvMTIiLCJpZCI6MX0="
 # if HTTPS enabled and certified during the install process
 # encrypted: False
 encrypted: True
 # indicate the config file that's used
 configFile: "multiconfig.yml"
-ifVlan1: 'Vlan 1000'
-ifVlan2: 'Vlan 1000'
-ifVlan3: 'Vlan 1000'
 
 # Host 1 Specifics 
 hostA:
@@ -38,7 +35,7 @@ hostA:
   nodeExporterPort: 9100
   switchPort: 
     ifName: 'TenGigabitEthernet 0/46'
-    ifIndex: 1054468
+    ifVlan: 'Vlan 1000'
 
 # Host 2 Specifics
 hostB:
@@ -50,6 +47,8 @@ hostB:
   nodeExporterPort: 9100
   switchPort: 
     ifName: 'TenGigabitEthernet 0/45'
+    ifVlan: 'Vlan 1000'
+
 # Prometheus source specifics
 
 switchDataA:
@@ -81,7 +80,7 @@ switchDataB:
   # Scrape interval/duration time
   scrapeInterval: 15s
   scrapeDuration: 5h
-  target: 172.16.1.14
+  target: 172.16.1.1
   # switch if format: " - IF: optional"
   switchif: ""
   #if-mib and F10-IF-EXTENSION-MIB
@@ -102,8 +101,8 @@ snmpMetricsA:
   scrapeInterval: 15s
   scrapeDuration: 5h
   # OIDs to scrape
-  oids: [1.3.6.1.2.1.17.4.3.1.1, 1.3.6.1.2.1.31, 1.3.6.1.2.1.2.2.1.4, 1.3.6.1.2.1.2.2.1.8, 1.3.6.1.2.1.2.2.1.6, 1.3.6.1.2.1.2.2.1.1, 1.3.6.1.2.1.2.2.1.3, 1.3.6.1.4.1.6027.3.11.1.2.1.1.1, 1.3.6.1.4.1.6027.3.11.1.2.1.1.13]
-  communityString: "COMMUNITYSTRING"
+  oids: [dot1dTpFdbAddress, ifMIB, ifMtu, ifName, ifOperStatus, ifPhysAddress, ifIndex, ifType, dellNetIfInVlanPkts, f10IfOutVlanPkts]
+  communityString: "mgmt_hep"
   # Scrape timeout default is 5s
   scrapeTimeout: 5s
   # Max retries default is 3
@@ -111,14 +110,13 @@ snmpMetricsA:
 
 snmpMetricsB:
   # IP address of switch to configure
-  switchIP: 172.16.1.4
+  switchIP: 172.16.1.1
   # Scrape interval/duration time
   scrapeInterval: 15s
   scrapeDuration: 5h
   # OIDs to scrape
-  oids: [1.3.6.1.2.1.17.4.3.1.1, 1.3.6.1.2.1.31, 1.3.6.1.2.1.2.1]
-  # SNMP community read string
-  communityString: "COMMUNITYSTRING"
+  oids: [dot1dTpFdbAddress, ifMIB, ifMtu, ifName, ifOperStatus, ifPhysAddress, ifIndex, ifType, dellNetIfInVlanPkts, f10IfOutVlanPkts]
+  communityString: "mgmt_hep"
   # Scrape timeout default is 5s
   scrapeTimeout: 5s
   # Max retries default is 3
@@ -126,25 +124,17 @@ snmpMetricsB:
 
 # TCP/ARP Data
 tcpMetrics:
-  port: 9191
+  port: 9191 # Site
   job_name: 'tcpmetrics'
   # Collect all packets continuously over the scrape interval
   # Not recommended for general use cases, but provides additional information if set to True
   # Defaults to False, collects the most recent burst (1 second's worth of data) at the current scrape interval
   continuousCollect: False
-  # How long to scrape host-level data (in seconds)
   scrapeDuration: 900
-  # Scrape interval duration (in seconds)
   scrapeInterval: 30
-  # Receiving end IP Address, where pushgateway located
-  receiverIP: 'localhost' #change it
 
 arpMetrics:
   port: 9192
   job_name: 'arpmetrics'
-  # How long to scrape host-level data (in seconds)
   scrapeDuration: 900
-  # Scrape interval duration (in seconds)
   scrapeInterval: 30
-  # Receiving end IP Address, where pushgateway located
-  receiverIP: 'localhost' #change it

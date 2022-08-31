@@ -43,7 +43,7 @@ with open('dynamic_install.sh', 'r') as file:
 
 new_data = []
 for each_line in write_data:
-    each_line = re.sub("pushgateway_server=.*", f"pushgateway={pushgateway_server}", each_line)
+    each_line = re.sub("pushgateway_server=.*", f"pushgateway_server={pushgateway_server}", each_line)
     each_line = re.sub("MYIP=.*", f"MYIP={hostip}", each_line)    
     if switchNum == 1:
         switch_target1 = data['switchData']['target']

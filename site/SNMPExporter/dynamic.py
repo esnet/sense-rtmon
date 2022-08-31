@@ -45,7 +45,7 @@ if(data['switchNum']) == 1:
         snip = snip + "      - " + str(oid) + "\n"
 
     with open('generator.yml', 'r') as gen:
-            text = gen.readlines()
+        text = gen.readlines()
     text[3] = snip
     with open('generator.yml', 'w') as genOut:
         genOut.writelines(text)
@@ -70,7 +70,7 @@ elif(data['switchNum']) == 2:
         snipB = snipB + "      - " + str(oid) + "\n"
 
     with open('generator.yml', 'r') as gen:
-            text = gen.readlines()
+        text = gen.readlines()
     text[3] = snipA
     text[21] = snipB
     with open('generator.yml', 'w') as genOut:

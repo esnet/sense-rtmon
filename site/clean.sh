@@ -4,7 +4,7 @@ systemctl stop node_exporter
 docker stack rm site
 docker compose down -v
 
-docker rm -f compose-files-snmp-exporter-1 compose-files-tcp-exporter-1 compose-files-arp-exporter-1 compose-files-node-exporter-1
+docker rm -f compose-files-snmp-exporter-1 compose-files-tcp-exporter-1 compose-files-arp-exporter-1 compose-files-node-exporter-1 compose-files-snmp-exporter2-1
 
 docker image rm -f arp_exporter:latest tcp_exporter:latest
 

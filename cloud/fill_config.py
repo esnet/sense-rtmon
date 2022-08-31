@@ -20,16 +20,32 @@ if len(sys.argv) > 1:
     with open(file_path, 'r') as stream:
         try:
             data = yaml.safe_load(stream)
+            filedata = file.read()
         except yaml.YAMLError as exc:
             print(f"\n Config file {file_path} could not be found in the config directory\n")
     
+    curlCMD = "curl -X POST -H 'Content-Type: application/json' -d '{ 'name': 'admin', 'role': 'Admin'}' http://admin:admin@" + str(data[hostIP]) + ":3000/api/auth/keys"
+    token = os.popen(curlCMD).read()
+    filedata = filedata.replace('CONFIG', str(token))
+    
+    with open(file_path, 'w') as outStream:
+        outStream.write(filedata)
+        
 else: # default config file
     with open(infpth, 'r') as stream:
         try:
             data = yaml.safe_load(stream)
+            filedata = file.read()
         except yaml.YAMLError as exc:
             print(f"\n Config file {infpth} could not be found in the config directory\n")
-
+    
+    curlCMD = "curl -X POST -H 'Content-Type: application/json' -d '{ 'name': 'admin', 'role': 'Admin'}' http://admin:admin@" + str(data[hostIP]) + ":3000/api/auth/keys"
+    token = os.popen(curlCMD).read()
+    filedata = filedata.replace('CONFIG', str(token))
+    
+    with open(infpth, 'w') as outStream:
+        outStream.write(filedata)
+        
 switchNum = data['switchNum']
 hostip = data['hostIP']
 pushgateway_server = f"{data['grafanaHostIP']}:9091" 

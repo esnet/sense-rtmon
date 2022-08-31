@@ -16,7 +16,7 @@ prometheusPort: 9090 # do not change
 # The DNS of the host which is running the Grafana container
 grafanaHostIP: 'dev2.virnao.com' # BOTH
 grafanaPort: 3000 # do not change 
-grafanaAPIToken: "Bearer eyJrIjoiN3M2UkFBODdqdFJ2V3A0SUxpMlI5S2g2QktvdjM2cUwiLCJuIjoiMDgvMTIiLCJpZCI6MX0=" # *
+grafanaAPIToken: "CONFIG" # *
 configFile: "config.yml" # Cloud
 
 # Host 1: BOTH (all needed)

@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  snmp-exporter:
+  snmp-exporter2:
     image: prom/snmp-exporter
     volumes:
       - ../SNMPExporter/snmp2.yml:/etc/snmp_exporter/snmp2.yml

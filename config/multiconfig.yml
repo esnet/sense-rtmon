@@ -101,7 +101,7 @@ snmpMetricsA:
   scrapeInterval: 15s
   scrapeDuration: 5h
   # OIDs to scrape
-  oids: [dot1dTpFdbAddress, ifMIB, ifMtu, ifName, ifOperStatus, ifPhysAddress, ifIndex, ifType, dellNetIfInVlanPkts, f10IfOutVlanPkts]
+  oids: [dot1dTpFdbAddress, ifMIB, ifMtu, ifName, ifOperStatus, ifPhysAddress, ifIndex, ifType, f10IfInVlanPkts, f10IfOutVlanPkts]
   communityString: "COMMUNITYSTRING"
   # Scrape timeout default is 5s
   scrapeTimeout: 5s
@@ -115,7 +115,7 @@ snmpMetricsB:
   scrapeInterval: 15s
   scrapeDuration: 5h
   # OIDs to scrape
-  oids: [dot1dTpFdbAddress, ifMIB, ifMtu, ifName, ifOperStatus, ifPhysAddress, ifIndex, ifType, dellNetIfInVlanPkts, f10IfOutVlanPkts]
+  oids: [dot1dTpFdbAddress, ifMIB, ifMtu, ifName, ifOperStatus, ifPhysAddress, ifIndex, ifType, f10IfInVlanPkts, f10IfOutVlanPkts]
   communityString: "COMMUNITYSTRING"
   # Scrape timeout default is 5s
   scrapeTimeout: 5s

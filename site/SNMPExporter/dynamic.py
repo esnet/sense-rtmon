@@ -82,42 +82,6 @@ elif(data['switchNum']) == 2:
                     'RE2': str(data['snmpMetricsB']['retries']),
                     'TI2': str(data['snmpMetricsB']['scrapeTimeout']),
                     'CS2': str(data['snmpMetricsB']['communityString'])}
-# elif(data['switchNum']) == 3:
-#     with open('./templates/generatorTemplate3.yml') as inGen, open('generator.yml', 'w') as outGen:
-#         for line in inGen:
-#             outGen.write(line)
-#     oidsA = set(data['snmpMetricsA']['oids'])
-#     oidsB = set(data['snmpMetricsB']['oids'])
-#     oidsC = set(data['snmpMetricsC']['oids'])
-#     # read all oids in first then add to generator file
-#     snipA = ""
-#     snipB = ""
-#     snipC = ""
-    
-#     for oid in oidsA:
-#         snipA = snipA + "      - " + str(oid) + "\n"
-#     for oid in oidsB:
-#         snipB = snipB + "      - " + str(oid) + "\n"
-#     for oid in oidsC:
-#         snipC = snipC + "      - " + str(oid) + "\n"
-
-#     with open('generator.yml', 'r') as gen:
-#             text = gen.readlines()
-#     text[3] = snipA
-#     text[22] = snipB
-#     text[40] = snipC    
-#     with open('generator.yml', 'w') as genOut:
-#         genOut.writelines(text)
-        
-#     replacements = {'RETRY': str(data['snmpMetricsA']['retries']),
-#                     'TIMEOUT': str(data['snmpMetricsA']['scrapeTimeout']),
-#                     'COMMUNITYREADSTRING': str(data['snmpMetricsA']['communityString']),
-#                     'RE2': str(data['snmpMetricsB']['retries']),
-#                     'TI2': str(data['snmpMetricsB']['scrapeTimeout']),
-#                     'CS2': str(data['snmpMetricsB']['communityString']),
-#                     'RE3': str(data['snmpMetricsC']['retries']),
-#                     'TI3': str(data['snmpMetricsC']['scrapeTimeout']),
-#                     'CS3': str(data['snmpMetricsC']['communityString'])}
     
 else:
     print("invilad switch number")

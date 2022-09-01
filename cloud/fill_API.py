@@ -39,7 +39,7 @@ if len(sys.argv) > 1:
     for each_line in write_data:
         each_line = re.sub("grafanaAPIToken:.*", f"grafanaAPIToken: \"Bearer {str(result.group(1))}\"", each_line)
         file_data.append(each_line)
-    with open(file_path, 'r') as file:
+    with open(file_path, 'w') as file:
         file.writelines(file_data)
         
 else: # default config file
@@ -60,6 +60,5 @@ else: # default config file
     for each_line in write_data:
         each_line = re.sub("grafanaAPIToken:.*", f"grafanaAPIToken: \"Bearer {str(result.group(1))}\"", each_line)
         file_data.append(each_line)
-    with open(infpth, 'r') as file:
+    with open(infpth, 'w') as file:
         file.writelines(file_data)
-            

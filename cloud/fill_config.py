@@ -29,7 +29,7 @@ if len(sys.argv) > 1:
             print(f"\n Config file {file_path} could not be found in the config directory\n")
         
     # curl the API key to here
-    curlCMD= "curl 'http://admin:admin@" + str(data['hostip']) + ":3000/api/auth/keys' -XPOST -H 'Content-Type: application/json' -d '{\"role\":\"Admin\",\"name\":\"" + current_time + "\"}'"
+    curlCMD= "curl 'http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys' -XPOST -H 'Content-Type: application/json' -d '{\"role\":\"Admin\",\"name\":\"" + current_time + "\"}'"
     token = os.popen(curlCMD).read()
     result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
     # write the API key into config file that's used
@@ -50,7 +50,7 @@ else: # default config file
             print(f"\n Config file {infpth} could not be found in the config directory\n")
     
     # curl the API key to here
-    curlCMD= "curl 'http://admin:admin@" + str(data['hostip']) + ":3000/api/auth/keys' -XPOST -H 'Content-Type: application/json' -d '{\"role\":\"Admin\",\"name\":\"" + current_time + "\"}'"
+    curlCMD= "curl 'http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys' -XPOST -H 'Content-Type: application/json' -d '{\"role\":\"Admin\",\"name\":\"" + current_time + "\"}'"
     token = os.popen(curlCMD).read()
     result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
     # write the API key into config file that's used

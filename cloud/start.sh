@@ -43,8 +43,8 @@ echo "!!    Instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKb
 
 read -r -p "AUTO setup AUTH API keys? [y/N enter]: " API 
 if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
-    read -r -p "username (default is admin): " username 
-    read -r -p "password (default is admin): " password
+    # read -r -p "username (default is admin): " username 
+    # read -r -p "password (default is admin): " password
     # future iteration feed username and password into curl_api
     python3 fill_API.py
 fi 

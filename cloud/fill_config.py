@@ -3,7 +3,7 @@ import os
 import yaml
 import sys
 import re 
-import datetime as datetime
+from datetime import datetime
 # get time for API keys
 now = datetime.now()
 current_time = now.strftime("%m/%d_%H:%M")

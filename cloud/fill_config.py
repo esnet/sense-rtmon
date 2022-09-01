@@ -20,31 +20,50 @@ if len(sys.argv) > 1:
     with open(file_path, 'r') as stream:
         try:
             data = yaml.safe_load(stream)
-            filedata = file.read()
+            filedata = file_path.read()
         except yaml.YAMLError as exc:
             print(f"\n Config file {file_path} could not be found in the config directory\n")
     
-    curlCMD = "curl -X POST -H 'Content-Type: application/json' -d '{ 'name': 'admin', 'role': 'Admin'}' http://admin:admin@" + str(data[hostIP]) + ":3000/api/auth/keys"
+    curlCMD = "curl -X POST -H 'Content-Type: application/json' -d '{ 'name': 'admin', 'role': 'Admin'}' https://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys"
     token = os.popen(curlCMD).read()
-    filedata = filedata.replace('CONFIG', str(token))
+    with open(file_path, 'r') as file:
+        write_data = file.readlines()
+    file_data = []
+    for each_line in write_data:
+        each_line = re.sub("grafanaAPIToken:.*", f"grafanaAPIToken: \"{str(token)}\"", each_line)
+        file_data.append(each_line)
+    with open(file_path, 'r') as file:
+        file.writelines(file_data)
     
-    with open(file_path, 'w') as outStream:
-        outStream.write(filedata)
+    # filedata = filedata.replace('CONFIG', str(token))
+    
+    # with open(file_path, 'w') as outStream:
+    #     outStream.write(filedata)
         
 else: # default config file
     with open(infpth, 'r') as stream:
         try:
             data = yaml.safe_load(stream)
-            filedata = file.read()
+            filedata = infpth.read()
         except yaml.YAMLError as exc:
             print(f"\n Config file {infpth} could not be found in the config directory\n")
     
-    curlCMD = "curl -X POST -H 'Content-Type: application/json' -d '{ 'name': 'admin', 'role': 'Admin'}' http://admin:admin@" + str(data[hostIP]) + ":3000/api/auth/keys"
+    curlCMD = "curl -X POST -H 'Content-Type: application/json' -d '{ 'name': 'admin', 'role': 'Admin'}' http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys"
     token = os.popen(curlCMD).read()
-    filedata = filedata.replace('CONFIG', str(token))
+    curlCMD = "curl -X POST -H 'Content-Type: application/json' -d '{ 'name': 'admin', 'role': 'Admin'}' https://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys"
+    token = os.popen(curlCMD).read()
+    with open(infpth, 'r') as file:
+        write_data = file.readlines()
+    file_data = []
+    for each_line in write_data:
+        each_line = re.sub("grafanaAPIToken:.*", f"grafanaAPIToken: \"{str(token)}\"", each_line)
+        file_data.append(each_line)
+    with open(infpth, 'r') as file:
+        file.writelines(file_data)
+    # filedata = filedata.replace('CONFIG', str(token))
     
-    with open(infpth, 'w') as outStream:
-        outStream.write(filedata)
+    # with open(infpth, 'w') as outStream:
+    #     outStream.write(filedata)
         
 switchNum = data['switchNum']
 hostip = data['hostIP']

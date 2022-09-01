@@ -48,6 +48,7 @@ for each_line in write_data:
     if switchNum == 1:
         switch_target1 = data['switchData']['target']
         each_line = re.sub("switch_target1=.*", f"switch_target1={switch_target1}", each_line)
+        each_line = re.sub("switch_target2=.*", f"switch_target2=", each_line)
     elif switchNum == 2:
         switch_target1 = data['switchDataA']['target']
         switch_target2 = data['switchDataB']['target']

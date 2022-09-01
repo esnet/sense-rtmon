@@ -42,7 +42,7 @@ if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
     read -r -p "username (default is admin): " username 
     read -r -p "password (default is admin): " password
     # future iteration feed username and password into curl_api
-    python3 curl_api.py
+    python3 fill_API.py
 fi 
 
 read -r -p "Generate Grafana Dashboard? [y/N enter]: " grafana

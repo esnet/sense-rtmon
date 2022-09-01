@@ -35,9 +35,9 @@ fi
 yes | cp -rfa se_config/. script_exporter/examples
 docker stack deploy -c docker-stack.yml cloud
 
-echo "!!    Before Generating Dashboard for the first time:"
-echo "!!    Visit Google Doc for Grafana API and add Promethues as a Data Source Key instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub"
-read -r -p "AUTO curl API keys? [y/N enter]: " API 
+echo "!!    Before Generating Dashboard for the first time please setup Grafana authorization API key"
+# echo "!!    Visit Google Doc for Grafana API and add Promethues as a Data Source Key instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub"
+read -r -p "AUTO setup AUTH API keys? [y/N enter]: " API 
 if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
     read -r -p "username (default is admin): " username 
     read -r -p "password (default is admin): " password

@@ -25,12 +25,9 @@ if len(sys.argv) > 1:
     with open(file_path, 'r') as stream:
         try:
             data = yaml.safe_load(stream)
-            # filedata = file_path.read()
         except yaml.YAMLError as exc:
             print(f"\n Config file {file_path} could not be found in the config directory\n")
-    
-    # curlCMD = "curl -X POST -H 'Content-Type: application/json' -d '{ 'name': 'admin', 'role': 'Admin'}' https://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys"
-    
+        
     # curl the API key to here
     curlCMD= "curl 'http://admin:admin@" + str(data['hostip']) + ":3000/api/auth/keys' -XPOST -H 'Content-Type: application/json' -d '{\"role\":\"Admin\",\"name\":\"" + current_time + "\"}'"
     token = os.popen(curlCMD).read()
@@ -44,21 +41,13 @@ if len(sys.argv) > 1:
         file_data.append(each_line)
     with open(file_path, 'r') as file:
         file.writelines(file_data)
-    
-    # filedata = filedata.replace('CONFIG', str(token))
-    
-    # with open(file_path, 'w') as outStream:
-    #     outStream.write(filedata)
         
 else: # default config file
     with open(infpth, 'r') as stream:
         try:
             data = yaml.safe_load(stream)
-            # filedata = infpth.read()
         except yaml.YAMLError as exc:
             print(f"\n Config file {infpth} could not be found in the config directory\n")
-    
-    # curlCMD = "curl -X POST -H 'Content-Type: application/json' -d '{ 'name': 'admin', 'role': 'Admin'}' https://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys"
     
     # curl the API key to here
     curlCMD= "curl 'http://admin:admin@" + str(data['hostip']) + ":3000/api/auth/keys' -XPOST -H 'Content-Type: application/json' -d '{\"role\":\"Admin\",\"name\":\"" + current_time + "\"}'"
@@ -73,12 +62,7 @@ else: # default config file
         file_data.append(each_line)
     with open(infpth, 'r') as file:
         file.writelines(file_data)
-        
-    # filedata = filedata.replace('CONFIG', str(token))
-    
-    # with open(infpth, 'w') as outStream:
-    #     outStream.write(filedata)
-        
+            
 switchNum = data['switchNum']
 hostip = data['hostIP']
 pushgateway_server = f"{data['grafanaHostIP']}:9091" 

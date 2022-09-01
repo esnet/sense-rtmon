@@ -30,6 +30,22 @@ else: # default config file
         except yaml.YAMLError as exc:
             print(f"\n Config file {infpth} could not be found in the config directory\n")
 
+hostip = data['hostIP']
+node_url = f"http://dev2.virnao.com:9091/metrics/job/node-exporter/instance/{hostip}"
+requests.delete(node_url)
+
+if data['switchNum'] == 1:
+    target = data['switchData']['target']
+    snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target}"
+    requests.delete(snmp_url)
+elif data['switchNum'] == 2:
+    target1 = data['switchDataA']['target']
+    target2 = data['switchDataB']['target']
+    snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target1}"
+    requests.delete(snmp_url)
+    snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter2/instance/{hostip}/target_switch/{target2}"
+    requests.delete(snmp_url)
+
 # delete ARP metrics
 dir = str(os.getcwd())    
 # delete previous urls
@@ -40,21 +56,3 @@ with open(delete_file_path,"rt") as fp:
         load_delete = json.load(fp)
         for each_url in load_delete:
             requests.delete(each_url)
-
-hostip = data['hostIP']
-node_url = f"http://dev2.virnao.com:9091/metrics/job/node-exporter/instance/{hostip}"
-requests.delete(node_url)
-
-            
-if data['switchNum'] == 1:
-    target = data['switchData']['target']
-    snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target}"
-    requests.delete(snmp_url)
-elif data['switchNum'] == 2:
-    target1 = data['switchDataA']['target']
-    target2 = data['switchDataB']['target']
-    snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target1}"
-    requests.delete(snmp_url)
-    snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target2}"
-    requests.delete(snmp_url)
-

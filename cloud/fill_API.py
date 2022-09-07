@@ -17,6 +17,9 @@ os.chdir(owd)
 data = {}
 file_name = "config.yml"
 
+print("!!   AUTO CURL MAY FAIL")
+print("!!    Visit Google Doc for Grafana API and add Promethues as a Data Source Key instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub")
+
 # argument given
 if len(sys.argv) > 1:
     file_name = str(sys.argv[1])

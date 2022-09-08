@@ -3,8 +3,8 @@ import subprocess
 import os
 import re
 
-print("ADD SNMP EXPORTER AND SWITCH")
-print("To download private MIBs please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n")
+print("\n\nADD SNMP EXPORTER AND SWITCH")
+print("To download private MIBs please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n\n")
 ne = input("Enter the name of the Network Element: ")
 switch_ip = input("Enter the IP of the Network Element: ")
 switch_ip = switch_ip.strip()

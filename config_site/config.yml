@@ -1,0 +1,88 @@
+######################### ATTENTION #############################
+# lines that are maked with:
+# Cloud stands for Cloud Stack Only
+# Site stands for Site Stack Only
+# BOTH for both Cloud and Site Stacks
+# opt stands optional 
+# All the scrape time/duration configuration have no effects on the actual scraping
+
+switchNum: 1 # Both
+# This host's IP address
+hostIP: 198.32.43.16 # example 198.32.43.16 # BOTH
+prometheusPort: 9090 # do not change
+# The DNS of the host which is running the Grafana container
+grafanaHostIP: 'dev2.virnao.com' # BOTH
+grafanaPort: 3000 # do not change 
+
+# Host 1: BOTH (all needed)
+hostA:
+  IP: 198.32.43.16
+  interfaceName: 'ens2f0np0.1000'
+  interfaceIP: '10.10.100.1'
+  nodeName: 'sdn-dtn-2-10.ultralight.org'
+  vlan: 1000
+  nodeExporterPort: 9100
+  switchPort: 
+    ifName: 'hundredGigE 1/27'
+    ifVlan: 'Vlan 1000'
+
+# Host 2 BOTH (all needed)
+hostB:
+  IP: 198.32.43.15
+  interfaceName: 'ens2f0.1000'
+  interfaceIP: '10.10.100.2'
+  nodeName: 'sdn-dtn-2-11.ultralight.org'
+  vlan: 1000
+  nodeExporterPort: 9100
+  switchPort: 
+    ifName: 'hundredGigE 1/31'
+    ifVlan: 'Vlan 1000'
+
+
+switchData:
+  job_name: 'snmp1' # opt
+  SNMPHostIP: 198.32.43.16 # BOTH
+  scrapeInterval: 15s
+  scrapeDuration: 5h
+  target: 172.16.1.1
+  # switch if format: " - IF: optional" 
+  switchif: "" # opt
+  params: ['if_mib'] # Site
+  portIn: # BOTH
+    ifName: 'hundredGigE 1/27'
+    vlan: 1000
+    ifVlan: 'Vlan 1000'
+  portOut: # BOTH
+    ifName: 'hundredGigE 1/31'
+    vlan: 1000
+    ifVlan: 'Vlan 1000'
+
+
+snmpMetrics:
+  # IP address of switch to configure
+  switchIP: 172.16.1.1 # Site
+  scrapeInterval: 15s
+  scrapeDuration: 5h
+  # OIDs to scrape
+  oids: [dot1dTpFdbAddress, ifMIB, ifMtu, ifName, ifOperStatus, ifPhysAddress, ifIndex, ifType, f10IfInVlanPkts, f10IfOutVlanPkts] # Site
+  # SNMP community read string
+  communityString: "COMMUNITYSTRING" # Site keep the quotaion marks only replace COMMUNITYSTRING
+  scrapeTimeout: 5s
+  retries: 3
+
+# TCP/ARP Data
+tcpMetrics:
+  port: 9191 # Site
+  job_name: 'tcpmetrics'
+  # Collect all packets continuously over the scrape interval
+  # Not recommended for general use cases, but provides additional information if set to True
+  # Defaults to False, collects the most recent burst (1 second's worth of data) at the current scrape interval
+  continuousCollect: False
+  scrapeDuration: 900
+  scrapeInterval: 30
+
+arpMetrics:
+  port: 9192
+  job_name: 'arpmetrics'
+  scrapeDuration: 900
+  scrapeInterval: 30

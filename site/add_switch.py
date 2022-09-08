@@ -89,6 +89,7 @@ with open("crontabs/push_snmp_exporter_metrics.sh") as inGen, open("crontabs/tem
             outGen.write(new_line)
         elif "cat /" in line and cat_flag:
             new_line = re.sub("/snmp-exporter/target_switch/.*/instance/", f"/snmp-exporter{switch_num}/target_switch/{switch_ip}/instance/", line)
+            new_line = re.sub("snmp_temp.txt", f"snmp_temp{switch_num}.txt", new_line)
             cat_flag = False
             outGen.write(new_line)        
         outGen.write(line)

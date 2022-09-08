@@ -4,8 +4,7 @@ services:
   snmp-exporter:
     image: prom/snmp-exporter
     volumes:
-      - ../SNMPExporter/src/github.com/prometheus/snmp_exporter/generator/snmp.yml:/etc/snmp_exporter/snmp.yml
-    network_mode: "host"
+      - ../SNMPExporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+    # network_mode: "host" # in the future not host option, 
     ports:
-      - 9116:9116
-    
+      - 9116:9116 # 9117:9116 external:internal

@@ -88,7 +88,7 @@ elif(data['switchNum']) >= 2:
 
     # Third switch generate snmp.yml file
     if(data['switchNum']) >= 3:
-        write_template(letter="B")
+        write_template(letter="C")
         generate_snmp_file("snmp2.yml")
     
 

@@ -32,102 +32,72 @@ else: # default config file
             print(f"\n Config file {infpth} could not be found in the config directory\n")
 
 print("Collecting SNMP generator template...")
-with open('templates/generatorTemplate.yml') as inGen, open('templates/generator.yml', 'w') as outGen:
+
+def write_template(template_path='./templates/generatorTemplate.yml',generator_file='generator.yml',letter=""):
+    with open(template_path) as inGen, open(generator_file, 'w') as outGen:
         for line in inGen:
             outGen.write(line)
-print("Reading SNMP OIDs/Interfaces/Scrape Duration/Scrape Time from config file...")
-
-# SNMP scraps 1 switche
-if(data['switchNum']) == 1:
-    oids = set(data['snmpMetrics']['oids'])
+    oids = set(data[f'snmpMetrics{letter}']['oids'])
     # read all oids in first then add to generator file
     snip = ""
     for oid in oids:
         snip = snip + "      - " + str(oid) + "\n"
-
-    with open('generator.yml', 'r') as gen:
-            text = gen.readlines()
+    with open(generator_file, 'r') as gen:
+        text = gen.readlines()
     text[3] = snip
-    with open('generator.yml', 'w') as genOut:
+    with open(generator_file, 'w') as genOut:
         genOut.writelines(text)
         
-    replacements = {'RETRY': str(data['snmpMetrics']['retries']),
-                    'TIMEOUT': str(data['snmpMetrics']['scrapeTimeout']),
-                    'COMMUNITYREADSTRING': str(data['snmpMetrics']['communityString'])}
+    replacements = {'RETRY': str(data[f'snmpMetrics{letter}']['retries']),
+                    'TIMEOUT': str(data[f'snmpMetrics{letter}']['scrapeTimeout']),
+                    'COMMUNITYREADSTRING': str(data[f'snmpMetrics{letter}']['communityString'])}
+    
+    # Read in the file
+    with open(generator_file, 'r') as file:
+        filedata = file.read()
+    # Replace the target string
+    for k,v in replacements.items():
+        filedata = filedata.replace(k, v)
+    # Write the file out again
+    with open(generator_file, 'w') as file:
+        file.write(filedata)
+
+def generate_snmp_file(snmp_file='snmp.yml'):
+    dir = str(os.getcwd())
+    genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
+    genCmd = "yes | cp -rfa generator.yml " + genLoc
+    subprocess.run(genCmd, shell=True)
+    print("Generating dynamic SNMP config file...")
+    subprocess.run("./generator generate", shell=True, cwd=genLoc)
+    subprocess.run(f"yes | cp -rfa snmp.yml ../../../../../{snmp_file}", shell=True, cwd=genLoc)
+    # subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
+    print("Success! Configured custom SNMP Exporter container")
+
+
+# SNMP scraps 1 switch
+if(data['switchNum']) == 1:
+    write_template
+    generate_snmp_file
+
 # SNMP scraps 2 switches
-elif(data['switchNum']) == 2:
-    oidsA = set(data['snmpMetricsA']['oids'])
-    oidsB = set(data['snmpMetricsB']['oids'])
-    # read all oids in first then add to generator file
-    snipA = ""
-    snipB = ""
-    
-    for oid in oidsA:
-        snipA = snipA + "      - " + str(oid) + "\n"
-    for oid in oidsB:
-        snipB = snipB + "      - " + str(oid) + "\n"
+elif(data['switchNum']) >= 2:
+    # first switch generate snmp.yml file
+    write_template(letter="A")
+    generate_snmp_file()
 
-    with open('generator.yml', 'r') as gen:
-            text = gen.readlines()
-    text[3] = snipA
-    text[21] = snipB
-    with open('generator.yml', 'w') as genOut:
-        genOut.writelines(text)
-        
-    replacements = {'RETRY': str(data['snmpMetricsA']['retries']),
-                    'TIMEOUT': str(data['snmpMetricsA']['scrapeTimeout']),
-                    'COMMUNITYREADSTRING': str(data['snmpMetricsA']['communityString']),
-                    'RETRY2': str(data['snmpMetricsB']['retries']),
-                    'TIMEOUT2': str(data['snmpMetricsB']['scrapeTimeout']),
-                    'COMMUNITYREADSTRING2': str(data['snmpMetricsB']['communityString'])}
-elif(data['switchNum']) == 3:
-    oidsA = set(data['snmpMetricsA']['oids'])
-    oidsB = set(data['snmpMetricsB']['oids'])
-    oidsC = set(data['snmpMetricsC']['oids'])
-    # read all oids in first then add to generator file
-    snipA = ""
-    snipB = ""
-    snipC = ""
-    
-    for oid in oidsA:
-        snipA = snipA + "      - " + str(oid) + "\n"
-    for oid in oidsB:
-        snipB = snipB + "      - " + str(oid) + "\n"
-    for oid in oidsC:
-        snipC = snipC + "      - " + str(oid) + "\n"
+    # Second switch generate snmp.yml file
+    write_template(letter="B")
+    generate_snmp_file("snmp2.yml")
 
-    with open('generator.yml', 'r') as gen:
-            text = gen.readlines()
-    text[3] = snipA
-    text[22] = snipB
-    text[40] = snipC    
-    with open('generator.yml', 'w') as genOut:
-        genOut.writelines(text)
-        
-    replacements = {'RETRY': str(data['snmpMetricsA']['retries']),
-                    'TIMEOUT': str(data['snmpMetricsA']['scrapeTimeout']),
-                    'COMMUNITYREADSTRING': str(data['snmpMetricsA']['communityString']),
-                    'RETRY2': str(data['snmpMetricsB']['retries']),
-                    'TIMEOUT2': str(data['snmpMetricsB']['scrapeTimeout']),
-                    'COMMUNITYREADSTRING2': str(data['snmpMetricsB']['communityString']),
-                    'RETRY3': str(data['snmpMetricsC']['retries']),
-                    'TIMEOUT3': str(data['snmpMetricsC']['scrapeTimeout']),
-                    'COMMUNITYREADSTRING3': str(data['snmpMetricsC']['communityString'])}
+    # Third switch generate snmp.yml file
+    if(data['switchNum']) >= 3:
+        write_template(letter="C")
+        generate_snmp_file("snmp2.yml")
     
 else:
     print("invilad switch number")
     exit
     
-    
-# Read in the file
-with open('generator.yml', 'r') as file:
-    filedata = file.read()
-# Replace the target string
-for k,v in replacements.items():
-    filedata = filedata.replace(k, v)
-# Write the file out again
-with open('generator.yml', 'w') as file:
-    file.write(filedata)
     
 subprocess.run("sudo yum -y install p7zip p7zip-plugins gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel", shell=True)
 os.environ["PATH"] += os.pathsep + os.pathsep.join(["/usr/local/go/bin"])
@@ -147,7 +117,7 @@ print("Success! Configured custom SNMP Exporter container\n\n")
 mib_dir = genLoc + "/mibs"
 os.chdir(mib_dir)
 subprocess.run("git clone https://github.com/librenms/librenms.git",shell=True, cwd=mib_dir)
-print("To download private MIBs please please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n")
+print("To download private MIBs please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n")
 subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*-MIB ./", shell=True, cwd=mib_dir)
 
 ne = input("Enter the name of the Network Element: ")

@@ -4,7 +4,9 @@ systemctl stop node_exporter
 docker stack rm site
 docker compose down -v
 
-docker rm -f compose-files-snmp-exporter-1 compose-files-tcp-exporter-1 compose-files-arp-exporter-1 compose-files-node-exporter-1 compose-files-snmp-exporter2-1
+docker rm -f compose-files-snmp-exporter-1 compose-files-tcp-exporter-1 compose-files-arp-exporter-1 compose-files-node-exporter-1  compose-files-snmp-exporter2-1 compose-files-snmp-exporter3-1 compose-files-snmp-exporter4-1 compose-files-snmp-exporter5-1 compose-files-snmp-exporter6-1 compose-files-snmp-exporter7-1 compose-files-snmp-exporter8-1 compose-files-snmp-exporter9-1 compose-files-snmp-exporter10-1
+
+# it deletes 10 SNMP exporters, just in case 10 exist
 
 docker image rm -f arp_exporter:latest tcp_exporter:latest
 

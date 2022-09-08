@@ -45,6 +45,7 @@ read -r -p "Start SNMP Exporter? [y/N]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     starting_snmp="-f ./compose-files/snmp-docker-compose.yml" 
     starting_snmp2="-f ./compose-files/snmp-docker-compose2.yml" 
+    echo "!!    Default starting two SNMP exporters"
     echo "!!    Please configuring switch in you config file (default: config.yml) if needed"
     # read -r -p "Enter the config file: [config.yml/Enter]: " snmp_config
     cd ./SNMPExporter
@@ -153,7 +154,7 @@ fi
 
 echo "!!    to remove site stack run ./clean.sh"
 
-echo "docker compose $starting_node $starting_snmp $starting_arp $starting_tcp up -d"
+echo "docker compose $starting_node $starting_snmp $starting_snmp2 $starting_arp $starting_tcp up -d"
 # run nothing
 if [ "$starting_node" == " " ] && [ "$starting_snmp" == " " ] && [ "$starting_arp" == " " ] && [ "$starting_tcp" == " " ]; then
     echo "!!    nothing started"

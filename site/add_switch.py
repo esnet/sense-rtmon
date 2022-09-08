@@ -37,7 +37,7 @@ text[3] = snip
 with open("./SNMPExporter/generator.yml", 'w') as genOut:
     genOut.writelines(text)
     
-replacements = {'RETRY': 3,
+replacements = {'RETRY': "3",
                 'TIMEOUT': "5s",
                 'COMMUNITYREADSTRING': community_string}
 

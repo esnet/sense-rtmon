@@ -22,57 +22,58 @@ print(f"move all {ne} MIBS to mib folder")
 subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne}/* ./", shell=True, cwd=mib_dir)
 print("NEW SWITCH ADDED")
 
-def write_template(template_path='./templates/generatorTemplate.yml',generator_file='generator.yml'):
-    with open(template_path) as inGen, open(generator_file, 'w') as outGen:
-        for line in inGen:
-            outGen.write(line)
-    oids = set(oid_list)
-    # read all oids in first then add to generator file
-    snip = ""
-    for oid in oids:
-        snip = snip + "      - " + str(oid) + "\n"
-    with open(generator_file, 'r') as gen:
-        text = gen.readlines()
-    text[3] = snip
-    with open(generator_file, 'w') as genOut:
-        genOut.writelines(text)
-        
-    replacements = {'RETRY': 3,
-                    'TIMEOUT': "5s",
-                    'COMMUNITYREADSTRING': community_string}
+# make new SNMP file
+with open("./SNMPExporter/templates/generatorTemplate.yml") as inGen, open("./SNMPExporter/generator.yml", 'w') as outGen:
+    for line in inGen:
+        outGen.write(line)
+oids = set(oid_list)
+# read all oids in first then add to generator file
+snip = ""
+for oid in oids:
+    snip = snip + "      - " + str(oid) + "\n"
+with open("./SNMPExporter/generator.yml", 'r') as gen:
+    text = gen.readlines()
+text[3] = snip
+with open("./SNMPExporter/generator.yml", 'w') as genOut:
+    genOut.writelines(text)
     
-    # Read in the file
-    with open(generator_file, 'r') as file:
-        filedata = file.read()
-    # Replace the target string
-    for k,v in replacements.items():
-        filedata = filedata.replace(k, v)
-    # Write the file out again
-    with open(generator_file, 'w') as file:
-        file.write(filedata)
+replacements = {'RETRY': 3,
+                'TIMEOUT': "5s",
+                'COMMUNITYREADSTRING': community_string}
 
-def generate_snmp_file(snmp_file='snmp.yml'):
-    dir = str(os.getcwd())
-    genLoc = dir + "/SNMPExporter/src/github.com/prometheus/snmp_exporter/generator"
-    genCmd = "yes | cp -rfa generator.yml " + genLoc
-    subprocess.run(genCmd, shell=True)
-    print("Generating dynamic SNMP config file...")
-    subprocess.run("./generator generate", shell=True, cwd=genLoc)
-    subprocess.run(f"yes | cp -rfa snmp.yml ../../../../../{snmp_file}", shell=True, cwd=genLoc)
-    print("Success! Configured custom SNMP Exporter container")
+# Read in the file
+with open("./SNMPExporter/generator.yml", 'r') as file:
+    filedata = file.read()
+# Replace the target string
+for k,v in replacements.items():
+    filedata = filedata.replace(k, v)
+# Write the file out again
+with open("./SNMPExporter/generator.yml", 'w') as file:
+    file.write(filedata)
 
+dir = str(os.getcwd())
+genLoc = dir + "/SNMPExporter/src/github.com/prometheus/snmp_exporter/generator"
+genCmd = "yes | cp -rfa generator.yml " + genLoc
+subprocess.run(genCmd, shell=True)
+print("Generating dynamic SNMP config file...")
+subprocess.run("./generator generate", shell=True, cwd=genLoc)
+subprocess.run(f"yes | cp -rfa snmp.yml ../../../../../snmp{switch_num}.yml", shell=True, cwd=genLoc)
+print("Success! Configured custom SNMP Exporter container")
+print(f"snmp{switch_num}.yml generated")
+
+# Make new docker file
 print(f"Generate a new docker compose file: snmp-docker-compose{switch_num}.yml")
 print(f"Running on port: 911{str(5+int(switch_num))}")
 new_compoes_file = f"""version: '3.8'
 services:
-  snmp-exporter2:
+  snmp-exporter{switch_num}:
     image: prom/snmp-exporter
     volumes:
       - ../SNMPExporter/snmp{switch_num}.yml:/etc/snmp_exporter/snmp{switch_num}.yml
     ports:
       - 911{str(5+int(switch_num))}:9116"""
 
-with open(f"snmp-docker-compose{switch_num}.yml", 'w') as file:
+with open(f"./compose-files/snmp-docker-compose{switch_num}.yml", 'w') as file:
     file.write(new_compoes_file)
 
 # add new target to crontab executing script push_snmp_exporter_metrics.sh
@@ -92,10 +93,6 @@ with open("crontabs/push_snmp_exporter_metrics.sh") as inGen, open("crontabs/tem
             outGen.write(new_line)        
         outGen.write(line)
 
-
-# writing SNMP and generate snmp.yml files
-write_template
-generate_snmp_file(f"snmp{switch_num}.yml")
 
 # curl_flag = True
 # cat_flag = True

@@ -53,7 +53,7 @@ def write_template(template_path='./templates/generatorTemplate.yml',generator_f
 
 def generate_snmp_file(snmp_file='snmp.yml'):
     dir = str(os.getcwd())
-    genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
+    genLoc = dir + "/SNMPExporter/src/github.com/prometheus/snmp_exporter/generator"
     genCmd = "yes | cp -rfa generator.yml " + genLoc
     subprocess.run(genCmd, shell=True)
     print("Generating dynamic SNMP config file...")

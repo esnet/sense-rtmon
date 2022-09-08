@@ -103,12 +103,12 @@ with open("crontabs/push_snmp_exporter_metrics.sh") as inGen, open("crontabs/tem
     for line in inGen:
         if "curl -o " in line and curl_flag:
             new_line = re.sub("9116", f"9118", line)
-            new_line = re.sub("=.*&", f"111", line)
+            new_line = re.sub("=.*&", f"111", new_line)
             curl_flag = False
             outGen.write(new_line)
         elif "cat /" in line and curl_flag:
             new_line = re.sub("/snmp-exporter/target_switch/172.16.1.1/instance/", f"/snmp-exporter3/target_switch/111/instance/", line)
-            new_line = re.sub("=.*&", f"111", line)
+            new_line = re.sub("=.*&", f"111", new_line)
             cat_flag = False
             outGen.write(new_line)        
         outGen.write(line)

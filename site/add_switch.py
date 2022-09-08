@@ -16,7 +16,7 @@ oid_list = new_oid.split()
 
 # download private mibs
 dir = str(os.getcwd())
-genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
+genLoc = dir + "/SNMPExporter/src/github.com/prometheus/snmp_exporter/generator"
 mib_dir = genLoc + "/mibs"
 print(f"move all {ne} MIBS to mib folder")
 subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne}/* ./", shell=True, cwd=mib_dir)

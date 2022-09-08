@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  snmp-exporter3:
+    image: prom/snmp-exporter
+    volumes:
+      - ../SNMPExporter/src/github.com/prometheus/snmp_exporter/generator/snmp3.yml:/etc/snmp_exporter/snmp3.yml
+    # network_mode: "host" # in the future not host option, 
+    ports:
+      - 9118:9116 

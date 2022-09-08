@@ -44,6 +44,7 @@ fi
 read -r -p "Start SNMP Exporter? [y/N]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     starting_snmp="-f ./compose-files/snmp-docker-compose.yml" 
+    starting_snmp2="-f ./compose-files/snmp-docker-compose2.yml" 
     echo "!!    Please configuring switch in you config file (default: config.yml) if needed"
     # read -r -p "Enter the config file: [config.yml/Enter]: " snmp_config
     cd ./SNMPExporter
@@ -67,7 +68,7 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
 #! /bin/bash
 if curl ${MYIP}:9116/metrics | grep ".*"; then
     curl -o $general_path/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=$switch_target1&module=if_mib
-    curl -o $general_path/site/crontabs/snmp_temp2.txt ${MYIP}:9116/snmp?target=$switch_target2&module=if_mib2
+    curl -o $general_path/site/crontabs/snmp_temp2.txt ${MYIP}:9117/snmp?target=$switch_target2&module=if_mib
 else
     > $general_path/site/crontabs/snmp_temp.txt	
     > $general_path/site/crontabs/snmp_temp2.txt	
@@ -157,5 +158,5 @@ echo "docker compose $starting_node $starting_snmp $starting_arp $starting_tcp u
 if [ "$starting_node" == " " ] && [ "$starting_snmp" == " " ] && [ "$starting_arp" == " " ] && [ "$starting_tcp" == " " ]; then
     echo "!!    nothing started"
 else 
-    docker compose $starting_node $starting_snmp $starting_arp $starting_tcp up -d
+    docker compose $starting_node $starting_snmp $starting_snmp2 $starting_arp $starting_tcp up -d
 fi

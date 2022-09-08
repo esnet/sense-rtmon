@@ -12,6 +12,8 @@ docker image rm -f arp_exporter:latest tcp_exporter:latest
 
 rm -rf ./crontabs/push_snmp_exporter_metrics*.sh ./crontabs/push_node_exporter_metrics*.sh  ./crontabs/update_arp_exporter*
 
+rm -rf ./compose-files/added*
+
 read -r -p "Erase Metrics [y/N]: " erase
 if [ "$erase" == "y" ] || [ "$erase" == "Y" ]; then
     echo "!!    Erase pushgateway urls sent from this host"

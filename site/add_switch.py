@@ -62,7 +62,7 @@ print("Success! Configured custom SNMP Exporter container")
 print(f"snmp{switch_num}.yml generated")
 
 # Make new docker file
-print(f"Generate a new docker compose file: snmp-docker-compose{switch_num}.yml")
+print(f"Generate a new docker compose file: added_snmp-docker-compose{switch_num}.yml")
 print(f"Running on port: 911{str(5+int(switch_num))}")
 new_compoes_file = f"""version: '3.8'
 services:
@@ -73,7 +73,7 @@ services:
     ports:
       - 911{str(5+int(switch_num))}:9116"""
 
-with open(f"./compose-files/snmp-docker-compose{switch_num}.yml", 'w') as file:
+with open(f"./compose-files/added_snmp-docker-compose{switch_num}.yml", 'w') as file:
     file.write(new_compoes_file)
 
 # add new target to crontab executing script push_snmp_exporter_metrics.sh
@@ -96,4 +96,6 @@ with open("crontabs/push_snmp_exporter_metrics.sh") as inGen, open("crontabs/tem
 with open("crontabs/push_snmp_exporter_metrics.sh",'w') as outGen, open("crontabs/temp_push_snmp_exporter_metrics.sh") as inGen:
     for line in inGen:
         outGen.write(line)
-        
+    
+print("COMPOSE NEW SNMP EXPORTER:")
+subprocess.run(f"docker compose -f ./compose-files/added_snmp-docker-compose{switch_num}.yml up -d", shell=True)

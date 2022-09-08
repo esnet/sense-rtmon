@@ -93,19 +93,7 @@ with open("crontabs/push_snmp_exporter_metrics.sh") as inGen, open("crontabs/tem
             outGen.write(new_line)        
         outGen.write(line)
 
-
-# curl_flag = True
-# cat_flag = True
-# with open("crontabs/push_snmp_exporter_metrics.sh") as inGen, open("crontabs/temp_push_snmp_exporter_metrics.sh ", 'w') as outGen:
-#     for line in inGen:
-#         if "curl -o " in line and curl_flag:
-#             new_line = re.sub("9116", f"9118", line)
-#             new_line = re.sub("snmp_temp.txt", f"snmp_temp3.txt", new_line)
-#             new_line = re.sub("=.*&", f"111", new_line)
-#             curl_flag = False
-#             outGen.write(new_line)
-#         elif "cat /" in line and cat_flag:
-#             new_line = re.sub("/snmp-exporter/target_switch/.*/instance/", f"/snmp-exporter3/target_switch/111/instance/", line)
-#             cat_flag = False
-#             outGen.write(new_line)        
-#         outGen.write(line)
+with open("crontabs/push_snmp_exporter_metrics.sh",'w') as outGen, open("crontabs/temp_push_snmp_exporter_metrics.sh") as inGen:
+    for line in inGen:
+        outGen.write(line)
+        

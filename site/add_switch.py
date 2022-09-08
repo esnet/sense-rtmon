@@ -53,7 +53,7 @@ with open("./SNMPExporter/generator.yml", 'w') as file:
 
 dir = str(os.getcwd())
 genLoc = dir + "/SNMPExporter/src/github.com/prometheus/snmp_exporter/generator"
-genCmd = "yes | cp -rfa generator.yml " + genLoc
+genCmd = "yes | cp -rfa ./SNMPExporter/generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)
 print("Generating dynamic SNMP config file...")
 subprocess.run("./generator generate", shell=True, cwd=genLoc)
@@ -79,7 +79,7 @@ with open(f"./compose-files/snmp-docker-compose{switch_num}.yml", 'w') as file:
 # add new target to crontab executing script push_snmp_exporter_metrics.sh
 curl_flag = True
 cat_flag = True
-with open("crontabs/push_snmp_exporter_metrics.sh") as inGen, open("crontabs/temp_push_snmp_exporter_metrics.sh ", 'w') as outGen:
+with open("crontabs/push_snmp_exporter_metrics.sh") as inGen, open("crontabs/temp_push_snmp_exporter_metrics.sh", 'w') as outGen:
     for line in inGen:
         if "curl -o " in line and curl_flag:
             new_line = re.sub("9116", f"911{str(5+int(switch_num))}", line)

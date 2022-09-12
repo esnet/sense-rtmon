@@ -7,7 +7,7 @@ import re
 # get this host's IP address
 owd = os.getcwd()
 os.chdir("..")
-config_path = str(os.path.abspath(os.curdir)) +"/config"
+config_path = str(os.path.abspath(os.curdir)) +"/config_cloud"
 infpth = config_path + "/config.yml"
 os.chdir(owd)
 data = {}
@@ -33,7 +33,8 @@ else: # default config file
                 
 switchNum = data['switchNum']
 hostip = data['hostIP']
-pushgateway_server = f"{data['grafanaHostIP']}:9091" 
+pushgateway_port = str(data['pushgatewayPort'])
+pushgateway_server = f"{data['grafanaHostIP']}:f{pushgateway_port}" 
 host1IP = data['hostA']['IP']
 host2IP = data['hostB']['IP']
 

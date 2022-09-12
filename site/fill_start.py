@@ -7,7 +7,7 @@ import re
 # get this host's IP address
 owd = os.getcwd()
 os.chdir("..")
-config_path = str(os.path.abspath(os.curdir)) +"/config"
+config_path = str(os.path.abspath(os.curdir)) +"/config_site"
 infpth = config_path + "/config.yml"
 os.chdir(owd)
 data = {}
@@ -33,7 +33,8 @@ else: # default config file
 
 switchNum = data['switchNum']
 hostip = data['hostIP']
-pushgateway_server = f"{data['grafanaHostIP']}:9091" 
+pushgatewayPort =str(data['pushgatewayPort'])
+pushgateway_server = f"{data['grafanaHostIP']}:{pushgatewayPort}" 
 host1IP = data['hostA']['IP']
 host2IP = data['hostB']['IP']
 top_level_config_file = data['configFile']
@@ -50,13 +51,13 @@ for each_line in write_data:
     each_line = re.sub("top_level_config_file=.*", f"top_level_config_file={top_level_config_file}", each_line)
     
     if switchNum == 1:
-        switch_target1 = data['switchData']['target']
+        switch_target1 = data['snmpMetrics']['target']
         each_line = re.sub("switch_target1=.*", f"switch_target1={switch_target1}", each_line)
         each_line = re.sub("switch_target2=.*", f"switch_target2=", each_line)
 
     elif switchNum == 2:
-        switch_target1 = data['switchDataA']['target']
-        switch_target2 = data['switchDataB']['target']
+        switch_target1 = data['snmpMetricsA']['target']
+        switch_target2 = data['snmpMetricsB']['target']
         each_line = re.sub("switch_target1=.*", f"switch_target1={switch_target1}", each_line)
         each_line = re.sub("switch_target2=.*", f"switch_target2={switch_target2}", each_line)
     

@@ -12,7 +12,7 @@ host2IP=
 ############################## DOCKER SETUP ##############################
 
 # check docker 
-# read -r -p "Login to Docker [y/N enter]: " docker_login
+# read -r -p "Login to Docker [y/N (press enter is default N)]: " docker_login
 # if [ "$docker_login" == "y" ] || [ "$docker_login" == "Y" ]; then
 #     if [ -x "$(command -v docker)" ]; then
 #         echo "||        Found docker..."
@@ -42,13 +42,13 @@ sudo yum install -y docker-compose-plugin
 ############################## DOCKER SWARM ##############################
 
 # !!! currently SWARM NOT USED 
-# read -r -p "Init Docker Swarm [y/N (Enter)]: " push_docker
+# read -r -p "Init Docker Swarm [y/N (press enter is default N)]: " push_docker
 # if [ "$push_docker" == "y" ] || [ "$push_docker" == "Y" ]; then
 #     # read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
 #     echo "!!    Initialize Docker Swarm"
 #     echo "$MYIP is used for docker swarm advertise"
 
-#     read -r -p "Init Docker Swarm [y/N (Enter)]: " swarm_init
+#     read -r -p "Init Docker Swarm [y/N (press enter is default N)]: " swarm_init
 #     if [ "$swarm_init" == "y" ] || [ "$swarm_init" == "Y" ]; then
 #         docker swarm init --advertise-addr $MYIP
 #     fi
@@ -57,7 +57,7 @@ sudo yum install -y docker-compose-plugin
 # fi 
 
 ############################## INSTALL GO & SNMP DEPENDENCIES ##############################
-read -r -p "Install SNMP Exporter [y/N (Enter)]: " snmp_install
+read -r -p "Install SNMP Exporter [y/N (press enter is default N)]: " snmp_install
     if [ "$snmp_install" == "y" ] || [ "$snmp_install" == "Y" ]; then
     echo "!!    Install SNMP dependencies"
     echo "!!    Download go1.18.3"
@@ -99,7 +99,7 @@ fi
 
 ############################## AUTOPUSH CRONTAB SETUP ##############################
 
-read -r -p "Set up crontab? [y/N (Enter)]: " crontab
+read -r -p "Set up crontab? [y/N (press enter is default N)]: " crontab
 if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
     echo "Satring Crontab setup"
     # create a temporary copy paste file

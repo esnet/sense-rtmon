@@ -1,16 +1,13 @@
-######################### ATTENTION #############################
-
 switchNum: 1
 dashTitle: "Top Flow Dashboard"
 debugTitle: "Top Flow L2 Debugging Dashboard"
 flow: " flow 1 "
-# This host's IP address
 hostIP: 198.32.43.16 # example 198.32.43.16
-prometheusPort: 9090 # do not change
 # The DNS of the host which is running the Grafana container
 grafanaHostIP: 'dev2.virnao.com'
-grafanaPort: 3000 # do not change 
-grafanaAPIToken: "CONFIG" 
+grafanaPort: 3000 # Do not change unless container mapping change
+pushgatewayPort: 9091 # Do not change unless container mapping change
+grafanaAPIToken: "CONFIG"
 configFile: "config.yml"
 
 # Host 1
@@ -20,7 +17,6 @@ hostA:
   interfaceIP: '10.10.100.1'
   nodeName: 'sdn-dtn-2-10.ultralight.org'
   vlan: 1000
-  nodeExporterPort: 9100
   switchPort: 
     ifName: 'hundredGigE 1/27'
     ifVlan: 'Vlan 1000'
@@ -32,42 +28,30 @@ hostB:
   interfaceIP: '10.10.100.2'
   nodeName: 'sdn-dtn-2-11.ultralight.org'
   vlan: 1000
-  nodeExporterPort: 9100
   switchPort: 
     ifName: 'hundredGigE 1/31'
     ifVlan: 'Vlan 1000'
 
 switchData:
-  job_name: 'snmp1' # opt
-  SNMPHostIP: 198.32.43.16 # BOTH
-  scrapeInterval: 15s
-  scrapeDuration: 5h
+  job_name: 'snmp1'
+  SNMPHostIP: 198.32.43.16
   target: 172.16.1.1
   # switch if format: " - IF: optional" 
-  switchif: "" # opt
-  params: ['if_mib'] # Site
-  portIn: # BOTH
+  switchif: "" # optional
+  portIn:
     ifName: 'hundredGigE 1/27'
     vlan: 1000
     ifVlan: 'Vlan 1000'
-  portOut: # BOTH
+  portOut:
     ifName: 'hundredGigE 1/31'
     vlan: 1000
     ifVlan: 'Vlan 1000'
 
 # TCP/ARP Data
 tcpMetrics:
-  port: 9191 # Site
+  port: 9191
   job_name: 'tcpmetrics'
-  # Collect all packets continuously over the scrape interval
-  # Not recommended for general use cases, but provides additional information if set to True
-  # Defaults to False, collects the most recent burst (1 second's worth of data) at the current scrape interval
-  continuousCollect: False
-  scrapeDuration: 900
-  scrapeInterval: 30
 
 arpMetrics:
   port: 9192
   job_name: 'arpmetrics'
-  scrapeDuration: 900
-  scrapeInterval: 30

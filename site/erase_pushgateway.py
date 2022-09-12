@@ -8,7 +8,7 @@ import sys
 # get this host's IP address
 owd = os.getcwd()
 os.chdir("..")
-config_path = str(os.path.abspath(os.curdir)) +"/config"
+config_path = str(os.path.abspath(os.curdir)) +"/config_site"
 infpth = config_path + "/config.yml"
 os.chdir(owd)
 data = {}
@@ -35,12 +35,12 @@ node_url = f"http://dev2.virnao.com:9091/metrics/job/node-exporter/instance/{hos
 requests.delete(node_url)
 
 if data['switchNum'] == 1:
-    target = data['switchData']['target']
+    target = data['snmpMetrics']['target']
     snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target}"
     requests.delete(snmp_url)
 elif data['switchNum'] == 2:
-    target1 = data['switchDataA']['target']
-    target2 = data['switchDataB']['target']
+    target1 = data['snmpMetricsA']['target']
+    target2 = data['snmpMetricsB']['target']
     snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target1}"
     requests.delete(snmp_url)
     snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter2/instance/{hostip}/target_switch/{target2}"

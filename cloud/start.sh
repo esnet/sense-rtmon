@@ -41,7 +41,7 @@ echo "!!    API key can be done automatically but Data Source needs to be config
 echo "!!    Visit Google Doc for Grafana API and add Promethues as a Data Source "
 echo "!!    Instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub"
 
-read -r -p "AUTO setup AUTH API keys? [y/N enter]: " API 
+read -r -p "AUTO setup AUTH API keys? [y/N (press enter is default N)]: " API 
 if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
     # read -r -p "username (default is admin): " username 
     # read -r -p "password (default is admin): " password
@@ -49,7 +49,7 @@ if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
     python3 fill_API.py
 fi 
 
-read -r -p "Generate Grafana Dashboard? [y/N enter]: " grafana
+read -r -p "Generate Grafana Dashboard? [y/N (press enter is default N)]: " grafana
 
 if [ "$config_file" == "" ]; then
     if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then

@@ -64,7 +64,7 @@ class JsonCollector(object):
           # cmd1 = f"echo \"running in ping\""
           # subprocess.run(cmd1, shell=True)
           clean_ping = ping_lines[0].strip()
-          ping_url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/ping_this_ip/{str(clean_ping)}"
+          ping_url = f"{receiver_ip_address}:{pushgatewayPort}/metrics/job/arpMetrics/instance/{instance_ip}/ping_this_ip/{str(clean_ping)}"
           if clean_ping[-1] == "1":
             requests.post(ping_url, data="Success_1_failure_0 1\n")
           else:
@@ -72,7 +72,7 @@ class JsonCollector(object):
           delete_list.append(ping_url)
           
           # switch_ping = ping_lines[1].strip()
-          # switch_url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/ping_this_ip/{str(switch_ping)}"
+          # switch_url = f"{receiver_ip_address}:{pushgatewayPort}/metrics/job/arpMetrics/instance/{instance_ip}/ping_this_ip/{str(switch_ping)}"
           # if switch_ping[-1] == "1":
           #   requests.post(switch_url, data="Success_1_failure_0 1\n")
           # else:
@@ -93,7 +93,7 @@ class JsonCollector(object):
         metric.add_sample(metricName, value=1, labels={'ip_address': entry['ip']})
         # arbitrary pay load data is stored inside url
         payload = "ARP_Table " + str(count) + "\n"
-        url = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{str(hostname)}/mac_address/{str(entry['mac'])}/ip_address/{str(entry['ip'])}"
+        url = f"{receiver_ip_address}:{pushgatewayPort}/metrics/job/arpMetrics/instance/{instance_ip}/hostname/{str(hostname)}/mac_address/{str(entry['mac'])}/ip_address/{str(entry['ip'])}"
         requests.post(url, data=payload)
         delete_list.append(url)
         count += 1
@@ -103,7 +103,7 @@ class JsonCollector(object):
       mName = "ARP_Entry_Count"
       metric = Metric(mName, "Number of ARP Entries", "summary")
       metric.add_sample(mName, value=(count-1), labels={})
-      url2 = f"{receiver_ip_address}:9091/metrics/job/arpMetrics/instance/{instance_ip}/entryCount/value"
+      url2 = f"{receiver_ip_address}:{pushgatewayPort}/metrics/job/arpMetrics/instance/{instance_ip}/entryCount/value"
       payload2 = f"ARP_Entry_Count {str(count-1)}\n"
       requests.post(url2, data=payload2)
       delete_list.append(url2)
@@ -126,6 +126,7 @@ if __name__ == '__main__':
       except yaml.YAMLError as exc:
           print("Config file load error!")
   receiver_ip_address = "http://" + str(config_data['grafanaHostIP'])
+  pushgatewayPort = str(config_data['pushgatewayPort'])
   instance_ip = str(config_data['hostIP'])
 
   # Usage: json_exporter.py port endpoint

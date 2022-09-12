@@ -24,7 +24,7 @@ sudo lsof -i -P -n | grep 9116
 # read -r -p "Enter your IP address (e.g. 198.32.43.16): " MYIP
 # read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
 ############################# NODE #############################
-read -r -p "Start Node Exporter? [y/N (Enter)]: " start_node
+read -r -p "Start Node Exporter? [y/N (press enter is default N)]: " start_node
 if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
     starting_node="-f ./compose-files/node-docker-compose.yml" 
     echo "Satring Node Exporter Service"
@@ -41,13 +41,13 @@ else
 fi
 
 ############################# SNMP #############################
-read -r -p "Start SNMP Exporter? [y/N]: " start_snmp
+read -r -p "Start SNMP Exporter? [y/N (press enter is default N)]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     starting_snmp="-f ./compose-files/snmp-docker-compose.yml" 
     starting_snmp2="-f ./compose-files/snmp-docker-compose2.yml" 
     echo "!!    Default starting two SNMP exporters"
-    echo "!!    Please configuring switch in you config file (default: config.yml) if needed"
-    # read -r -p "Enter the config file: [config.yml/Enter]: " snmp_config
+    echo "!!    Please configuring switch in you config file (default: /config_site/config.yml) if needed"
+    # read -r -p "Enter the config file (press enter to choose default config file /config_site/config.yml or type the config file WITHOUT path): " snmp_config
     cd ./SNMPExporter
     python3 dynamic.py $top_level_config_file
     cd ..
@@ -86,7 +86,7 @@ else
 fi
 
 ############################# ARP #############################
-read -r -p "Start ARP Exporter? [y/N]: " start_arp
+read -r -p "Start ARP Exporter? [y/N (press enter is default N)]: " start_arp
 if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     starting_arp="-f ./compose-files/arp-docker-compose.yml" 
     # delete everything first
@@ -138,7 +138,7 @@ else
     echo "Skip ARP Exporter"
 fi
 
-read -r -p "Start TCP Exporter? [y/N]: " start_tcp
+read -r -p "Start TCP Exporter? [y/N (press enter is default N)]: " start_tcp
 if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
     starting_tcp="-f ./compose-files/tcp-docker-compose..yml" 
     echo "Satring TCP Exporter Service"

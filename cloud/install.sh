@@ -41,7 +41,7 @@ docker login
 sleep 0.5
 
 # Configuration starts
-read -r -p "Enter configuration file [config.yml (Enter)]: " top_level_config_file
+read -r -p "Enter configuration file (press enter to choose default config file /config_cloud/config.yml or type the config file WITHOUT the path): " top_level_config_file
 python3 fill_config.py $top_level_config_file
 
 # >Certificates

@@ -11,7 +11,7 @@ print("\n\nParsing config file...")
 owd = os.getcwd()
 os.chdir("..")
 os.chdir("..")
-config_path = str(os.path.abspath(os.curdir)) +"/config"
+config_path = str(os.path.abspath(os.curdir)) +"/config_cloud"
 infpth = config_path + "/config.yml"
 os.chdir(owd)
 data = {}
@@ -133,8 +133,8 @@ if data['switchNum'] == 1:
                     'TCPNAME': str(data['tcpMetrics']['job_name']),
                     'IPSWITCH': str(data['switchData']['target']),
                     'SNMPNAME': str(data['switchData']['job_name']),
-                    'SCRAPEINTERVAL': str(data['switchData']['scrapeInterval']),
-                    'PARAMS': str(data['switchData']['params']),
+                    # 'SCRAPEINTERVAL': str(data['switchData']['scrapeInterval']),
+                    # 'PARAMS': str(data['switchData']['params']),
                     'SWITCHIF': str(data['switchData']['switchif']),
                     'SNMPHOSTIP': str(data['switchData']['SNMPHostIP']),
                     'HOSTA_SNMP_ON': "host1_snmp_on_" + str(data['hostA']['vlan']),

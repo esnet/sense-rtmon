@@ -14,10 +14,10 @@ rm -rf ./crontabs/push_snmp_exporter_metrics*.sh ./crontabs/push_node_exporter_m
 
 rm -rf ./compose-files/added*
 
-read -r -p "Erase Metrics [y/N]: " erase
+read -r -p "Erase Metrics [y/N (press enter is default N)]: " erase
 if [ "$erase" == "y" ] || [ "$erase" == "Y" ]; then
     echo "!!    Erase pushgateway urls sent from this host"
-    read -r -p "Enter the config file used to start: [config.yml/Enter]: " erase_config
+    read -r -p "Enter the config file used to start: (press enter to choose default config file /config_site/config.yml or type the config file WITHOUT path): " erase_config
     python3 erase_pushgateway.py $erase_config
     echo "!!    Cleanning Complete"
 else 

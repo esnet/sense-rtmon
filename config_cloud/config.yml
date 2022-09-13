@@ -1,3 +1,4 @@
+## SECTION 1 GENERAL INFORMATION ##
 switchNum: 1
 dashTitle: "Top Flow Dashboard"
 debugTitle: "Top Flow L2 Debugging Dashboard"
@@ -10,8 +11,7 @@ pushgatewayPort: 9091 # Do not change unless container mapping change
 grafanaAPIToken: "CONFIG"
 configFile: "config.yml"
 
-# Host 1
-hostA:
+hostA: # Host 1
   IP: 198.32.43.16
   interfaceName: 'ens2f0np0.1000'
   interfaceIP: '10.10.100.1'
@@ -21,8 +21,7 @@ hostA:
     ifName: 'hundredGigE 1/27'
     ifVlan: 'Vlan 1000'
 
-# Host 2
-hostB:
+hostB: # Host 2
   IP: 198.32.43.15
   interfaceName: 'ens2f0.1000'
   interfaceIP: '10.10.100.2'
@@ -32,6 +31,7 @@ hostB:
     ifName: 'hundredGigE 1/31'
     ifVlan: 'Vlan 1000'
 
+## SECTION 2 SWITCH INFORMATION ##
 switchData:
   job_name: 'snmp1'
   SNMPHostIP: 198.32.43.16
@@ -47,11 +47,11 @@ switchData:
     vlan: 1000
     ifVlan: 'Vlan 1000'
 
-# TCP/ARP Data
-tcpMetrics:
-  port: 9191
-  job_name: 'tcpmetrics'
-
+## SECTION 3 TCP and ARP (possilbe more in the future) ##
 arpMetrics:
   port: 9192
   job_name: 'arpmetrics'
+
+tcpMetrics:
+  port: 9191
+  job_name: 'tcpmetrics'

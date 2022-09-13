@@ -51,13 +51,15 @@ sleep 0.5
 if [ -z "$input_lets" ]; then
     echo "Let's Encrypt Certificate Setup for Grafana to enable https on port 3000: "
     echo "      1) Let's Encrypt signed certificate. (this machine must be reachable via over the internet by the domain name)"
-    echo "      2) Finish Install."
+    echo "      2) Using existing certificates."
+    echo "      3) Finish Install."
     read -r -p "Select a mode [1]: " sslmode
     sslmode=${sslmode:-1}
 else
     echo "Let's Encrypt command-line input found."
     sslmode=${input_lets:-1}
 fi
+
 if [ "$sslmode" == "1" ]; then # Let's Encrypt
     echo "    Note: port 80 must be available for DNS challenges to succeed. "
     echo "          See https://certbot.eff.org/faq for more information."
@@ -67,6 +69,30 @@ if [ "$sslmode" == "1" ]; then # Let's Encrypt
         /bin/bash ./certify.sh $domain
     else
         echo "??            User is not root! Certbot requires root for security reasons."
-        echo "              Please run the following script after installation: sudo /certify.sh $domain" 
+        echo "              Please run the following script after installation: sudo /certify.sh $domain"
     fi
+fi
+
+if [ "$sslmode" == "2" ]; then # Let's Encrypt
+    echo "!!    Using existing certificates (e.g. default path /etc/pki/tls )."
+    read -r -p "Please enter the full path for the folder of existing certificates: " path
+    read -r -p "Please enter the domain name of this machine: " domain
+    
+    echo "Note: ssl certificate is fullchain.pem"
+    echo "Note: ssl certificate key is privket.pem"
+    read -r -p "Are the ssl certficate and key correct [y/N]: " certificate_files
+    
+    if [ "$certificate_files" == "N" ] || [ "$certificate_files" == "n" ]; then 
+        read -r -p "ssl certificate: " ssl_certificate
+        read -r -p "ssl certificate key: " ssl_certificate_key
+    fi
+    
+    sudo tee ./nginx/server_conf<<EOF
+server_name $domain;
+ssl_certificate     "$path/$ssl_certificate";
+ssl_certificate_key "$path/$ssl_certificate_key";
+EOF
+
+first_line="proxy_pass http://$domain:3000/;"
+sed -i.bak "1s/.*/$first_line/" ./nginx/proxy_conf
 fi

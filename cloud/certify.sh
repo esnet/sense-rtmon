@@ -1,4 +1,10 @@
 #! /bin/bash
+
+docker run --rm -it -v /etc/letsencrypt:/etc/letsencrypt -p 80:80 certbot/certbot certonly \
+--standalone -n --agree-tos \
+--register-unsafely-without-email \
+--domains $1
+
 # usage() {
 #     cat <<EOF
 #         Usage:      letsencrypt.sh <domain> 
@@ -62,8 +68,3 @@
 #     echo "!!    Invalid arguments passed."
 #     usage
 # fi
-
-docker run --rm -it -v /etc/letsencrypt:/etc/letsencrypt -p 80:80 certbot/certbot certonly \
-             --standalone -n --agree-tos \
-            --register-unsafely-without-email \
-            --domains $domain

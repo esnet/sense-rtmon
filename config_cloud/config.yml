@@ -20,6 +20,7 @@ hostA: # Host 1
   switchPort: 
     ifName: 'hundredGigE 1/27'
     ifVlan: 'Vlan 1000'
+    order: 1
 
 hostB: # Host 2
   IP: 198.32.43.15
@@ -30,6 +31,7 @@ hostB: # Host 2
   switchPort: 
     ifName: 'hundredGigE 1/31'
     ifVlan: 'Vlan 1000'
+    order: 4
 
 ## SECTION 2 SWITCH INFORMATION ##
 switchData:
@@ -42,10 +44,13 @@ switchData:
     ifName: 'hundredGigE 1/27'
     vlan: 1000
     ifVlan: 'Vlan 1000'
+    order: 2
+
   portOut:
     ifName: 'hundredGigE 1/31'
     vlan: 1000
     ifVlan: 'Vlan 1000'
+    order: 3
 
 ## SECTION 3 TCP and ARP (possilbe more in the future) ##
 arpMetrics:

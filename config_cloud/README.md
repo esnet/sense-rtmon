@@ -13,25 +13,26 @@ The configuration files are broken into 3 sections.
 - `grafanaHostIP` the DNS of the server that `Cloud Stack` runs on. If DNS not available use IP address but it'll not be encrypted.
 - `grafanaPort` the port where grafana is running on default is 3000. Do not change it unless the port mapping in `cloud/docker-stack.yml` is changed.
 - `pushgatewayPort` the port where pushgateway is running on on `Could Stack`. Do not change this number unless the `Cloud Stack` has changed its port mapping in `cloud/docker-stack.yml`.
-
 - `grafanaAPIToken` API token that establishes initial connection. Auto Curl is supported in the `start.sh` script. This can be left blank. For manual
 Instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub
+- `configFile` indicates the config file used.
 
-- `hostA` and `hostB`'s IP addresses are needed.
+### Host Information
+- `IP` addresses of hostA and hostB are needed.
+- `interfaceName` used in Grafana to query node metrics.
+- `interfaceName`, `interfadeIP`, and `nodeName` are displayed on the in the dashboard and the diagram.
+- `vlan` is included in the title of each dashboard.
+- `ifName` and `ifVlan` are used to query SNMP metrics coming from `Site Stack`.
+- `order` indicates the diagram connection of host devices from left to right.
 
-grafanaAPIToken: "CONFIG"
-configFile: "config.yml"
-
-## Section 2 SNMP Metrics
+## Section 2 SWITCH INFORMATION
 - `SNMPHostIP` the IP address of this host if the SNMP exporter is running on it.
 - `target` the IP address of the switch where the metrics are pulling from.
-- `portIn` and `portOut` contain the interface name and interface vlan used for filtering SNMP metrics before sending it to `Cloud Stack`. **Currently, it's not implemented yet.**
-- `oids` enter the name or number of oids to pull from the switch.
-- `communityString` the key needed to access the swtich. Please keep the quotation marks.
-- `scrapeTimeout` and `retries` by default is 5s and 3.
+- `portIn` and `portOut` contain the interface name and interface vlan used for querying SNMP metrics. **NOTE: This requires SNMP Exporter running before generating the dashboard**
+- `order` indicates the diagram connection of switches from left to right.
+- `switchif` is optional. It's displayed on the diagram.
 **Note: Scale Up SNMP Metrics when there is more than one switch**
 - If there is more than 1 switch copy paste the enter SNMP section and name each switch `snmpMetricsA`, `snmpMetricsB`, `snmpMetricsC` ... `multiconfig.yml` is a good example.
-
 
 ## Section 3 TCP and ARP
 - `port` used for dashboard to display the information.

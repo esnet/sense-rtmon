@@ -1,10 +1,10 @@
 #! /bin/bash
 
 docker run --rm -it -v /etc/letsencrypt:/etc/letsencrypt -p 80:80 certbot/certbot certonly \
--n --agree-tos \
+--standalone -n --agree-tos \
 --register-unsafely-without-email \
 --domains $1
-# --standalone 
+
 if [ -f "/opt/certbot/live/$1/fullchain.pem" ]; then
     echo "!!    Copying certificates from /opt/certbot/live/$1/ to /opt/sense-rtmon/tls/"
     mkdir -p /opt/sense-rtmon/tls/

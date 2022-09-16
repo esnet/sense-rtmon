@@ -36,8 +36,9 @@ ssl_certificate     "/opt/sense-rtmon/tls/tls.crt";
 ssl_certificate_key "/opt/sense-rtmon/tls/tls.key";
 EOF
 
-first_line="proxy_pass http://$1:3000/;"
-sed -i.bak "1s/.*/$first_line/" ./nginx/proxy_conf
+python3 certify.py $1 "/opt/sense-rtmon/tls/tls.crt" "/opt/sense-rtmon/tls/tls.key"
+# first_line="proxy_pass http://$1:3000/;"
+# sed -i.bak "1s/.*/$first_line/" ./nginx/proxy_conf
 
 else
     echo "!!    Certificate not found! Error during TLS configuration."

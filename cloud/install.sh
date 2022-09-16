@@ -87,6 +87,9 @@ ssl_certificate     "$ssl_certificate";
 ssl_certificate_key "$ssl_certificate_key";
 EOF
 
-    first_line="proxy_pass http://$domain:3000/;"
-    sed -i.bak "1s/.*/$first_line/" ./nginx/proxy_conf
+    # write the first line to proxt_conf
+    read -r -p "Grafana Running port (default 3000): " grafana_port
+    # echo "!!    If entered port is not 3000, edit docker-stack.yml to match the correct port for Grafana and Nginx Container"
+    
+    python3 certify.py $domain $grafana_port $ssl_certificate $ssl_certificate_key
 fi

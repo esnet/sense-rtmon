@@ -63,14 +63,8 @@ services:
     ports:
       - 443:443
       - 3000
-      # - 9091
-      # - 9092:9092
-      # - 9090
-      # - 9093:9093
     volumes:
       - $PWD/nginx/:/etc/nginx/conf.d/
-      # - /etc/grafana/fullchain.pem:/etc/grafana/fullchain.pem
-      # - /etc/grafana/privkey.pem:/etc/grafana/privkey.pem
       - /etc/letsencrypt/live/dev2.virnao.com/fullchain.pem:/etc/letsencrypt/live/dev2.virnao.com/fullchain.pem
       - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
       

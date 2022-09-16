@@ -41,8 +41,8 @@ docker login
 sleep 0.5
 
 # Configuration starts
-read -r -p "Enter configuration file (press enter to choose default config file /config_cloud/config.yml or type the config file WITHOUT the path): " top_level_config_file
-python3 fill_config.py $top_level_config_file
+# read -r -p "Enter configuration file (press enter to choose default config file /config_cloud/config.yml or type the config file WITHOUT the path): " top_level_config_file
+# python3 fill_config.py $top_level_config_file
 
 # >Certificates
 echo "!!    Start Encryption Script"
@@ -73,26 +73,20 @@ if [ "$sslmode" == "1" ]; then # Let's Encrypt
     fi
 fi
 
-if [ "$sslmode" == "2" ]; then # Let's Encrypt
+if [ "$sslmode" == "2" ]; then # existing certificate
     echo "!!    Using existing certificates (e.g. default path /etc/pki/tls )."
-    read -r -p "Please enter the full path for the folder of existing certificates: " path
+    read -r -p "Please enter the full path for the existing certificates and key"        
+    read -r -p "ssl certificate: " ssl_certificate
+    read -r -p "ssl certificate key: " ssl_certificate_key
     read -r -p "Please enter the domain name of this machine: " domain
     
-    echo "Note: ssl certificate is fullchain.pem"
-    echo "Note: ssl certificate key is privket.pem"
-    read -r -p "Are the ssl certficate and key correct [y/N]: " certificate_files
-    
-    if [ "$certificate_files" == "N" ] || [ "$certificate_files" == "n" ]; then 
-        read -r -p "ssl certificate: " ssl_certificate
-        read -r -p "ssl certificate key: " ssl_certificate_key
-    fi
-    
+
     sudo tee ./nginx/server_conf<<EOF
 server_name $domain;
-ssl_certificate     "$path/$ssl_certificate";
-ssl_certificate_key "$path/$ssl_certificate_key";
+ssl_certificate     "$ssl_certificate";
+ssl_certificate_key "$ssl_certificate_key";
 EOF
 
-first_line="proxy_pass http://$domain:3000/;"
-sed -i.bak "1s/.*/$first_line/" ./nginx/proxy_conf
+    first_line="proxy_pass http://$domain:3000/;"
+    sed -i.bak "1s/.*/$first_line/" ./nginx/proxy_conf
 fi

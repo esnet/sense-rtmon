@@ -79,16 +79,15 @@ if [ "$sslmode" == "2" ]; then # existing certificate
     read -r -p "ssl certificate: " ssl_certificate
     read -r -p "ssl certificate key: " ssl_certificate_key
     read -r -p "Please enter the domain name of this machine: " domain
-    
+    read -r -p "Grafana Running port (default 3000): " grafana_port
 
-    sudo tee ./nginx/server_conf<<EOF
-server_name $domain;
-ssl_certificate     "$ssl_certificate";
-ssl_certificate_key "$ssl_certificate_key";
-EOF
+#     sudo tee ./nginx/server_conf<<EOF
+# server_name $domain;
+# ssl_certificate     "$ssl_certificate";
+# ssl_certificate_key "$ssl_certificate_key";
+# EOF
 
     # write the first line to proxt_conf
-    read -r -p "Grafana Running port (default 3000): " grafana_port
     # echo "!!    If entered port is not 3000, edit docker-stack.yml to match the correct port for Grafana and Nginx Container"
     
     python3 certify.py $domain $grafana_port $ssl_certificate $ssl_certificate_key

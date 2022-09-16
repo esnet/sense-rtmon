@@ -1,6 +1,7 @@
-from gettext import find
 import sys
 import re
+
+# domain port ssl_certificate ssl_key
 
 with open("./nginx/proxy_conf") as f:
     lines = f.readlines()
@@ -10,7 +11,11 @@ lines[0] = f"proxy_pass http://{str(sys.argv[1])}:{str(sys.argv[2])}/;"
 with open("./nginx/proxy_conf", "w") as f:
     f.writelines(lines)
     
-    
+with open("./nginx/server_conf", "w") as f:
+    f.write(f'''server_name {str(sys.argv[1])};
+ssl_certificate     "{str(sys.argv[3])}";
+ssl_certificate_key "{str(sys.argv[4])}";''')
+
 # read in args.sh file
 with open('docker-stack.yml', 'r') as file:
     write_data = file.readlines()
@@ -20,7 +25,6 @@ find_line2 = False
 
 stack_yml = []
 for each_line in write_data:
-    
     # replacing the correct port for Grafana
     each_line = re.sub("      - .*:3000", f"      - {str(sys.argv[4])}:{str(sys.argv[2])}", each_line)
     each_line = re.sub("      - 3000", f"      - {str(sys.argv[2])}", each_line)    

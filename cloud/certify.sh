@@ -30,13 +30,16 @@ if [ -f "/opt/certbot/live/$1/fullchain.pem" ]; then
     # keytool -changealias -alias 1 -destalias server -keystore server.keystore -storepass $tls_pass
     # chmod 0777 server.keystore
 
-        sudo tee ./nginx/server_conf<<EOF
-server_name $1;
-ssl_certificate     "/opt/sense-rtmon/tls/tls.crt";
-ssl_certificate_key "/opt/sense-rtmon/tls/tls.key";
-EOF
 
-python3 certify.py $1 "/opt/sense-rtmon/tls/tls.crt" "/opt/sense-rtmon/tls/tls.key"
+#         sudo tee ./nginx/server_conf<<EOF
+# server_name $1;
+# ssl_certificate     "/opt/sense-rtmon/tls/tls.crt";
+# ssl_certificate_key "/opt/sense-rtmon/tls/tls.key";
+# EOF
+
+    read -r -p "Grafana Running port (default 3000): " grafana_port
+    python3 certify.py $1 $grafana_port "/opt/sense-rtmon/tls/tls.crt" "/opt/sense-rtmon/tls/tls.key"
+
 # first_line="proxy_pass http://$1:3000/;"
 # sed -i.bak "1s/.*/$first_line/" ./nginx/proxy_conf
 

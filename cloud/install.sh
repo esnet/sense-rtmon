@@ -75,7 +75,7 @@ fi
 
 if [ "$sslmode" == "2" ]; then # existing certificate
     echo "!!    Using existing certificates (e.g. default path /etc/pki/tls )."
-    read -r -p "Please enter the full path for the existing certificates and key"        
+    echo "Please enter the existing certificates and key:"
     read -r -p "ssl certificate: " ssl_certificate
     read -r -p "ssl certificate key: " ssl_certificate_key
     read -r -p "Please enter the domain name of this machine: " domain

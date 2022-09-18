@@ -90,7 +90,8 @@ if [ "$sslmode" == "2" ]; then # existing certificate
     # echo "!!    If entered port is not 3000, edit docker-stack.yml to match the correct port for Grafana and Nginx Container"
     
     python3 certify.py $domain $grafana_port $ssl_certificate $ssl_certificate_key
-    echo "current ssl certificate updated in cloud/nginx/proxy_conf and cloud/nginx/server_conf"
-    echo "grafana port updated in docker-stack.yml file (default 3000)"
-    echo "make sure the same port is entered in config files in config_cloud/"
+    echo "!!    Success!"
+    echo "!!    current ssl certificate updated in cloud/nginx/proxy_conf and cloud/nginx/server_conf"
+    echo "!!    grafana port updated in docker-stack.yml file (default 3000)"
+    echo "!!    make sure the same port is entered in config files in config_cloud/"
 fi

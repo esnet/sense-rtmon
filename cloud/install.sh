@@ -24,7 +24,6 @@ sleep 0.5
 
 echo "!!    downloading script exporter"
 git clone https://github.com/ricoberger/script_exporter.git
-yes | cp -rfa se_config/. script_exporter/examples
 
 sleep 0.5
 

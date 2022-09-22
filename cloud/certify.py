@@ -29,12 +29,12 @@ for each_line in write_data:
     each_line = re.sub("      - .*:3000", f"      - {str(sys.argv[2])}:3000", each_line)
     each_line = re.sub("      - 3000", f"      - {str(sys.argv[2])}", each_line)    
     
-    if find_line2: # replace secobd line key
-        each_line = re.sub(".*", f"      - {str(sys.argv[4])}:{str(sys.argv[4])}", each_line)
-        find_line2 = False
+    # if find_line2: # replace secobd line key
+    #     each_line = re.sub(".*", f"      - {str(sys.argv[4])}:{str(sys.argv[4])}\n", each_line)
+    #     find_line2 = False
     
     if find_line1: # replace first line certificate
-        each_line = re.sub(".*", f"      - {str(sys.argv[3])}:{str(sys.argv[3])}", each_line)
+        each_line = re.sub(".*", f"      - {str(sys.argv[3])}:{str(sys.argv[3])}\n", each_line)
         find_line1 = False
         find_line2 = True
         

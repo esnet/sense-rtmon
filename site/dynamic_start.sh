@@ -13,6 +13,57 @@ switch_target1=
 switch_target2=
 ############################# PYTHON SCRIPT FILL OUT ####################
 
+############################# CRONTAB ###################################
+echo "!!    Set up crontab when running for the first time"
+read -r -p "Set up crontab? [y/N (press enter is default N)]: " crontab
+if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
+    echo "Satring Crontab setup"
+    # create a temporary copy paste file
+    echo ""
+    > ./crontabs/cron_autopush
+    > ./crontabs/cron_history
+
+    echo "!!    copy paste crontab to a temporary file"
+    crontab -l > ./crontabs/cron_autopush
+    crontab -l > ./crontabs/cron_history
+
+    # check if job is alread in
+    if grep -F "* * * * * for i in 0 1 2; do $PWD/crontabs/push_snmp_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_snmp_exporter_metrics.sh" ./crontabs/cron_autopush 
+    then
+        echo "exact SNMP task is already in cron, type crontab -e to check"
+    else
+        echo "#Puppet Name: snmp exporter send data to pushgateway every 15 seconds" >> ./crontabs/cron_autopush
+        echo "MAILTO=""" >> ./crontabs/cron_autopush
+        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/push_snmp_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_snmp_exporter_metrics.sh" >> ./crontabs/cron_autopush
+    fi
+
+    if grep -F "* * * * * for i in 0 1 2; do $PWD/crontabs/push_node_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_node_exporter_metrics.sh" ./crontabs/cron_autopush
+    then    
+        echo "exact Node task is already in cron, type crontab -e to check"
+    else
+        echo "#Puppet Name: node exporter send data to pushgateway every 15 seconds" >> ./crontabs/cron_autopush
+        echo "MAILTO=""" >> ./crontabs/cron_autopush
+        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/push_node_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_node_exporter_metrics.sh" >> ./crontabs/cron_autopush
+    fi
+
+    if grep -F "* * * * * for i in 0 1 2; do $PWD/crontabs/update_arp_exporter.sh & sleep 15; done; $PWD/crontabs/update_arp_exporter.sh" ./crontabs/cron_autopush
+    then    
+        echo "exact ARP task is already in cron, type crontab -e to check"
+    else
+        echo "#Puppet Name: check update on arp table every 15 seconds" >> ./crontabs/cron_autopush
+        echo "MAILTO=""" >> ./crontabs/cron_autopush
+        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/update_arp_exporter.sh & sleep 15; done; $PWD/crontabs/update_arp_exporter.sh" >> ./crontabs/cron_autopush
+    fi
+
+    echo ""
+    crontab ./crontabs/cron_autopush
+    rm -f ./crontabs/cron_autopush
+    echo "!!    crontab set up successfuly"
+else 
+    echo "Skip crontab, crontab is needed to push metrics successfully"
+fi
+############################# CRONTAB ###################################
+
 echo "!!    Please edit config.yml for single switch or multiconfig.yml for multiple switches under config folder before procceding"
 # read -p "Press enter to continue"
 echo "!!    Make sure Port 9100, 9116 are not in use"

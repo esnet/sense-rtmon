@@ -9,7 +9,7 @@ print("Parsing config file...")
 owd = os.getcwd()
 os.chdir("..")
 os.chdir("..")
-config_path = str(os.path.abspath(os.curdir)) +"/config_cloud"
+config_path = str(os.path.abspath(os.curdir)) +"/config_site"
 infpth = config_path + "/config.yml"
 os.chdir(owd)
 data = {}

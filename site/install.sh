@@ -75,7 +75,7 @@ read -r -p "Install SNMP Exporter [y/N (press enter is default N)]: " snmp_insta
     sleep 0.2
     echo "!!    Go build and Make mibs.."
     cd ./SNMPExporter
-    python3 ./SNMPExporter/install_snmp.py
+    python3 install_snmp.py
     cd ..
 
     # read -r -p "Enter MIB folder (default /usr/share/snmp/mibs): " mibfolder

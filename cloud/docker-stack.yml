@@ -64,7 +64,7 @@ services:
       - 443:443
       - 3000
     volumes:
-      - $PWD/nginx/:/etc/nginx/conf.d/
+      - $PWD/nginx/:/etc/nginx/conf.d/ # do not change this line if possible
       - /etc/letsencrypt/live/dev2.virnao.com/fullchain.pem:/etc/letsencrypt/live/dev2.virnao.com/fullchain.pem
       - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
     

@@ -20,8 +20,7 @@ ssl_certificate_key "{str(sys.argv[4])}";\n''')
 with open('docker-stack.yml', 'r') as file:
     write_data = file.readlines()
 
-find_line1 = False
-find_line2 = False 
+find_line = False
 
 stack_yml = []
 for each_line in write_data:
@@ -40,8 +39,15 @@ for each_line in write_data:
         
     # locating the line
     if "- $PWD/nginx/:/etc/nginx/conf.d/" in each_line:
-        find_line1 = True 
+        find_line = True        
+    
     stack_yml.append(each_line)
+    
+    if find_line:
+        stack_yml.append(f"      - {str(sys.argv[4])}:{str(sys.argv[4])}")
+        stack_yml.append(f"      - {str(sys.argv[3])}:{str(sys.argv[3])}")
+        find_line = False
       
+    
 with open('docker-stack.yml', 'w') as file:
     file.writelines(stack_yml)

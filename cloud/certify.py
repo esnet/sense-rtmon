@@ -20,7 +20,8 @@ ssl_certificate_key "{str(sys.argv[4])}";\n''')
 with open('docker-stack.yml', 'r') as file:
     write_data = file.readlines()
 
-find_line = False
+find_line1 = False
+find_line2 = False 
 
 stack_yml = []
 for each_line in write_data:
@@ -28,26 +29,20 @@ for each_line in write_data:
     each_line = re.sub("      - .*:3000", f"      - {str(sys.argv[2])}:3000", each_line)
     each_line = re.sub("      - 3000", f"      - {str(sys.argv[2])}", each_line)    
     
-    # if find_line2: # replace secobd line key
-    #     each_line = re.sub(".*", f"      - {str(sys.argv[4])}:{str(sys.argv[4])}", each_line)
-    #     find_line2 = False
+    if find_line2: # replace secobd line key
+        each_line = f"      - {str(sys.argv[4])}:{str(sys.argv[4])}\n"
+        find_line2 = False
     
-    # if find_line1: # replace first line certificate
-    #     each_line = re.sub(".*", f"      - {str(sys.argv[3])}:{str(sys.argv[3])}", each_line)
-    #     find_line1 = False
-    #     find_line2 = True
+    if find_line1: # replace first line certificate
+        each_line = f"      - {str(sys.argv[3])}:{str(sys.argv[3])}\n"
+        find_line1 = False
+        find_line2 = True
         
     # locating the line
     if "- $PWD/nginx/:/etc/nginx/conf.d/" in each_line:
-        find_line = True        
+        find_line1 = True
     
     stack_yml.append(each_line)
-    
-    if find_line:
-        stack_yml.append(f"      - {str(sys.argv[4])}:{str(sys.argv[4])}")
-        stack_yml.append(f"      - {str(sys.argv[3])}:{str(sys.argv[3])}")
-        find_line = False
       
-    
 with open('docker-stack.yml', 'w') as file:
     file.writelines(stack_yml)

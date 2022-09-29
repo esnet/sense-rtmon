@@ -78,4 +78,5 @@ read -r -p "Install SNMP Exporter [y/n]: " snmp_install
     cd ..
 fi
 
-echo "install completed run ./start.sh to start exporters"
+echo "!!    What's next?"
+echo "!!    Install completed run ./start.sh to start exporters"

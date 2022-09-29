@@ -71,27 +71,7 @@ if [ "$API" != "y" ] || [ "$API" != "Y" ]; then
 fi 
 
 sleep 1
-
-read -r -p "Generate Grafana Dashboard? [y/n]: " grafana
-
-if [ "$config_file" == "" ]; then
-    if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
-        cd dashboard
-        python3 dynamic.py
-        cd ..
-    else 
-        echo "Skip Grafana Dashboard Generation"
-        echo "To Generate Dashboard later run ./generate.sh"
-    fi
-else 
-    if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
-        cd dashboard
-        python3 dynamic.py $config_file
-        cd ..
-    else 
-        echo "Skip Grafana Dashboard Generation"
-        echo "To Generate Dashboard later run ./generate.sh"
-    fi
-fi
-
 echo "!!    Wait for 3-5 seconds for the containers to get started"
+echo "!!    What's next?"
+echo "!!    Flow Generation: run ./generate.sh to generate a dashboard"
+echo "!!    Delete Container: run ./clean.sh to remove cloud stack"

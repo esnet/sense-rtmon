@@ -6,3 +6,6 @@ python3 fill_start.py $top_level_config_file
 echo "!!    Running the start script that is filled by config.yml file"
 sleep 0.5 
 ./dynamic_start.sh
+
+echo "!!    What's next?"
+echo "!!    clean.sh deletes all containers and crontab related files"

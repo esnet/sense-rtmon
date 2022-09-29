@@ -75,8 +75,8 @@ fi
 if [ "$sslmode" == "2" ]; then # existing certificate
     echo "!!    Using existing certificates (e.g. default path /etc/pki/tls )."
     echo "Please enter the existing certificates and key:"
-    read -r -p "ssl certificate: " ssl_certificate
-    read -r -p "ssl certificate key: " ssl_certificate_key
+    read -r -p "ssl certificate (fullchain): " ssl_certificate
+    read -r -p "ssl certificate key (privkey): " ssl_certificate_key
     read -r -p "Please enter the domain name of this machine: " domain
     read -r -p "Grafana Running port (default 3000): " grafana_port
     if [ "$grafana_port" == "" ]; then

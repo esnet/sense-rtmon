@@ -44,7 +44,7 @@ sleep 2
 
 echo "!!    API Key setup is only needed for the first time"
 sleep 1
-read -r -p "AUTO setup AUTH API keys? [y/N (press enter is default N)]: " API 
+read -r -p "AUTO setup AUTH API keys? [y/n]: " API 
 if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
     # read -r -p "username (default is admin): " username 
     # read -r -p "password (default is admin): " password
@@ -52,7 +52,25 @@ if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
     python3 fill_API.py
 fi 
 
-read -r -p "Generate Grafana Dashboard? [y/N (press enter is default N)]: " grafana
+if [ "$API" != "y" ] || [ "$API" != "Y" ]; then
+    echo "!!    APT Key setup instruction:"
+    sleep 0.5
+    echo "- navigate to <ip_address/domain_name>:3000(or 443 if HTTPS enabled)"
+    echo "- login to Grafana with the default authentication (username: admin, password: admin)"
+    echo "- setting -> API keys -> add key with Admin permission"
+    echo "- copy the API token value starting with 'Bearer ....'"
+    echo "- edit any config_cloud/config* files that are used"
+    echo "- replace 'CONFIG' in {grafanaAPIToken: 'CONFIG'} with the new API token"
+    sleep 1
+    echo "!!    Datasource setup instruction:"
+    sleep 0.5
+    echo "- navigate to <ip_address/domain_name>:3000(or 443 if HTTPS enabled)"
+    echo "- login to Grafana with the default authentication (username: admin, password: admin)"
+    echo "- setting -> data source -> Promethues -> URL -> Save & Test"
+    echo "- enter the IP address NOT DNS"
+fi 
+
+read -r -p "Generate Grafana Dashboard? [y/n]: " grafana
 
 if [ "$config_file" == "" ]; then
     if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
@@ -61,6 +79,7 @@ if [ "$config_file" == "" ]; then
         cd ..
     else 
         echo "Skip Grafana Dashboard Generation"
+        echo "To Generate Dashboard later run ./generate.sh"
     fi
 else 
     if [ "$grafana" == "y" ] || [ "$grafana" == "Y" ]; then
@@ -69,6 +88,7 @@ else
         cd ..
     else 
         echo "Skip Grafana Dashboard Generation"
+        echo "To Generate Dashboard later run ./generate.sh"
     fi
 fi
 

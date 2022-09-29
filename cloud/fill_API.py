@@ -67,4 +67,3 @@ else: # default config file
         file.writelines(file_data)
         
     print("!!   API CURL SUCESS!")
-    print("!!    Visit Google Doc for Grafana API and add Promethues as a Data Source Key instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub")

@@ -7,7 +7,7 @@ read -r -p "Enter the IP adress of this host for docker swarm to init --advertis
 
 ############################# DOCKER SETUP ##############################
 ## check docker 
-read -r -p "Login to Docker [y/N (press enter is default N)]: " docker_login
+read -r -p "Login to Docker [y/n]: " docker_login
 if [ "$docker_login" == "y" ] || [ "$docker_login" == "Y" ]; then
     if [ -x "$(command -v docker)" ]; then
         echo "||        Found docker..."
@@ -51,7 +51,7 @@ fi
 # fi 
 
 ############################## INSTALL GO & SNMP DEPENDENCIES ##############################
-read -r -p "Install SNMP Exporter [y/N (press enter is default N)]: " snmp_install
+read -r -p "Install SNMP Exporter [y/n]: " snmp_install
     if [ "$snmp_install" == "y" ] || [ "$snmp_install" == "Y" ]; then
     echo "!!    Install SNMP dependencies"
     echo "!!    Download go1.18.3"

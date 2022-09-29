@@ -15,8 +15,8 @@ switch_target2=
 
 
 ############################# CRONTAB ###################################
-echo "!!    Set up crontab when running for the first time"
-read -r -p "Set up crontab? [y/N (press enter is default N)]: " crontab
+echo "!!    Set up crontab only needed when running for the first time"
+read -r -p "Set up crontab? [y/n]: " crontab
 if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
     echo "Satring Crontab setup"
     # create a temporary copy paste file
@@ -74,7 +74,7 @@ echo "!!    Check Port 9116 for snmp exporter"
 sudo lsof -i -P -n | grep 9116
 
 ############################# NODE #############################
-read -r -p "Start Node Exporter? [y/N (press enter is default N)]: " start_node
+read -r -p "Start Node Exporter? [y/n]: " start_node
 if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
     starting_node="-f ./compose-files/node-docker-compose.yml" 
     echo "Satring Node Exporter Service"
@@ -90,7 +90,7 @@ else
 fi
 
 ############################# SNMP #############################
-read -r -p "Start SNMP Exporter? [y/N (press enter is default N)]: " start_snmp
+read -r -p "Start SNMP Exporter? [y/n]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     starting_snmp="-f ./compose-files/snmp-docker-compose.yml" 
     starting_snmp2="-f ./compose-files/snmp-docker-compose2.yml" 
@@ -126,7 +126,7 @@ else
 fi
 
 ############################# ARP #############################
-read -r -p "Start ARP Exporter? [y/N (press enter is default N)]: " start_arp
+read -r -p "Start ARP Exporter? [y/n]: " start_arp
 if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     starting_arp="-f ./compose-files/arp-docker-compose.yml" 
     # delete everything first
@@ -169,7 +169,7 @@ else
     echo "Skip ARP Exporter"
 fi
 
-read -r -p "Start TCP Exporter? [y/N (press enter is default N)]: " start_tcp
+read -r -p "Start TCP Exporter? [y/n]: " start_tcp
 if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
     starting_tcp="-f ./compose-files/tcp-docker-compose..yml" 
     echo "Satring TCP Exporter Service"

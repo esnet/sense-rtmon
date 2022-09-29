@@ -11,11 +11,7 @@ sudo lsof -i -P -n | grep 9091
 echo "!!    Check Port 9469"
 sudo lsof -i -P -n | grep 9469
 
-# echo "!!    Remove previous stack"
-# docker stack rm could
-# echo "!!    Previous stack revmoed"
-
-# sudo systemctl start grafana-server
+sleep 2
 
 echo "!!    Make sure SNMP exporter is running. Dashboard can't be generated without SNMP Exporter"
 read -r -p "Press Enter to continue: " enter_continue 
@@ -32,8 +28,12 @@ else
     sleep 0.2
 fi
 
+sleep 1
+
 yes | cp -rfa se_config/. script_exporter/examples
 docker stack deploy -c docker-stack.yml cloud
+
+sleep 2
 
 echo "!!    IMPORTANT:"
 echo "!!    Before Generating Dashboard for the first time please setup Data Source and Grafana authorization API key"
@@ -70,6 +70,8 @@ if [ "$API" != "y" ] || [ "$API" != "Y" ]; then
     echo "- enter the IP address NOT DNS"
 fi 
 
+sleep 1
+
 read -r -p "Generate Grafana Dashboard? [y/n]: " grafana
 
 if [ "$config_file" == "" ]; then
@@ -92,6 +94,4 @@ else
     fi
 fi
 
-
-# echo "!!    Wait for the containers to get started"
-# sleep 1.5
+echo "!!    Wait for 3-5 seconds for the containers to get started"

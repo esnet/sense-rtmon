@@ -20,6 +20,9 @@ else
     exit 1
 fi
 
+read -r -p "Please enter the IP Address for docker swarm to init: " MYIP
+docker swarm init --advertise-addr $MYIP
+
 sleep 0.5
 
 echo "!!    downloading script exporter"
@@ -38,10 +41,6 @@ sudo pip3 install requests
 docker login
  
 sleep 0.5
-
-# Configuration starts
-# read -r -p "Enter configuration file (press enter to choose default config file /config_cloud/config.yml or type the config file WITHOUT the path): " top_level_config_file
-# python3 fill_config.py $top_level_config_file
 
 # >Certificates
 echo "!!    Start Encryption Script"
@@ -78,7 +77,7 @@ if [ "$sslmode" == "2" ]; then # existing certificate
     read -r -p "ssl certificate (fullchain): " ssl_certificate
     read -r -p "ssl certificate key (privkey): " ssl_certificate_key
     read -r -p "Please enter the domain name of this machine: " domain
-    read -r -p "Grafana Running port (default 3000): " grafana_port
+    read -r -p "Grafana Running port (default 3000 running behind Nginx): " grafana_port
     if [ "$grafana_port" == "" ]; then
         grafana_port=3000
     fi
@@ -97,3 +96,6 @@ if [ "$sslmode" == "2" ]; then # existing certificate
     echo "!!    grafana port updated in docker-stack.yml file (default 3000)"
     echo "!!    make sure the same port is entered in config files in config_cloud/"
 fi
+
+echo "!!    what's next?"
+echo "!!    run ./start.sh to start containers"

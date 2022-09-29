@@ -1,61 +1,10 @@
-## SECTION 1 GENERAL INFORMATION ##
+###### Clean Slate Environment ######
 switchNum: 1
-dashTitle: "Top Flow Dashboard"
-debugTitle: "Top Flow L2 Debugging Dashboard"
-flow: " flow # "
 hostIP:  # 198.32.43.16
 # The DNS of the host which is running the Grafana container
 grafanaHostIP: ''
-grafanaPort: 3000 # Do not change unless container mapping change
 pushgatewayPort: 9091 # Do not change unless container mapping change
-grafanaAPIToken: "CONFIG"
-configFile: "config.yml"
-
 hostA: # Host 1
   IP:
-  interfaceName: ''
-  interfaceIP: ''
-  nodeName: ''
-  vlan: 
-  switchPort: 
-    ifName: ''
-    ifVlan: ''
-    order: 1
-
 hostB: # Host 2
   IP: 
-  interfaceName: ''
-  interfaceIP: ''
-  nodeName: ''
-  vlan: 
-  switchPort: 
-    ifName: ''
-    ifVlan: ''
-    order: 4
-
-## SECTION 2 SWITCH INFORMATION ##
-switchData:
-  job_name: 'snmp1'
-  SNMPHostIP: 
-  target: 
-  # switch if format: " - IF: optional" 
-  switchif: "" # optional
-  portIn:
-    ifName: ''
-    vlan: 
-    ifVlan: ''
-    order: 2
-  portOut:
-    ifName: ''
-    vlan:
-    ifVlan: ''
-    order: 3
-
-## SECTION 3 TCP and ARP (possilbe more in the future) ##
-arpMetrics:
-  port: 9192
-  job_name: 'arpmetrics'
-
-tcpMetrics:
-  port: 9191
-  job_name: 'tcpmetrics'

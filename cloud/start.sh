@@ -42,6 +42,8 @@ echo "!!    Visit Google Doc for Grafana API and add Promethues as a Data Source
 echo "!!    Instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub"
 sleep 2
 
+echo "!!    API Key setup is only needed for the first time"
+sleep 1
 read -r -p "AUTO setup AUTH API keys? [y/N (press enter is default N)]: " API 
 if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
     # read -r -p "username (default is admin): " username 

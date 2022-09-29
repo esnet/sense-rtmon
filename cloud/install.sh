@@ -29,7 +29,7 @@ sleep 0.5
 
 dnf update -y
 yum update -y
-suod yum install -y docker-compose-plugin
+sudo yum install -y docker-compose-plugin
 sudo yum -y install firewalld
 sudo yum –y install python3
 sudo yum –y install python3-pip

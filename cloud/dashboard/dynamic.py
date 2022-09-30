@@ -48,6 +48,10 @@ vlan_if_index4 = "MONITORVLAN4"
 vlan_if_index5 = "MONITORVLAN5"
 vlan_if_index6 = "MONITORVLAN6"
 
+### commenting the below allows dashboard generation but the following are needed for SNMP monitoring ###
+
+######################## COMMENTING FOR TESTING ########################
+
 # def index_finder(name):
 #     cmd = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{name}\".*'"
 #     grep = subprocess.check_output(cmd,shell=True).decode()
@@ -59,26 +63,17 @@ vlan_if_index6 = "MONITORVLAN6"
 
 # # monitor per vlan. If same, avoid duplicates monitoring
 # if data['switchNum'] == 1: # 1 switch possibly 1 vlan
-#     switch_vlan_1_in = str(data['switchData']['portIn']['ifVlan'])
-#     switch_vlan_1_out = str(data['switchData']['portOut']['ifVlan'])
-#     vlan_if_index1 = index_finder(switch_vlan_1_in)
-#     if switch_vlan_1_out != switch_vlan_1_in:
-#         vlan_if_index2 = index_finder(switch_vlan_1_out)
+#     vlan_if_index1 = index_finder(str(data['switchData']['portIn']['ifVlan']))
+#     vlan_if_index2 = index_finder(str(data['switchData']['portOut']['ifVlan']))
 
 # # 2 switches possibly 4 vlans
 # if data['switchNum'] == 2 or data['switchNum'] == 3:
-#     switch_vlan_1_in = str(data['switchDataA']['portIn']['ifVlan'])
-#     switch_vlan_1_out = str(data['switchDataA']['portOut']['ifVlan'])
-#     switch_vlan_2_in = str(data['switchDataB']['portIn']['ifVlan'])
-#     switch_vlan_2_out = str(data['switchDataB']['portOut']['ifVlan'])
-#     vlan_if_index3 = index_finder(switch_vlan_1_in)
-#     if switch_vlan_1_out != switch_vlan_1_in:
-#         vlan_if_index4 = index_finder(switch_vlan_1_out)
-#     if switch_vlan_2_in != switch_vlan_1_in and switch_vlan_2_in != switch_vlan_1_out:
-#         vlan_if_index5 = index_finder(switch_vlan_2_in)
-#     if switch_vlan_2_out != switch_vlan_1_in and switch_vlan_2_out != switch_vlan_1_out and switch_vlan_2_out != switch_vlan_2_in:
-#         vlan_if_index6 = index_finder(switch_vlan_2_out)
+#     vlan_if_index3 = index_finder(str(data['switchDataA']['portIn']['ifVlan']))
+#     vlan_if_index4 = index_finder(str(data['switchDataA']['portOut']['ifVlan']))
+#     vlan_if_index5 = index_finder(str(data['switchDataB']['portIn']['ifVlan']))
+#     vlan_if_index6 = index_finder(str(data['switchDataB']['portOut']['ifVlan']))
     
+######################## COMMENTING FOR TESTING ########################
 
 print("\n\n")
 now = datetime.now()

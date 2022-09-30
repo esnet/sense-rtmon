@@ -1,8 +1,9 @@
-switchNum: 
-dashTitle: ""
-debugTitle: ""
-flow: " flow # "
-hostIP: 198.32.43.16 # example 198.32.43.16
+## SECTION 1 GENERAL INFORMATION ##
+switchNum: 1
+dashTitle: "Top Flow Dashboard"
+debugTitle: "Top Flow L2 Debugging Dashboard"
+flow: " flow 1 "
+hostIP: 172.31.72.189 # example 198.32.43.16
 # The DNS of the host which is running the Grafana container
 grafanaHostIP: 'dev2.virnao.com'
 grafanaPort: 3000 # Do not change unless container mapping change
@@ -10,45 +11,45 @@ pushgatewayPort: 9091 # Do not change unless container mapping change
 grafanaAPIToken: "CONFIG"
 configFile: "config.yml"
 
-
 hostA: # Host 1
-  IP:
-  interfaceName: ''
-  interfaceIP: ''
-  nodeName: ''
-  vlan: 
+  IP: 198.32.43.16
+  interfaceName: 'ens2f0np0.1000'
+  interfaceIP: '10.10.100.1'
+  nodeName: 'sdn-dtn-2-10.ultralight.org'
+  vlan: 1000
   switchPort: 
-    ifName: ''
-    ifVlan: ''
+    ifName: 'hundredGigE 1/27'
+    ifVlan: 'Vlan 1000'
     order: 1
 
 hostB: # Host 2
-  IP: 
-  interfaceName: ''
-  interfaceIP: ''
-  nodeName: ''
-  vlan: 
+  IP: 198.32.43.15
+  interfaceName: 'ens2f0.1000'
+  interfaceIP: '10.10.100.2'
+  nodeName: 'sdn-dtn-2-11.ultralight.org'
+  vlan: 1000
   switchPort: 
-    ifName: ''
-    ifVlan: ''
+    ifName: 'hundredGigE 1/31'
+    ifVlan: 'Vlan 1000'
     order: 4
 
 ## SECTION 2 SWITCH INFORMATION ##
 switchData:
   job_name: 'snmp1'
-  SNMPHostIP: 
-  target: 
+  SNMPHostIP: 198.32.43.16
+  target: 172.16.1.1
   # switch if format: " - IF: optional" 
   switchif: "" # optional
   portIn:
-    ifName: ''
-    vlan: 
-    ifVlan: ''
+    ifName: 'hundredGigE 1/27'
+    vlan: 1000
+    ifVlan: 'Vlan 1000'
     order: 2
+
   portOut:
-    ifName: ''
-    vlan:
-    ifVlan: ''
+    ifName: 'hundredGigE 1/31'
+    vlan: 1000
+    ifVlan: 'Vlan 1000'
     order: 3
 
 ## SECTION 3 TCP and ARP (possible more in the future) ##

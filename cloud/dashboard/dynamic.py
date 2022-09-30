@@ -38,6 +38,16 @@ print("find correct index from snmp exporter\n\n")
 myip = data['hostIP']
 pushgateway_metrics = f"{myip}:9091/metrics"
 
+# # holders for interface index
+if_index1 = "IFINDEXSWITCHHOSTA"
+if_index2 = "IFINDEXSWITCHHOSTB"
+vlan_if_index1 = "MONITORVLAN1"
+vlan_if_index2 = "MONITORVLAN2"
+vlan_if_index3 = "MONITORVLAN3"
+vlan_if_index4 = "MONITORVLAN4"
+vlan_if_index5 = "MONITORVLAN5"
+vlan_if_index6 = "MONITORVLAN6"
+
 # def index_finder(name):
 #     cmd = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{name}\".*'"
 #     grep = subprocess.check_output(cmd,shell=True).decode()
@@ -46,14 +56,6 @@ pushgateway_metrics = f"{myip}:9091/metrics"
 
 # if_index1 = index_finder(str(data['hostA']['switchPort']['ifName']))
 # if_index2 = index_finder(str(data['hostB']['switchPort']['ifName']))
-
-# # holders for interface index
-# vlan_if_index1 = "MONITORVLAN1"
-# vlan_if_index2 = "MONITORVLAN2"
-# vlan_if_index3 = "MONITORVLAN3"
-# vlan_if_index4 = "MONITORVLAN4"
-# vlan_if_index5 = "MONITORVLAN5"
-# vlan_if_index6 = "MONITORVLAN6"
 
 # # monitor per vlan. If same, avoid duplicates monitoring
 # if data['switchNum'] == 1: # 1 switch possibly 1 vlan

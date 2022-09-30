@@ -53,7 +53,9 @@ else: # default config file
             print(f"\n Config file {infpth} could not be found in the config directory\n")
     
     # curl the API key to here
-    curlCMD= "curl 'http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys' -XPOST -H 'Content-Type: application/json' -d '{\"role\":\"Admin\",\"name\":\"" + current_time + "\"}'"
+    # curlCMD= "curl 'http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys' -XPOST -H 'Content-Type: application/json' -d '{\"role\":\"Admin\",\"name\":\"" + current_time + "\"}'"
+    curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" + current_time + "\", \"role\": \"Admin\"}' http://admin:admin@" + {str(data['hostIP'])} + ":3000/api/auth/keys"
+
     token = os.popen(curlCMD).read()
     print(token)
     print(token)

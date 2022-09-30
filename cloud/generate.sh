@@ -1,6 +1,16 @@
 #! /bin/bash
 read -r -p "Enter Configuration File to Generate Dashboard (file name under config_flow path not needed): " config_file
 
+echo "!!    API Key setup is only needed for the first time"
+sleep 1
+read -r -p "AUTO setup AUTH API keys? [y/n]: " API 
+if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
+    python3 fill_API.py config_file
+    echo ""
+    echo "!!    If API key is set up successfully the key is written back to $config_file"
+    sleep 2
+fi 
+
 if [ "$config_file" == "" ]; then
     echo "!!    config_cloud/config.yml"
     echo "!!    Parsing config.yml"

@@ -16,12 +16,10 @@ sleep 2
 echo "!!    Make sure SNMP exporter is running. Dashboard can't be generated without SNMP Exporter"
 read -r -p "Config file [press enter for default choice config_cloud/config.yml]: " config_file
 if [ "$config_file" == "" ]; then
-    echo "!!    config_cloud/config.yml"
     echo "!!    Parsing config.yml"
     python3 prometheus.py
     sleep 0.2
 else 
-    echo "!!    $config_file"
     echo "!!    Parsing $config_file"
     python3 prometheus.py $config_file
     sleep 0.2
@@ -45,14 +43,6 @@ echo "!!    Visit Google Doc for Grafana API and add Prometheus as a Data Source
 echo "!!    Instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub"
 sleep 3
 
-echo "!!    API Key setup is only needed for the first time"
-sleep 1
-read -r -p "AUTO setup AUTH API keys? [y/n]: " API 
-if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
-    python3 fill_API.py
-fi 
-
-sleep 1
 echo ""
 echo ""
 echo "!!    Wait for 3-5 seconds for the containers to get started"

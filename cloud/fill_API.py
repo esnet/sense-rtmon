@@ -54,7 +54,7 @@ else: # default config file
     
     # curl the API key to here
     # curlCMD= "curl 'http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys' -XPOST -H 'Content-Type: application/json' -d '{\"role\":\"Admin\",\"name\":\"" + current_time + "\"}'"
-    curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" + current_time + "\", \"role\": \"Admin\"}' http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys"
+    curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"AUTO API KEY\", \"role\": \"Admin\"}' http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys"
     token = os.popen(curlCMD).read()
     result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
     # write the API key into config file that's used

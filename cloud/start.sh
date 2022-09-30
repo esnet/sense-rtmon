@@ -60,6 +60,7 @@ echo "!!    Visit grafana through its port (default 300)"
 echo "- navigate to http://<ip_address/domain_name>:3000 (or https://<ip_address/domain_name> if HTTPS enabled and port 443 enabled)"
 echo "- login to Grafana with the default authentication (username: admin, password: admin)"
 sleep 0.5
+echo ""
 echo "!!    APT Key setup instruction (ignore if API key already setup):"
 sleep 0.5
 echo "- setting -> API keys -> add key with Admin permission"
@@ -67,6 +68,7 @@ echo "- copy the API token value starting with 'Bearer ....'"
 echo "- edit any files under /config_flow that are used"
 echo "- replace 'CONFIG' in {grafanaAPIToken: 'CONFIG'} with the new API token"
 sleep 1
+echo ""
 echo "!!    Data source setup instruction:"
 sleep 0.5
 echo "- navigate to <ip_address/domain_name>:3000(or 443 if HTTPS enabled)"
@@ -74,6 +76,7 @@ echo "- login to Grafana with the default authentication (username: admin, passw
 echo "- setting -> data source -> Prometheus -> URL -> Save & Test"
 echo "- enter the IP address NOT DNS"
 sleep 1
+echo ""
 echo "!!    What's next?"
 echo "!!    Flow Generation: run ./generate.sh to generate a dashboard based on the configuration files under config_flow"
 echo "!!    Delete Container: run ./clean.sh to remove cloud stack"

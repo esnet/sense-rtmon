@@ -49,14 +49,13 @@ echo "!!    API Key setup is only needed for the first time"
 sleep 1
 read -r -p "AUTO setup AUTH API keys? [y/n]: " API 
 if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
-    # read -r -p "username (default is admin): " username 
-    # read -r -p "password (default is admin): " password
-    # future iteration feed username and password into curl_api
     python3 fill_API.py
 fi 
 
 sleep 1
-echo "\n\n\n!!    Wait for 3-5 seconds for the containers to get started"
+echo ""
+echo ""
+echo "!!    Wait for 3-5 seconds for the containers to get started"
 echo "!!    Visit grafana through its port (default 300)"
 echo "- navigate to http://<ip_address/domain_name>:3000 (or https://<ip_address/domain_name> if HTTPS enabled and port 443 enabled)"
 echo "- login to Grafana with the default authentication (username: admin, password: admin)"

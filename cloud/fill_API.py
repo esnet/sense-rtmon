@@ -11,7 +11,7 @@ current_time = now.strftime("%m/%d_%H:%M")
 # get this host's IP address
 owd = os.getcwd()
 os.chdir("..")
-config_path = str(os.path.abspath(os.curdir)) +"/config_flow"
+config_path = str(os.path.abspath(os.curdir)) +"/config_cloud"
 infpth = config_path + "/config.yml"
 os.chdir(owd)
 data = {}

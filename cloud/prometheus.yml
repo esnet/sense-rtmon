@@ -45,4 +45,4 @@ scrape_configs:
       script: [default]
     static_configs:
       - targets:
-        - your_ip:9469
+        - your_ip:9469 

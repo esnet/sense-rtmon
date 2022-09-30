@@ -1,10 +1,11 @@
 ###### Clean Slate Environment ######
 switchNum: 1
-hostIP:  # 198.32.43.16
+hostIP: 172.31.72.189 # 198.32.43.16
 # The DNS of the host which is running the Grafana container
-grafanaHostIP: ''
+grafanaHostIP: 'dev2.virnao.com'
 pushgatewayPort: 9091 # Do not change unless container mapping change
 hostA: # Host 1
-  IP:
+  IP: 198.32.43.16
 hostB: # Host 2
-  IP: 
+  IP: 198.32.43.15
+ 

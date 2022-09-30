@@ -56,7 +56,7 @@ if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
 fi 
 
 sleep 1
-echo "!!    Wait for 3-5 seconds for the containers to get started"
+echo "\n\n\n!!    Wait for 3-5 seconds for the containers to get started"
 echo "!!    Visit grafana through its port (default 300)"
 echo "- navigate to http://<ip_address/domain_name>:3000 (or https://<ip_address/domain_name> if HTTPS enabled and port 443 enabled)"
 echo "- login to Grafana with the default authentication (username: admin, password: admin)"

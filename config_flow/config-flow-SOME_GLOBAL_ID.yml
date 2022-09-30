@@ -54,9 +54,7 @@ switchData:
 
 ## SECTION 3 TCP and ARP (possible more in the future) ##
 arpMetrics:
-  port: 9192
   job_name: 'arpmetrics'
 
 tcpMetrics:
-  port: 9191
   job_name: 'tcpmetrics'

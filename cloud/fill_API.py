@@ -32,13 +32,13 @@ curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" 
 token = os.popen(curlCMD).read()
 result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
 # write the API key into config file that's used
-with open(str(sys.argv[1]), 'r') as file:
+with open(f"config_flow/{str(sys.argv[1])}", 'r') as file:
     write_data = file.readlines()
 file_data = []
 for each_line in write_data:
     each_line = re.sub("grafanaAPIToken:.*", f"grafanaAPIToken: \"Bearer {str(result.group(1))}\"", each_line)
     file_data.append(each_line)
-with open(str(sys.argv[1]), 'w') as file:
+with open(f"config_flow/{str(sys.argv[1])}", 'w') as file:
     file.writelines(file_data)
     
 print("!!   API CURL SUCCESS!")

@@ -55,6 +55,11 @@ else: # default config file
     # curl the API key to here
     curlCMD= "curl 'http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys' -XPOST -H 'Content-Type: application/json' -d '{\"role\":\"Admin\",\"name\":\"" + current_time + "\"}'"
     token = os.popen(curlCMD).read()
+    print(token)
+    print(token)
+    print(token)
+    print(token)
+    print(token)
     result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
     # write the API key into config file that's used
     with open(infpth, 'r') as file:

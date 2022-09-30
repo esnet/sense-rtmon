@@ -43,7 +43,7 @@ echo "!!    Before Generating Dashboard for the first time please setup Data Sou
 echo "!!    API key can be done automatically but Data Source needs to be configured MANUALLY:"
 echo "!!    Visit Google Doc for Grafana API and add Prometheus as a Data Source "
 echo "!!    Instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub"
-sleep 2
+sleep 3
 
 echo "!!    API Key setup is only needed for the first time"
 sleep 1

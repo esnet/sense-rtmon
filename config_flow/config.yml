@@ -1,14 +1,15 @@
-## SECTION 1 GENERAL INFORMATION ##
-switchNum: 1
-dashTitle: "Top Flow Dashboard"
-debugTitle: "Top Flow L2 Debugging Dashboard"
+switchNum: 
+dashTitle: ""
+debugTitle: ""
 flow: " flow # "
-hostIP:  # 198.32.43.16
+hostIP: 198.32.43.16 # example 198.32.43.16
 # The DNS of the host which is running the Grafana container
-grafanaHostIP: ''
+grafanaHostIP: 'dev2.virnao.com'
 grafanaPort: 3000 # Do not change unless container mapping change
+pushgatewayPort: 9091 # Do not change unless container mapping change
 grafanaAPIToken: "CONFIG"
 configFile: "config.yml"
+
 
 hostA: # Host 1
   IP:

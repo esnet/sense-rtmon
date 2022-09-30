@@ -46,12 +46,12 @@ sleep 3
 echo ""
 echo ""
 echo "!!    Wait for 3-5 seconds for the containers to get started"
-echo "!!    Visit grafana through its port (default 300)"
+echo "!!    Visit grafana through its port (default 3000)"
 echo "- navigate to http://<ip_address/domain_name>:3000 (or https://<ip_address/domain_name> if HTTPS enabled and port 443 enabled)"
 echo "- login to Grafana with the default authentication (username: admin, password: admin)"
 sleep 0.5
 echo ""
-echo "!!    APT Key setup instruction (ignore if API key already setup):"
+echo "!!    APT Key setup instruction (used for dynamic flow dashboard. ignore if API key already set up):"
 sleep 0.5
 echo "- setting -> API keys -> add key with Admin permission"
 echo "- copy the API token value starting with 'Bearer ....'"
@@ -68,5 +68,5 @@ echo "- enter the IP address NOT DNS"
 sleep 1
 echo ""
 echo "!!    What's next?"
-echo "!!    Flow Generation: run ./generate.sh to generate a dashboard based on the configuration files under config_flow"
-echo "!!    Delete Container: run ./clean.sh to remove cloud stack"
+echo "!!    Generate flow dashboard: run ./generate.sh to generate a dashboard based on the configuration files under config_flow"
+echo "!!    Delete the deployment: run ./clean.sh to remove cloud stack"

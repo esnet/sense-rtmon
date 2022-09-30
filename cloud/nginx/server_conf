@@ -1,3 +1,0 @@
-server_name dev2.virnao.com;
-ssl_certificate     "/etc/letsencrypt/live/dev2.virnao.com/fullchain.pem";
-ssl_certificate_key "/etc/letsencrypt/live/dev2.virnao.com/privkey.pem";

@@ -38,56 +38,44 @@ print("find correct index from snmp exporter\n\n")
 myip = data['hostIP']
 pushgateway_metrics = f"{myip}:9091/metrics"
 
-def index_finder(name):
-    cmd = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{name}\".*'"
-    grep = subprocess.check_output(cmd,shell=True).decode()
-    if_index = re.search('ifIndex="(.+?)\"',grep).group(1)
-    return if_index
-    
-if_index1 = index_finder(str(data['hostA']['switchPort']['ifName']))
-if_index2 = index_finder(str(data['hostB']['switchPort']['ifName']))
+# def index_finder(name):
+#     cmd = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{name}\".*'"
+#     grep = subprocess.check_output(cmd,shell=True).decode()
+#     if_index = re.search('ifIndex="(.+?)\"',grep).group(1)
+#     return if_index
 
-# holders for interface index
-vlan_if_index1 = "MONITORVLAN1"
-vlan_if_index2 = "MONITORVLAN2"
-vlan_if_index3 = "MONITORVLAN3"
-vlan_if_index4 = "MONITORVLAN4"
-vlan_if_index5 = "MONITORVLAN5"
-vlan_if_index6 = "MONITORVLAN6"
+# if_index1 = index_finder(str(data['hostA']['switchPort']['ifName']))
+# if_index2 = index_finder(str(data['hostB']['switchPort']['ifName']))
 
-# monitor per vlan. If same, avoid duplicates monitoring
-if data['switchNum'] == 1: # 1 switch possibly 1 vlan
-    switch_vlan_1_in = str(data['switchData']['portIn']['ifVlan'])
-    switch_vlan_1_out = str(data['switchData']['portOut']['ifVlan'])
-    cmd3 = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{switch_vlan_1_in}\".*'"
-    grep3 = subprocess.check_output(cmd3,shell=True).decode()
-    vlan_if_index1 = re.search('ifIndex="(.+?)\"',grep3).group(1)
-    if switch_vlan_1_out != switch_vlan_1_in:
-        cmd4 = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{switch_vlan_1_out}\".*'"
-        grep4 = subprocess.check_output(cmd4,shell=True).decode()
-        vlan_if_index2 = re.search('ifIndex="(.+?)\"',grep4).group(1)
+# # holders for interface index
+# vlan_if_index1 = "MONITORVLAN1"
+# vlan_if_index2 = "MONITORVLAN2"
+# vlan_if_index3 = "MONITORVLAN3"
+# vlan_if_index4 = "MONITORVLAN4"
+# vlan_if_index5 = "MONITORVLAN5"
+# vlan_if_index6 = "MONITORVLAN6"
 
-# 2 switches possibly 4 vlans
-if data['switchNum'] == 2 or data['switchNum'] == 3:
-    switch_vlan_1_in = str(data['switchDataA']['portIn']['ifVlan'])
-    switch_vlan_1_out = str(data['switchDataA']['portOut']['ifVlan'])
-    switch_vlan_2_in = str(data['switchDataB']['portIn']['ifVlan'])
-    switch_vlan_2_out = str(data['switchDataB']['portOut']['ifVlan'])
-    cmd5 = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{switch_vlan_1_in}\".*'"
-    grep5 = subprocess.check_output(cmd5,shell=True).decode()
-    vlan_if_index3 = re.search('ifIndex="(.+?)\"',grep5).group(1)
-    if switch_vlan_1_out != switch_vlan_1_in:
-        cmd6 = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{switch_vlan_1_out}\".*'"
-        grep6 = subprocess.check_output(cmd6,shell=True).decode()
-        vlan_if_index4 = re.search('ifIndex="(.+?)\"',grep6).group(1)
-    if switch_vlan_2_in != switch_vlan_1_in and switch_vlan_2_in != switch_vlan_1_out:
-        cmd7 = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{switch_vlan_2_in}\".*'"
-        grep7 = subprocess.check_output(cmd7,shell=True).decode()
-        vlan_if_index5 = re.search('ifIndex="(.+?)\"',grep7).group(1)
-    if switch_vlan_2_out != switch_vlan_1_in and switch_vlan_2_out != switch_vlan_1_out and switch_vlan_2_out != switch_vlan_2_in:
-        cmd8 = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{switch_vlan_2_out}\".*'"
-        grep8 = subprocess.check_output(cmd8,shell=True).decode()
-        vlan_if_index6 = re.search('ifIndex="(.+?)\"',grep8).group(1)
+# # monitor per vlan. If same, avoid duplicates monitoring
+# if data['switchNum'] == 1: # 1 switch possibly 1 vlan
+#     switch_vlan_1_in = str(data['switchData']['portIn']['ifVlan'])
+#     switch_vlan_1_out = str(data['switchData']['portOut']['ifVlan'])
+#     vlan_if_index1 = index_finder(switch_vlan_1_in)
+#     if switch_vlan_1_out != switch_vlan_1_in:
+#         vlan_if_index2 = index_finder(switch_vlan_1_out)
+
+# # 2 switches possibly 4 vlans
+# if data['switchNum'] == 2 or data['switchNum'] == 3:
+#     switch_vlan_1_in = str(data['switchDataA']['portIn']['ifVlan'])
+#     switch_vlan_1_out = str(data['switchDataA']['portOut']['ifVlan'])
+#     switch_vlan_2_in = str(data['switchDataB']['portIn']['ifVlan'])
+#     switch_vlan_2_out = str(data['switchDataB']['portOut']['ifVlan'])
+#     vlan_if_index3 = index_finder(switch_vlan_1_in)
+#     if switch_vlan_1_out != switch_vlan_1_in:
+#         vlan_if_index4 = index_finder(switch_vlan_1_out)
+#     if switch_vlan_2_in != switch_vlan_1_in and switch_vlan_2_in != switch_vlan_1_out:
+#         vlan_if_index5 = index_finder(switch_vlan_2_in)
+#     if switch_vlan_2_out != switch_vlan_1_in and switch_vlan_2_out != switch_vlan_1_out and switch_vlan_2_out != switch_vlan_2_in:
+#         vlan_if_index6 = index_finder(switch_vlan_2_out)
     
 
 print("\n\n")

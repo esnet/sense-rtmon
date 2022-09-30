@@ -18,20 +18,20 @@ read -r -p "Config file [press enter for default choice config_cloud/config.yml]
 if [ "$config_file" == "" ]; then
     echo "!!    config_cloud/config.yml"
     echo "!!    Parsing config.yml"
-    python3 fill_config.py
+    python3 prometheus.py
     sleep 0.2
 else 
     echo "!!    $config_file"
     echo "!!    Parsing $config_file"
-    python3 fill_config.py $config_file
+    python3 prometheus.py $config_file
     sleep 0.2
 fi
 
 sleep 1
 
-echo "!!    Transporting Script Exporter configuration files"
-yes | cp -rfa se_config/. script_exporter/examples
-sleep 1
+# echo "!!    Transporting Script Exporter configuration files"
+# yes | cp -rfa se_config/. script_exporter/examples
+# sleep 1
 
 echo "!!    docker stack deployment"
 docker stack deploy -c docker-stack.yml cloud

@@ -32,6 +32,7 @@ curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" 
 token = os.popen(curlCMD).read()
 result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
 # write the API key into config file that's used
+os.chdir("..")
 with open(f"config_flow/{str(sys.argv[1])}", 'r') as file:
     write_data = file.readlines()
 file_data = []

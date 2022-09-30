@@ -14,7 +14,6 @@ sudo lsof -i -P -n | grep 9469
 sleep 2
 
 echo "!!    Make sure SNMP exporter is running. Dashboard can't be generated without SNMP Exporter"
-read -r -p "Press Enter to continue: " enter_continue 
 read -r -p "Config file [press enter for default choice config_cloud/config.yml]: " config_file
 if [ "$config_file" == "" ]; then
     echo "!!    config_cloud/config.yml"

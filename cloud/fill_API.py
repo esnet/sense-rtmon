@@ -41,5 +41,6 @@ for each_line in write_data:
     file_data.append(each_line)
 with open(f"config_flow/{str(sys.argv[1])}", 'w') as file:
     file.writelines(file_data)
-    
+
+print(f"Key: Bearer {str(result.group(1))}")
 print("!!   API CURL SUCCESS!")

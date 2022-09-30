@@ -33,3 +33,5 @@ if [ "$config_file" == "" ]; then
 else 
     python3 dynamic.py $config_file
 fi
+
+echo "!!   PLEASE RUN ./start.sh AGAIN, else the dashboards are generated successfully"

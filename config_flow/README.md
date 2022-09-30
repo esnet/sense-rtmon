@@ -4,6 +4,10 @@ The configuration files are broken into 3 sections.
 - SNMP Metrics are only needed if the SNMP exporter is running on this host. It can be omitted if SNMP is not used. 
 - TCP and ARP are needed to indicate which ports are used when TCP and ARP exporters are running. **Currently the `scrapeDuration` and `scrapeInterval` do not function.**
 
+## Naming convention
+- each config file should be named as `config-flow-SOME_GLOBAL_ID.yml`
+- global ID is an unique number that can be traced and requested by the orchestrator.
+
 ## Section 1 General Information
 - `switchNum` is the number of switches that the host is connected to and are intended to be monitored.
 - `dashTitle` title was used for the first Grafana dashboard that includes Node and SNMP metrics.

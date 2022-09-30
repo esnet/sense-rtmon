@@ -20,7 +20,7 @@ snmpMetricsA:
   # OIDs to scrape
   oids: [dot1dTpFdbAddress, ifMIB, ifMtu, ifName, ifOperStatus, ifPhysAddress, ifIndex, ifType, f10IfInVlanPkts, f10IfOutVlanPkts]
   # SNMP community read string
-  communityString: "COMMUNITYSTRING" # keep the quotaion marks only replace COMMUNITYSTRING
+  communityString: "COMMUNITYSTRING" # keep the quotation marks only replace COMMUNITYSTRING
   scrapeTimeout: 5s
   retries: 3
 
@@ -37,7 +37,7 @@ snmpMetricsB:
   # OIDs to scrape
   oids: [dot1dTpFdbAddress]
   # SNMP community read string
-  communityString: "COMMUNITYSTRING" # keep the quotaion marks only replace COMMUNITYSTRING
+  communityString: "COMMUNITYSTRING" # keep the quotation marks only replace COMMUNITYSTRING
   scrapeTimeout: 5s
   retries: 3
 
@@ -54,7 +54,7 @@ snmpMetricsC:
   # OIDs to scrape
   oids: [f10IfInVlanPkts]
   # SNMP community read string
-  communityString: "COMMUNITYSTRING" # keep the quotaion marks only replace COMMUNITYSTRING
+  communityString: "COMMUNITYSTRING" # keep the quotation marks only replace COMMUNITYSTRING
   scrapeTimeout: 5s
   retries: 3
 

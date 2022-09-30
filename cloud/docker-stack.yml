@@ -68,4 +68,4 @@ services:
       - /etc/letsencrypt/live/dev2.virnao.com/fullchain.pem:/etc/letsencrypt/live/dev2.virnao.com/fullchain.pem
       - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
     
-  # nginx reverse proxy grafana to https
+  # nginx reverse proxy Grafana to https

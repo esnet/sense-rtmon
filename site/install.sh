@@ -3,7 +3,7 @@ cd ..
 general_path=$PWD
 cd ./site
 
-read -r -p "Enter the IP adress of this host for docker swarm to init --advertise-addr <IP> " MYIP
+read -r -p "Enter the IP address of this host for docker swarm to init --advertise-addr <IP> " MYIP
 
 ############################# DOCKER SETUP ##############################
 ## check docker 

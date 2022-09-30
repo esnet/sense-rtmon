@@ -29,7 +29,7 @@ for each_line in write_data:
     each_line = re.sub("      - .*:3000", f"      - {str(sys.argv[2])}:3000", each_line)
     each_line = re.sub("      - 3000", f"      - {str(sys.argv[2])}", each_line)    
     
-    if find_line2: # replace secobd line key
+    if find_line2: # replace second line key
         each_line = f"      - {str(sys.argv[4])}:{str(sys.argv[4])}\n"
         find_line2 = False
     

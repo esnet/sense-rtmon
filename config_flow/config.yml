@@ -7,7 +7,6 @@ hostIP:  # 198.32.43.16
 # The DNS of the host which is running the Grafana container
 grafanaHostIP: ''
 grafanaPort: 3000 # Do not change unless container mapping change
-pushgatewayPort: 9091 # Do not change unless container mapping change
 grafanaAPIToken: "CONFIG"
 configFile: "config.yml"
 
@@ -51,7 +50,7 @@ switchData:
     ifVlan: ''
     order: 3
 
-## SECTION 3 TCP and ARP (possilbe more in the future) ##
+## SECTION 3 TCP and ARP (possible more in the future) ##
 arpMetrics:
   port: 9192
   job_name: 'arpmetrics'

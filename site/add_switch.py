@@ -11,7 +11,7 @@ switch_ip = switch_ip.strip()
 community_string = input("Enter the community string of the Network Element: ")
 switch_num = input("Enter the number of existing SNMP exporter (2 SNMP exporters are running by default, it should be 3 or greater. run: $docker ps to check): ")
 switch_num = str(switch_num.strip())
-new_oid = input("Enter oids seperated by space (e.g.: 1.3.6.1.2.1.17.4.3.1.1 1.3.6.1.2.1.31   or   dot1dTpFdbAddress ifMIB): ")
+new_oid = input("Enter oids separated by space (e.g.: 1.3.6.1.2.1.17.4.3.1.1 1.3.6.1.2.1.31   or   dot1dTpFdbAddress ifMIB): ")
 oid_list = new_oid.split()
 
 # download private mibs

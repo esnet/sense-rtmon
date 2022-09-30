@@ -18,7 +18,7 @@ switch_target2=
 echo "!!    Set up crontab only needed when running for the first time"
 read -r -p "Set up crontab? [y/n]: " crontab
 if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
-    echo "Satring Crontab setup"
+    echo "Starting Crontab setup"
     # create a temporary copy paste file
     echo ""
     > ./crontabs/cron_autopush
@@ -59,13 +59,13 @@ if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
     echo ""
     crontab ./crontabs/cron_autopush
     rm -f ./crontabs/cron_autopush
-    echo "!!    crontab set up successfuly"
+    echo "!!    crontab set up successfully"
 else 
     echo "Skip crontab, crontab is needed to push metrics successfully"
 fi
 ############################# CRONTAB ###################################
 
-echo "!!    Please edit config.yml for single switch or multiconfig.yml for multiple switches under config folder before procceding"
+echo "!!    Please edit config.yml for single switch or multiconfig.yml for multiple switches under config folder before proceeding"
 echo "!!    Make sure Port 9100, 9116 are not in use"
 echo "!!    sudo lsof -i -P -n | grep LISTEN"
 echo "!!    Check Port 9100 for node exporter"
@@ -77,7 +77,7 @@ sudo lsof -i -P -n | grep 9116
 read -r -p "Start Node Exporter? [y/n]: " start_node
 if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
     starting_node="-f ./compose-files/node-docker-compose.yml" 
-    echo "Satring Node Exporter Service"
+    echo "Starting Node Exporter Service"
     > ./crontabs/push_node_exporter_metrics.sh
     chmod +x ./crontabs/push_node_exporter_metrics.sh
     sudo tee ./crontabs/push_node_exporter_metrics.sh<<EOF
@@ -100,7 +100,7 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     cd ./SNMPExporter
     python3 dynamic.py $top_level_config_file
     cd ..
-    echo "Satring SNMP Exporter Service"
+    echo "Starting SNMP Exporter Service"
     > ./crontabs/snmp_temp.txt
     > ./crontabs/snmp_temp2.txt
     touch ./crontabs/push_snmp_exporter_metrics.sh
@@ -159,7 +159,7 @@ else
   echo "$host2IP/ping_status/0" > $general_path/site/Metrics/ARPMetrics/pingStat/ping_status.txt
 fi
 EOF
-    echo "Satring ARP Exporter Service"
+    echo "Starting ARP Exporter Service"
     cd ./Metrics
     docker image rm -f arp_exporter:latest
     docker build -t arp_exporter -f arp.Dockerfile .
@@ -172,7 +172,7 @@ fi
 read -r -p "Start TCP Exporter? [y/n]: " start_tcp
 if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
     starting_tcp="-f ./compose-files/tcp-docker-compose..yml" 
-    echo "Satring TCP Exporter Service"
+    echo "Starting TCP Exporter Service"
     cd ./Metrics
     docker image rm -f tcp_exporter:latest
     docker build -t tcp_exporter -f tcp.Dockerfile .

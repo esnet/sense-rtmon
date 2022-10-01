@@ -20,8 +20,11 @@ else
     exit 1
 fi
 
-read -r -p "Please enter the IP Address for docker swarm to init: " MYIP
-docker swarm init --advertise-addr $MYIP
+# read -r -p "Please enter the IP Address of this host: " MYIP
+echo "!!    Starting Docker Swarm"
+docker swarm init
+echo "!!    To learn more about Docker Swarm"
+echo "!!    https://docs.docker.com/engine/reference/commandline/swarm_init/#--advertise-addr"
 
 sleep 0.5
 

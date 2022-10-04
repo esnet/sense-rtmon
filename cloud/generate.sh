@@ -12,12 +12,12 @@ if [ "$API" == "y" ] || [ "$API" == "Y" ]; then
 fi 
 
 if [ "$config_file" == "" ]; then
-    echo "!!    config_cloud/config.yml"
+    echo "!!    config_flow/config.yml"
     echo "!!    Parsing config.yml"
     python3 fill_config.py
     sleep 0.2
 else 
-    echo "!!    $config_file"
+    echo "!!    config_flow/$config_file"
     echo "!!    Parsing $config_file"
     python3 fill_config.py $config_file
     sleep 0.2

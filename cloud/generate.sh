@@ -34,4 +34,4 @@ else
     python3 dynamic.py $config_file
 fi
 
-echo "!!   PLEASE RUN ./start.sh AGAIN, else the dashboards are generated successfully"
+echo "!!   PLEASE RUN ./generate.sh AGAIN, else the dashboards are generated successfully"

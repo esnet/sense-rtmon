@@ -9,6 +9,7 @@
 # hostB: # Host 2
 #   IP: 198.32.43.15
 
-hostIP: 172.31.72.189
+hostIP: 198.124.151.8
+# not needed at the moment 
 ssl_certificate: '' #(fullchain)
 ssl_certificate_key: '' #(prvikey)

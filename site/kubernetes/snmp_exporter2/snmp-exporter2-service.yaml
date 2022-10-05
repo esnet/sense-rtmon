@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f snmp-docker-compose2.yml
+    kompose.version: 1.26.1 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: snmp-exporter2
+  name: snmp-exporter2
+spec:
+  ports:
+    - name: "9117"
+      port: 9117
+      targetPort: 9116
+  selector:
+    io.kompose.service: snmp-exporter2
+status:
+  loadBalancer: {}

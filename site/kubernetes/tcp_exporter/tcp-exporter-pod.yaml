@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f tcp-docker-compose.yml
+    kompose.version: 1.26.1 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: tcp-exporter
+  name: tcp-exporter
+spec:
+  containers:
+    - image: tcp_exporter
+      name: tcp-exporter
+      ports:
+        - containerPort: 9191
+      resources: {}
+      volumeMounts:
+        - mountPath: /etc/tcp_exporter/tcp.yml
+          name: tcp-exporter-claim0
+  restartPolicy: OnFailure
+  volumes:
+    - name: tcp-exporter-claim0
+      persistentVolumeClaim:
+        claimName: tcp-exporter-claim0
+status: {}

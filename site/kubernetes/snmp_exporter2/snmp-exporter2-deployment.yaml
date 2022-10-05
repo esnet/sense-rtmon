@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f snmp-docker-compose2.yml
+    kompose.version: 1.26.1 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: snmp-exporter2
+  name: snmp-exporter2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: snmp-exporter2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f snmp-docker-compose2.yml
+        kompose.version: 1.26.1 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: snmp-exporter2
+    spec:
+      containers:
+        - image: prom/snmp-exporter
+          name: snmp-exporter2
+          ports:
+            - containerPort: 9116
+          resources: {}
+          volumeMounts:
+            - mountPath: /etc/snmp_exporter/snmp2.yml
+              name: snmp-exporter2-claim0
+      restartPolicy: Always
+      volumes:
+        - name: snmp-exporter2-claim0
+          persistentVolumeClaim:
+            claimName: snmp-exporter2-claim0
+status: {}

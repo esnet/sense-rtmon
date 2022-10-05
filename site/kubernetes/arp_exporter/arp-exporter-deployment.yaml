@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f arp-docker-compose.yml
+    kompose.version: 1.26.1 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: arp-exporter
+  name: arp-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: arp-exporter
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f arp-docker-compose.yml
+        kompose.version: 1.26.1 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: arp-exporter
+    spec:
+      containers:
+        - image: arp_exporter
+          name: arp-exporter
+          ports:
+            - containerPort: 9192
+          resources: {}
+          volumeMounts:
+            - mountPath: /etc/arp_exporter/arp.yml
+              name: arp-exporter-claim0
+            - mountPath: /jsonFiles
+              name: arp-exporter-claim1
+            - mountPath: /arpFiles
+              name: arp-exporter-claim2
+            - mountPath: /pingStat
+              name: arp-exporter-claim3
+      restartPolicy: Always
+      volumes:
+        - name: arp-exporter-claim0
+          persistentVolumeClaim:
+            claimName: arp-exporter-claim0
+        - name: arp-exporter-claim1
+          persistentVolumeClaim:
+            claimName: arp-exporter-claim1
+        - name: arp-exporter-claim2
+          persistentVolumeClaim:
+            claimName: arp-exporter-claim2
+        - name: arp-exporter-claim3
+          persistentVolumeClaim:
+            claimName: arp-exporter-claim3
+status: {}

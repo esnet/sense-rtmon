@@ -1,8 +1,8 @@
 ## SECTION 1 GENERAL INFORMATION ##
 switchNum: 1
-hostIP: 198.32.43.16
+hostIP: 198.32.43.15
 pushgatewayPort: 9091 
-grafanaHostIP: 'dev2.virnao.com'
+grafanaHostIP: 'sense-mon.es.net'
 hostA:
   IP: 198.32.43.16
 hostB:

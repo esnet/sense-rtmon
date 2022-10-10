@@ -12,29 +12,20 @@ owd = os.getcwd()
 os.chdir("..")
 os.chdir("..")
 config_path = str(os.path.abspath(os.curdir)) +"/config_flow"
-infpth = config_path + "/config.yml"
 os.chdir(owd)
 data = {}
 
 # argument given
-if len(sys.argv) > 1:
-    file_name = str(sys.argv[1])
-    file_path = config_path + "/" + file_name
-    print(f"\n Config file {file_path}\n")
-    with open(file_path, 'r') as stream:
-        try:
-            data = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(f"\n Config file {file_path} could not be found in the config directory\n")
-else: # default config file
-    with open(infpth, 'r') as stream:
-        try:
-            data = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(f"\n Config file {infpth} could not be found in the config directory\n")
+file_name = str(sys.argv[1])
+file_path = config_path + "/" + file_name
+print(f"\n Config file {file_path}\n")
+with open(file_path, 'r') as stream:
+    try:
+        data = yaml.safe_load(stream)
+    except yaml.YAMLError as exc:
+        print(f"\n Config file {file_path} could not be found in the config directory\n")
 
 print("find correct index from snmp exporter\n\n")
-# find correct inter face index from SNMP exporter
 myip = data['hostIP']
 pushgateway_metrics = f"{myip}:9091/metrics"
 
@@ -116,34 +107,11 @@ if data['switchNum'] == 1:
                     'SWITCHAOUTGOING': str(data['switchData']['portOut']['ifName']),
                     'SWITCHAINVLAN': str(data['switchData']['portIn']['vlan']),
                     'SWITCHAOUTVLAN': str(data['switchData']['portOut']['vlan']),
-                    # 'DASHTITLE': str(data['dashTitle']) + str(data['flow']) + "vlan " + str(data['vlan_to_switch'])+ " " + timeTxt,
                     'DASHTITLE': f" {str(data['dashTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}--{str(data['switchData']['portIn']['ifName'])}/{str(data['switchData']['portIn']['ifVlan'])}--{str(data['switchData']['portOut']['ifName'])}/{str(data['switchData']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}",
                     'DEBUGTITLE': f" {str(data['debugTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}--{str(data['switchData']['portIn']['ifName'])}/{str(data['switchData']['portIn']['ifVlan'])}--{str(data['switchData']['portOut']['ifName'])}/{str(data['switchData']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"}
-    
-    # print("Creating custom Grafana JSON Dashboard...")
-    # print("Creating custom L2 Debugging Dashboard...")
-    # Iteratively find and replace in one go 
-    with open('./templates/newTemplate.json') as infile, open('out.json', 'w') as outfile:
-        for line in infile:
-            for src, target in replacements.items():
-                line = line.replace(src, target)
-            outfile.write(line)
-    with open('./templates/debugTemplate.json') as infile, open('outDebug.json', 'w') as outfile:
-        for line in infile:
-            for src, target in replacements.items():
-                line = line.replace(src, target)
-            outfile.write(line)
 
-    # print("Applying dashboard JSON to Grafana API...")
-    # Run the API script to convert output JSON to Grafana dashboard automatically
-    # print("Loading Grafana dashboard on Grafana server...")
-    cmd = "sudo python3 api.py out.json outDebug.json"
-    subprocess.run(cmd, shell=True)
-    # print("Loaded Grafana dashboard")
 else:
     print("Multiple Network Element Flow Detected")
-    # print("Collecting dashboard template...")
-    # Map of replacements to complete from template.json to out.json
     replacements = {}
     if data['switchNum'] == 2:
         replacements = {'IPHOSTA': str(data['hostA']['IP']), 
@@ -286,9 +254,8 @@ else:
                         'SWITCHDOUTVLAN': str(data['switchDataD']['portOut']['vlan']),
                         'DASHTITLE': f" {str(data['dashTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['switchDataC']['portIn']['ifName'])}--{str(data['switchDataC']['portOut']['ifName'])}--{str(data['switchDataD']['portIn']['ifName'])}--{str(data['switchDataD']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}",
                         'DEBUGTITLE': f" {str(data['debugTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['switchDataC']['portIn']['ifName'])}--{str(data['switchDataC']['portOut']['ifName'])}--{str(data['switchDataD']['portIn']['ifName'])}--{str(data['switchDataD']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}"}
-    # print("Creating custom Grafana JSON Dashboard...")
-    # print("Creating custom L2 Debugging JSON Dashboard...")
-    # Iteratively find and replace in one go 
+
+    # replacing
     fname = "./templates/newTemplate" + str(data['switchNum']) + ".json"
     dname = "./templates/debugTemplate" + str(data['switchNum']) + ".json"
     with open(fname) as infile, open('out.json', 'w') as outfile:
@@ -301,12 +268,10 @@ else:
             for src, target in replacements.items():
                 line = line.replace(src, target)
             outfile.write(line)              
-    # print("Applying dashboard JSON to Grafana API...")
-    # Run the API script to convert output JSON to Grafana dashboard automatically
-    # print("Loading Grafana dashboard on Grafana server...")
-    cmd = "sudo python3 api.py out.json outDebug.json"
-    subprocess.run(cmd, shell=True)
-    # print("Loaded Grafana dashboard")
+
+# Run the API script to convert output JSON to Grafana dashboard automatically
+cmd = "sudo python3 api.py out.json outDebug.json"
+subprocess.run(cmd, shell=True)
 
 print("\n\n!!   Please ignore: InsecureRequestWarning")
 print("!!   If you do not see: {'id':#, 'slug': <title>, 'status': 'success', 'uid':<>, 'url':<title>, 'version': 1}")

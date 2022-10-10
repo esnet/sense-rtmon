@@ -103,7 +103,7 @@ if data['switchNum'] == 1:
 
 if data['switchNum'] == 2:
     print("Two Network Element Flow Detected")
-    title2 = f" {str(data['dashTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}\{str(data['hostA']['vlan'])}--{str(data['switchDataA']['portIn']['ifName'])}\{str(data['switchDataA']['portIn']['ifVlan'])}--{str(data['switchDataA']['portOut']['ifName'])}\{str(data['switchDataA']['portOut']['ifVlan'])}--{str(data['switchDataB']['portIn']['ifName'])}\{str(data['switchDataB']['portIn']['ifVlan'])}--{str(data['switchDataB']['portOut']['ifName'])}\{str(data['switchDataB']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}\{str(data['hostB']['vlan'])} {timeTxt}"
+    title2 = f" {str(data['flow'])} | {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}--{str(data['switchDataA']['portIn']['ifName'])}/{str(data['switchDataA']['portIn']['ifVlan'])}--{str(data['switchDataA']['portOut']['ifName'])}/{str(data['switchDataA']['portOut']['ifVlan'])}--{str(data['switchDataB']['portIn']['ifName'])}/{str(data['switchDataB']['portIn']['ifVlan'])}--{str(data['switchDataB']['portOut']['ifName'])}/{str(data['switchDataB']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
     dash_title2 = str(data['dashTitle']) + title2
     debug_title2 = str(data['debugTitle']) + title2
     replacements = {
@@ -144,11 +144,6 @@ if data['switchNum'] == 2:
         'SWITCHBOUTVLAN': str(data['switchDataB']['portOut']['vlan']),
         'DASHTITLE': dash_title2,
         'DEBUGTITLE': debug_title2}
-    replacements = {'MONITORVLAN1': str(vlan_if_index3),
-        'MONITORVLAN2': str(vlan_if_index4),
-        'MONITORVLAN3': str(vlan_if_index5),
-        'MONITORVLAN4': str(vlan_if_index6)
-        }
     
 if data['switchNum'] == 3:
     print("Three Network Element Flow Detected")

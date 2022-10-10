@@ -666,7 +666,7 @@
         },
         "id": 133,
         "options": {
-          "content": "```\n Switch 1   NAMEIFSWITCHA   NAMEIFSWITCHB   IPSWITCH\n Switch 2   NAMEIFSWITCH2A   NAMEIFSWITCH2B   IP2SWITCH\n ```",
+          "content": "```\n Switch 1   NAMEIFSWITCHA   NAMEIFSWITCHB   IPSWITCHA\n Switch 2   NAMEIFSWITCH2A   NAMEIFSWITCH2B   IPSWITCHB\n ```",
           "mode": "markdown"
         },
         "pluginVersion": "7.5.4",

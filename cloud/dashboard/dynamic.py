@@ -66,23 +66,13 @@ vlan_if_index6 = "MONITORVLAN6"
     
 ######################## COMMENTING FOR TESTING ########################
 
-############################## TITLES ##############################
 current_time = datetime.now().strftime("%m/%d_%H:%M")
 timeTxt = " | [" + str(current_time) + "]"
-
-title1 = f" {str(data['flow'])} | {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}--{str(data['switchData']['portIn']['ifName'])}/{str(data['switchData']['portIn']['ifVlan'])}--{str(data['switchData']['portOut']['ifName'])}/{str(data['switchData']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
-dash_title1 = str(data['dashTitle']) + title1
-debug_title1 = str(data['debugTitle']) + title1
-
-title2 = f" {str(data['dashTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}\{str(data['hostA']['vlan'])}--{str(data['switchDataA']['portIn']['ifName'])}\{str(data['switchDataA']['portIn']['ifVlan'])}--{str(data['switchDataA']['portOut']['ifName'])}\{str(data['switchDataA']['portOut']['ifVlan'])}--{str(data['switchDataB']['portIn']['ifName'])}\{str(data['switchDataB']['portIn']['ifVlan'])}--{str(data['switchDataB']['portOut']['ifName'])}\{str(data['switchDataB']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}\{str(data['hostB']['vlan'])} {timeTxt}"
-dash_title2 = str(data['dashTitle']) + title2
-debug_title2 = str(data['debugTitle']) + title2
-############################## TITLES ##############################
-
-
-# timeTxt = ""
 if data['switchNum'] == 1:
     print("Single Network Element Flow Detected")
+    title1 = f" {str(data['flow'])} | {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}--{str(data['switchData']['portIn']['ifName'])}/{str(data['switchData']['portIn']['ifVlan'])}--{str(data['switchData']['portOut']['ifName'])}/{str(data['switchData']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
+    dash_title1 = str(data['dashTitle']) + title1
+    debug_title1 = str(data['debugTitle']) + title1
     # Map of replacements to complete from template.json to out.json
     replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                     'IPHOSTB': str(data['hostB']['IP']),
@@ -120,6 +110,9 @@ if data['switchNum'] == 1:
 else:
     print("Multiple Network Element Flow Detected")
     if data['switchNum'] == 2:
+        title2 = f" {str(data['dashTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}\{str(data['hostA']['vlan'])}--{str(data['switchDataA']['portIn']['ifName'])}\{str(data['switchDataA']['portIn']['ifVlan'])}--{str(data['switchDataA']['portOut']['ifName'])}\{str(data['switchDataA']['portOut']['ifVlan'])}--{str(data['switchDataB']['portIn']['ifName'])}\{str(data['switchDataB']['portIn']['ifVlan'])}--{str(data['switchDataB']['portOut']['ifName'])}\{str(data['switchDataB']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}\{str(data['hostB']['vlan'])} {timeTxt}"
+        dash_title2 = str(data['dashTitle']) + title2
+        debug_title2 = str(data['debugTitle']) + title2
         replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                         'IPHOSTB': str(data['hostB']['IP']),
                         'IFNAMEHOSTA': str(data['hostA']['interfaceName']),

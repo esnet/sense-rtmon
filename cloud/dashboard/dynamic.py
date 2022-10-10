@@ -66,14 +66,23 @@ vlan_if_index6 = "MONITORVLAN6"
     
 ######################## COMMENTING FOR TESTING ########################
 
-print("\n\n")
-now = datetime.now()
-current_time = now.strftime("%m/%d_%H:%M")
+############################## TITLES ##############################
+current_time = datetime.now().strftime("%m/%d_%H:%M")
 timeTxt = " | [" + str(current_time) + "]"
+
+title1 = f" {str(data['flow'])} | {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}--{str(data['switchData']['portIn']['ifName'])}/{str(data['switchData']['portIn']['ifVlan'])}--{str(data['switchData']['portOut']['ifName'])}/{str(data['switchData']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
+dash_title1 = str(data['dashTitle']) + title1
+debug_title1 = str(data['debugTitle']) + title1
+
+title2 = f" {str(data['dashTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}\{str(data['hostA']['vlan'])}--{str(data['switchDataA']['portIn']['ifName'])}\{str(data['switchDataA']['portIn']['ifVlan'])}--{str(data['switchDataA']['portOut']['ifName'])}\{str(data['switchDataA']['portOut']['ifVlan'])}--{str(data['switchDataB']['portIn']['ifName'])}\{str(data['switchDataB']['portIn']['ifVlan'])}--{str(data['switchDataB']['portOut']['ifName'])}\{str(data['switchDataB']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}\{str(data['hostB']['vlan'])} {timeTxt}"
+dash_title2 = str(data['dashTitle']) + title2
+debug_title2 = str(data['debugTitle']) + title2
+############################## TITLES ##############################
+
+
 # timeTxt = ""
 if data['switchNum'] == 1:
     print("Single Network Element Flow Detected")
-    # print("Collecting dashboard template...")
     # Map of replacements to complete from template.json to out.json
     replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                     'IPHOSTB': str(data['hostB']['IP']),
@@ -95,8 +104,6 @@ if data['switchNum'] == 1:
                     'TCPNAME': str(data['tcpMetrics']['job_name']),
                     'IPSWITCH': str(data['switchData']['target']),
                     'SNMPNAME': str(data['switchData']['job_name']),
-                    # 'SCRAPEINTERVAL': str(data['switchData']['scrapeInterval']),
-                    # 'PARAMS': str(data['switchData']['params']),
                     'SWITCHIF': str(data['switchData']['switchif']),
                     'SNMPHOSTIP': str(data['switchData']['SNMPHostIP']),
                     'HOSTA_SNMP_ON': "host1_snmp_on_" + str(data['hostA']['vlan']),
@@ -107,12 +114,11 @@ if data['switchNum'] == 1:
                     'SWITCHAOUTGOING': str(data['switchData']['portOut']['ifName']),
                     'SWITCHAINVLAN': str(data['switchData']['portIn']['vlan']),
                     'SWITCHAOUTVLAN': str(data['switchData']['portOut']['vlan']),
-                    'DASHTITLE': f" {str(data['dashTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}--{str(data['switchData']['portIn']['ifName'])}/{str(data['switchData']['portIn']['ifVlan'])}--{str(data['switchData']['portOut']['ifName'])}/{str(data['switchData']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}",
-                    'DEBUGTITLE': f" {str(data['debugTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}--{str(data['switchData']['portIn']['ifName'])}/{str(data['switchData']['portIn']['ifVlan'])}--{str(data['switchData']['portOut']['ifName'])}/{str(data['switchData']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"}
+                    'DASHTITLE':dash_title1,
+                    'DEBUGTITLE': debug_title1}
 
 else:
     print("Multiple Network Element Flow Detected")
-    replacements = {}
     if data['switchNum'] == 2:
         replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                         'IPHOSTB': str(data['hostB']['IP']),
@@ -153,8 +159,8 @@ else:
                         'SWITCHAOUTVLAN': str(data['switchDataA']['portOut']['vlan']),
                         'SWITCHBINVLAN': str(data['switchDataB']['portIn']['vlan']),
                         'SWITCHBOUTVLAN': str(data['switchDataB']['portOut']['vlan']),
-                        'DASHTITLE': f" {str(data['dashTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}\{str(data['hostA']['vlan'])}--{str(data['switchDataA']['portIn']['ifName'])}\{str(data['switchDataA']['portIn']['ifVlan'])}--{str(data['switchDataA']['portOut']['ifName'])}\{str(data['switchDataA']['portOut']['ifVlan'])}--{str(data['switchDataB']['portIn']['ifName'])}\{str(data['switchDataB']['portIn']['ifVlan'])}--{str(data['switchDataB']['portOut']['ifName'])}\{str(data['switchDataB']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}\{str(data['hostB']['vlan'])} {timeTxt}",
-                        'DEBUGTITLE': f" {str(data['debugTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}\{str(data['hostA']['vlan'])}--{str(data['switchDataA']['portIn']['ifName'])}\{str(data['switchDataA']['portIn']['ifVlan'])}--{str(data['switchDataA']['portOut']['ifName'])}\{str(data['switchDataA']['portOut']['ifVlan'])}--{str(data['switchDataB']['portIn']['ifName'])}\{str(data['switchDataB']['portIn']['ifVlan'])}--{str(data['switchDataB']['portOut']['ifName'])}\{str(data['switchDataB']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}\{str(data['hostB']['vlan'])} {timeTxt}"}
+                        'DASHTITLE': dash_title2,
+                        'DEBUGTITLE': debug_title2}
     elif data['switchNum'] == 3:
         replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                         'IPHOSTB': str(data['hostB']['IP']),
@@ -199,8 +205,8 @@ else:
                         'SWITCHBOUTVLAN': str(data['switchDataB']['portOut']['vlan']),
                         'SWITCHCINVLAN': str(data['switchDataC']['portIn']['vlan']),
                         'SWITCHCOUTVLAN': str(data['switchDataC']['portOut']['vlan']),
-                        'DASHTITLE': f" {str(data['dashTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['switchDataC']['portIn']['ifName'])}--{str(data['switchDataC']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}",
-                        'DEBUGTITLE': f" {str(data['debugTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['switchDataC']['portIn']['ifName'])}--{str(data['switchDataC']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}"}
+                        'DASHTITLE': f" {str(data['dashTitle'])} 3 switches {timeTxt}",
+                        'DEBUGTITLE': f" {str(data['debugTitle'])} 3 swtiches {timeTxt}"}
     else:
         replacements = {'IPHOSTA': str(data['hostA']['IP']), 
                         'IPHOSTB': str(data['hostB']['IP']),
@@ -252,26 +258,24 @@ else:
                         'SWITCHCOUTVLAN': str(data['switchDataC']['portOut']['vlan']),
                         'SWITCHDINVLAN': str(data['switchDataD']['portIn']['vlan']),
                         'SWITCHDOUTVLAN': str(data['switchDataD']['portOut']['vlan']),
-                        'DASHTITLE': f" {str(data['dashTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['switchDataC']['portIn']['ifName'])}--{str(data['switchDataC']['portOut']['ifName'])}--{str(data['switchDataD']['portIn']['ifName'])}--{str(data['switchDataD']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}",
-                        'DEBUGTITLE': f" {str(data['debugTitle'])} {str(data['flow'])} | {str(data['hostA']['interfaceName'])}--{str(data['switchDataA']['portIn']['ifName'])}--{str(data['switchDataA']['portOut']['ifName'])}--{str(data['switchDataB']['portIn']['ifName'])}--{str(data['switchDataB']['portOut']['ifName'])}--{str(data['switchDataC']['portIn']['ifName'])}--{str(data['switchDataC']['portOut']['ifName'])}--{str(data['switchDataD']['portIn']['ifName'])}--{str(data['switchDataD']['portOut']['ifName'])}--{str(data['hostB']['interfaceName'])} {timeTxt}"}
+                        'DASHTITLE': f" {str(data['dashTitle'])} 4 switches {timeTxt}",
+                        'DEBUGTITLE': f" {str(data['debugTitle'])} 4 switches {timeTxt}"}
 
-    # replacing
-    fname = "./templates/newTemplate" + str(data['switchNum']) + ".json"
-    dname = "./templates/debugTemplate" + str(data['switchNum']) + ".json"
-    with open(fname) as infile, open('out.json', 'w') as outfile:
-        for line in infile:
-            for src, target in replacements.items():
-                line = line.replace(src, target)
-            outfile.write(line)
-    with open(dname) as infile, open('outDebug.json', 'w') as outfile:
-        for line in infile:
-            for src, target in replacements.items():
-                line = line.replace(src, target)
-            outfile.write(line)              
+# replacing
+fname = "./templates/newTemplate" + str(data['switchNum']) + ".json"
+dname = "./templates/debugTemplate" + str(data['switchNum']) + ".json"
+with open(fname) as infile, open('out.json', 'w') as outfile:
+    for line in infile:
+        for src, target in replacements.items():
+            line = line.replace(src, target)
+        outfile.write(line)
+with open(dname) as infile, open('outDebug.json', 'w') as outfile:
+    for line in infile:
+        for src, target in replacements.items():
+            line = line.replace(src, target)
+        outfile.write(line)              
 
 # Run the API script to convert output JSON to Grafana dashboard automatically
 cmd = "sudo python3 api.py out.json outDebug.json"
 subprocess.run(cmd, shell=True)
-
-print("\n\n!!   Please ignore: InsecureRequestWarning")
-print("!!   If you do not see: {'id':#, 'slug': <title>, 'status': 'success', 'uid':<>, 'url':<title>, 'version': 1}")
+print("\n\n!!   If you do not see: {'id':#, 'slug': <title>, 'status': 'success', 'uid':<>, 'url':<title>, 'version': 1}")

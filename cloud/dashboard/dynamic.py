@@ -70,6 +70,8 @@ timeTxt = " | [" + str(current_time) + "]"
 if data['switchNum'] == 1:
     print("Single Network Element Flow Detected")
     title1 = f" {str(data['flow'])} | {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}--{str(data['switchData']['portIn']['ifName'])}/{str(data['switchData']['portIn']['ifVlan'])}--{str(data['switchData']['portOut']['ifName'])}/{str(data['switchData']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
+    # alternative title naming
+    title1 = f" {str(data['flow'])} | {str(data['configFile'])} {timeTxt}"
     dash_title1 = str(data['dashTitle']) + title1
     debug_title1 = str(data['debugTitle']) + title1
     # Map of replacements to complete from template.json to out.json
@@ -104,6 +106,8 @@ if data['switchNum'] == 1:
 if data['switchNum'] == 2:
     print("Two Network Element Flow Detected")
     title2 = f" {str(data['flow'])} | {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}--{str(data['switchDataA']['portIn']['ifName'])}/{str(data['switchDataA']['portIn']['ifVlan'])}--{str(data['switchDataA']['portOut']['ifName'])}/{str(data['switchDataA']['portOut']['ifVlan'])}--{str(data['switchDataB']['portIn']['ifName'])}/{str(data['switchDataB']['portIn']['ifVlan'])}--{str(data['switchDataB']['portOut']['ifName'])}/{str(data['switchDataB']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
+    # alternative title naming
+    title2 = f" {str(data['flow'])} | {str(data['configFile'])} {timeTxt}"
     dash_title2 = str(data['dashTitle']) + title2
     debug_title2 = str(data['debugTitle']) + title2
     replacements = {

@@ -48,11 +48,9 @@ for each_line in write_data:
     each_line = re.sub("host1=.*", f"host1={host1IP}", each_line)
     each_line = re.sub("host2=.*", f"host2={host2IP}", each_line)
     each_line = re.sub("switch_num=.*", f"switch_num={str(switchNum)}", each_line)
-    if switchNum == 1:
-        switch_target1 = data['switchData']['target']
-        each_line = re.sub("switch_ip1=.*", f"switch_ip1={switch_target1}", each_line)
-    elif switchNum == 2:
-        switch_target1 = data['switchDataA']['target']
+    switch_target1 = data['switchDataA']['target']
+    each_line = re.sub("switch_ip1=.*", f"switch_ip1={switch_target1}", each_line)
+    if switchNum == 2:
         switch_target2 = data['switchDataB']['target']
         each_line = re.sub("switch_ip1=.*", f"switch_ip1={switch_target1}", each_line)
         each_line = re.sub("switch_ip2=.*", f"switch_ip2={switch_target2}", each_line)

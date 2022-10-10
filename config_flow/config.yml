@@ -34,7 +34,7 @@ hostB: # Host 2
     order: 4
 
 ## SECTION 2 SWITCH INFORMATION ##
-switchData:
+switchDataA:
   job_name: 'snmp1'
   SNMPHostIP: 198.32.43.16
   target: 172.16.1.1

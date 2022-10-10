@@ -52,24 +52,27 @@ vlan_if_index6 = "MONITORVLAN6"
 # if_index2 = index_finder(str(data['hostB']['switchPort']['ifName']))
 
 # # monitor per vlan. If same, avoid duplicates monitoring
-# if data['switchNum'] == 1: # 1 switch possibly 1 vlan
-#     vlan_if_index1 = index_finder(str(data['switchData']['portIn']['ifVlan']))
-#     vlan_if_index2 = index_finder(str(data['switchData']['portOut']['ifVlan']))
+# 1 switch possibly 1 vlan
+# vlan_if_index1 = index_finder(str(data['switchDataA']['portIn']['ifVlan']))
+# vlan_if_index2 = index_finder(str(data['switchDataA']['portOut']['ifVlan']))
 
 # # 2 switches possibly 4 vlans
-# if data['switchNum'] == 2 or data['switchNum'] == 3:
-#     vlan_if_index3 = index_finder(str(data['switchDataA']['portIn']['ifVlan']))
-#     vlan_if_index4 = index_finder(str(data['switchDataA']['portOut']['ifVlan']))
-#     vlan_if_index5 = index_finder(str(data['switchDataB']['portIn']['ifVlan']))
-#     vlan_if_index6 = index_finder(str(data['switchDataB']['portOut']['ifVlan']))
+# if data['switchNum'] > 1:
+#     vlan_if_index3 = index_finder(str(data['switchDataB']['portIn']['ifVlan']))
+#     vlan_if_index4 = index_finder(str(data['switchDataB']['portOut']['ifVlan']))
+
+# if data['switchNum'] > 2: # 3 switches possibly 6 vlans
+#     vlan_if_index5 = index_finder(str(data['switchDataC']['portIn']['ifVlan']))
+#     vlan_if_index6 = index_finder(str(data['switchDataC']['portOut']['ifVlan']))
     
+
 ######################## COMMENTING FOR TESTING ########################
 
 current_time = datetime.now().strftime("%m/%d_%H:%M")
 timeTxt = " | [" + str(current_time) + "]"
 if data['switchNum'] == 1:
     print("Single Network Element Flow Detected")
-    title1 = f" {str(data['flow'])} | {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}--{str(data['switchData']['portIn']['ifName'])}/{str(data['switchData']['portIn']['ifVlan'])}--{str(data['switchData']['portOut']['ifName'])}/{str(data['switchData']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
+    title1 = f" {str(data['flow'])} | {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}--{str(data['switchDataA']['portIn']['ifName'])}/{str(data['switchDataA']['portIn']['ifVlan'])}--{str(data['switchDataA']['portOut']['ifName'])}/{str(data['switchDataA']['portOut']['ifVlan'])}--{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
     # alternative title naming
     title1 = f" {str(data['flow'])} | {str(data['configFile'])} {timeTxt}"
     dash_title1 = str(data['dashTitle']) + title1
@@ -92,14 +95,14 @@ if data['switchNum'] == 1:
         'NODENAMEB': str(data['hostB']['nodeName']),
         'VLANA': str(data['hostA']['vlan']),
         'VLANB': str(data['hostB']['vlan']),
-        'IPSWITCH': str(data['switchData']['target']),
-        'SNMPNAME': str(data['switchData']['job_name']),
-        'SWITCHIF': str(data['switchData']['switchif']),
-        'SNMPHOSTIP': str(data['switchData']['SNMPHostIP']),
-        'SWITCHAINCOMING': str(data['switchData']['portIn']['ifName']),
-        'SWITCHAOUTGOING': str(data['switchData']['portOut']['ifName']),
-        'SWITCHAINVLAN': str(data['switchData']['portIn']['vlan']),
-        'SWITCHAOUTVLAN': str(data['switchData']['portOut']['vlan']),
+        'IPSWITCH': str(data['switchDataA']['target']),
+        'SNMPNAME': str(data['switchDataA']['job_name']),
+        'SWITCHIF': str(data['switchDataA']['switchif']),
+        'SNMPHOSTIP': str(data['switchDataA']['SNMPHostIP']),
+        'SWITCHAINCOMING': str(data['switchDataA']['portIn']['ifName']),
+        'SWITCHAOUTGOING': str(data['switchDataA']['portOut']['ifName']),
+        'SWITCHAINVLAN': str(data['switchDataA']['portIn']['vlan']),
+        'SWITCHAOUTVLAN': str(data['switchDataA']['portOut']['vlan']),
         'DASHTITLE':dash_title1,
         'DEBUGTITLE': debug_title1}
 

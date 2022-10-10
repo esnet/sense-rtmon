@@ -144,7 +144,8 @@ if data['switchNum'] == 2:
         'SWITCHBOUTVLAN': str(data['switchDataB']['portOut']['vlan']),
         'DASHTITLE': dash_title2,
         'DEBUGTITLE': debug_title2}
-
+    replacements = {}
+    
 if data['switchNum'] == 3:
     print("Three Network Element Flow Detected")
     replacements = {

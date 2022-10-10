@@ -144,9 +144,10 @@ if data['switchNum'] == 2:
         'SWITCHBOUTVLAN': str(data['switchDataB']['portOut']['vlan']),
         'DASHTITLE': dash_title2,
         'DEBUGTITLE': debug_title2}
-    replacements = {
-        'DASHTITLE': dash_title2,
-        'DEBUGTITLE': debug_title2
+    replacements = {'MONITORVLAN1': str(vlan_if_index3),
+        'MONITORVLAN2': str(vlan_if_index4),
+        'MONITORVLAN3': str(vlan_if_index5),
+        'MONITORVLAN4': str(vlan_if_index6)
         }
     
 if data['switchNum'] == 3:

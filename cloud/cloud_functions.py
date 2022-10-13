@@ -4,10 +4,13 @@ import yaml
 import sys
 import re 
 
-def read_yml_file(path, sys_argv, order):
+def read_yml_file(path, sys_argv, order, go_back_folder_num):
     # locate path
+    if path[0] != "/":
+        path = "/" + path
     owd = os.getcwd()
-    os.chdir("..")
+    for i in range(go_back_folder_num):
+        os.chdir("..")
     config_path = str(os.path.abspath(os.curdir)) + path
     infpth = config_path + "/config.yml"
     os.chdir(owd)
@@ -32,6 +35,4 @@ def read_yml_file(path, sys_argv, order):
             except yaml.YAMLError as exc:
                 print(f"\n Config file {infpth} could not be found in the config directory\n")
     
-    return data
-
-data = read_yml_file("config_flow",sys.argv)
+    return data,file_name

@@ -1,5 +1,6 @@
 import os
 import yaml
+import subprocess
 
 # configuration file path, system argument, the order it's in 
 # e.g. python3 <file> abc.yml the order is 1
@@ -38,4 +39,44 @@ def read_yml_file(path, sys_argv, order, go_back_folder_num):
     
     return data,file_name
 
-# data,file_name = read_yml_file("config_site",sys.argv, 1, 1)
+# write to SNMP template
+def write_template(data,template_path='./templates/generatorTemplate.yml',generator_file='generator.yml',letter=""):
+    with open(template_path) as inGen, open(generator_file, 'w') as outGen:
+        for line in inGen:
+            outGen.write(line)
+    oids = set(data[f'snmpMetrics{letter}']['oids'])
+    # read all oids in first then add to generator file
+    snip = ""
+    for oid in oids:
+        snip = snip + "      - " + str(oid) + "\n"
+    with open(generator_file, 'r') as gen:
+        text = gen.readlines()
+    text[3] = snip
+    with open(generator_file, 'w') as genOut:
+        genOut.writelines(text)
+        
+    replacements = {'RETRY': str(data[f'snmpMetrics{letter}']['retries']),
+                    'TIMEOUT': str(data[f'snmpMetrics{letter}']['scrapeTimeout']),
+                    'COMMUNITYREADSTRING': str(data[f'snmpMetrics{letter}']['communityString'])}
+    
+    # Read in the file
+    with open(generator_file, 'r') as file:
+        filedata = file.read()
+    # Replace the target string
+    for k,v in replacements.items():
+        filedata = filedata.replace(k, v)
+    # Write the file out again
+    with open(generator_file, 'w') as file:
+        file.write(filedata)
+
+# generate a snmp file
+def generate_snmp_file(snmp_file='snmp.yml'):
+    dir = str(os.getcwd())
+    genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
+    genCmd = "yes | cp -rfa generator.yml " + genLoc
+    subprocess.run(genCmd, shell=True)
+    print("Generating dynamic SNMP config file...")
+    subprocess.run("./generator generate", shell=True, cwd=genLoc)
+    subprocess.run(f"yes | cp -rfa snmp.yml ../../../../../{snmp_file}", shell=True, cwd=genLoc)
+    # subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
+    print("Success! Configured custom SNMP Exporter container")

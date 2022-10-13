@@ -4,28 +4,17 @@ import yaml
 import sys
 import re 
 from datetime import datetime
+import cloud_functions
+
 # get time for API keys
 now = datetime.now()
-current_time = now.strftime("%m/%d_%H:%M")
-    
-# get this host's IP address
-owd = os.getcwd()
-os.chdir("..")
-config_path = str(os.path.abspath(os.curdir)) +"/config_cloud"
-infpth = config_path + "/config.yml"
-os.chdir(owd)
-data = {}
-file_name = "config.yml"
+current_time = now.strftime("%m/%d_%H:%M")    
+
+# read yml file
+data,file_name = cloud_functions.read_yml_file("config_cloud",sys.argv,1,1)
 
 print("!!   AUTO CURL MAY FAIL")
 print("!!    Visit Google Doc for Grafana API and add Prometheus as a Data Source Key instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub")
-
-        
-with open(infpth, 'r') as stream:
-    try:
-        data = yaml.safe_load(stream)
-    except yaml.YAMLError as exc:
-        print(f"\n Config file {infpth} could not be found in the config directory\n")
 
 # curl the API key to here
 curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" +str(current_time) + "\", \"role\": \"Admin\"}' http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys"

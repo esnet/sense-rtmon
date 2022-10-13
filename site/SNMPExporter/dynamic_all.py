@@ -2,33 +2,11 @@ import yaml
 import sys
 import subprocess
 import os
+sys.path.append("..") # Adds higher directory to python modules path.
+import site_functions
 
 print("Parsing config file...")
-# Load yaml config file as dict
-owd = os.getcwd()
-os.chdir("..")
-os.chdir("..")
-config_path = str(os.path.abspath(os.curdir)) +"/config_site"
-infpth = config_path + "/config.yml"
-os.chdir(owd)
-data = {}
-
-# argument given
-if len(sys.argv) > 1:
-    file_name = str(sys.argv[1])
-    file_path = config_path + "/" + file_name
-    print(f"\n Config file {file_path}\n")
-    with open(file_path, 'r') as stream:
-        try:
-            data = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(f"\n Config file {file_path} could not be found in the config directory\n")
-else: # default config file
-    with open(infpth, 'r') as stream:
-        try:
-            data = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(f"\n Config file {infpth} could not be found in the config directory\n")
+data,file_name = site_functions.read_yml_file("config_site",sys.argv,1,2)
 
 print("Collecting SNMP generator template...")
 print("Reading SNMP OIDs/Interfaces/Scrape Duration/Scrape Time from config file...")

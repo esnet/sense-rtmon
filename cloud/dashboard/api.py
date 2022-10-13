@@ -5,23 +5,11 @@ import json
 import sys
 import yaml
 import os
+sys.path.append("..") # Adds higher directory to python modules path.
+import cloud_functions
 
-owd = os.getcwd()
-os.chdir("..")
-os.chdir("..")
-config_path = str(os.path.abspath(os.curdir)) +"/config_flow"
-os.chdir(owd)
-data = {}
-
-# given config file
-file_name = str(sys.argv[3])
-file_path = config_path + "/" + file_name
-print(f"\n Config file {file_path}\n")
-with open(file_path, 'r') as stream:
-    try:
-        data = yaml.safe_load(stream)
-    except yaml.YAMLError as exc:
-        print(f"\n Config file {file_path} could not be found in the config directory\n")
+print("\n\nParsing config file...")
+data,file_name = cloud_functions.read_yml_file("config_flow",sys.argv,3,2)
             
 # Get Default Home Dashboard
 url = f"http://{str(data['grafanaHostIP'])}:{str(data['grafanaPort'])}/api/dashboards/db"

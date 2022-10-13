@@ -29,7 +29,7 @@ for each_line in write_data:
     each_line = re.sub("top_level_config_file=.*", f"top_level_config_file={top_level_config_file}", each_line)
     
     if switchNum == 1:
-        switch_target1 = data['snmpMetrics']['target']
+        switch_target1 = data['snmpMetricsA']['target']
         each_line = re.sub("switch_target1=.*", f"switch_target1={switch_target1}", each_line)
         each_line = re.sub("switch_target2=.*", f"switch_target2=", each_line)
 

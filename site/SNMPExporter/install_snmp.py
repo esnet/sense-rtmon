@@ -32,10 +32,8 @@ genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
 genCmd = "yes | cp -rfa generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)
 subprocess.run("go build", shell=True, cwd=genLoc)
-
 subprocess.run("make mibs", shell=True, cwd=genLoc)
 subprocess.run("export MIBDIRS=mibs", shell=True, cwd=genLoc)
-print("Success! Configured custom SNMP Exporter container\n\n")
 
 # download private mibs    
 mib_dir = genLoc + "/mibs"

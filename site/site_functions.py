@@ -10,6 +10,8 @@ import re
 
 def read_yml_file(path, sys_argv, order):
     # locate path
+    if path[0] != "/":
+        path = "/" + path
     owd = os.getcwd()
     os.chdir("..")
     config_path = str(os.path.abspath(os.curdir)) + path

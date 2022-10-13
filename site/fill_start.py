@@ -6,7 +6,8 @@ import re
 import site_functions
 
 # read yml file
-data,file_name = site_functions.read_yml_file("config_site",sys.argv,1,1)
+order = 1
+data,file_name = site_functions.read_yml_file("config_site",sys.argv,order,1)
 
 switchNum = data['switchNum']
 hostip = data['hostIP']
@@ -14,7 +15,7 @@ pushgatewayPort =str(data['pushgatewayPort'])
 pushgateway_server = f"{data['grafanaHostIP']}:{pushgatewayPort}" 
 host1IP = data['hostA']['IP']
 host2IP = data['hostB']['IP']
-top_level_config_file = data['configFile']
+top_level_config_file = str(sys.argv[order])
 
 ################################### WRITE DYNAMIC_START ###############################
 # read in yaml file

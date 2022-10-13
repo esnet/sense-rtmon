@@ -3,33 +3,37 @@ import os
 import yaml
 import sys
 import re 
+import site_functions
 
-# get this host's IP address
-owd = os.getcwd()
-os.chdir("..")
-config_path = str(os.path.abspath(os.curdir)) +"/config_site"
-infpth = config_path + "/config.yml"
-os.chdir(owd)
-data = {}
-file_name = "config.yml"
+# # get this host's IP address
+# owd = os.getcwd()
+# os.chdir("..")
+# config_path = str(os.path.abspath(os.curdir)) +"/config_site"
+# infpth = config_path + "/config.yml"
+# os.chdir(owd)
+# data = {}
+# file_name = "config.yml"
 
-# argument given
-if len(sys.argv) > 1:
-    file_name = str(sys.argv[1])
-    file_path = config_path + "/" + file_name
-    print(f"\n Config file {file_path}\n")
-    with open(file_path, 'r') as stream:
-        try:
-            data = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(f"\n Config file {file_path} could not be found in the config directory\n")
+# # argument given
+# if len(sys.argv) > 1:
+#     file_name = str(sys.argv[1])
+#     file_path = config_path + "/" + file_name
+#     print(f"\n Config file {file_path}\n")
+#     with open(file_path, 'r') as stream:
+#         try:
+#             data = yaml.safe_load(stream)
+#         except yaml.YAMLError as exc:
+#             print(f"\n Config file {file_path} could not be found in the config directory\n")
     
-else: # default config file
-    with open(infpth, 'r') as stream:
-        try:
-            data = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(f"\n Config file {infpth} could not be found in the config directory\n")
+# else: # default config file
+#     with open(infpth, 'r') as stream:
+#         try:
+#             data = yaml.safe_load(stream)
+#         except yaml.YAMLError as exc:
+#             print(f"\n Config file {infpth} could not be found in the config directory\n")
+
+
+data,file_name = site_functions.read_yml_file("config_site",sys.argv)
 
 switchNum = data['switchNum']
 hostip = data['hostIP']

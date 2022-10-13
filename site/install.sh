@@ -3,8 +3,6 @@ cd ..
 general_path=$PWD
 cd ./site
 
-read -r -p "Enter the IP address of this host for docker swarm to init --advertise-addr <IP> " MYIP
-
 ############################# DOCKER SETUP ##############################
 ## check docker 
 read -r -p "Login to Docker [y/n]: " docker_login
@@ -36,19 +34,19 @@ fi
 ############################## DOCKER SWARM ##############################
 
 ### !!! currently SWARM NOT USED 
-# read -r -p "Init Docker Swarm [y/N (press enter is default N)]: " push_docker
-# if [ "$push_docker" == "y" ] || [ "$push_docker" == "Y" ]; then
-#     # read -r -p "Enter Pushgateway server IP address (e.g. http://dev2.virnao.com:9091): " pushgateway_server
-#     echo "!!    Initialize Docker Swarm"
-#     echo "$MYIP is used for docker swarm advertise"
-
-#     read -r -p "Init Docker Swarm [y/N (press enter is default N)]: " swarm_init
-#     if [ "$swarm_init" == "y" ] || [ "$swarm_init" == "Y" ]; then
-#         docker swarm init --advertise-addr $MYIP
-#     fi
-# else 
-#     echo "Skip Docker Swarm"
-# fi 
+echo "!!    Docker Swarm is not tested yet (recommend not using docker swarm)"
+sleep 1
+read -r -p "Init Docker Swarm [y/n]: " push_docker
+if [ "$push_docker" == "y" ] || [ "$push_docker" == "Y" ]; then
+    read -r -p "Please enter the IP Address of this host: " MYIP
+    echo "!!    To learn more about Docker Swarm"
+    echo "!!    https://docs.docker.com/engine/reference/commandline/swarm_init/#--advertise-addr"
+    echo "!!    Initialize Docker Swarm"
+    echo "$MYIP is used for docker swarm advertise (IP is needed when there's more than one IP address on this host)"
+    docker swarm init --advertise-addr $MYIP
+else 
+    echo "Skip Docker Swarm"
+fi 
 
 ############################## INSTALL GO & SNMP DEPENDENCIES ##############################
 read -r -p "Install SNMP Exporter [y/n]: " snmp_install

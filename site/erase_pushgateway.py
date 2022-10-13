@@ -56,3 +56,5 @@ with open(delete_file_path,"rt") as fp:
         load_delete = json.load(fp)
         for each_url in load_delete:
             requests.delete(each_url)
+            
+print("Later added SNMP Exporters need to be deleted manually.")

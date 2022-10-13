@@ -8,12 +8,13 @@ import re
 # e.g. python3 <file> abc.yml the order is 1
 # e.g. python3 <file> <arg1> abc.yml the order is 2
 
-def read_yml_file(path, sys_argv, order):
+def read_yml_file(path, sys_argv, order, go_back_folder_num):
     # locate path
     if path[0] != "/":
         path = "/" + path
     owd = os.getcwd()
-    os.chdir("..")
+    for i in go_back_folder_num.range():
+        os.chdir("..")
     config_path = str(os.path.abspath(os.curdir)) + path
     infpth = config_path + "/config.yml"
     os.chdir(owd)
@@ -40,4 +41,4 @@ def read_yml_file(path, sys_argv, order):
     
     return data,file_name
 
-# data,file_name = read_yml_file("config_site",sys.argv)
+# data,file_name = read_yml_file("config_site",sys.argv, 1, 1)

@@ -22,7 +22,7 @@ print("Collecting SNMP generator template...")
 for i in range(int(data['switchNum'])):
     letter = chr(ord('A')+i)
     site_functions.write_template(data,order_letter=letter)
-    site_functions.generate_snmp_file(f"snmp{str(i)}.yml")
+    site_functions.generate_snmp_file(f"snmp{str(i+1)}.yml")
 
 else:
     print("invalid switch number")

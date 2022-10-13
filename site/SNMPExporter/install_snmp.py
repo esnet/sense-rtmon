@@ -17,28 +17,15 @@ print("Parsing config file...")
 data,file_name = site_functions.read_yml_file("config_site",sys.argv,1,2)
 
 print("Collecting SNMP generator template...") 
-# SNMP scraps 1 switch
-if(data['switchNum']) == 1:
-    site_functions.write_template(data)
-    site_functions.generate_snmp_file()
 
-# SNMP scraps 2 switches
-elif(data['switchNum']) >= 2:
-    # first switch generate snmp.yml file
-    site_functions.write_template(data,letter="A")
-    site_functions.generate_snmp_file()
+# file naming 
+for i in range(int(data['switchNum'])):
+    letter = chr(ord('A')+1+i)
+    site_functions.write_template(data,order_letter=letter)
+    site_functions.generate_snmp_file(f"snmp{str(i+1)}.yml")
 
-    # Second switch generate snmp.yml file
-    site_functions.write_template(data,letter="B")
-    site_functions.generate_snmp_file("snmp2.yml")
-
-    # Third switch generate snmp.yml file
-    if(data['switchNum']) >= 3:
-        site_functions.write_template(data,letter="C")
-        site_functions.generate_snmp_file("snmp2.yml")
-    
 else:
-    print("invilad switch number")
+    print("invalid switch number")
     exit
     
 genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
@@ -75,3 +62,18 @@ print("SNMP and MIBs install complete.")
 # subprocess.run("./generator generate", shell=True, cwd=genLoc)
 # subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
 # print("Success! Configured custom SNMP Exporter container")
+
+# # SNMP scraps 1 switch
+# site_functions.write_template(data,order_letter="A")
+# site_functions.generate_snmp_file()
+
+# # SNMP scraps 2 switches
+# if(data['switchNum']) > 1:
+#     # Second switch generate snmp2.yml file
+#     site_functions.write_template(data,order_letter="B")
+#     site_functions.generate_snmp_file("snmp2.yml")
+
+#     # Third switch generate snmp3.yml file
+# if(data['switchNum']) > 2:
+#     site_functions.write_template(data,order_letter="C")
+#     site_functions.generate_snmp_file("snmp3.yml")

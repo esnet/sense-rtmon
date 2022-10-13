@@ -6,7 +6,7 @@ import subprocess
 # e.g. python3 <file> abc.yml the order is 1
 # e.g. python3 <file> <arg1> abc.yml the order is 2
 
-def read_yml_file(path, sys_argv, order, go_back_folder_num):
+def read_yml_file(path, sys_argv, order=1, go_back_folder_num=1):
     # locate path
     if path[0] != "/":
         path = "/" + path
@@ -40,11 +40,11 @@ def read_yml_file(path, sys_argv, order, go_back_folder_num):
     return data,file_name
 
 # write to SNMP template
-def write_template(data,template_path='./templates/generatorTemplate.yml',generator_file='generator.yml',letter=""):
+def write_template(data,template_path='./templates/generatorTemplate.yml',generator_file='generator.yml',order_letter=""):
     with open(template_path) as inGen, open(generator_file, 'w') as outGen:
         for line in inGen:
             outGen.write(line)
-    oids = set(data[f'snmpMetrics{letter}']['oids'])
+    oids = set(data[f'snmpMetrics{order_letter}']['oids'])
     # read all oids in first then add to generator file
     snip = ""
     for oid in oids:
@@ -55,9 +55,9 @@ def write_template(data,template_path='./templates/generatorTemplate.yml',genera
     with open(generator_file, 'w') as genOut:
         genOut.writelines(text)
         
-    replacements = {'RETRY': str(data[f'snmpMetrics{letter}']['retries']),
-                    'TIMEOUT': str(data[f'snmpMetrics{letter}']['scrapeTimeout']),
-                    'COMMUNITYREADSTRING': str(data[f'snmpMetrics{letter}']['communityString'])}
+    replacements = {'RETRY': str(data[f'snmpMetrics{order_letter}']['retries']),
+                    'TIMEOUT': str(data[f'snmpMetrics{order_letter}']['scrapeTimeout']),
+                    'COMMUNITYREADSTRING': str(data[f'snmpMetrics{order_letter}']['communityString'])}
     
     # Read in the file
     with open(generator_file, 'r') as file:

@@ -240,16 +240,19 @@ if data['switchNum'] == 4:
         'DEBUGTITLE': f" {str(data['debugTitle'])} 4 switches {timeTxt}"}
 
 # replacing
-with open(f"./templates/newTemplate{str(data['switchNum'])}.json") as infile, open('out.json', 'w') as outfile:
-    for line in infile:
-        for src, target in replacements.items():
-            line = line.replace(src, target)
-        outfile.write(line)
-with open(f"./templates/debugTemplate{str(data['switchNum'])}.json") as infile, open('outDebug.json', 'w') as outfile:
-    for line in infile:
-        for src, target in replacements.items():
-            line = line.replace(src, target)
-        outfile.write(line)              
+cloud_functions.replacing_json(f"./templates/newTemplate{str(data['switchNum'])}.json",'out.json',data,replacements)
+
+cloud_functions.replacing_json(f"./templates/debugTemplate{str(data['switchNum'])}.json",'outDebug.json',data,replacements)
+# with open(f"./templates/newTemplate{str(data['switchNum'])}.json") as infile, open('out.json', 'w') as outfile:
+#     for line in infile:
+#         for src, target in replacements.items():
+#             line = line.replace(src, target)
+#         outfile.write(line)
+# with open(f"./templates/debugTemplate{str(data['switchNum'])}.json") as infile, open('outDebug.json', 'w') as outfile:
+#     for line in infile:
+#         for src, target in replacements.items():
+#             line = line.replace(src, target)
+#         outfile.write(line)              
 
 # Run the API script to convert output JSON to Grafana dashboard automatically
 cmd = f"sudo python3 api.py out.json outDebug.json {file_name}"

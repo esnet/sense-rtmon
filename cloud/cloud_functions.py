@@ -36,3 +36,10 @@ def read_yml_file(path, sys_argv, order, go_back_folder_num):
                 print(f"\n Config file {infpth} could not be found in the config directory\n")
     
     return data,file_name
+
+def replacing_json(input,output,data,replacements):
+    with open(input) as infile, open(output, 'w') as outfile:
+        for line in infile:
+            for src, target in replacements.items():
+                line = line.replace(src, target)
+            outfile.write(line)

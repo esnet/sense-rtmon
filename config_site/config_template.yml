@@ -7,7 +7,7 @@ hostA:
 hostB:
   IP: 198.32.43.15
 
-snmpMetrics:
+snmpMetricsA:
   # IP address of switch to configure
   SNMPHostIP: 198.32.43.16
   target: 172.16.1.1

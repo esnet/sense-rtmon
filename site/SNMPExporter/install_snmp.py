@@ -1,4 +1,3 @@
-import site
 import sys
 import subprocess
 import os

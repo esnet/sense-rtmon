@@ -13,7 +13,7 @@ def read_yml_file(path, sys_argv, order, go_back_folder_num):
     if path[0] != "/":
         path = "/" + path
     owd = os.getcwd()
-    for i in go_back_folder_num.range():
+    for i in range(go_back_folder_num):
         os.chdir("..")
     config_path = str(os.path.abspath(os.curdir)) + path
     infpth = config_path + "/config.yml"

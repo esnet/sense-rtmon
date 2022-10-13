@@ -59,6 +59,13 @@ if ne2 != ne3 and ne3 != "":
 
 subprocess.run(f"yes | cp -rfa /usr/share/snmp/mibs/* ./", shell=True, cwd=mib_dir)
 print("SNMP and MIBs install complete.")
+
+
+
+
+
+
+
 # subprocess.run("./generator generate", shell=True, cwd=genLoc)
 # subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
 # print("Success! Configured custom SNMP Exporter container")

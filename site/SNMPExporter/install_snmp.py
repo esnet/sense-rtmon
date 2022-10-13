@@ -2,8 +2,7 @@ import sys
 import subprocess
 import os
 import yaml
-from site import site_functions
-import site_functions
+from .. import site_functions
 
 # read yml file
 data,file_name = site_functions.read_yml_file("config_site",sys.argv,1,2)

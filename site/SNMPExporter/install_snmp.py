@@ -6,13 +6,17 @@ sys.path.append("..") # Adds higher directory to python modules path.
 import site_functions
 
 print("INSTALL SNMP")
+subprocess.run("sudo yum -y install p7zip p7zip-plugins gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel", shell=True)
+os.environ["PATH"] += os.pathsep + os.pathsep.join(["/usr/local/go/bin"])
+dir = str(os.getcwd())
+os.putenv("GOPATH", dir)
+subprocess.run("go get github.com/prometheus/snmp_exporter/generator", shell=True)
+
 print("Parsing config file...")
 # read yml file
 data,file_name = site_functions.read_yml_file("config_site",sys.argv,1,2)
 
-
-print("Collecting SNMP generator template...")
-
+print("Collecting SNMP generator template...") 
 # SNMP scraps 1 switch
 if(data['switchNum']) == 1:
     site_functions.write_template(data)
@@ -37,12 +41,6 @@ else:
     print("invilad switch number")
     exit
     
-    
-subprocess.run("sudo yum -y install p7zip p7zip-plugins gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel", shell=True)
-os.environ["PATH"] += os.pathsep + os.pathsep.join(["/usr/local/go/bin"])
-dir = str(os.getcwd())
-os.putenv("GOPATH", dir)
-subprocess.run("go get github.com/prometheus/snmp_exporter/generator", shell=True)
 genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
 genCmd = "yes | cp -rfa generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)

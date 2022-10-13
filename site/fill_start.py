@@ -14,7 +14,7 @@ pushgatewayPort =str(data['pushgatewayPort'])
 pushgateway_server = f"{data['grafanaHostIP']}:{pushgatewayPort}" 
 host1IP = data['hostA']['IP']
 host2IP = data['hostB']['IP']
-top_level_config_file = str(sys.argv[1])
+# top_level_config_file = str(sys.argv[1])
 
 ################################### WRITE DYNAMIC_START ###############################
 # read in yaml file

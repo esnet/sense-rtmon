@@ -2,7 +2,6 @@ import sys
 import subprocess
 import os
 import yaml
-import site
 from ..SNMPExporter import site_functions
 
 # read yml file

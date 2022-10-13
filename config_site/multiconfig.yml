@@ -1,4 +1,4 @@
-switchNum: 1
+switchNum: 2
 hostIP: 198.32.43.16
 pushgatewayPort: 9091 # do not change unless the cloud stack has changed
 grafanaHostIP: 'dev2.virnao.com'

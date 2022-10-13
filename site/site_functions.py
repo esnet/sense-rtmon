@@ -1,8 +1,5 @@
-import json
 import os
 import yaml
-import sys
-import re 
 
 # configuration file path, system argument, the order it's in 
 # e.g. python3 <file> abc.yml the order is 1

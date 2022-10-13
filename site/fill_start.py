@@ -33,7 +33,7 @@ import site_functions
 #             print(f"\n Config file {infpth} could not be found in the config directory\n")
 
 
-data,file_name = site_functions.read_yml_file("config_site",sys.argv)
+data,file_name = site_functions.read_yml_file("config_site",sys.argv,1)
 
 switchNum = data['switchNum']
 hostip = data['hostIP']

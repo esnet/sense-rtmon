@@ -14,7 +14,7 @@ pushgatewayPort =str(data['pushgatewayPort'])
 pushgateway_server = f"{data['grafanaHostIP']}:{pushgatewayPort}" 
 host1IP = data['hostA']['IP']
 host2IP = data['hostB']['IP']
-if len(sys.argv>1):
+if len(sys.argv) > 1:
     top_level_config_file = str(sys.argv[1])
 else:
     top_level_config_file = "config.yml"

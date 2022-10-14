@@ -14,16 +14,13 @@ pushgatewayPort =str(data['pushgatewayPort'])
 pushgateway_server = f"{data['grafanaHostIP']}:{pushgatewayPort}" 
 host1IP = data['hostA']['IP']
 host2IP = data['hostB']['IP']
-# top_level_config_file = str(sys.argv[1])
-
+if len(sys.argv>1):
+    top_level_config_file = str(sys.argv[1])
+else:
+    top_level_config_file = "config.yml"
+    
 ################################### WRITE DYNAMIC_START ###############################
 # read in yaml file
-print(str(sys.argv[1]))
-print(str(sys.argv[1]))
-print(str(sys.argv[1]))
-print(str(sys.argv[1]))
-print(str(sys.argv[1]))
-
 with open('dynamic_start.sh', 'r') as file:
     write_data = file.readlines()
     

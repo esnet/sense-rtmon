@@ -13,15 +13,11 @@ hostip = data['hostIP']
 node_url = f"http://dev2.virnao.com:9091/metrics/job/node-exporter/instance/{hostip}"
 requests.delete(node_url)
 
-if data['switchNum'] == 1:
-    target = data['snmpMetrics']['target']
-    snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target}"
-    requests.delete(snmp_url)
-elif data['switchNum'] == 2:
-    target1 = data['snmpMetricsA']['target']
+target = data['snmpMetricsA']['target']
+snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target}"
+requests.delete(snmp_url)
+if data['switchNum'] == 2:
     target2 = data['snmpMetricsB']['target']
-    snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target1}"
-    requests.delete(snmp_url)
     snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter2/instance/{hostip}/target_switch/{target2}"
     requests.delete(snmp_url)
 

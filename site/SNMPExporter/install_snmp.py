@@ -13,72 +13,31 @@ os.putenv("GOPATH", dir)
 subprocess.run("go get github.com/prometheus/snmp_exporter/generator", shell=True)
 
 print("Parsing config file...")
-# read yml file
 data,file_name = site_functions.read_yml_file("config_site",sys.argv,1,2)
 
 print("Collecting SNMP generator template...") 
-
-# file naming 
+# file naming
 for i in range(int(data['switchNum'])):
     letter = chr(ord('A')+i)
     site_functions.write_template(data,order_letter=letter)
     site_functions.generate_snmp_file(f"snmp{str(i+1)}.yml")
 
-else:
-    print("invalid switch number")
-    exit
-    
+print("Make Mibs")    
 genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
 genCmd = "yes | cp -rfa generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)
 subprocess.run("go build", shell=True, cwd=genLoc)
 subprocess.run("make mibs", shell=True, cwd=genLoc)
 
-# download private mibs    
+print("Download private mibs for ALL network elements in librenms")
 mib_dir = genLoc + "/mibs"
 os.chdir(mib_dir)
 subprocess.run("git clone https://github.com/librenms/librenms.git",shell=True, cwd=mib_dir)
-print("To download private MIBs please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n")
+print("Check out librenms for private mibs https://github.com/librenms/librenms/tree/master/mibs\n")
 subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*-MIB ./", shell=True, cwd=mib_dir)
-
-ne = input("Enter the name of the Network Element: ")
-ne2 = input("Enter the name of the second Network Element (Press Enter to skip): ")
-ne3 = input("Enter the name of the third Network Element: (Press Enter to skip)")
-
-print(f"move all {ne} MIBS to mib folder")
-subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne}/* ./", shell=True, cwd=mib_dir)
-if ne2 != ne and ne2 != "":
-    print(f"move all {ne2} MIBS to mib folder")
-    subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne2}/* ./", shell=True, cwd=mib_dir)
-if ne2 != ne3 and ne3 != "":
-    print(f"move all {ne3} MIBS to mib folder")
-    subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne3}/* ./", shell=True, cwd=mib_dir)
-
+subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*/* ./", shell=True, cwd=mib_dir)
+subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*/*/* ./", shell=True, cwd=mib_dir)
 subprocess.run(f"yes | cp -rfa /usr/share/snmp/mibs/* ./", shell=True, cwd=mib_dir)
-print("SNMP and MIBs install complete.")
+print("Changing MIBDIRS to MIBDIRS=mibs")
 subprocess.run("export MIBDIRS=mibs", shell=True, cwd=genLoc)
-
-
-
-
-
-
-
-# subprocess.run("./generator generate", shell=True, cwd=genLoc)
-# subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
-# print("Success! Configured custom SNMP Exporter container")
-
-# # SNMP scraps 1 switch
-# site_functions.write_template(data,order_letter="A")
-# site_functions.generate_snmp_file()
-
-# # SNMP scraps 2 switches
-# if(data['switchNum']) > 1:
-#     # Second switch generate snmp2.yml file
-#     site_functions.write_template(data,order_letter="B")
-#     site_functions.generate_snmp_file("snmp2.yml")
-
-#     # Third switch generate snmp3.yml file
-# if(data['switchNum']) > 2:
-#     site_functions.write_template(data,order_letter="C")
-#     site_functions.generate_snmp_file("snmp3.yml")
+print("SNMP and MIBs install complete.")

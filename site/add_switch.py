@@ -5,7 +5,6 @@ import re
 
 print("\n\nADD SNMP EXPORTER AND SWITCH")
 print("To download private MIBs please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n\n")
-ne = input("Enter the name of the Network Element: ")
 switch_ip = input("Enter the IP of the Network Element: ")
 switch_ip = switch_ip.strip()
 community_string = input("Enter the community string of the Network Element: ")
@@ -13,15 +12,6 @@ switch_num = input("Enter the number of existing SNMP exporter (2 SNMP exporters
 switch_num = str(switch_num.strip())
 new_oid = input("Enter oids separated by space (e.g.: 1.3.6.1.2.1.17.4.3.1.1 1.3.6.1.2.1.31   or   dot1dTpFdbAddress ifMIB): ")
 oid_list = new_oid.split()
-
-# download private mibs
-dir = str(os.getcwd())
-genLoc = dir + "/SNMPExporter/src/github.com/prometheus/snmp_exporter/generator"
-mib_dir = genLoc + "/mibs"
-print(f"move all {ne} MIBS to mib folder")
-subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne}/* ./", shell=True, cwd=mib_dir)
-print("NEW SWITCH ADDED")
-subprocess.run("export MIBDIRS=mibs", shell=True, cwd=genLoc)
 
 # make new SNMP file
 with open("./SNMPExporter/templates/generatorTemplate.yml") as inGen, open("./SNMPExporter/generator.yml", 'w') as outGen:

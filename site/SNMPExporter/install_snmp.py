@@ -33,7 +33,6 @@ genCmd = "yes | cp -rfa generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)
 subprocess.run("go build", shell=True, cwd=genLoc)
 subprocess.run("make mibs", shell=True, cwd=genLoc)
-subprocess.run("export MIBDIRS=mibs", shell=True, cwd=genLoc)
 
 # download private mibs    
 mib_dir = genLoc + "/mibs"
@@ -57,6 +56,7 @@ if ne2 != ne3 and ne3 != "":
 
 subprocess.run(f"yes | cp -rfa /usr/share/snmp/mibs/* ./", shell=True, cwd=mib_dir)
 print("SNMP and MIBs install complete.")
+subprocess.run("export MIBDIRS=mibs", shell=True, cwd=genLoc)
 
 
 

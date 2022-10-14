@@ -21,6 +21,7 @@ mib_dir = genLoc + "/mibs"
 print(f"move all {ne} MIBS to mib folder")
 subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne}/* ./", shell=True, cwd=mib_dir)
 print("NEW SWITCH ADDED")
+subprocess.run("export MIBDIRS=mibs", shell=True, cwd=genLoc)
 
 # make new SNMP file
 with open("./SNMPExporter/templates/generatorTemplate.yml") as inGen, open("./SNMPExporter/generator.yml", 'w') as outGen:
@@ -99,4 +100,5 @@ with open("crontabs/push_snmp_exporter_metrics.sh",'w') as outGen, open("crontab
         outGen.write(line)
     
 print("COMPOSE NEW SNMP EXPORTER:")
+
 subprocess.run(f"docker compose -f ./compose-files/added_snmp-docker-compose{switch_num}.yml up -d", shell=True)

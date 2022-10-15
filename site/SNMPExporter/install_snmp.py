@@ -27,6 +27,20 @@ os.chdir(mib_dir)
 subprocess.run("git clone https://github.com/librenms/librenms.git",shell=True, cwd=mib_dir)
 print("Check out librenms for private mibs https://github.com/librenms/librenms/tree/master/mibs\n")
 subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*-MIB ./", shell=True, cwd=mib_dir)
+
+ne = input("Enter the name of the Network Element: ")
+ne2 = input("Enter the name of the second Network Element (Press Enter to skip): ")
+ne3 = input("Enter the name of the third Network Element: (Press Enter to skip)")
+
+print(f"move all {ne} MIBS to mib folder")
+subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne}/* ./", shell=True, cwd=mib_dir)
+if ne2 != ne and ne2 != "":
+    print(f"move all {ne2} MIBS to mib folder")
+    subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne2}/* ./", shell=True, cwd=mib_dir)
+if ne2 != ne3 and ne3 != "":
+    print(f"move all {ne3} MIBS to mib folder")
+    subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne3}/* ./", shell=True, cwd=mib_dir)
+
 # subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*/* ./", shell=True, cwd=mib_dir)
 # subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*/*/* ./", shell=True, cwd=mib_dir)
 subprocess.run(f"yes | cp -rfa /usr/share/snmp/mibs/* ./", shell=True, cwd=mib_dir)

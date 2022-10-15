@@ -12,16 +12,6 @@ dir = str(os.getcwd())
 os.putenv("GOPATH", dir)
 subprocess.run("go get github.com/prometheus/snmp_exporter/generator", shell=True)
 
-print("Parsing config file...")
-data,file_name = site_functions.read_yml_file("config_site",sys.argv,1,2)
-
-print("Collecting SNMP generator template...") 
-# file naming
-for i in range(int(data['switchNum'])):
-    letter = chr(ord('A')+i)
-    site_functions.write_template(data,order_letter=letter)
-    site_functions.generate_snmp_file(f"snmp{str(i+1)}.yml")
-
 print("Make Mibs")    
 genLoc = dir + "/src/github.com/prometheus/snmp_exporter/generator"
 genCmd = "yes | cp -rfa generator.yml " + genLoc

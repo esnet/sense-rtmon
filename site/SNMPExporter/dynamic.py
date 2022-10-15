@@ -10,7 +10,7 @@ data,file_name = site_functions.read_yml_file("config_site",sys.argv,1,2)
 print("Collecting SNMP generator template...")
 print("Reading SNMP OIDs/Interfaces/Scrape Duration/Scrape Time from config file...")
 
-mib_dir = f"{str(os.getcwd())}/src/github.com/prometheus/snmp_exporter/generator/mibs"
+mib_dir = f"{str(os.getcwd())}/src/github.com/prometheus/snmp_exporter/generator/mibs/"
 print(f"\n\nset MIBDIRS to MIBDIRS={mib_dir}")
 # default_mibdirs = os.getenv["MIBDIRS"]
 os.environ["MIBDIRS"]= f"{mib_dir}"

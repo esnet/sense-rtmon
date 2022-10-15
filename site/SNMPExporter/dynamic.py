@@ -24,6 +24,3 @@ for i in range(int(data['switchNum'])):
     letter = chr(ord('A')+i) # A B C D ... 
     site_functions.write_template(data,order_letter=letter)
     site_functions.generate_snmp_file(f"snmp{str(i+1)}.yml") # snmp1.yml snmp2.yml ...
-else:
-    print("invilad switch number")
-    exit

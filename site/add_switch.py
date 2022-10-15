@@ -2,9 +2,12 @@ import sys
 import subprocess
 import os
 import re
+import site_functions
 
 print("\n\nADD SNMP EXPORTER AND SWITCH")
 print("To download private MIBs please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n\n")
+site_functions.download_mibs("/SNMPExporter/src/github.com/prometheus/snmp_exporter/generator")
+
 switch_ip = input("Enter the IP of the Network Element: ")
 switch_ip = switch_ip.strip()
 community_string = input("Enter the community string of the Network Element: ")

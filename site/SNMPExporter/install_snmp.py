@@ -30,7 +30,8 @@ subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*-MIB ./", shell=True, cw
 subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*/* ./", shell=True, cwd=mib_dir)
 subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*/*/* ./", shell=True, cwd=mib_dir)
 subprocess.run(f"yes | cp -rfa /usr/share/snmp/mibs/* ./", shell=True, cwd=mib_dir)
-print(f"set MIBDIRS to MIBDIRS={mib_dir}")
-os.environ["MIBDIRS"]= mib_dir
+
+print(f"\n\nset MIBDIRS to MIBDIRS={mib_dir}")
+os.environ["MIBDIRS"]= "abc"
 # subprocess.run(f"export MIBDIRS={mib_dir}", shell=True, cwd=genLoc)
 print("SNMP and MIBs install complete.")

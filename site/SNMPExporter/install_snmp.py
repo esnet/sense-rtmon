@@ -19,6 +19,7 @@ subprocess.run(genCmd, shell=True)
 subprocess.run("go build", shell=True, cwd=genLoc)
 # make mibs have been failing
 # subprocess.run("make mibs", shell=True, cwd=genLoc)
+# subprocess.run("mkdir mibs", shell=True, cwd=genLoc)
 
 print("Download private mibs for ALL network elements in librenms")
 mib_dir = genLoc + "/mibs"

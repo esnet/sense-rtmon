@@ -13,7 +13,7 @@ print("Reading SNMP OIDs/Interfaces/Scrape Duration/Scrape Time from config file
 mib_dir = f"{str(os.getcwd())}/src/github.com/prometheus/snmp_exporter/generator/mibs"
 print(f"\n\nset MIBDIRS to MIBDIRS={mib_dir}")
 # os.environ["MIBDIRS"]= f"{os.getenv["MIBDIRS"]}:{mib_dir}"
-subprocess.run(f"export MIBDIRS=$MIBDIRS:{mib_dir}", shell=True, cwd=genLoc)
+subprocess.run(f"export MIBDIRS=$MIBDIRS:{mib_dir}", shell=True, cwd=mib_dir)
 print("SNMP and MIBs install complete.")
 
 # file naming 

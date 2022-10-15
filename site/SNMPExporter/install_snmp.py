@@ -19,7 +19,7 @@ subprocess.run(genCmd, shell=True)
 subprocess.run("go build", shell=True, cwd=genLoc)
 # make mibs have been failing
 # subprocess.run("make mibs", shell=True, cwd=genLoc)
-# subprocess.run("mkdir mibs", shell=True, cwd=genLoc)
+subprocess.run("mkdir mibs", shell=True, cwd=genLoc)
 
 print("Download private mibs for ALL network elements in librenms")
 mib_dir = genLoc + "/mibs"
@@ -30,6 +30,4 @@ subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*-MIB ./", shell=True, cw
 subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*/* ./", shell=True, cwd=mib_dir)
 subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*/*/* ./", shell=True, cwd=mib_dir)
 subprocess.run(f"yes | cp -rfa /usr/share/snmp/mibs/* ./", shell=True, cwd=mib_dir)
-# subprocess.run("mkdir mibs", shell=True, cwd=genLoc)
-# subprocess.run("make mibs", shell=True, cwd=genLoc)
 

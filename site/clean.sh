@@ -28,4 +28,7 @@ read -r -p "Remove all SNMP related downloads and config files [y/n]?: " remove_
 if [ "$remove_SNMP" == "y" ] || [ "$remove_SNMP" == "Y" ]; then
     cd SNMPExporter
     rm -rf go* pkg src bin snmp*.yml
+    echo "Files, under SNMPExporter, generated from ./install.sh are deleted"
+else
+    echo "SNMPExporter files can be found under SNMPExporter"
 fi

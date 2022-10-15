@@ -31,5 +31,5 @@ subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*/* ./", shell=True, cwd=
 subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*/*/* ./", shell=True, cwd=mib_dir)
 subprocess.run(f"yes | cp -rfa /usr/share/snmp/mibs/* ./", shell=True, cwd=mib_dir)
 # subprocess.run("mkdir mibs", shell=True, cwd=genLoc)
-subprocess.run("make mibs", shell=True, cwd=genLoc)
+# subprocess.run("make mibs", shell=True, cwd=genLoc)
 

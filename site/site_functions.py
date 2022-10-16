@@ -1,6 +1,7 @@
 import os
 import yaml
 import subprocess
+import re
 
 # configuration file path, system argument, the order it's in 
 # e.g. python3 <file> abc.yml the order is 1
@@ -81,7 +82,7 @@ def generate_snmp_file(snmp_file='snmp.yml'):
     print("Success! Configured custom SNMP Exporter container")
     print(f"{snmp_file} generated")
 
-
+# copy paste mibs from librenms folder to parent mib folder
 def download_mibs(mib_path):
     ne = input("Enter the name of the Network Element: ")
     if mib_path[0] != "/":
@@ -89,3 +90,42 @@ def download_mibs(mib_path):
     print(f"move all {ne} MIBS to mib folder")
     subprocess.run(f"yes | cp -rfa {mib_path}/librenms/mibs/{ne}/* ./", shell=True, cwd=mib_path)
     print("NEW SWITCH ADDED")
+    
+# generate a new snmp compose file in compose-files folder for each. One file for one snmp exporter
+def new_snmp_compose_file(path,switch_num):
+    print(f"Generate a new docker compose file: added_snmp-docker-compose{str(switch_num)}.yml")
+    print(f"Running on port: {str(9115+switch_num)}")
+    new_compoes_file = f"""version: '3.8'
+    services:
+    snmp-exporter{switch_num}:
+        image: prom/snmp-exporter
+        volumes:
+        - ../SNMPExporter/snmp{switch_num}.yml:/etc/snmp_exporter/snmp{switch_num}.yml
+        ports:
+        - {str(9115+int(switch_num))}:9116"""
+
+    with open(f"{path}/added_snmp-docker-compose{str(switch_num)}.yml", 'w') as file:
+        file.write(new_compoes_file)
+        
+# update crontab when SNMP exporter started
+def update_snmp_crontab_script(path,switch_num,switch_ip):
+    curl_flag = True
+    cat_flag = True
+    with open(f"{path}/push_snmp_exporter_metrics.sh") as inGen, open(f"{path}/temp_push_snmp_exporter_metrics.sh", 'w') as outGen:
+        for line in inGen:
+            if "curl -o " in line and curl_flag:
+                new_line = re.sub("91.*/snmp", f"{str(9115+switch_num)}/snmp", line)
+                new_line = re.sub("snmp_temp.txt", f"snmp_temp{str(switch_num)}.txt", new_line)
+                new_line = re.sub("target=.*&", f"target={switch_ip}&", new_line)
+                curl_flag = False
+                outGen.write(new_line)
+            elif "cat /" in line and cat_flag:
+                new_line = re.sub("/snmp-exporter/target_switch/.*/instance/", f"/snmp-exporter{str(switch_num)}/target_switch/{switch_ip}/instance/", line)
+                new_line = re.sub("snmp_temp.txt", f"snmp_temp{str(switch_num)}.txt", new_line)
+                cat_flag = False
+                outGen.write(new_line)        
+            outGen.write(line)
+
+    with open(f"{path}/push_snmp_exporter_metrics.sh",'w') as outGen, open(f"{path}/temp_push_snmp_exporter_metrics.sh") as inGen:
+        for line in inGen:
+            outGen.write(line)

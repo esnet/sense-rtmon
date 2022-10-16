@@ -6,6 +6,9 @@ import site_functions
 
 print("\n\nADD SNMP EXPORTER AND SWITCH")
 print("To download private MIBs please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n\n")
+dir = str(os.getcwd())
+genLoc = dir + "/SNMPExporter/src/github.com/prometheus/snmp_exporter/generator"
+site_functions.download_mibs(f"{genLoc}/mibs")
 
 switch_ip = input("Enter the IP of the Network Element: ")
 switch_ip = switch_ip.strip()
@@ -44,8 +47,7 @@ for k,v in replacements.items():
 with open("./SNMPExporter/generator.yml", 'w') as file:
     file.write(filedata)
 
-dir = str(os.getcwd())
-genLoc = dir + "/SNMPExporter/src/github.com/prometheus/snmp_exporter/generator"
+
 genCmd = "yes | cp -rfa ./SNMPExporter/generator.yml " + genLoc
 subprocess.run(genCmd, shell=True)
 print("Generating dynamic SNMP config file...")
@@ -53,7 +55,6 @@ subprocess.run("./generator generate", shell=True, cwd=genLoc)
 subprocess.run(f"yes | cp -rfa snmp.yml ../../../../../snmp{switch_num}.yml", shell=True, cwd=genLoc)
 print("Success! Configured custom SNMP Exporter container")
 print(f"snmp{switch_num}.yml generated")
-site_functions.download_mibs(f"{genLoc}/mibs")
 
 # Make new docker file
 print(f"Generate a new docker compose file: added_snmp-docker-compose{switch_num}.yml")

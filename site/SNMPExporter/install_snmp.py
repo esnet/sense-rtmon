@@ -30,6 +30,7 @@ subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*-MIB ./", shell=True, cw
 
 default_mibs = os.getenv("MIBDIRS")
 subprocess.run(f"yes | cp -rfa /usr/share/snmp/mibs/* ./", shell=True, cwd=mib_dir)
+print("Copying mibs from Default environment variable MIBDIRS (ignore if it doesn't exist)")
 subprocess.run(f"yes | cp -rfa {default_mibs}/* ./", shell=True, cwd=mib_dir)
 
 print("Install Two Network Elements (to add more run /site/add_switch.py script)")

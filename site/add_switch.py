@@ -27,10 +27,12 @@ new_oid = input("Enter oids separated by space (e.g.: 1.3.6.1.2.1.17.4.3.1.1 1.3
 oid_list = new_oid.split()
 
 # make new SNMP file
-data = {}
-data["snmpMetrics"]["retries"] = "3s"
-data["snmpMetrics"]["scrapeTimeout"] = "5s"
-data["snmpMetrics"]["communityString"] = community_string
+data = {"snmpMetrics": 
+   {"retries":"3s", 
+    "scrapeTimeout":"5s",
+    "communityString":community_string
+    }
+}
 
 site_functions.write_template(data,template_path="./SNMPExporter/templates/generatorTemplate.yml",generator_file="./SNMPExporter/generator.yml")
 

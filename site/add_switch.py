@@ -5,7 +5,7 @@ import re
 import site_functions
 
 print("\n\nADD SNMP EXPORTER AND SWITCH")
-print("!!   Before running this script, snmp exporter needs to downloaded, start.sh is ran, and crontab is created   !!")
+print("!!   Before running this script, snmp exporter needs to downloaded, and SNMP exporters are started in start.sh   !!")
 print("To download private MIBs please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n\n")
 dir = str(os.getcwd())
 genLoc = dir + "/SNMPExporter/src/github.com/prometheus/snmp_exporter/generator"

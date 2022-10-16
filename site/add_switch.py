@@ -30,7 +30,8 @@ oid_list = new_oid.split()
 data = {"snmpMetrics": 
    {"retries":"3s", 
     "scrapeTimeout":"5s",
-    "communityString":community_string
+    "communityString":community_string,
+    "oids":oid_list
     }
 }
 

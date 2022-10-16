@@ -78,8 +78,9 @@ def generate_snmp_file(snmp_file='snmp.yml'):
     print("Generating dynamic SNMP config file...")
     subprocess.run("./generator generate", shell=True, cwd=genLoc)
     subprocess.run(f"yes | cp -rfa snmp.yml ../../../../../{snmp_file}", shell=True, cwd=genLoc)
-    # subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
     print("Success! Configured custom SNMP Exporter container")
+    print(f"{snmp_file} generated")
+
 
 def download_mibs(mib_path):
     ne = input("Enter the name of the Network Element: ")

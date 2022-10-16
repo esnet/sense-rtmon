@@ -54,7 +54,7 @@ os.chdir("..")
 # print(f"snmp{switch_num}.yml generated")
 
 # Make new docker file
-site_functions.new_snmp_compose_file("./compose-files",switch_num)
+site_functions.generate_snmp_compose_file("./compose-files",switch_num)
 # print(f"Generate a new docker compose file: added_snmp-docker-compose{switch_num}.yml")
 # print(f"Running on port: {str(9115+switch_num)}")
 # new_compoes_file = f"""version: '3.8'

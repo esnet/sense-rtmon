@@ -8,4 +8,5 @@ sleep 0.5
 ./dynamic_start.sh
 
 echo "!!    What's next?"
-echo "!!    clean.sh deletes all containers and crontab related files"
+echo "!!    run python3 add_switch.py to add additional SNMP exporters"
+echo "!!    run ./clean.sh deletes all containers and crontab related files"

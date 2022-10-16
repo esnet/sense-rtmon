@@ -92,7 +92,7 @@ def download_mibs(mib_path):
     print("NEW SWITCH ADDED")
     
 # generate a new snmp compose file in compose-files folder for each. One file for one snmp exporter
-def new_snmp_compose_file(path,switch_num):
+def generate_snmp_compose_file(path,switch_num):
     print(f"Generate a new docker compose file: added_snmp-docker-compose{str(switch_num)}.yml")
     print(f"Running on port: {str(9115+switch_num)}")
     new_compoes_file = f"""version: '3.8'

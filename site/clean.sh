@@ -10,7 +10,9 @@ docker rm -f compose-files-snmp-exporter-1 compose-files-tcp-exporter-1 compose-
 
 docker image rm -f arp_exporter:latest tcp_exporter:latest
 
-rm -rf ./crontabs/push_snmp_exporter_metrics*.sh ./crontabs/push_node_exporter_metrics*.sh  ./crontabs/update_arp_exporter*
+rm -rf ./crontabs/push_snmp_exporter_metrics*.sh ./crontabs/snmp_* ./crontabs/temp_push_snmp_exporter_metrics.sh
+rm -rf ./crontabs/push_node_exporter_metrics*.sh  
+rm -rf ./crontabs/update_arp_exporter*
 
 rm -rf ./compose-files/added*
 

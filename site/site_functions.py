@@ -95,8 +95,9 @@ def download_mibs(mib_path):
 def generate_snmp_compose_file(path,switch_num):
     print(f"Generate a new docker compose file: added_snmp-docker-compose{str(switch_num)}.yml")
     print(f"Running on port: {str(9115+switch_num)}")
-    new_compoes_file = f"""version: '3.8'
-    services:
+    new_compoes_file = f"""
+version: '3.8'
+services:
     snmp-exporter{switch_num}:
         image: prom/snmp-exporter
         volumes:

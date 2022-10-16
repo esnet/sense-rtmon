@@ -95,4 +95,4 @@ site_functions.update_snmp_crontab_script("crontabs",switch_num,switch_ip)
     
 print("COMPOSE NEW SNMP EXPORTER:")
 
-subprocess.run(f"docker compose -f ./compose-files/added_snmp-docker-compose{str(switch_num)}.yml up -d", shell=True)
+subprocess.run(f"docker compose -f ./compose-files/added_snmp-docker-compose{str(switch_num+1)}.yml up -d", shell=True)

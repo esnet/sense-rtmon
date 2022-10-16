@@ -81,11 +81,10 @@ def generate_snmp_file(snmp_file='snmp.yml'):
     # subprocess.run("yes | cp -rfa snmp.yml ../../../../../", shell=True, cwd=genLoc)
     print("Success! Configured custom SNMP Exporter container")
 
-def download_mibs(path="/src/github.com/prometheus/snmp_exporter/generator"):
+def download_mibs(mib_path):
     ne = input("Enter the name of the Network Element: ")
-    if path[0] != "/":
-        path = "/" + path
-    mib_dir = str(os.getcwd()) + path + "/mibs"
+    if mib_path[0] != "/":
+        mib_path = "/" + mib_path
     print(f"move all {ne} MIBS to mib folder")
-    subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne}/* ./", shell=True, cwd=mib_dir)
+    subprocess.run(f"yes | cp -rfa {mib_path}/librenms/mibs/{ne}/* ./", shell=True, cwd=mib_path)
     print("NEW SWITCH ADDED")

@@ -33,8 +33,8 @@ subprocess.run(f"yes | cp -rfa /usr/share/snmp/mibs/* ./", shell=True, cwd=mib_d
 subprocess.run(f"yes | cp -rfa {default_mibs}/* ./", shell=True, cwd=mib_dir)
 
 print("Install Two Network Elements (to add more run /site/add_switch.py script)")
-site_functions.download_mibs()
-site_functions.download_mibs()
+site_functions.download_mibs(mib_dir)
+site_functions.download_mibs(mib_dir)
 
 # ne = input("Enter the name of the Network Element: ")
 # ne2 = input("Enter the name of the second Network Element (Press Enter to skip): ")

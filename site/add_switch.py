@@ -23,7 +23,6 @@ for letter in snmp_yml[-1]:
         largest_num = largest_num + letter
 
 switch_num = int(largest_num)+1
-switch_num = str(switch_num.strip())
 new_oid = input("Enter oids separated by space (e.g.: 1.3.6.1.2.1.17.4.3.1.1 1.3.6.1.2.1.31   or   dot1dTpFdbAddress ifMIB): ")
 oid_list = new_oid.split()
 

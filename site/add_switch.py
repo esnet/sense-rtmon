@@ -32,7 +32,7 @@ oid_list = new_oid.split()
 
 # make new SNMP file
 data = {"snmpMetrics": 
-   {"retries":"3s", 
+   {"retries":3, 
     "scrapeTimeout":"5s",
     "communityString":community_string,
     "oids":oid_list
@@ -95,4 +95,4 @@ site_functions.update_snmp_crontab_script("crontabs",switch_num,switch_ip)
     
 print("COMPOSE NEW SNMP EXPORTER:")
 
-subprocess.run(f"docker compose -f ./compose-files/added_snmp-docker-compose{str(switch_num+1)}.yml up -d", shell=True)
+subprocess.run(f"docker compose -f ./compose-files/added_snmp-docker-compose{str(switch_num)}.yml up -d", shell=True)

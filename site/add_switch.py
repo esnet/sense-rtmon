@@ -5,6 +5,7 @@ import re
 import site_functions
 
 print("\n\nADD SNMP EXPORTER AND SWITCH")
+print("!!   Before running this script, snmp exporter needs to downloaded, start.sh is ran, and crontab is created   !!")
 print("To download private MIBs please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs\n\n")
 dir = str(os.getcwd())
 genLoc = dir + "/SNMPExporter/src/github.com/prometheus/snmp_exporter/generator"
@@ -18,10 +19,13 @@ SNMP_files = os.listdir("./SNMPExporter")
 snmp_yml = [x for x in SNMP_files if "snmp" in x and ".yml" in x] 
 snmp_yml.sort()
 largest_num = ""
-for letter in snmp_yml[-1]:
-    if letter.isdigit():
-        largest_num = largest_num + letter
-
+if len(snmp_yml) > 0:
+    for letter in snmp_yml[-1]:
+        if letter.isdigit():
+            largest_num = largest_num + letter
+else:
+    largest_num = 0
+    
 switch_num = int(largest_num)+1
 new_oid = input("Enter oids separated by space (e.g.: 1.3.6.1.2.1.17.4.3.1.1 1.3.6.1.2.1.31   or   dot1dTpFdbAddress ifMIB): ")
 oid_list = new_oid.split()

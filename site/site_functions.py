@@ -80,7 +80,7 @@ def generate_snmp_file(snmp_file='snmp.yml'):
     subprocess.run("./generator generate", shell=True, cwd=genLoc)
     subprocess.run(f"yes | cp -rfa snmp.yml ../../../../../{snmp_file}", shell=True, cwd=genLoc)
     print("Success! Configured custom SNMP Exporter container")
-    print(f"{snmp_file} generated")
+    print(f"{snmp_file} generated\n\n")
 
 # copy paste mibs from librenms folder to parent mib folder
 def download_mibs(mib_path):

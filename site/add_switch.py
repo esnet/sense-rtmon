@@ -13,7 +13,16 @@ site_functions.download_mibs(f"{genLoc}/mibs")
 switch_ip = input("Enter the IP of the Network Element: ")
 switch_ip = switch_ip.strip()
 community_string = input("Enter the community string of the Network Element: ")
-switch_num = input("Enter the number of existing SNMP exporter (2 SNMP exporters are running by default, it should be 3 or greater. run: $docker ps to check): ")
+# find the number of existing SNMP exporter
+SNMP_files = os.listdir("./SNMPExporter")
+snmp_yml = [x for x in SNMP_files if "snmp" in x and ".yml" in x] 
+snmp_yml.sort()
+largest_num = ""
+for letter in snmp_yml[-1]:
+    if letter.isdigit():
+        largest_num = largest_num + letter
+
+switch_num = int(largest_num)+1
 switch_num = str(switch_num.strip())
 new_oid = input("Enter oids separated by space (e.g.: 1.3.6.1.2.1.17.4.3.1.1 1.3.6.1.2.1.31   or   dot1dTpFdbAddress ifMIB): ")
 oid_list = new_oid.split()

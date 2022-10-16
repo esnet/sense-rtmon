@@ -37,7 +37,7 @@ data = {"snmpMetrics":
 
 site_functions.write_template(data,template_path="./SNMPExporter/templates/generatorTemplate.yml",generator_file="./SNMPExporter/generator.yml")
 
-os.chdir("..SNMPExporter")
+os.chdir("./SNMPExporter")
 site_functions.generate_snmp_file(f"snmp{switch_num}.yml")
 os.chdir("..")
 

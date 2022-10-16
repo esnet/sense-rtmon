@@ -116,13 +116,13 @@ def update_snmp_crontab_script(path,switch_num,switch_ip):
         for line in inGen:
             if "curl -o " in line and curl_flag:
                 new_line = re.sub("91.*/snmp", f"{str(9115+switch_num)}/snmp", line)
-                new_line = re.sub("snmp_temp.txt", f"snmp_temp{str(switch_num)}.txt", new_line)
+                new_line = re.sub("snmp_temp.*.txt", f"snmp_temp{str(switch_num)}.txt", new_line)
                 new_line = re.sub("target=.*&", f"target={switch_ip}&", new_line)
                 curl_flag = False
                 outGen.write(new_line)
             elif "cat /" in line and cat_flag:
-                new_line = re.sub("/snmp-exporter/target_switch/.*/instance/", f"/snmp-exporter{str(switch_num)}/target_switch/{switch_ip}/instance/", line)
-                new_line = re.sub("snmp_temp.txt", f"snmp_temp{str(switch_num)}.txt", new_line)
+                new_line = re.sub("/snmp-exporter.*/target_switch/.*/instance/", f"/snmp-exporter{str(switch_num)}/target_switch/{switch_ip}/instance/", line)
+                new_line = re.sub("snmp_temp.*.txt", f"snmp_temp{str(switch_num)}.txt", new_line)
                 cat_flag = False
                 outGen.write(new_line)        
             outGen.write(line)

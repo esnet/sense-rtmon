@@ -36,16 +36,3 @@ subprocess.run(f"yes | cp -rfa {default_mibs}/* ./", shell=True, cwd=mib_dir)
 print("Install Two Network Elements (to add more run /site/add_switch.py script)")
 site_functions.download_mibs(mib_dir)
 site_functions.download_mibs(mib_dir)
-
-# ne = input("Enter the name of the Network Element: ")
-# ne2 = input("Enter the name of the second Network Element (Press Enter to skip): ")
-
-# print(f"move all {ne} MIBS to mib folder")
-# subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne}/* ./", shell=True, cwd=mib_dir)
-# if ne2 != ne and ne2 != "":
-#     print(f"move all {ne2} MIBS to mib folder")
-#     subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/{ne2}/* ./", shell=True, cwd=mib_dir)
-
-# subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*/* ./", shell=True, cwd=mib_dir)
-# subprocess.run(f"yes | cp -rfa {mib_dir}/librenms/mibs/*/*/* ./", shell=True, cwd=mib_dir)
-

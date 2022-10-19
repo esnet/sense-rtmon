@@ -45,54 +45,11 @@ os.chdir("./SNMPExporter")
 site_functions.generate_snmp_file(f"snmp{switch_num}.yml")
 os.chdir("..")
 
-# genCmd = "yes | cp -rfa ./SNMPExporter/generator.yml " + genLoc
-# subprocess.run(genCmd, shell=True)
-# print("Generating dynamic SNMP config file...")
-# subprocess.run("./generator generate", shell=True, cwd=genLoc)
-# subprocess.run(f"yes | cp -rfa snmp.yml ../../../../../snmp{switch_num}.yml", shell=True, cwd=genLoc)
-# print("Success! Configured custom SNMP Exporter container")
-# print(f"snmp{switch_num}.yml generated")
-
 # Make new docker file
 site_functions.generate_snmp_compose_file("./compose-files",switch_num)
-# print(f"Generate a new docker compose file: added_snmp-docker-compose{switch_num}.yml")
-# print(f"Running on port: {str(9115+switch_num)}")
-# new_compoes_file = f"""version: '3.8'
-# services:
-#   snmp-exporter{switch_num}:
-#     image: prom/snmp-exporter
-#     volumes:
-#       - ../SNMPExporter/snmp{switch_num}.yml:/etc/snmp_exporter/snmp{switch_num}.yml
-#     ports:
-#       - {str(9115+int(switch_num))}:9116"""
-
-# with open(f"./compose-files/added_snmp-docker-compose{str(switch_num)}.yml", 'w') as file:
-#     file.write(new_compoes_file)
 
 # add new target to crontab executing script push_snmp_exporter_metrics.sh
-site_functions.update_snmp_crontab_script("crontabs",switch_num,switch_ip)
-
-# curl_flag = True
-# cat_flag = True
-# with open("crontabs/push_snmp_exporter_metrics.sh") as inGen, open("crontabs/temp_push_snmp_exporter_metrics.sh", 'w') as outGen:
-#     for line in inGen:
-#         if "curl -o " in line and curl_flag:
-#             new_line = re.sub("91.*/snmp", f"{str(9115+switch_num)}/snmp", line)
-#             new_line = re.sub("snmp_temp.txt", f"snmp_temp{str(switch_num)}.txt", new_line)
-#             new_line = re.sub("target=.*&", f"target={switch_ip}&", new_line)
-#             curl_flag = False
-#             outGen.write(new_line)
-#         elif "cat /" in line and cat_flag:
-#             new_line = re.sub("/snmp-exporter/target_switch/.*/instance/", f"/snmp-exporter{str(switch_num)}/target_switch/{switch_ip}/instance/", line)
-#             new_line = re.sub("snmp_temp.txt", f"snmp_temp{str(switch_num)}.txt", new_line)
-#             cat_flag = False
-#             outGen.write(new_line)        
-#         outGen.write(line)
-
-# with open("crontabs/push_snmp_exporter_metrics.sh",'w') as outGen, open("crontabs/temp_push_snmp_exporter_metrics.sh") as inGen:
-#     for line in inGen:
-#         outGen.write(line)
-    
+site_functions.update_snmp_crontab_script("crontabs",switch_num,switch_ip)    
 print("COMPOSE NEW SNMP EXPORTER:")
 
 subprocess.run(f"docker compose -f ./compose-files/added_snmp-docker-compose{str(switch_num)}.yml up -d", shell=True)

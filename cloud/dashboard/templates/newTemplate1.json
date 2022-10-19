@@ -101,7 +101,7 @@
         "authPassword": "",
         "authUsername": "",
         "composites": [],
-        "content": "graph LR\n subgraph h1 [\"Host 1\"]\n h1ip{{IP: DATAPLANEIPA - VLAN: VLANA}}\n h1e1(IFNAMEHOSTA)\n style h1e1 fill: #50C878\n end\nh1e1 --------- sw1s1if\n subgraph sw1 [\"Switch 1\"]\n subgraph sw1s1 [\"interface 1\"]\n sw1s1vlan{{VLAN: SWITCHAINVLAN SWITCHIF}}\n sw1s1if[NAMEIFSWITCHA]\n style sw1s1if fill: #50C878\n end\n subgraph sw1s2 [\"interface 2\"]\n sw1s2if[NAMEIFSWITCHB]\n sw1s2vlan{{VLAN: SWITCHAOUTVLAN SWITCHIF}}\n style sw1s2if fill: #50C878\n end\n end\n style sw1 fill: #282828\n subgraph h2 [\"Host 2\"]\n h2ip2{{IP: DATAPLANEIPB - VLAN: VLANB}}\n h2e2(IFNAMEHOSTB)\n style h2e2 fill: #50C878\n end\n sw1s2if ---------  h2e2 \n",
+        "content": "graph LR\n subgraph h1 [\"Host 1\"]\n h1ip{{IP: DATAPLANEIPA - VLAN: VLANA}}\n h1e1(IFNAMEHOSTA)\n style h1e1 fill: #50C878\n end\nh1e1 --------- sw1s1if\n subgraph sw1 [\"Switch 1\"]\n subgraph sw1s1 [\"interface 1\"]\n sw1s1vlan{{VLAN: SWITCHAINVLAN SWITCHIFA}}\n sw1s1if[NAMEIFSWITCHA]\n style sw1s1if fill: #50C878\n end\n subgraph sw1s2 [\"interface 2\"]\n sw1s2if[NAMEIFSWITCHB]\n sw1s2vlan{{VLAN: SWITCHAOUTVLAN SWITCHIFA}}\n style sw1s2if fill: #50C878\n end\n end\n style sw1 fill: #282828\n subgraph h2 [\"Host 2\"]\n h2ip2{{IP: DATAPLANEIPB - VLAN: VLANB}}\n h2e2(IFNAMEHOSTB)\n style h2e2 fill: #50C878\n end\n sw1s2if ---------  h2e2 \n",
         "legend": {
           "asTable": true,
           "displayMode": "table",
@@ -665,7 +665,7 @@
       },
       "id": 133,
       "options": {
-        "content": "```\n Switch 1 (DellS4810)   NAMEIFSWITCHA   NAMEIFSWITCHB   IPSWITCH\n ```",
+        "content": "```\n Switch 1 (DellS4810)   NAMEIFSWITCHA   NAMEIFSWITCHB   IPSWITCHA\n ```",
         "mode": "markdown"
       },
       "pluginVersion": "7.5.4",
@@ -1093,7 +1093,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(ifIndex{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
+          "expr": "sum(ifIndex{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1104,7 +1104,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifName{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifName)",
+          "expr": "sum(ifName{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifName)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1115,7 +1115,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifType{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifType)",
+          "expr": "sum(ifType{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifType)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1126,7 +1126,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifPhysAddress{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifPhysAddress)",
+          "expr": "sum(ifPhysAddress{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifPhysAddress)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1137,7 +1137,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifOperStatus{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
+          "expr": "sum(ifOperStatus{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1148,7 +1148,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifMtu{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
+          "expr": "sum(ifMtu{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -7915,8 +7915,8 @@
           },
           {
             "selected": false,
-            "text": "SNMPNAME",
-            "value": "SNMPNAME"
+            "text": "SNMPANAMEA",
+            "value": "SNMPANAMEA"
           }
         ],
         "query": {

@@ -14,7 +14,6 @@ mib_dir = f"{str(os.getcwd())}/src/github.com/prometheus/snmp_exporter/generator
 print(f"\n\nset MIBDIRS to MIBDIRS={mib_dir}")
 defaul_mibs = os.getenv("MIBDIRS")
 os.environ["MIBDIRS"]= f"{defaul_mibs}:{mib_dir}"
-# subprocess.run(f"export MIBDIRS=$MIBDIRS:{mib_dir}", shell=True, cwd=mib_dir)
 
 print("SNMP and MIBs install complete.")
 

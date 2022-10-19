@@ -13,7 +13,6 @@ switch_target1=
 switch_target2=
 ############################# PYTHON SCRIPT FILL OUT ####################
 
-
 ############################# CRONTAB ###################################
 echo "!!    Set up crontab only needed when running for the first time"
 read -r -p "Set up crontab? [y/n]: " crontab
@@ -73,6 +72,15 @@ sudo lsof -i -P -n | grep 9100
 echo "!!    Check Port 9116 for snmp exporter"
 sudo lsof -i -P -n | grep 9116
 
+echo ""
+echo "!!    What is this host monitoring?"
+echo "1.    Host Only (Start: Node & ARP)"
+echo "2.    Host and Switch (Start: Node, ARP & SNMP)"
+echo "3.    Switch Only (Start: SNMP)"
+echo "!!    Choose the following options accordingly"
+echo ""
+sleep 1
+
 ############################# NODE #############################
 read -r -p "Start Node Exporter? [y/n]: " start_node
 if [ "${start_node}" == "y" ] || [ "${start_node}" == "Y" ]; then
@@ -115,7 +123,6 @@ else
 fi
 cat ${general_path}/site/crontabs/snmp_temp2.txt | curl --data-binary @- ${pushgateway_server}/metrics/job/snmp-exporter2/target_switch/${switch_target2}/instance/${MYIP}
 cat ${general_path}/site/crontabs/snmp_temp.txt | curl --data-binary @- ${pushgateway_server}/metrics/job/snmp-exporter/target_switch/${switch_target1}/instance/${MYIP}
-
 
 EOF
 

@@ -1,6 +1,6 @@
 #! /bin/bash
 cd ..
-general_path=$PWD
+general_path=${PWD}
 cd ./site
 
 
@@ -17,7 +17,7 @@ switch_target2=
 ############################# CRONTAB ###################################
 echo "!!    Set up crontab only needed when running for the first time"
 read -r -p "Set up crontab? [y/n]: " crontab
-if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
+if [ "${crontab}" == "y" ] || [ "${crontab}" == "Y" ]; then
     echo "Starting Crontab setup"
     # create a temporary copy paste file
     echo ""
@@ -29,31 +29,31 @@ if [ "$crontab" == "y" ] || [ "$crontab" == "Y" ]; then
     crontab -l > ./crontabs/cron_history
 
     # check if job is alread in crontab
-    if grep -F "* * * * * for i in 0 1 2; do $PWD/crontabs/push_snmp_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_snmp_exporter_metrics.sh" ./crontabs/cron_autopush 
+    if grep -F "* * * * * for i in 0 1 2; do ${PWD}/crontabs/push_snmp_exporter_metrics.sh & sleep 15; done; ${PWD}/crontabs/push_snmp_exporter_metrics.sh" ./crontabs/cron_autopush 
     then
         echo "exact SNMP task is already in cron, type crontab -e to check"
     else
         echo "#Puppet Name: snmp exporter send data to pushgateway every 15 seconds" >> ./crontabs/cron_autopush
         echo "MAILTO=""" >> ./crontabs/cron_autopush
-        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/push_snmp_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_snmp_exporter_metrics.sh" >> ./crontabs/cron_autopush
+        echo "* * * * * for i in 0 1 2; do ${PWD}/crontabs/push_snmp_exporter_metrics.sh & sleep 15; done; ${PWD}/crontabs/push_snmp_exporter_metrics.sh" >> ./crontabs/cron_autopush
     fi
 
-    if grep -F "* * * * * for i in 0 1 2; do $PWD/crontabs/push_node_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_node_exporter_metrics.sh" ./crontabs/cron_autopush
+    if grep -F "* * * * * for i in 0 1 2; do ${PWD}/crontabs/push_node_exporter_metrics.sh & sleep 15; done; ${PWD}/crontabs/push_node_exporter_metrics.sh" ./crontabs/cron_autopush
     then    
         echo "exact Node task is already in cron, type crontab -e to check"
     else
         echo "#Puppet Name: node exporter send data to pushgateway every 15 seconds" >> ./crontabs/cron_autopush
         echo "MAILTO=""" >> ./crontabs/cron_autopush
-        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/push_node_exporter_metrics.sh & sleep 15; done; $PWD/crontabs/push_node_exporter_metrics.sh" >> ./crontabs/cron_autopush
+        echo "* * * * * for i in 0 1 2; do ${PWD}/crontabs/push_node_exporter_metrics.sh & sleep 15; done; ${PWD}/crontabs/push_node_exporter_metrics.sh" >> ./crontabs/cron_autopush
     fi
 
-    if grep -F "* * * * * for i in 0 1 2; do $PWD/crontabs/update_arp_exporter.sh & sleep 15; done; $PWD/crontabs/update_arp_exporter.sh" ./crontabs/cron_autopush
+    if grep -F "* * * * * for i in 0 1 2; do ${PWD}/crontabs/update_arp_exporter.sh & sleep 15; done; ${PWD}/crontabs/update_arp_exporter.sh" ./crontabs/cron_autopush
     then    
         echo "exact ARP task is already in cron, type crontab -e to check"
     else
         echo "#Puppet Name: check update on arp table every 15 seconds" >> ./crontabs/cron_autopush
         echo "MAILTO=""" >> ./crontabs/cron_autopush
-        echo "* * * * * for i in 0 1 2; do $PWD/crontabs/update_arp_exporter.sh & sleep 15; done; $PWD/crontabs/update_arp_exporter.sh" >> ./crontabs/cron_autopush
+        echo "* * * * * for i in 0 1 2; do ${PWD}/crontabs/update_arp_exporter.sh & sleep 15; done; ${PWD}/crontabs/update_arp_exporter.sh" >> ./crontabs/cron_autopush
     fi
 
     echo ""
@@ -75,15 +75,14 @@ sudo lsof -i -P -n | grep 9116
 
 ############################# NODE #############################
 read -r -p "Start Node Exporter? [y/n]: " start_node
-if [ "$start_node" == "y" ] || [ "$start_node" == "Y" ]; then
+if [ "${start_node}" == "y" ] || [ "${start_node}" == "Y" ]; then
     starting_node="-f ./compose-files/node-docker-compose.yml" 
     echo "Starting Node Exporter Service"
-    > ./crontabs/push_node_exporter_metrics.sh
-    chmod +x ./crontabs/push_node_exporter_metrics.sh
     sudo tee ./crontabs/push_node_exporter_metrics.sh<<EOF
 #! /bin/bash
-curl -s ${MYIP}:9100/metrics | curl --data-binary @- $pushgateway_server/metrics/job/node-exporter/instance/$MYIP
+curl -s ${MYIP}:9100/metrics | curl --data-binary @- ${pushgateway_server}/metrics/job/node-exporter/instance/${MYIP}
 EOF
+    chmod 755 ./crontabs/push_node_exporter_metrics.sh
 else
     starting_node=" " 
     echo "Skip Node Exporter"
@@ -104,18 +103,18 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     > ./crontabs/snmp_temp.txt
     > ./crontabs/snmp_temp2.txt
     touch ./crontabs/push_snmp_exporter_metrics.sh
-    chmod +x ./crontabs/push_snmp_exporter_metrics.sh
+    chmod 755 ./crontabs/push_snmp_exporter_metrics.sh
     sudo tee ./crontabs/push_snmp_exporter_metrics.sh<<EOF
 #! /bin/bash
 if curl ${MYIP}:9116/metrics | grep ".*"; then
-    curl -o $general_path/site/crontabs/snmp_temp2.txt ${MYIP}:9117/snmp?target=$switch_target2&module=if_mib
-    curl -o $general_path/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=$switch_target1&module=if_mib
+    curl -o ${general_path}/site/crontabs/snmp_temp2.txt ${MYIP}:9117/snmp?target=${switch_target2}&module=if_mib
+    curl -o ${general_path}/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=${switch_target1}&module=if_mib
 else
-    > $general_path/site/crontabs/snmp_temp.txt	
-    > $general_path/site/crontabs/snmp_temp2.txt	
+    > ${general_path}/site/crontabs/snmp_temp.txt	
+    > ${general_path}/site/crontabs/snmp_temp2.txt	
 fi
-cat $general_path/site/crontabs/snmp_temp2.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter2/target_switch/$switch_target2/instance/$MYIP
-cat $general_path/site/crontabs/snmp_temp.txt | curl --data-binary @- $pushgateway_server/metrics/job/snmp-exporter/target_switch/$switch_target1/instance/$MYIP
+cat ${general_path}/site/crontabs/snmp_temp2.txt | curl --data-binary @- ${pushgateway_server}/metrics/job/snmp-exporter2/target_switch/${switch_target2}/instance/${MYIP}
+cat ${general_path}/site/crontabs/snmp_temp.txt | curl --data-binary @- ${pushgateway_server}/metrics/job/snmp-exporter/target_switch/${switch_target1}/instance/${MYIP}
 
 
 EOF
@@ -128,7 +127,7 @@ fi
 
 ############################# ARP #############################
 read -r -p "Start ARP Exporter? [y/n]: " start_arp
-if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
+if [ "${start_arp}" == "y" ] || [ "${start_arp}" == "Y" ]; then
     starting_arp="-f ./compose-files/arp-docker-compose.yml" 
     # delete everything first
 
@@ -146,18 +145,18 @@ if [ "$start_arp" == "y" ] || [ "$start_arp" == "Y" ]; then
     touch ./Metrics/ARPMetrics/pingStat/prev_ping_status.txt
     
     touch ./crontabs/update_arp_exporter.sh
-    chmod +x ./crontabs/update_arp_exporter.sh
+    chmod 755 ./crontabs/update_arp_exporter.sh
     sudo tee ./crontabs/update_arp_exporter.sh<<EOF
 #! /bin/bash
-/sbin/arp -a > $general_path/site/Metrics/ARPMetrics/arpFiles/arpOut.txt
+/sbin/arp -a > ${general_path}/site/Metrics/ARPMetrics/arpFiles/arpOut.txt
 sleep 0.5
-python3 $general_path/site/Metrics/ARPMetrics/convertARP.py $general_path/site/Metrics/ARPMetrics/arpFiles/arpOut.txt $general_path/site/Metrics/ARPMetrics/jsonFiles/arpOut.json
+python3 ${general_path}/site/Metrics/ARPMetrics/convertARP.py ${general_path}/site/Metrics/ARPMetrics/arpFiles/arpOut.txt ${general_path}/site/Metrics/ARPMetrics/jsonFiles/arpOut.json
 sleep 0.5
-ping -c 1 $host2IP
+ping -c 1 ${host2IP}
 if [ $? -eq 0 ]; then 
-  echo "$host2IP/ping_status/1" > $general_path/site/Metrics/ARPMetrics/pingStat/ping_status.txt
+  echo "${host2IP}/ping_status/1" > ${general_path}/site/Metrics/ARPMetrics/pingStat/ping_status.txt
 else
-  echo "$host2IP/ping_status/0" > $general_path/site/Metrics/ARPMetrics/pingStat/ping_status.txt
+  echo "${host2IP}/ping_status/0" > ${general_path}/site/Metrics/ARPMetrics/pingStat/ping_status.txt
 fi
 EOF
     echo "Starting ARP Exporter Service"
@@ -171,7 +170,7 @@ else
 fi
 
 read -r -p "Start TCP Exporter? [y/n]: " start_tcp
-if [ "$start_tcp" == "y" ] || [ "$start_tcp" == "Y" ]; then
+if [ "${start_tcp}" == "y" ] || [ "${start_tcp}" == "Y" ]; then
     starting_tcp="-f ./compose-files/tcp-docker-compose..yml" 
     echo "Starting TCP Exporter Service"
     cd ./Metrics
@@ -187,10 +186,10 @@ fi
 echo "!!    to remove site stack run ./clean.sh"
 
 # STARTING DOCKER CONTAINERS
-echo "docker compose $starting_node $starting_snmp $starting_snmp2 $starting_arp $starting_tcp up -d"
+echo "docker compose ${starting_node} ${starting_snmp} ${starting_snmp}2 ${starting_arp} ${starting_tcp} up -d"
 # run nothing
-if [ "$starting_node" == " " ] && [ "$starting_snmp" == " " ] && [ "$starting_arp" == " " ] && [ "$starting_tcp" == " " ]; then
+if [ "${starting_node}" == " " ] && [ "${starting_snmp}" == " " ] && [ "${starting_arp}" == " " ] && [ "${starting_tcp}" == " " ]; then
     echo "!!    nothing started"
 else 
-    docker compose $starting_node $starting_snmp $starting_snmp2 $starting_arp $starting_tcp up -d
+    docker compose ${starting_node} ${starting_snmp} ${starting_snmp}2 ${starting_arp} ${starting_tcp} up -d
 fi

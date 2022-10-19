@@ -31,7 +31,7 @@ if [ -f "/opt/certbot/live/$1/fullchain.pem" ]; then
     # chmod 0777 server.keystore
 
     read -r -p "Grafana Running port (default 3000): " grafana_port
-    python3 certify.py $1 $grafana_port "/opt/sense-rtmon/tls/tls.crt" "/opt/sense-rtmon/tls/tls.key"
+    python3 certify.py $1 ${grafana_port}  "/opt/sense-rtmon/tls/tls.crt" "/opt/sense-rtmon/tls/tls.key"
 else
     echo "!!    Certificate not found! Error during TLS configuration."
     exit 1

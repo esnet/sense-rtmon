@@ -1,12 +1,12 @@
 #! /bin/bash
 cd ..
-general_path=$PWD
+general_path=${PWD}
 cd ./site
 
 ############################# DOCKER SETUP ##############################
 ## check docker 
 read -r -p "Login to Docker [y/n]: " docker_login
-if [ "$docker_login" == "y" ] || [ "$docker_login" == "Y" ]; then
+if [ "${docker_login}" == "y" ] || [ "${docker_login}" == "Y" ]; then
     if [ -x "$(command -v docker)" ]; then
         echo "||        Found docker..."
         echo "||        Running docker login..."
@@ -37,25 +37,25 @@ fi
 echo "!!    Docker Swarm is not tested yet (recommend not using docker swarm)"
 sleep 1
 read -r -p "Init Docker Swarm [y/n]: " push_docker
-if [ "$push_docker" == "y" ] || [ "$push_docker" == "Y" ]; then
+if [ "${push_docker}" == "y" ] || [ "${push_docker}" == "Y" ]; then
     read -r -p "Please enter the IP Address of this host: " MYIP
     echo "!!    To learn more about Docker Swarm"
     echo "!!    https://docs.docker.com/engine/reference/commandline/swarm_init/#--advertise-addr"
     echo "!!    Initialize Docker Swarm"
-    echo "$MYIP is used for docker swarm advertise (IP is needed when there's more than one IP address on this host)"
-    docker swarm init --advertise-addr $MYIP
+    echo "${MYIP} is used for docker swarm advertise (IP is needed when there's more than one IP address on this host)"
+    docker swarm init --advertise-addr ${MYIP}
 else 
     echo "Skip Docker Swarm"
 fi 
 
 ############################## INSTALL GO & SNMP DEPENDENCIES ##############################
 read -r -p "Install SNMP Exporter [y/n]: " snmp_install
-    if [ "$snmp_install" == "y" ] || [ "$snmp_install" == "Y" ]; then
+    if [ "${snmp_install}" == "y" ] || [ "${snmp_install}" == "Y" ]; then
     echo "!!    Install SNMP dependencies"
     echo "!!    Download go1.18.3"
     wget https://dl.google.com/go/go1.18.3.linux-amd64.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.3.linux-amd64.tar.gz # old go deleted
-    export PATH=$PATH:/usr/local/go/bin
+    export PATH=${PATH}:/usr/local/go/bin
     go env -w GO111MODULE=auto
     go version
     rm -rf go1.18.3.linux-amd64.tar.gz

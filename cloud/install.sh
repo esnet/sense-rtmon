@@ -65,12 +65,12 @@ if [ "$sslmode" == "1" ]; then # Let's Encrypt
     echo "    Note: port 80 must be available for DNS challenges to succeed. "
     echo "          See https://certbot.eff.org/faq for more information."
     read -r -p "Please enter the domain name of this machine: " domain
-    echo "||             Certbot running for ($domain)..."
+    echo "||             Certbot running for (${domain})..."
     if [ $(id -u) = 0 ]; then
-        /bin/bash ./certify.sh $domain
+        /bin/bash ./certify.sh ${domain}
     else
         echo "??            User is not root! Certbot requires root for security reasons."
-        echo "              Please run the following script after installation: sudo /certify.sh $domain"
+        echo "              Please run the following script after installation: sudo /certify.sh ${domain}"
     fi
 fi
 
@@ -81,11 +81,11 @@ if [ "$sslmode" == "2" ]; then # existing certificate
     read -r -p "ssl certificate key (privkey): " ssl_certificate_key
     read -r -p "Please enter the domain name of this machine: " domain
     read -r -p "Grafana Running port (default 3000 running behind Nginx): " grafana_port
-    if [ "$grafana_port" == "" ]; then
+    if [ "${grafana_port}" == "" ]; then
         grafana_port=3000
     fi
 #     sudo tee ./nginx/server_conf<<EOF
-# server_name $domain;
+# server_name ${domain};
 # ssl_certificate     "$ssl_certificate";
 # ssl_certificate_key "$ssl_certificate_key";
 # EOF
@@ -93,7 +93,7 @@ if [ "$sslmode" == "2" ]; then # existing certificate
     # write the first line to proxt_conf
     # echo "!!    If entered port is not 3000, edit docker-stack.yml to match the correct port for Grafana and Nginx Container"
     
-    python3 certify.py $domain $grafana_port $ssl_certificate $ssl_certificate_key
+    python3 certify.py ${domain} ${grafana_port} ${ssl_certificate} ${ssl_certificate_key}
     echo "!!    Success!"
     echo "!!    current ssl certificate updated in cloud/nginx/proxy_conf and cloud/nginx/server_conf"
     echo "!!    grafana port updated in docker-stack.yml file (default 3000)"

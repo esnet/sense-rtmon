@@ -3,6 +3,7 @@ import os
 import yaml
 import sys
 import re 
+import subprocess
 from datetime import datetime
 
 # read in a yml file and returns a data dictionary and file name used
@@ -67,6 +68,15 @@ def replacement_template():
     'MONITORVLAN9': "MONITORVLAN9",
     'MONITORVLAN10': "MONITORVLAN10",
     'MONITORVLAN11': "MONITORVLAN11",
+    'MONITORVLAN12': "MONITORVLAN12",
+    'MONITORVLAN13': "MONITORVLAN13",
+    'MONITORVLAN14': "MONITORVLAN14",
+    'MONITORVLAN15': "MONITORVLAN15",
+    'MONITORVLAN16': "MONITORVLAN16",
+    'MONITORVLAN17': "MONITORVLAN17",
+    'MONITORVLAN18': "MONITORVLAN18",
+    'MONITORVLAN19': "MONITORVLAN19",
+    'MONITORVLAN20': "MONITORVLAN20",
     
     'IFNAMEHOSTA': "IFNAMEHOSTA",
     'IFNAMEHOSTB': "IFNAMEHOSTB",
@@ -209,10 +219,13 @@ def make_title(data):
     current_time = datetime.now().strftime("%m/%d_%H:%M")
     timeTxt = " | [" + str(current_time) + "]"        
     title = f" {str(data['flow'])} || {str(data['configFile'])} || {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}-- {data['switchNum']}-switch --{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
-    # alternative title naming
-    dash_title = str(data['dashTitle']) + title
-    debug_title = str(data['debugTitle']) + title
     return title
+
+def index_finder(name,pushgateway_metrics):
+    cmd = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{name}\".*'"
+    grep = subprocess.check_output(cmd,shell=True).decode()
+    if_index = re.search('ifIndex="(.+?)\"',grep).group(1)
+    return if_index
 
 def fill_replacement(data):
     dash_title = data["dashTitle"] + make_title(data)
@@ -238,19 +251,14 @@ def fill_replacement(data):
         letter = chr(ord('A')+i) # A B C D ... 
         replacements[f"IPSWITCH{letter}"] = data[f"switchData{letter}"]["target"]
         replacements[f"SNMP{letter}NAME"]= data[f"switchData{letter}"]["job_name"]
-        
         replacements[f"SWITCH{letter}INVLAN"]= data[f"switchData{letter}"]["portIn"]["vlan"]
         replacements[f"SWITCH{letter}OUTVLAN"]= data[f"switchData{letter}"]["portOut"]["vlan"]
-
         replacements[f"NAMEIF{letter}IN"] = data[f"switchData{letter}"]["portIn"]["ifName"]
         replacements[f"NAMEIF{letter}OUT"] = data[f"switchData{letter}"]["portOut"]["ifName"]
-        
         replacements[f"SWITCH{letter}OUTGOING"] = data[f"switchData{letter}"]["portOut"]["ifName"]
         replacements[f"SWITCH{letter}INCOMING"] = data[f"switchData{letter}"]["portIn"]["ifName"]
-
         replacements[f"SNMP{letter}HOSTIP"] = data[f"switchData{letter}"]["SNMPHostIP"]
-    
         replacements[f"MONITORVLAN{str(i+1)}"] = vlan_if_index[i]
+        replacements[f"MONITORVLAN{str(i+int(data['switchNum']))}"] = vlan_if_index[i+int(data['switchNum'])]
 
-        
     return replacements

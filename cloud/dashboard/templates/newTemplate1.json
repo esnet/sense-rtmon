@@ -1093,7 +1093,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(ifIndex{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
+          "expr": "sum(ifIndex{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1104,7 +1104,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifName{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifName)",
+          "expr": "sum(ifName{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifName)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1115,7 +1115,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifType{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifType)",
+          "expr": "sum(ifType{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifType)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1126,7 +1126,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifPhysAddress{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifPhysAddress)",
+          "expr": "sum(ifPhysAddress{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex,ifPhysAddress)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1137,7 +1137,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifOperStatus{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
+          "expr": "sum(ifOperStatus{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1148,7 +1148,7 @@
         },
         {
           "exemplar": true,
-          "expr": "sum(ifMtu{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
+          "expr": "sum(ifMtu{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}) by (ifIndex)",
           "format": "table",
           "hide": false,
           "instant": true,

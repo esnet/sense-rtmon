@@ -44,6 +44,7 @@ def replacing_json(input,output,data,replacements):
     with open(input) as infile, open(output, 'w') as outfile:
         for line in infile:
             for src, target in replacements.items():
+                # target = str(target)
                 line = line.replace(src, target)
             outfile.write(line)
             
@@ -214,110 +215,42 @@ def make_title(data):
     return title
 
 def fill_replacement(data):
-    dash_title = str(data['dashTitle']) + make_title(data)
-    debug_title = str(data['debugTitle']) + make_title(data)
+    dash_title = data["dashTitle"] + make_title(data)
+    debug_title = data["debugTitle"] + make_title(data)
     replacements = replacement_template()
     replacements["DASHTITLE"] = dash_title
     replacements["DEBUGTITLE"] = debug_title
-    replacements["IPHOSTA"] = str(data['hostA']['IP'])
-    replacements["IPHOSTB"] = str(data['hostB']['IP'])
+    replacements["IPHOSTA"] = data["hostA"]["IP"]
+    replacements["IPHOSTB"] = data["hostB"]["IP"]
+    replacements["VLANA"] = data["hostA"]["vlan"]
+    replacements["VLANB"] = data["hostB"]["vlan"]
+    replacements["IFNAMEHOSTA"] = data["hostA"]["interfaceName"]
+    replacements["IFNAMEHOSTB"] = data["hostB"]["interfaceName"]
+    replacements["IFINDEXSWITCHHOSTA"] = if_index1
+    replacements["IFINDEXSWITCHHOSTB"] = if_index2
+    replacements["DATAPLANEIPA"] = data["hostA"]["interfaceIP"]
+    replacements["DATAPLANEIPB"] = data["hostB"]["interfaceIP"]
+    replacements["NODENAMEA"] = data["hostA"]["nodeName"]
+    replacements["NODENAMEB"] = data["hostB"]["nodeName"]
     
-    
-    #         'IPHOSTA': str(data['hostA']['IP']), 
-    #     'IPHOSTB': str(data['hostB']['IP']),
-    #     'VLANA': str(data['hostA']['vlan']),
-    #     'VLANB': str(data['hostB']['vlan']),
-    #     'MONITORVLAN1': str(vlan_if_index1),
-    #     'MONITORVLAN2': str(vlan_if_index2),
-    #     'MONITORVLAN3': str(vlan_if_index3),
-    #     'IFNAMEHOSTA': str(data['hostA']['interfaceName']),
-    #     'IFNAMEHOSTB': str(data['hostB']['interfaceName']),
-    #     'SNMP1HOSTIP': str(data['switchDataA']['SNMPHostIP']),
-    #     'SNMP2HOSTIP': str(data['switchDataB']['SNMPHostIP']),
-    #     'SNMP3HOSTIP': str(data['switchDataC']['SNMPHostIP']),
-    #     'SNMP4HOSTIP': str(data['switchDataD']['SNMPHostIP']),
-    #     'IFINDEXSWITCHHOSTA': str(if_index1),
-    #     'SWITCHAOUTGOING': str(data['switchDataA']['portOut']['ifName']),
-    #     'SWITCHAINCOMING': str(data['switchDataA']['portIn']['ifName']),
-    #     'SWITCHBINCOMING': str(data['switchDataB']['portIn']['ifName']),
-    #     'SWITCHBOUTGOING': str(data['switchDataB']['portOut']['ifName']),
-    #     'SWITCHCINCOMING': str(data['switchDataC']['portIn']['ifName']),
-    #     'SWITCHCOUTGOING': str(data['switchDataC']['portOut']['ifName']),
-    #     'SWITCHDINCOMING': str(data['switchDataD']['portIn']['ifName']),
-    #     'SWITCHDOUTGOING': str(data['switchDataD']['portOut']['ifName']),
-    #     'IFINDEXSWITCHHOSTB': str(if_index2),
-    #     'NAMEIFAIN': str(data['switchDataA']['portIn']['ifName']),
-    #     'NAMEIFAOUT': str(data['switchDataA']['portOut']['ifName']),
-    #     'NAMEIFBIN': str(data['switchDataB']['portIn']['ifName']),
-    #     'NAMEIFBOUT': str(data['switchDataB']['portOut']['ifName']),
-    #     'NAMEIFCIN': str(data['switchDataC']['portIn']['ifName']),
-    #     'NAMEIFCOUT': str(data['switchDataC']['portOut']['ifName']),
-    #     'NAMEIFDIN': str(data['switchDataD']['portIn']['ifName']),
-    #     'NAMEIFDOUT': str(data['switchDataD']['portOut']['ifName']),
-    #     'DATAPLANEIPA': str(data['hostA']['interfaceIP']),
-    #     'DATAPLANEIPB': str(data['hostB']['interfaceIP']),
-    #     'NODENAMEA': str(data['hostA']['nodeName']),
-    #     'NODENAMEB': str(data['hostB']['nodeName']),
-    #     'IPSWITCHA': str(data['switchDataA']['target']),
-    #     'IPSWITCHB': str(data['switchDataB']['target']),
-    #     'IPSWITCHC': str(data['switchDataC']['target']),
-    #     'IPSWITCHD': str(data['switchDataD']['target']),
-    #     'SNMPANAME': str(data['switchDataA']['job_name']),
-    #     'SWITCHAINVLAN': str(data['switchDataA']['portIn']['vlan']),
-    #     'SWITCHAOUTVLAN': str(data['switchDataA']['portOut']['vlan']),
-    #     'SWITCHBINVLAN': str(data['switchDataB']['portIn']['vlan']),
-    #     'SWITCHBOUTVLAN': str(data['switchDataB']['portOut']['vlan']),
-    #     'SWITCHCINVLAN': str(data['switchDataC']['portIn']['vlan']),
-    #     'SWITCHCOUTVLAN': str(data['switchDataC']['portOut']['vlan']),
-    #     'SWITCHDINVLAN': str(data['switchDataD']['portIn']['vlan']),
-    #     'SWITCHDOUTVLAN': str(data['switchDataD']['portOut']['vlan']),
-    #     'DASHTITLE': f" {str(data['dashTitle'])} 4 switches {timeTxt}",
-    #     'DEBUGTITLE': f" {str(data['debugTitle'])} 4 switches {timeTxt}"
-    
-    # replacements = {
+        
+    for i in range(int(data['switchNum'])):
+        letter = chr(ord('A')+i) # A B C D ... 
+        replacements[f"IPSWITCH{letter}"] = data[f"switchData{letter}"]["target"]
+        replacements[f"SNMP{letter}NAME"]= data[f"switchData{letter}"]["job_name"]
+        
+        replacements[f"SWITCH{letter}INVLAN"]= data[f"switchData{letter}"]["portIn"]["vlan"]
+        replacements[f"SWITCH{letter}OUTVLAN"]= data[f"switchData{letter}"]["portOut"]["vlan"]
 
-    # 'SWITCHBINCOMING': str(data['switchDataB']['portIn']['ifName']),
-    # 'SWITCHBOUTGOING': str(data['switchDataB']['portOut']['ifName']),
-    # 'SWITCHCINCOMING': str(data['switchDataC']['portIn']['ifName']),
-    # 'SWITCHCOUTGOING': str(data['switchDataC']['portOut']['ifName']),
-    # 'SWITCHDINCOMING': str(data['switchDataD']['portIn']['ifName']),
-    # 'SWITCHDOUTGOING': str(data['switchDataD']['portOut']['ifName']),
-    # 'IFINDEXSWITCHHOSTB': str(if_index2),
-    # 'NAMEIFAIN': str(data['switchDataA']['portIn']['ifName']),
-    # 'NAMEIFAOUT': str(data['switchDataA']['portOut']['ifName']),
-    # 'NAMEIFBIN': str(data['switchDataB']['portIn']['ifName']),
-    # 'NAMEIFBOUT': str(data['switchDataB']['portOut']['ifName']),
-    # 'NAMEIFCIN': str(data['switchDataC']['portIn']['ifName']),
-    # 'NAMEIFCOUT': str(data['switchDataC']['portOut']['ifName']),
-    # 'NAMEIFDIN': str(data['switchDataD']['portIn']['ifName']),
-    # 'NAMEIFDOUT': str(data['switchDataD']['portOut']['ifName']),
-    # 'DATAPLANEIPA': str(data['hostA']['interfaceIP']),
-    # 'DATAPLANEIPB': str(data['hostB']['interfaceIP']),
-    # 'NODENAMEA': str(data['hostA']['nodeName']),
-    # 'NODENAMEB': str(data['hostB']['nodeName']),
-    # 'IPSWITCHA': str(data['switchDataA']['target']),
-    # 'IPSWITCHB': str(data['switchDataB']['target']),
-    # 'IPSWITCHC': str(data['switchDataC']['target']),
-    # 'IPSWITCHD': str(data['switchDataD']['target']),
-    # 'SNMPNAMEA': str(data['switchDataA']['job_name']),
-    # 'SWITCHAINVLAN': str(data['switchDataA']['portIn']['vlan']),
-    # 'SWITCHAOUTVLAN': str(data['switchDataA']['portOut']['vlan']),
-    # 'SWITCHBINVLAN': str(data['switchDataB']['portIn']['vlan']),
-    # 'SWITCHBOUTVLAN': str(data['switchDataB']['portOut']['vlan']),
-    # 'SWITCHCINVLAN': str(data['switchDataC']['portIn']['vlan']),
-    # 'SWITCHCOUTVLAN': str(data['switchDataC']['portOut']['vlan']),
-    # 'SWITCHDINVLAN': str(data['switchDataD']['portIn']['vlan']),
-    # 'SWITCHDOUTVLAN': str(data['switchDataD']['portOut']['vlan']),
-    # 'DASHTITLE': f" {str(data['dashTitle'])} 4 switches {timeTxt}",
-    # 'DEBUGTITLE': f" {str(data['debugTitle'])} 4 switches {timeTxt}",
+        replacements[f"NAMEIF{letter}IN"] = data[f"switchData{letter}"]["portIn"]["ifName"]
+        replacements[f"NAMEIF{letter}OUT"] = data[f"switchData{letter}"]["portOut"]["ifName"]
+        
+        replacements[f"SWITCH{letter}OUTGOING"] = data[f"switchData{letter}"]["portOut"]["ifName"]
+        replacements[f"SWITCH{letter}INCOMING"] = data[f"switchData{letter}"]["portIn"]["ifName"]
+
+        replacements[f"SNMP{letter}HOSTIP"] = data[f"switchData{letter}"]["SNMPHostIP"]
     
+        replacements[f"MONITORVLAN{str(i+1)}"] = vlan_if_index[i]
 
-    # 'NAMEIFSWITCHA': str(data['hostA']['switchPort']['ifName']),
-    # 'NAMEIFSWITCHB': str(data['hostB']['switchPort']['ifName']),
-    # 'VLANA': str(data['hostA']['vlan']),
-    # 'VLANB': str(data['hostB']['vlan']),
-    # 'SWITCHIF': str(data['switchDataA']['switchif']),
-    # 'SWITCHAINVLAN': str(data['switchDataA']['portIn']['vlan']),
-    # 'SWITCHAOUTVLAN': str(data['switchDataA']['portOut']['vlan'])}
-
+        
     return replacements

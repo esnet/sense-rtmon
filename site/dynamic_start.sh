@@ -198,5 +198,5 @@ echo "docker compose ${starting_node} ${starting_snmp} ${starting_snmp}2 ${start
 if [ "${starting_node}" == " " ] && [ "${starting_snmp}" == " " ] && [ "${starting_arp}" == " " ] && [ "${starting_tcp}" == " " ]; then
     echo "!!    nothing started"
 else 
-    docker compose ${starting_node} ${starting_snmp} ${starting_snmp}2 ${starting_arp} ${starting_tcp} up -d
+    docker compose ${starting_node} ${starting_snmp} ${starting_snmp2} ${starting_arp} ${starting_tcp} up -d
 fi

@@ -20,7 +20,7 @@ read -r -p "Erase Metrics [y/n]: " erase
 if [ "${erase}" == "y" ] || [ "${erase}" == "Y" ]; then
     echo "!!    Erase pushgateway urls sent from this host"
     read -r -p "Enter the config file used to start: (press enter to choose default config file /config_site/config.yml or type the config file WITHOUT path): " erase_config
-    python3 erase_pushgateway.py ${erase}_config
+    python3 erase_pushgateway.py ${erase_config}
     echo "!!    Cleaning Complete"
 else 
     echo "Nothing on Pushgateway is Erased"

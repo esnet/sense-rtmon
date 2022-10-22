@@ -2,6 +2,9 @@
 
 read -r -p "Enter Configuration File under /config_flow to Generate Dashboards (only the name of the file is needed): " config_file
 
+echo "!!    Make sure SNMP exporter is running. Dashboard can't be generated without at least one SNMP Exporter running."
+sleep 0.5
+
 echo "!!    API Key setup is only needed for the first time"
 sleep 1
 read -r -p "AUTO setup AUTH API keys? [y/n]: " API 

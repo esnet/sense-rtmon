@@ -27,7 +27,7 @@ if_index2 = "IFINDEXSWITCHHOSTB"
 # if_index2 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostB"]["switchPort"]["ifName"]))
 
 vlan_if_index=[]
-for i in range(int(data["switchNum"])*2):
+for i in range(switch_num*2):
     letter = chr(ord('A')+i) # A B C D ... 
     vlan_if_index.append(f"MONITORVLAN{i}")
 #     vlan_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portIn"]["ifVlan"])))
@@ -86,8 +86,8 @@ for i in range(switch_num):
     replacements[f"MONITORVLAN{str(i+switch_num)}"] = vlan_if_index[i+switch_num]
  
 # replacing
-cloud_functions.replacing_json(f'./templates/newTemplate{switch_num}.json',"out.json",data,replacements)
-cloud_functions.replacing_json(f'./templates/debugTemplate{switch_num}.json',"outDebug.json",data,replacements)
+cloud_functions.replacing_json(f'./templates/newTemplate{switch_num}.json','out.json',data,replacements)
+cloud_functions.replacing_json(f'./templates/debugTemplate{switch_num}.json','outDebug.json',data,replacements)
 
 # Run the API script to convert output JSON to Grafana dashboard automatically
 cmd = f"sudo python3 api.py out.json outDebug.json {file_name}"

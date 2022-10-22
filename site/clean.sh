@@ -16,7 +16,7 @@ rm -rf ./crontabs/update_arp_exporter*
 rm -rf ./crontabs/push_snmp_exporter_metrics*.sh ./crontabs/snmp_* ./crontabs/temp_push_snmp_exporter_metrics.sh
 rm -rf ./compose-files/added*
 cd SNMPExporter
-rm snmp*.yml
+rm -rf snmp*.yml
 cd ..
 
 read -r -p "Erase Metrics [y/n]: " erase

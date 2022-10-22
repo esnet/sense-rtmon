@@ -89,8 +89,8 @@ print(type('out.json'))
 print(type(data))
 print(type(replacements))
 # replacing
-cloud_functions.replacing_json(f'./templates/newTemplate{switch_num}.json','out.json',data,replacements)
-cloud_functions.replacing_json(f'./templates/debugTemplate{switch_num}.json','outDebug.json',data,replacements)
+cloud_functions.replacing_json(f"./templates/newTemplate{switch_num}.json","out.json",data,replacements)
+cloud_functions.replacing_json(f"./templates/debugTemplate{switch_num}.json","outDebug.json",data,replacements)
 
 # Run the API script to convert output JSON to Grafana dashboard automatically
 cmd = f"sudo python3 api.py out.json outDebug.json {file_name}"

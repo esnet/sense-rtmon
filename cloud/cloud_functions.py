@@ -46,7 +46,7 @@ def replacing_json(input,output,data,replacements):
         for line in infile:
             for src, target in replacements.items():
                 # target = str(target)
-                line = line.replace(src, target)
+                line = line.replace(str(src), str(target))
             outfile.write(line)
 
 # make a title according to the configuration file

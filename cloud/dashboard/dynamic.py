@@ -84,7 +84,10 @@ for i in range(switch_num):
     replacements[f"SNMP{letter}HOSTIP"] = data[f"switchData{letter}"]["SNMPHostIP"]
     replacements[f"MONITORVLAN{str(i+1)}"] = vlan_if_index[i]
     replacements[f"MONITORVLAN{str(i+switch_num)}"] = vlan_if_index[i+switch_num]
- 
+print(type(f'./templates/newTemplate{switch_num}.json'))
+print('out.json')
+print(data)
+print(replacements)
 # replacing
 cloud_functions.replacing_json(f'./templates/newTemplate{switch_num}.json','out.json',data,replacements)
 cloud_functions.replacing_json(f'./templates/debugTemplate{switch_num}.json','outDebug.json',data,replacements)

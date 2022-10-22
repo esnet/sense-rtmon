@@ -101,7 +101,7 @@ services:
     snmp-exporter{switch_num}:
         image: prom/snmp-exporter
         volumes:
-        - ../SNMPExporter/snmp{switch_num}.yml:/etc/snmp_exporter/snmp{switch_num}.yml
+        - ../SNMPExporter/snmp{switch_num}.yml:/etc/snmp_exporter/snmp.yml
         ports:
         - {str(9115+int(switch_num))}:9116"""
 

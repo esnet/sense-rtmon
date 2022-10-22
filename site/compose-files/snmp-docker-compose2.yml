@@ -4,7 +4,7 @@ services:
   snmp-exporter2:
     image: prom/snmp-exporter
     volumes:
-      - ../SNMPExporter/snmp2.yml:/etc/snmp_exporter/snmp2.yml
+      - ../SNMPExporter/snmp2.yml:/etc/snmp_exporter/snmp.yml
     # network_mode: "host" # in the future not host option, 
     ports:
       - 9117:9116 # 

@@ -15,6 +15,9 @@ rm -rf ./crontabs/push_node_exporter_metrics*.sh
 rm -rf ./crontabs/update_arp_exporter*
 rm -rf ./crontabs/push_snmp_exporter_metrics*.sh ./crontabs/snmp_* ./crontabs/temp_push_snmp_exporter_metrics.sh
 rm -rf ./compose-files/added*
+cd SNMPExporter
+rm snmp*.yml
+cd ..
 
 read -r -p "Erase Metrics [y/n]: " erase
 if [ "${erase}" == "y" ] || [ "${erase}" == "Y" ]; then
@@ -26,7 +29,7 @@ else
     echo "Nothing on Pushgateway is Erased"
 fi
 
-read -r -p "Remove all SNMP related downloads and config files [y/n]?: " remove_SNMP
+read -r -p "Remove all SNMP downloaded files [y/n]?: " remove_SNMP
 if [ "${remove_SNMP}" == "y" ] || [ "${remove_SNMP}" == "Y" ]; then
     cd SNMPExporter
     rm -rf go* pkg src bin snmp*.yml

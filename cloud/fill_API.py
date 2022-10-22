@@ -33,3 +33,5 @@ with open(f"config_flow/{str(sys.argv[1])}", 'w') as file:
 
 print(f"Key: Bearer {str(result.group(1))}")
 print("!!   API CURL SUCCESS!")
+
+# curlCMD = curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"1\", \"role\": \"Admin\"}' http://admin:admin@198.124.151.8:3000/api/auth/keys

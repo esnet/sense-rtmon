@@ -227,38 +227,38 @@ def index_finder(name,pushgateway_metrics):
     if_index = re.search('ifIndex="(.+?)\"',grep).group(1)
     return if_index
 
-def fill_replacement(data):
-    dash_title = data["dashTitle"] + make_title(data)
-    debug_title = data["debugTitle"] + make_title(data)
-    replacements = replacement_template()
-    replacements["DASHTITLE"] = dash_title
-    replacements["DEBUGTITLE"] = debug_title
-    replacements["IPHOSTA"] = data["hostA"]["IP"]
-    replacements["IPHOSTB"] = data["hostB"]["IP"]
-    replacements["VLANA"] = data["hostA"]["vlan"]
-    replacements["VLANB"] = data["hostB"]["vlan"]
-    replacements["IFNAMEHOSTA"] = data["hostA"]["interfaceName"]
-    replacements["IFNAMEHOSTB"] = data["hostB"]["interfaceName"]
-    replacements["IFINDEXSWITCHHOSTA"] = if_index1
-    replacements["IFINDEXSWITCHHOSTB"] = if_index2
-    replacements["DATAPLANEIPA"] = data["hostA"]["interfaceIP"]
-    replacements["DATAPLANEIPB"] = data["hostB"]["interfaceIP"]
-    replacements["NODENAMEA"] = data["hostA"]["nodeName"]
-    replacements["NODENAMEB"] = data["hostB"]["nodeName"]
+# def fill_replacement(data):
+#     dash_title = data["dashTitle"] + make_title(data)
+#     debug_title = data["debugTitle"] + make_title(data)
+#     replacements = replacement_template()
+#     replacements["DASHTITLE"] = dash_title
+#     replacements["DEBUGTITLE"] = debug_title
+#     replacements["IPHOSTA"] = data["hostA"]["IP"]
+#     replacements["IPHOSTB"] = data["hostB"]["IP"]
+#     replacements["VLANA"] = data["hostA"]["vlan"]
+#     replacements["VLANB"] = data["hostB"]["vlan"]
+#     replacements["IFNAMEHOSTA"] = data["hostA"]["interfaceName"]
+#     replacements["IFNAMEHOSTB"] = data["hostB"]["interfaceName"]
+#     replacements["IFINDEXSWITCHHOSTA"] = if_index1
+#     replacements["IFINDEXSWITCHHOSTB"] = if_index2
+#     replacements["DATAPLANEIPA"] = data["hostA"]["interfaceIP"]
+#     replacements["DATAPLANEIPB"] = data["hostB"]["interfaceIP"]
+#     replacements["NODENAMEA"] = data["hostA"]["nodeName"]
+#     replacements["NODENAMEB"] = data["hostB"]["nodeName"]
     
         
-    for i in range(int(data['switchNum'])):
-        letter = chr(ord('A')+i) # A B C D ... 
-        replacements[f"IPSWITCH{letter}"] = data[f"switchData{letter}"]["target"]
-        replacements[f"SNMP{letter}NAME"]= data[f"switchData{letter}"]["job_name"]
-        replacements[f"SWITCH{letter}INVLAN"]= data[f"switchData{letter}"]["portIn"]["vlan"]
-        replacements[f"SWITCH{letter}OUTVLAN"]= data[f"switchData{letter}"]["portOut"]["vlan"]
-        replacements[f"NAMEIF{letter}IN"] = data[f"switchData{letter}"]["portIn"]["ifName"]
-        replacements[f"NAMEIF{letter}OUT"] = data[f"switchData{letter}"]["portOut"]["ifName"]
-        replacements[f"SWITCH{letter}OUTGOING"] = data[f"switchData{letter}"]["portOut"]["ifName"]
-        replacements[f"SWITCH{letter}INCOMING"] = data[f"switchData{letter}"]["portIn"]["ifName"]
-        replacements[f"SNMP{letter}HOSTIP"] = data[f"switchData{letter}"]["SNMPHostIP"]
-        replacements[f"MONITORVLAN{str(i+1)}"] = vlan_if_index[i]
-        replacements[f"MONITORVLAN{str(i+int(data['switchNum']))}"] = vlan_if_index[i+int(data['switchNum'])]
+#     for i in range(int(data['switchNum'])):
+#         letter = chr(ord('A')+i) # A B C D ... 
+#         replacements[f"IPSWITCH{letter}"] = data[f"switchData{letter}"]["target"]
+#         replacements[f"SNMP{letter}NAME"]= data[f"switchData{letter}"]["job_name"]
+#         replacements[f"SWITCH{letter}INVLAN"]= data[f"switchData{letter}"]["portIn"]["vlan"]
+#         replacements[f"SWITCH{letter}OUTVLAN"]= data[f"switchData{letter}"]["portOut"]["vlan"]
+#         replacements[f"NAMEIF{letter}IN"] = data[f"switchData{letter}"]["portIn"]["ifName"]
+#         replacements[f"NAMEIF{letter}OUT"] = data[f"switchData{letter}"]["portOut"]["ifName"]
+#         replacements[f"SWITCH{letter}OUTGOING"] = data[f"switchData{letter}"]["portOut"]["ifName"]
+#         replacements[f"SWITCH{letter}INCOMING"] = data[f"switchData{letter}"]["portIn"]["ifName"]
+#         replacements[f"SNMP{letter}HOSTIP"] = data[f"switchData{letter}"]["SNMPHostIP"]
+#         replacements[f"MONITORVLAN{str(i+1)}"] = vlan_if_index[i]
+#         replacements[f"MONITORVLAN{str(i+int(data['switchNum']))}"] = vlan_if_index[i+int(data['switchNum'])]
 
-    return replacements
+#     return replacements

@@ -21,7 +21,7 @@ curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" 
 token = os.popen(curlCMD).read()
 result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
 api_key = str(result.group(1))
-print(api_key)
+
 # write the API key into config file that's used
 os.chdir("..")
 with open(f"config_flow/{str(sys.argv[1])}", 'r') as file:
@@ -33,7 +33,7 @@ for each_line in write_data:
 with open(f"config_flow/{str(sys.argv[1])}", 'w') as file:
     file.writelines(file_data)
 
-print(f"Key: Bearer {api_key}")
-print("!!   API CURL SUCCESS!")
+print(f"\nAPI Key: Bearer {api_key}")
+print("!!   API CURL COMPLETE")
 
 # curlCMD = curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"1\", \"role\": \"Admin\"}' http://admin:admin@198.124.151.8:3000/api/auth/keys

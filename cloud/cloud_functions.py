@@ -56,7 +56,7 @@ def make_title(data):
     title = f" {str(data['flow'])} || {str(data['configFile'])} || {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}-- {data['switchNum']}-switch --{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
     return title
 
-def index_finder(name,pushgateway_metrics):
+def index_finder(pushgateway_metrics,name):
     cmd = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{name}\".*'"
     grep = subprocess.check_output(cmd,shell=True).decode()
     if_index = re.search('ifIndex="(.+?)\"',grep).group(1)

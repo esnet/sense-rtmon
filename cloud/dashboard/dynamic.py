@@ -23,15 +23,15 @@ if_index2 = "IFINDEXSWITCHHOSTB"
 
 ######################## COMMENTING FOR TESTING ########################
 
-# if_index1 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostA"]["switchPort"]["ifName"]))
-# if_index2 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostB"]["switchPort"]["ifName"]))
+if_index1 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostA"]["switchPort"]["ifName"]))
+if_index2 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostB"]["switchPort"]["ifName"]))
 
 vlan_if_index=[]
 for i in range(switch_num*2):
     letter = chr(ord('A')+i) # A B C D ... 
     vlan_if_index.append(f"MONITORVLAN{i}")
-#     vlan_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portIn"]["ifVlan"])))
-#     vlan_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portOut"]["ifVlan"])))
+    vlan_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portIn"]["ifVlan"])))
+    vlan_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portOut"]["ifVlan"])))
     
 # # monitor per vlan. If same, avoid duplicates monitoring
 # 1 switch possibly 1 vlan

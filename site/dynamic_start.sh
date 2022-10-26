@@ -130,7 +130,6 @@ EOF
 
 else
     starting_snmp=" "
-    # starting_snmp2=" " 
     echo "Skip SNMP Exporter"
 fi
 

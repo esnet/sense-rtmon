@@ -1,6 +1,7 @@
 #! /bin/bash
 
-echo "Available Configuration files under /config_flow:"
+echo ""
+echo "!!    Available Configuration files under /config_flow:"
 echo $(ls ../config_flow/)
 read -r -p "Enter Configuration to Generate Dashboards (only the name of the file is needed): " config_file
 

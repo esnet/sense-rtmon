@@ -11,6 +11,7 @@ host2IP=
 top_level_config_file=
 switch_target1=
 switch_target2=
+switchNum=
 ############################# PYTHON SCRIPT FILL OUT ####################
 
 ############################# CRONTAB ###################################
@@ -100,7 +101,11 @@ fi
 read -r -p "Start SNMP Exporter? [y/n]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     starting_snmp="-f ./compose-files/snmp-docker-compose.yml" 
-    starting_snmp2="-f ./compose-files/snmp-docker-compose2.yml" 
+
+    for (( i=1; i <= ${switchNum}; ++i ))
+    do
+        starting_snmp="${starting_snmp} snmp-docker-compose${i}.yml"
+    done
     echo "!!    Default starting two SNMP exporters"
     echo "!!    Please configuring switch in you config file (default: /config_site/config.yml) if needed"
 
@@ -128,7 +133,7 @@ EOF
 
 else
     starting_snmp=" "
-    starting_snmp2=" " 
+    # starting_snmp2=" " 
     echo "Skip SNMP Exporter"
 fi
 
@@ -198,5 +203,5 @@ echo "docker compose ${starting_node} ${starting_snmp} ${starting_snmp}2 ${start
 if [ "${starting_node}" == " " ] && [ "${starting_snmp}" == " " ] && [ "${starting_arp}" == " " ] && [ "${starting_tcp}" == " " ]; then
     echo "!!    nothing started"
 else 
-    docker compose ${starting_node} ${starting_snmp} ${starting_snmp2} ${starting_arp} ${starting_tcp} up -d
+    docker compose ${starting_node} ${starting_snmp} ${starting_arp} ${starting_tcp} up -d
 fi

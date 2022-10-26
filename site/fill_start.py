@@ -29,7 +29,8 @@ for each_line in write_data:
     each_line = re.sub("pushgateway_server=.*", f"pushgateway_server={pushgateway_server}", each_line)
     each_line = re.sub("MYIP=.*", f"MYIP={hostip}", each_line)
     each_line = re.sub("top_level_config_file=.*", f"top_level_config_file={top_level_config_file}", each_line)
-    
+    each_line = re.sub("switchNum=.*", f"switchNum={switchNum}", each_line)
+
     if switchNum == 1:
         switch_target1 = data['snmpMetricsA']['target']
         each_line = re.sub("switch_target1=.*", f"switch_target1={switch_target1}", each_line)

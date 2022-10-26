@@ -8,14 +8,14 @@ sleep 0.5
 echo "!!    API Key setup is only needed for the first time"
 sleep 1
 read -r -p "AUTO setup AUTH API keys? [y/n]: " API 
-if [ "${API} " == "y" ] || [ "${API} " == "Y" ]; then
+if [ "${API}" == "y" ] || [ "${API}" == "Y" ]; then
     python3 fill_API.py ${config_file} 
     echo ""
     echo "!!    If API key is set up successfully the key is written back to ${config_file} "
     sleep 2
 fi 
 
-if [ "${config_file} " == "" ]; then
+if [ "${config_file}" == "" ]; then
     echo "!!    config_flow/config.yml"
     echo "!!    Parsing config.yml"
     python3 fill_config.py
@@ -32,7 +32,7 @@ yes | cp -rfa se_config/. script_exporter/examples
 sleep 1
 
 cd dashboard
-if [ "${config_file} " == "" ]; then
+if [ "${config_file}" == "" ]; then
     python3 dynamic.py
 else 
     python3 dynamic.py ${config_file} 

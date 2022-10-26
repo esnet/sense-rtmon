@@ -20,18 +20,20 @@ print("!!    Visit Google Doc for Grafana API and add Prometheus as a Data Sourc
 curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" +str(current_time) + "\", \"role\": \"Admin\"}' http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys"
 token = os.popen(curlCMD).read()
 result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
+api_key = str(result.group(1))
+print(api_key)
 # write the API key into config file that's used
 os.chdir("..")
 with open(f"config_flow/{str(sys.argv[1])}", 'r') as file:
     write_data = file.readlines()
 file_data = []
 for each_line in write_data:
-    each_line = re.sub("grafanaAPIToken:.*", f"grafanaAPIToken: \"Bearer {str(result.group(1))}\"", each_line)
+    each_line = re.sub("grafanaAPIToken:.*", f"grafanaAPIToken: \"Bearer {api_key}\"", each_line)
     file_data.append(each_line)
 with open(f"config_flow/{str(sys.argv[1])}", 'w') as file:
     file.writelines(file_data)
 
-print(f"Key: Bearer {str(result.group(1))}")
+print(f"Key: Bearer {api_key}")
 print("!!   API CURL SUCCESS!")
 
 # curlCMD = curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"1\", \"role\": \"Admin\"}' http://admin:admin@198.124.151.8:3000/api/auth/keys

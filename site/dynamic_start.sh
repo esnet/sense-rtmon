@@ -102,9 +102,9 @@ read -r -p "Start SNMP Exporter? [y/n]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     starting_snmp="-f ./compose-files/snmp-docker-compose.yml" 
 
-    for (( i=1; i <= ${switchNum}; ++i ))
+    for (( i=1; i < ${switchNum}; ++i ))
     do
-        starting_snmp="${starting_snmp} -f ./compose-files/snmp-docker-compose${i}.yml"
+        starting_snmp="${starting_snmp} -f ./compose-files/snmp-docker-compose${i+1}.yml"
     done
     echo "!!    Default starting two SNMP exporters"
     echo "!!    Please configuring switch in you config file (default: /config_site/config.yml) if needed"
@@ -183,7 +183,7 @@ fi
 
 read -r -p "Start TCP Exporter? [y/n]: " start_tcp
 if [ "${start_tcp}" == "y" ] || [ "${start_tcp}" == "Y" ]; then
-    starting_tcp="-f ./compose-files/tcp-docker-compose..yml" 
+    starting_tcp="-f ./compose-files/tcp-docker-compose.yml" 
     echo "Starting TCP Exporter Service"
     cd ./Metrics
     docker image rm -f tcp_exporter:latest

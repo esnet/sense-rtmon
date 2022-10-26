@@ -198,7 +198,7 @@ fi
 echo "!!    to remove site stack run ./clean.sh"
 
 # STARTING DOCKER CONTAINERS
-echo "docker compose ${starting_node} ${starting_snmp} ${starting_snmp}2 ${starting_arp} ${starting_tcp} up -d"
+echo "docker compose ${starting_node} ${starting_snmp} ${starting_arp} ${starting_tcp} up -d"
 # run nothing
 if [ "${starting_node}" == " " ] && [ "${starting_snmp}" == " " ] && [ "${starting_arp}" == " " ] && [ "${starting_tcp}" == " " ]; then
     echo "!!    nothing started"

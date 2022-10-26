@@ -82,10 +82,12 @@ echo "!!    Choose the following options accordingly"
 echo ""
 sleep 1
 
+start_exporters=""
 ############################# NODE #############################
 read -r -p "Start Node Exporter? [y/n]: " start_node
 if [ "${start_node}" == "y" ] || [ "${start_node}" == "Y" ]; then
     starting_node="-f ./compose-files/node-docker-compose.yml" 
+    start_exporters="${start_exporters} ${starting_node}"
     echo "Starting Node Exporter Service"
     sudo tee ./crontabs/push_node_exporter_metrics.sh<<EOF
 #! /bin/bash
@@ -101,18 +103,18 @@ fi
 read -r -p "Start SNMP Exporter? [y/n]: " start_snmp
 if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     starting_snmp="-f ./compose-files/snmp-docker-compose.yml" 
-
+    # depends on the number of switch, fill in the correct number of compose files
     for (( i=1; i < ${switchNum}; ++i ))
     do
         num=$(echo "${i}+1"|bc)
         starting_snmp="${starting_snmp} -f ./compose-files/snmp-docker-compose${num}.yml"
     done
+    start_exporters="${start_exporters} ${starting_snmp}"
     echo "!!    Default starting two SNMP exporters"
     echo "!!    Please configuring switch in you config file (default: /config_site/config.yml) if needed"
 
     echo "Starting SNMP Exporter Service"
     touch ./crontabs/snmp_temp.txt
-    # > ./crontabs/snmp_temp2.txt
     touch ./crontabs/push_snmp_exporter_metrics.sh
     chmod 755 ./crontabs/push_snmp_exporter_metrics.sh
     sudo tee ./crontabs/push_snmp_exporter_metrics.sh<<EOF
@@ -139,6 +141,7 @@ read -r -p "Start ARP Exporter? [y/n]: " start_arp
 if [ "${start_arp}" == "y" ] || [ "${start_arp}" == "Y" ]; then
     starting_arp="-f ./compose-files/arp-docker-compose.yml" 
     # delete everything first
+    start_exporters="${start_exporters} ${starting_arp}"
 
     rm -rf ./Metrics/ARPMetrics/jsonFiles ./Metrics/ARPMetrics/arpFiles ./Metrics/ARPMetrics/pingStat ./crontabs/update_arp_exporter
 
@@ -181,6 +184,7 @@ fi
 read -r -p "Start TCP Exporter? [y/n]: " start_tcp
 if [ "${start_tcp}" == "y" ] || [ "${start_tcp}" == "Y" ]; then
     starting_tcp="-f ./compose-files/tcp-docker-compose.yml" 
+    start_exporters="${start_exporters} ${starting_tcp}"
     echo "Starting TCP Exporter Service"
     cd ./Metrics
     docker image rm -f tcp_exporter:latest
@@ -195,10 +199,10 @@ fi
 echo "!!    to remove site stack run ./clean.sh"
 
 # STARTING DOCKER CONTAINERS
-echo "docker compose ${starting_node} ${starting_snmp} ${starting_arp} ${starting_tcp} up -d"
+echo "docker compose ${start_exporters} up -d"
 # run nothing
 if [ "${starting_node}" == " " ] && [ "${starting_snmp}" == " " ] && [ "${starting_arp}" == " " ] && [ "${starting_tcp}" == " " ]; then
     echo "!!    nothing started"
 else 
-    docker compose ${starting_node} ${starting_snmp} ${starting_arp} ${starting_tcp} up -d
+    docker compose ${start_exporters} up -d
 fi

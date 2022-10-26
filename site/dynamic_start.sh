@@ -104,7 +104,7 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
 
     for (( i=1; i <= ${switchNum}; ++i ))
     do
-        starting_snmp="${starting_snmp} snmp-docker-compose${i}.yml"
+        starting_snmp="${starting_snmp} -f ./compose-files/snmp-docker-compose${i}.yml"
     done
     echo "!!    Default starting two SNMP exporters"
     echo "!!    Please configuring switch in you config file (default: /config_site/config.yml) if needed"

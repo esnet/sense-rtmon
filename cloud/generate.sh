@@ -3,7 +3,7 @@
 echo ""
 echo "!!    Available Configuration files under /config_flow:"
 echo $(ls ../config_flow/)
-read -r -p "Enter Configuration to Generate Dashboards (only the name of the file is needed): " config_file
+read -r -p "Enter Configuration File to Generate Dashboards (only the name of the file is needed): " config_file
 
 echo "!!    Make sure SNMP exporter is running. Dashboard can't be generated without at least one SNMP Exporter running."
 sleep 0.5

@@ -28,6 +28,3 @@ for i in range(int(data["switchNum"])):
         site_functions.generate_snmp_compose_file("../compose-files",i+1)
         # add new target to crontab executing script push_snmp_exporter_metrics.sh
         site_functions.update_snmp_crontab_script("../crontabs",i+1,data[f"snmpMetrics{letter}"]["target"])    
-    #     subprocess.run(f"docker compose -f ../compose-files/snmp-docker-compose{i+1}.yml up -d", shell=True)
-    # if i == 0:
-    #     subprocess.run(f"docker compose -f ../compose-files/snmp-docker-compose.yml up -d", shell=True)

@@ -93,7 +93,7 @@ def download_mibs(mib_path):
     
 # generate a new snmp compose file in compose-files folder for each. One file for one snmp exporter
 def generate_snmp_compose_file(path,switch_num):
-    print(f"Generate a new docker compose file: added_snmp-docker-compose{str(switch_num)}.yml")
+    print(f"Generate a new docker compose file: snmp-docker-compose{str(switch_num)}.yml")
     print(f"Running on port: {str(9115+switch_num)}")
     new_compoes_file = f"""
 version: '3.8'
@@ -105,7 +105,7 @@ services:
         ports:
         - {str(9115+int(switch_num))}:9116"""
 
-    with open(f"{path}/added_snmp-docker-compose{str(switch_num)}.yml", 'w') as file:
+    with open(f"{path}/snmp-docker-compose{str(switch_num)}.yml", 'w') as file:
         file.write(new_compoes_file)
         
 # update crontab when SNMP exporter started

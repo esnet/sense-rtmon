@@ -14,7 +14,7 @@ echo "!!    Removing crontab scripts"
 rm -rf ./crontabs/push_node_exporter_metrics*.sh  
 rm -rf ./crontabs/update_arp_exporter*
 rm -rf ./crontabs/push_snmp_exporter_metrics*.sh ./crontabs/snmp_* ./crontabs/temp_push_snmp_exporter_metrics.sh
-rm -rf ./compose-files/added*
+rm -rf ./compose-files/snmp-docker-compose2.yml ./compose-files/snmp-docker-compose3.yml ./compose-files/snmp-docker-compose4.yml ./compose-files/snmp-docker-compose5.yml ./compose-files/snmp-docker-compose6.yml ./compose-files/snmp-docker-compose7.yml 
 cd SNMPExporter
 rm -rf snmp*.yml
 cd ..

@@ -104,27 +104,27 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     echo "!!    Default starting two SNMP exporters"
     echo "!!    Please configuring switch in you config file (default: /config_site/config.yml) if needed"
 
-    cd ./SNMPExporter
-    python3 dynamic.py $top_level_config_file
-    cd ..
     echo "Starting SNMP Exporter Service"
-    > ./crontabs/snmp_temp.txt
-    > ./crontabs/snmp_temp2.txt
+    touch ./crontabs/snmp_temp.txt
+    # > ./crontabs/snmp_temp2.txt
     touch ./crontabs/push_snmp_exporter_metrics.sh
     chmod 755 ./crontabs/push_snmp_exporter_metrics.sh
     sudo tee ./crontabs/push_snmp_exporter_metrics.sh<<EOF
 #! /bin/bash
 if curl ${MYIP}:9116/metrics | grep ".*"; then
-    curl -o ${general_path}/site/crontabs/snmp_temp2.txt ${MYIP}:9117/snmp?target=${switch_target2}&module=if_mib
+    # curl -o ${general_path}/site/crontabs/snmp_temp2.txt ${MYIP}:9117/snmp?target=${switch_target2}&module=if_mib
     curl -o ${general_path}/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=${switch_target1}&module=if_mib
 else
     > ${general_path}/site/crontabs/snmp_temp.txt	
-    > ${general_path}/site/crontabs/snmp_temp2.txt	
+    # > ${general_path}/site/crontabs/snmp_temp2.txt	
 fi
-cat ${general_path}/site/crontabs/snmp_temp2.txt | curl --data-binary @- ${pushgateway_server}/metrics/job/snmp-exporter2/target_switch/${switch_target2}/instance/${MYIP}
+# cat ${general_path}/site/crontabs/snmp_temp2.txt | curl --data-binary @- ${pushgateway_server}/metrics/job/snmp-exporter2/target_switch/${switch_target2}/instance/${MYIP}
 cat ${general_path}/site/crontabs/snmp_temp.txt | curl --data-binary @- ${pushgateway_server}/metrics/job/snmp-exporter/target_switch/${switch_target1}/instance/${MYIP}
-
 EOF
+    
+    cd ./SNMPExporter
+    python3 dynamic.py $top_level_config_file
+    cd ..
 
 else
     starting_snmp=" "

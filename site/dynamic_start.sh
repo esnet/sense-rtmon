@@ -117,13 +117,10 @@ if [ "$start_snmp" == "y" ] || [ "$start_snmp" == "Y" ]; then
     sudo tee ./crontabs/push_snmp_exporter_metrics.sh<<EOF
 #! /bin/bash
 if curl ${MYIP}:9116/metrics | grep ".*"; then
-    # curl -o ${general_path}/site/crontabs/snmp_temp2.txt ${MYIP}:9117/snmp?target=${switch_target2}&module=if_mib
     curl -o ${general_path}/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=${switch_target1}&module=if_mib
 else
     > ${general_path}/site/crontabs/snmp_temp.txt	
-    # > ${general_path}/site/crontabs/snmp_temp2.txt	
 fi
-# cat ${general_path}/site/crontabs/snmp_temp2.txt | curl --data-binary @- ${pushgateway_server}/metrics/job/snmp-exporter2/target_switch/${switch_target2}/instance/${MYIP}
 cat ${general_path}/site/crontabs/snmp_temp.txt | curl --data-binary @- ${pushgateway_server}/metrics/job/snmp-exporter/target_switch/${switch_target1}/instance/${MYIP}
 EOF
     

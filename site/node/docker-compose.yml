@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  node-exporter:
+    image: prom/snmp-exporter need to change
+    volumes:
+      # - ../../config_site:/home/config/
+      - ./:/home/
+      - ../../config_site/config.yml:/home/config.yml
+    # network_mode: "host" # in the future not host option, 
+    ports:
+      - 9110:9110

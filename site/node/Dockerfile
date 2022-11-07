@@ -5,7 +5,7 @@ RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
 RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 
 RUN yum -y update
-RUN yum -y install python3 git vim make wget
+RUN yum -y install python3 git vim make wget cronie
 # subscription-manager
 # RUN wget https://dl.google.com/go/go1.18.3.linux-amd64.tar.gz
 # RUN export PATH=${PATH}:/usr/local/go/bin

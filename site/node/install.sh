@@ -9,5 +9,6 @@ rm -rf go1.18.3.linux-amd64.tar.gz
 go env -w GO111MODULE=auto
 go version
 git clone https://github.com/prometheus/node_exporter.git
+pip3 install pyyaml
 
 echo "!!    Start node exporter"

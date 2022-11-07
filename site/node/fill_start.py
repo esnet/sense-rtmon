@@ -1,18 +1,17 @@
 import sys
 import re 
-sys.path.append("..") # Adds higher directory to python modules path.
-import site_functions
+import yaml
 
 # read yml file
-data,file_name = site_functions.read_yml_file("",sys.argv)
-
+data = {} 
+with open("config.yml", 'r') as stream:
+    try:
+        data = yaml.safe_load(stream)
+    except yaml.YAMLError as exc:
+        print(f"\n Config file config.yml could not be found in the config directory\n")
+                
 hostip = data['hostIP']
 pushgateway_server = f"{data['grafanaHostIP']}:{str(data['pushgatewayPort'])}" 
-
-if len(sys.argv) > 1:
-    top_level_config_file = str(sys.argv[1])
-else:
-    top_level_config_file = "config.yml"
     
 ################################### WRITE DYNAMIC_START ###############################
 # read in yaml file

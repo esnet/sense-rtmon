@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   node-exporter:
-    image: prom/snmp-exporter need to change
+    image: zhenboyan/test_centos
     volumes:
       # - ../../config_site:/home/config/
       - ./:/home/

@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ############################# PYTHON SCRIPT FILL OUT ####################
-MYIP=2.2.2.2
+MYIP=1.1.1.1
 pushgateway_server=dev2.virnao.com:9091
 
 ############################# CRONTAB ###################################

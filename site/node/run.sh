@@ -1,4 +1,5 @@
 #! /bin/bash
+cd home
 echo "!!    Run install.sh"
 ./install.sh 
 

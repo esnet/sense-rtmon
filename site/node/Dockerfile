@@ -18,4 +18,5 @@ RUN yum -y install python3 git vim make wget cronie
 
 # RUN ./node_exporter &
 
-CMD /bin/bash
+# CMD /bin/bash
+ENTRYPOINT [ "/home/run.sh" ]

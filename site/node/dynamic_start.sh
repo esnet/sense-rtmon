@@ -1,8 +1,8 @@
 #! /bin/bash
 
 ############################# PYTHON SCRIPT FILL OUT ####################
-MYIP=
-pushgateway_server=
+MYIP=2.2.2.2
+pushgateway_server=dev2.virnao.com:9091
 
 ############################# CRONTAB ###################################
 echo "Starting Crontab setup"
@@ -25,4 +25,4 @@ crond
 # run the node exporter from github
 cd node_exporter
 make build
-./node_exporter &
+./node_exporter

@@ -2,13 +2,7 @@ version: '3.8'
 
 services:
   node-exporter:
-    image: zhenboyan/centos_node_exporter:latest
-    volumes:
-      # - ../../config_site:/home/config/
-      - ./run.sh:/home/run.sh
-      - ./fill_start.py:/home/fill_start.py
-      - ./dynamic_start.sh:/home/dynamic_start.sh
-      - ../../config_site/config.yml:/home/config.yml
-    # network_mode: "host" # in the future not host option, 
+    image: zhenboyan/rocky_node_exporter:latest
+    network_mode: "host" # in the future not host option, 
     ports:
       - 9110:9110

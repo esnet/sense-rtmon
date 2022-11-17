@@ -1,8 +1,8 @@
-# Container Instructions
+# Node Exporter
 
-## Node
-Start Node Exporter: `docker compose up -d` inside `node` directory
-Configuration: `sense-rtmon/config_site/config.yml`
+## Container Instructions
+- Start Node Exporter: `docker compose up -d` inside `node` directory
+- Configuration file location: `sense-rtmon/config_site/config.yml`
 
 ### docker-compose.yml
 - Pull docker image `zhenboyan/rocky_node_exporter:latest` from Docker Hub

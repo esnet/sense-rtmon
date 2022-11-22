@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  node-exporter:
+    image: pmuthukumar/rocky_snmp_exporter:latest
+    network_mode: "host" # in the future not host option, 
+    ports:
+      - 9116:9116

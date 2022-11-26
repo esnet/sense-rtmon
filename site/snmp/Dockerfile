@@ -1,35 +1,54 @@
 FROM rockylinux:9.0.20220720
 
-# download dependencies 
+# install dependencies 
 RUN cd /home 
 RUN yum -y update
-RUN yum -y install python3 git make wget cronie pip gcc gcc-c++ make net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
+RUN yum -y install python3 git make wget cronie pip
+RUN yum -y install p7zip p7zip-plugins make gcc gcc-c++ net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
+RUN pip3 install pyyaml
+
+# install Go
 RUN wget https://dl.google.com/go/go1.19.3.linux-amd64.tar.gz
 RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz
 RUN export PATH=$PATH:/usr/local/go/bin
 RUN rm -rf go1.19.3.linux-amd64.tar.gz
 RUN /usr/local/go/bin/go version
-RUN GO111MODULE=auto /usr/local/go/bin/go get github.com/prometheus/snmp_exporter/generator
-RUN cp -R /root/go/src /usr/local/go/bin/
-RUN GO111MODULE=off /usr/local/go/bin/go build /root/go/src/github.com/prometheus/snmp_exporter/generator
-RUN make mibs
-RUN cd /home 
-RUN pip3 install pyyaml
+
+# install official SNMP Exporter !!!!!!!!!!!!!! GITHUB PAGE READ
+RUN git clone https://github.com/prometheus/snmp_exporter.git
+RUN mv snmp_exporter /home
+
+# install librenms library which contains all mibs that's needed
+RUN git clone https://github.com/librenms/librenms.git
+RUN mv librenms /home
+RUN MIBDIRS+=/home/librenms/mibs/
+
+####### IMPORTANT ######## !!!!!!!!!!!!!! CHECK SYNTAX TO ADD DIRECOTRY
+# I included a few common network elements, be sure yours is included. Avoid including all elements, it will take a long time with warnings to generate SNMP.yml file later
+RUN MIBDIRS+=/home/librenms/mibs/cisco/
+RUN MIBDIRS+=/home/librenms/mibs/dell/
+
+# RUN GO111MODULE=auto /usr/local/go/bin/go get github.com/prometheus/snmp_exporter/generator
+# RUN cp -R /root/go/src /usr/local/go/bin/
+# RUN GO111MODULE=off /usr/local/go/bin/go build /root/go/src/github.com/prometheus/snmp_exporter/generator
 
 # these files will be changed depend the configuration file below
 RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/dynamic_start.sh
 RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/fill_start.py
 RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/run.sh
+RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/generator_template.yml
+RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/fill_template.py
+RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/snmp_functions.py
 
 # !CUSTIMIZATION!
 # you can replace the URL with a different configuration file!
 RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/config_site/config.yml
 # !CUSTIMIZATION! 
 
+# move all wget files to /home directory
 RUN mv *.yml /home/config.yml
 RUN chmod +x *.sh
-RUN mv dynamic_start.sh /home
-RUN mv run.sh /home
-RUN mv fill_start.py /home
+RUN mv *.sh /home
+RUN mv *.py /home
 
 ENTRYPOINT [ "/home/run.sh" ]

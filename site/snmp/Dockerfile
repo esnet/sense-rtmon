@@ -16,8 +16,7 @@ RUN pip3 install pyyaml
 # RUN /usr/local/go/bin/go version
 
 # install official SNMP Exporter !!!!!!!!!!!!!! GITHUB PAGE READ
-RUN git clone https://github.com/prometheus/snmp_exporter.git
-RUN mv snmp_exporter /home
+RUN git clone https://github.com/prometheus/snmp_exporter.git /home/
 
 # install SNMP binary release 
 # !CUSTIMIZATION!
@@ -29,8 +28,7 @@ RUN mv snmp_exporter-0.21.0.linux-amd64 /home
 
 
 # install librenms library which contains all mibs that's needed
-RUN git clone https://github.com/librenms/librenms.git
-RUN mv librenms /home
+RUN git clone https://github.com/librenms/librenms.git /home/
 RUN export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/
 
 ####### IMPORTANT ######## !!!!!!!!!!!!!! CHECK SYNTAX TO ADD DIRECOTRY
@@ -57,7 +55,7 @@ RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/config_site/co
 
 # move all wget files to /home directory
 RUN mv generator_template.yml /home
-RUN mv * /home/config.yml
+RUN mv *.yml /home/config.yml
 RUN chmod +x *.sh
 RUN mv *.sh /home
 RUN mv *.py /home

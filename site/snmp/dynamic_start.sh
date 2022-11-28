@@ -34,10 +34,14 @@ EOF
 
 ############################# Start SNMP #############################
 
-cd snmp_exporter
 echo "!!    Move generator.yml file to SNMP Exporter generator folder"
-yes | cp -rfa /home/generator.yml /home/src/github.com/prometheus/snmp_exporter/generator/
-make build
-./src/github.com/prometheus/snmp_exporter/generator/generator generate
-echo "snmp.yml generated"
+yes | cp -rfa /home/generator.yml /home/snmp_exporter/generator/
+echo "!!    Generating snmp.yml file"
+/home/snmp_exporter/generator/generator generate
+echo "!!    snmp.yml file generated"
+
+echo "!!    Move generated snmp.yml file to binary release folder where snmp_exporter is ran"
+yes | cp -rfa /home/snmp_exporter/generator/snmp.yml /home/snmp_exporter-0.21.0.linux-amd64/
+
+cd /home/snmp_exporter-0.21.0.linux-amd64/
 ./snmp_exporter

@@ -18,6 +18,15 @@ RUN /usr/local/go/bin/go version
 RUN git clone https://github.com/prometheus/snmp_exporter.git
 RUN mv snmp_exporter /home
 
+# install SNMP binary release 
+# !CUSTIMIZATION!
+RUN wget https://github.com/prometheus/snmp_exporter/releases/download/v0.21.0/snmp_exporter-0.21.0.linux-amd64.tar.gz
+# !CUSTIMIZATION!
+RUN tar -xvzf snmp_exporter-0.21.0.linux-amd64.tar.gz 
+RUN rm -rf snmp_exporter-0.21.0.linux-amd64.tar.gz
+RUN mv snmp_exporter-0.21.0.linux-amd64 /home
+
+
 # install librenms library which contains all mibs that's needed
 RUN git clone https://github.com/librenms/librenms.git
 RUN mv librenms /home

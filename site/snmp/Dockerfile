@@ -4,7 +4,8 @@ FROM rockylinux:9.0.20220720
 RUN cd /home 
 RUN yum -y update
 RUN yum -y install python3 git make wget cronie pip
-RUN yum -y install p7zip p7zip-plugins make gcc gcc-c++ net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
+# RUN yum -y install p7zip p7zip-plugins
+RUN yum -y install make gcc gcc-c++ net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
 RUN pip3 install pyyaml
 
 # install Go

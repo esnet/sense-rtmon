@@ -53,12 +53,11 @@ RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/snmp
 # !CUSTIMIZATION!
 # you can replace the URL with a different configuration file!
 RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/config_site/config.yml
-RUN mv config.yml /home
-# !!!!!! IMPORTANT !!!!!!
-# make sure the file's name is config.yml
 # !CUSTIMIZATION! 
 
 # move all wget files to /home directory
+RUN mv generator_template.yml /home
+RUN mv * /home/config.yml
 RUN chmod +x *.sh
 RUN mv *.sh /home
 RUN mv *.py /home

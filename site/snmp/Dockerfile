@@ -16,7 +16,7 @@ RUN pip3 install pyyaml
 # RUN /usr/local/go/bin/go version
 
 # install official SNMP Exporter !!!!!!!!!!!!!! GITHUB PAGE READ
-RUN git clone https://github.com/prometheus/snmp_exporter.git /home/
+RUN git clone https://github.com/prometheus/snmp_exporter.git /home/snmp_exporter
 
 # install SNMP binary release 
 # !CUSTIMIZATION!
@@ -28,7 +28,7 @@ RUN mv snmp_exporter-0.21.0.linux-amd64 /home
 
 
 # install librenms library which contains all mibs that's needed
-RUN git clone https://github.com/librenms/librenms.git /home/
+RUN git clone https://github.com/librenms/librenms.git /home/librenms
 RUN export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/
 
 ####### IMPORTANT ######## !!!!!!!!!!!!!! CHECK SYNTAX TO ADD DIRECOTRY

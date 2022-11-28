@@ -56,8 +56,8 @@ RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/config_site/co
 # !CUSTIMIZATION! 
 
 # move all wget files to /home directory
-RUN mv *.yml /home
-RUN mv -f /home/config*.yml /home/config.yml
+RUN yes | cp -rfa *.yml /home/config.yml
+# RUN mv -f /home/config*.yml /home/config.yml
 RUN chmod +x *.sh
 RUN mv *.sh /home
 RUN mv *.py /home

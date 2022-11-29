@@ -8,12 +8,12 @@ RUN yum -y install python3 git make wget cronie pip
 RUN yum -y install make gcc gcc-c++ net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
 RUN pip3 install pyyaml
 
-# # install Go
-# RUN wget https://dl.google.com/go/go1.19.3.linux-amd64.tar.gz
-# RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz
-# RUN export PATH=$PATH:/usr/local/go/bin
-# RUN rm -rf go1.19.3.linux-amd64.tar.gz
-# RUN /usr/local/go/bin/go version
+# install Go
+RUN wget https://dl.google.com/go/go1.19.3.linux-amd64.tar.gz
+RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz
+RUN export PATH=$PATH:/usr/local/go/bin
+RUN rm -rf go1.19.3.linux-amd64.tar.gz
+RUN /usr/local/go/bin/go version
 
 # install official SNMP Exporter !!!!!!!!!!!!!! GITHUB PAGE READ
 RUN git clone https://github.com/prometheus/snmp_exporter.git /home/snmp_exporter

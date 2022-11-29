@@ -37,7 +37,9 @@ EOF
 echo "!!    Move generator.yml file to SNMP Exporter generator folder"
 yes | cp -rfa /home/generator.yml /home/snmp_exporter/generator/
 echo "!!    Generating snmp.yml file"
-./home/snmp_exporter/generator/generator generate
+cd /home/snmp_exporter/generator
+go build
+./generator generate
 echo "!!    snmp.yml file generated"
 
 echo "!!    Move generated snmp.yml file to binary release folder where snmp_exporter is ran"

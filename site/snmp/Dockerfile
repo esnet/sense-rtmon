@@ -26,19 +26,8 @@ RUN tar -xvzf snmp_exporter-0.21.0.linux-amd64.tar.gz
 RUN rm -rf snmp_exporter-0.21.0.linux-amd64.tar.gz
 RUN mv snmp_exporter-0.21.0.linux-amd64 /home
 
-
 # install librenms library which contains all mibs that's needed
 RUN git clone https://github.com/librenms/librenms.git /home/librenms
-RUN export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/
-
-####### IMPORTANT ######## !!!!!!!!!!!!!! CHECK SYNTAX TO ADD DIRECOTRY
-# I included a few common network elements, be sure yours is included. Avoid including all elements, it will take a long time with warnings to generate SNMP.yml file later
-RUN export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/cisco/
-RUN export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/dell/
-
-# RUN GO111MODULE=auto /usr/local/go/bin/go get github.com/prometheus/snmp_exporter/generator
-# RUN cp -R /root/go/src /usr/local/go/bin/
-# RUN GO111MODULE=off /usr/local/go/bin/go build /root/go/src/github.com/prometheus/snmp_exporter/generator
 
 # these files will be changed depend the configuration file below
 RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/dynamic_start.sh

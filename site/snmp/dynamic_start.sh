@@ -22,7 +22,7 @@ echo "Starting SNMP Exporter Service"
 touch snmp_temp.txt
 touch push_snmp_exporter_metrics.sh
 chmod 755 push_snmp_exporter_metrics.sh
-sudo tee push_snmp_exporter_metrics.sh<<EOF
+tee push_snmp_exporter_metrics.sh<<EOF
 #! /bin/bash
 if curl ${MYIP}:9116/metrics | grep ".*"; then
     curl -o ${general_path}/site/crontabs/snmp_temp.txt ${MYIP}:9116/snmp?target=${switch_target}&module=if_mib
@@ -33,6 +33,7 @@ cat ${general_path}/site/crontabs/snmp_temp.txt | curl --data-binary @- ${pushga
 EOF
 
 ############################# Start SNMP #############################
+echo "!!    Correct MIBS environment variable"
 
 echo "!!    Move generator.yml file to SNMP Exporter generator folder"
 yes | cp -rfa /home/generator.yml /home/snmp_exporter/generator/

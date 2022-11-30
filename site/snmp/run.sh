@@ -1,6 +1,6 @@
 #! /bin/bash
 cd home
-# export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/usr/local/go/bin
 
 echo "!!    Read Site Configuration file build SNMP generator.yml file"
 python3 fill_template.py config.yml

@@ -19,6 +19,8 @@ snmpMetricsA:
   portOut:
     ifName: 'hundredGigE 1/31'
     ifVlan: 'Vlan 1000'
+  # if oids include private MIBs please find the network element brand on this list https://github.com/librenms/librenms/tree/master/mibs
+  network_element_brand: "dell"
   oids: [dot1dTpFdbAddress, ifMIB, ifMtu, ifName, ifOperStatus, ifPhysAddress, ifIndex, ifType, f10IfInVlanPkts, f10IfOutVlanPkts]
   communityString: "COMMUNITYSTRING" # keep the quotation marks only replace COMMUNITYSTRING
   scrapeTimeout: 5s

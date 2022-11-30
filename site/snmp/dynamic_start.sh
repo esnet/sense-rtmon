@@ -38,14 +38,15 @@ echo "!!    Correct MIBS environment variable"
 
 echo "!!    Move generator.yml file to SNMP Exporter generator folder"
 yes | cp -rfa /home/generator.yml /home/snmp_exporter/generator/
-echo "!!    Generating snmp.yml file"
-
-# I included a few common network elements, be sure yours is included. Avoid including all elements, it will take a long time with warnings to generate SNMP.yml file later
+echo "!!    Set correct mibs folder"
+# Avoid including all elements, it will take a long time with warnings to generate SNMP.yml file later
+# make it include in the config file in the future
 export MIBDIRS=/home/librenms/mibs/
-export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/cisco/
-export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/dell/
-# export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/${private_mib}
+# export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/cisco/
+# export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/dell/
+export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/${private_mib}
 
+echo "!!    Generating snmp.yml file"
 cd /home/snmp_exporter/generator
 go build
 ./generator generate

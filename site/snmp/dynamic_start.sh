@@ -25,8 +25,8 @@ touch push_snmp_exporter_metrics.sh
 chmod 755 push_snmp_exporter_metrics.sh
 tee push_snmp_exporter_metrics.sh<<EOF
 #! /bin/bash
-if curl ${MYIP}:9116/metrics | grep ".*"; then
-    curl -o /home/snmp_temp.txt ${MYIP}:9116/snmp?target=${switch_target}&module=if_mib
+if curl localhost:9116/metrics | grep ".*"; then
+    curl -o /home/snmp_temp.txt localhost:9116/snmp?target=${switch_target}&module=if_mib
 else
     > /home/snmp_temp.txt	
 fi

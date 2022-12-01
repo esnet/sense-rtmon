@@ -2,7 +2,7 @@ import sys
 import re 
 import yaml
 import snmp_functions
-
+import os
 data = snmp_functions.read_config()
 
 with open("generator_template.yml") as inGen, open("generator.yml", 'w') as outGen:
@@ -21,7 +21,7 @@ with open("generator.yml", 'w') as genOut:
     
 replacements = {'RETRY': str(data[f'snmpMetricsA']['retries']),
                 'TIMEOUT': str(data[f'snmpMetricsA']['scrapeTimeout']),
-                'COMMUNITYREADSTRING': str(data[f'snmpMetricsA']['communityString'])}
+                'COMMUNITYREADSTRING': str(os.environ["COMMUNITY_STRING"])} #str(data[f'snmpMetricsA']['communityString'])
 
 # Read in the file
 with open("generator.yml", 'r') as file:

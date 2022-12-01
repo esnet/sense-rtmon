@@ -1,6 +1,7 @@
 #! /bin/bash
 
 ############################# PYTHON SCRIPT FILL OUT ####################
+# both are per run variables
 MYIP=1.1.1.1
 pushgateway_server=dev2.virnao.com:9091
 

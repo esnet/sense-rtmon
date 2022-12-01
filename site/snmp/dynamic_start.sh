@@ -26,11 +26,11 @@ chmod 755 push_snmp_exporter_metrics.sh
 tee push_snmp_exporter_metrics.sh<<EOF
 #! /bin/bash
 if curl localhost:9116/metrics | grep ".*"; then
-    curl -o /home/snmp_temp.txt localhost:9116/snmp?target=${switch_target}&module=if_mib
+    curl -o /home/snmp_temp.txt localhost:9116/snmp?target=${SWITCH_TARGET}&module=if_mib
 else
     > /home/snmp_temp.txt	
 fi
-cat /home/snmp_temp.txt | curl --data-binary @- ${pushgateway_server}/metrics/job/snmp-exporter/target_switch/${switch_target}/instance/${MYIP}
+cat /home/snmp_temp.txt | curl --data-binary @- ${PUSHGATEWAY_SERVER}/metrics/job/snmp-exporter/target_switch/${SWITCH_TARGET}/instance/${MYIP}
 EOF
 
 ############################# Start SNMP #############################
@@ -44,7 +44,7 @@ echo "!!    Set correct mibs folder"
 export MIBDIRS=/home/librenms/mibs/
 # export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/cisco/
 # export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/dell/
-export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/${private_mib}
+export MIBDIRS=${MIBDIRS}:/home/librenms/mibs/${PRIVATE_MIB}
 
 echo "!!    Generating snmp.yml file"
 cd /home/snmp_exporter/generator

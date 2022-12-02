@@ -2,10 +2,11 @@ version: '3.8'
 
 services:
   node-exporter:
-    image: zhenboyan/rocky_node_exporter:latest
+    image: zhenboyan/rocky_arp_exporter:latest
     network_mode: "host" # in the future not host option, 
     environment: # change the folloing environment variables
       - MYIP=198.32.43.16
+      - HOST2IP=198.32.43.15
       - PUSHGATEWAY_SERVER=dev2.virnao.com:9091
     ports:
       - 9110:9110

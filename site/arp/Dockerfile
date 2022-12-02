@@ -20,10 +20,10 @@ RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/node/run.
 
 # !CUSTIMIZATION!
 # you can replace the URL with a different configuration file!
-# RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/config_site/config.yml
+RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/config_site/config.yml
 # !CUSTIMIZATION! 
 
-# RUN mv *.yml /home/config.yml
+RUN mv *.yml /home/config.yml
 RUN chmod +x *.sh
 RUN mv dynamic_start.sh /home
 RUN mv run.sh /home

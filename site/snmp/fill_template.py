@@ -7,7 +7,7 @@ import os
 with open("generator_template.yml") as inGen, open("generator.yml", 'w') as outGen:
     for line in inGen:
         outGen.write(line)
-oids = set(data[f'snmpMetricsA']['oids'])
+oids = set(str(os.environ["OIDS_LIST"]))
 # read all oids in first then add to generator file
 snip = ""
 for oid in oids:

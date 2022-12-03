@@ -39,7 +39,7 @@ RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/snmp
 
 # !CUSTIMIZATION!
 # you can replace the URL with a different configuration file!
-RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/config_site/config.yml
+# RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/config_site/config.yml
 # run environmental variables instead of config files, per run variables should be given at runtime
 # configuration files can be variables themsleves, run time variable
 # multi use for multi runs more dynamic situation

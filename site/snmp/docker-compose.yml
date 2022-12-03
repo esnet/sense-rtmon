@@ -10,6 +10,8 @@ services:
       - SWITCH_TARGET=172.16.1.1
       - PRIVATE_MIB=dell
       - OIDS_LIST='["dot1dTpFdbAddress", "ifMIB", "ifMtu", "ifName", "ifOperStatus", "ifPhysAddress", "ifIndex", "ifType", "f10IfInVlanPkts", "f10IfOutVlanPkts"]'
+      - RETRY=3
+      - TIMEOUT=5
       # COMMUNITY_STRING should not be pushed to github
       - COMMUNITY_STRING=
     ports:

@@ -31,11 +31,11 @@ RUN git clone https://github.com/librenms/librenms.git /home/librenms
 
 # these files will be changed depend the configuration file below
 RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/dynamic_start.sh
-RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/fill_start.py
+# RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/fill_start.py
 RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/run.sh
 RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/generator_template.yml
 RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/fill_template.py
-RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/snmp_functions.py
+# RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/snmp_functions.py
 
 # !CUSTIMIZATION!
 # you can replace the URL with a different configuration file!

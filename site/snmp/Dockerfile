@@ -47,7 +47,7 @@ RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/fill
 
 # move all wget files to /home directory
 RUN mv generator_template.yml /home
-RUN mv *.yml /home/config.yml
+# RUN mv *.yml /home/config.yml
 RUN chmod +x *.sh
 RUN mv *.sh /home
 RUN mv *.py /home

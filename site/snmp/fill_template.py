@@ -3,11 +3,14 @@ import re
 import yaml
 import os
 # data = snmp_functions.read_config()
+import json
 
 with open("generator_template.yml") as inGen, open("generator.yml", 'w') as outGen:
     for line in inGen:
         outGen.write(line)
-oids = set(str(os.environ["OIDS_LIST"]))
+# oids = set(str(os.environ["OIDS_LIST"]))
+oids = json.loads(os.environ['OIDS_LIST'])
+
 # read all oids in first then add to generator file
 snip = ""
 for oid in oids:

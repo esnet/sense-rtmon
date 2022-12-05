@@ -8,4 +8,4 @@ services:
       - MYIP=198.32.43.16
       - PUSHGATEWAY_SERVER=dev2.virnao.com:9091
     ports:
-      - 9110:9110
+      - 9100:9100

@@ -32,6 +32,7 @@ else
 fi
 cat /home/snmp_temp.txt | curl --data-binary @- ${PUSHGATEWAY_SERVER}/metrics/job/snmp-exporter/target_switch/${SWITCH_TARGET}/instance/${MYIP}
 EOF
+crond
 
 ############################# Start SNMP #############################
 echo "!!    Correct MIBS environment variable"

@@ -18,7 +18,7 @@ echo "!!    crontab set up successfully"
 echo "Starting Node Exporter Service"
 tee push_node_exporter_metrics.sh<<EOF
 #! /bin/bash
-curl -s localhost:9110/metrics | curl --data-binary @- ${PUSHGATEWAY_SERVER}/metrics/job/node-exporter/instance/${MYIP}
+curl -s localhost:9100/metrics | curl --data-binary @- ${PUSHGATEWAY_SERVER}/metrics/job/node-exporter/instance/${MYIP}
 EOF
 chmod 755 push_node_exporter_metrics.sh
 crond

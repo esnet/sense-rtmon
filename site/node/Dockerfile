@@ -15,7 +15,7 @@ RUN pip3 install pyyaml
 
 # these files will be changed depend the configuration file below
 RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/node/dynamic_start.sh
-RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/node/fill_start.py
+# RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/node/fill_start.py
 RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/node/run.sh
 
 # !CUSTIMIZATION!

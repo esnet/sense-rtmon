@@ -24,12 +24,7 @@ spec:
         io.kompose.service: node-exporter
     spec:
       containers:
-        - env:
-            - name: MYIP
-              value: 198.32.43.16
-            - name: PUSHGATEWAY_SERVER
-              value: dev2.virnao.com:9091
-          image: zhenboyan/rocky_node_exporter:latest
+        - image: zhenboyan/rocky_node_exporter:latest
           name: node-exporter
           ports:
             - containerPort: 9110

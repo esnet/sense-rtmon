@@ -7,9 +7,10 @@ services:
     environment: # change the folloing environment variables
       - MYIP=198.32.43.16
       - HOST2IP=198.32.43.15
-      - PUSHGATEWAY_SERVER=dev2.virnao.com:9091
-      - NODE_PORT=9110
+      - PUSHGATEWAY_SERVER=http//:dev2.virnao.com:9091 # try https if encrypted
+      - ARP_PORT=9192
+      - SCRAPEDURATION=900 # not used right now
+      - SCRAPEINTERVAL=30  # not used right now 
       # - optional given by user for starting port 
     # ports:
-    #   - 9110:9110
-      # use environment variable here
+    #   - 9192:9192

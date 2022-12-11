@@ -1,9 +1,9 @@
 #! /bin/bash
 cd home
-export PATH=$PATH:/usr/local/go/bin
-
-echo "!!    Read Configuration file build start script"
-python3 fill_start.py config.yml
+# export PATH=$PATH:/usr/local/go/bin
 
 echo "!!    Run dynamic_start.sh"
 ./dynamic_start.sh
+
+echo "!!    Start ARP Exporter"
+python3 arp_exporter.py

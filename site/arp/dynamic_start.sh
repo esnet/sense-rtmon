@@ -35,4 +35,7 @@ EOF
 echo "Starting ARP Exporter Service"
 
 chmod 755 update_arp_exporter.sh
+# execute once before starting arp exporter
+./update_arp_exporter.sh
+
 crond

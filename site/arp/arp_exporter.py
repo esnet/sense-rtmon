@@ -60,8 +60,6 @@ class JsonCollector(object):
       with open(ping_file_path,"rt") as fp:
         # check if the file is empty
         if os.stat(ping_file_path).st_size != 0:
-          # cmd1 = f"echo \"running in ping\""
-          # subprocess.run(cmd1, shell=True)
           clean_ping = ping_lines[0].strip()
           ping_url = f"{receiver_ip_address}/metrics/job/arpMetrics/instance/{instance_ip}/ping_this_ip/{str(clean_ping)}"
           if clean_ping[-1] == "1":
@@ -72,6 +70,7 @@ class JsonCollector(object):
 
       # post to pushgateway website
       for entry in response:
+        print("pushing")
         metricName = "ARP_Entry_" + str(count) + "_Scrape"
         metric = Metric(metricName, 'ARP Entry', 'summary')
         hostname = entry['hostname']
@@ -107,15 +106,17 @@ class JsonCollector(object):
 if __name__ == '__main__':
   owd = os.getcwd()
   os.chdir("/home")
-  receiver_ip_address = value = str(os.getenv("PUSHGATEWAY_SERVER"))
+  receiver_ip_address = str(os.getenv("PUSHGATEWAY_SERVER"))
   instance_ip = str(os.getenv("MYIP"))
 
   # Usage: json_exporter.py port endpoint
+  print("ARP EXPORTER RUNNING")
   start_http_server(int(os.getenv("ARP_PORT")))
   while True:
     REGISTRY.register(JsonCollector())
-    time.sleep(1)
+    time.sleep(10)
     REGISTRY = CollectorRegistry(auto_describe=True) # solves duplicate entry problem
 
   # time.sleep(int(config_data['arpMetrics']['scrapeDuration']))
   # seems like nowhere to set scrape interval
+

@@ -3,7 +3,7 @@ FROM rockylinux:9.0.20220720
 # download dependencies 
 RUN cd /home 
 RUN yum -y update
-RUN yum -y install python3 git make wget cronie pip
+RUN yum -y install python3 git make wget cronie pip net-tools
 RUN pip install pyyaml pyyaml requests prometheus_client
 # RUN wget https://dl.google.com/go/go1.19.3.linux-amd64.tar.gz
 # RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz

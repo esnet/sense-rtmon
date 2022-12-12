@@ -5,7 +5,7 @@ echo "Starting Crontab setup"
 > cron_autopush
 echo "#Puppet Name: arp exporter send data to pushgateway every 15 seconds" >> cron_autopush
 echo "MAILTO=""" >> cron_autopush
-echo "* * * * * for i in 0 1 2; do /home/update_arp_exporter & sleep 15; done; /home/update_arp_exporter" >> cron_autopush
+echo "* * * * * for i in 0 1 2; do /home/update_arp_exporter.sh & sleep 15; done; /home/update_arp_exporter.sh" >> cron_autopush
 crontab cron_autopush
 echo "!!    crontab set up successfully"
 ############################# CRONTAB ###################################
@@ -19,7 +19,7 @@ touch /home/ping_status.txt
 touch /home/prev_ping_status.txt
 
 touch update_arp_exporter.sh
-sudo tee update_arp_exporter.sh<<EOF
+tee update_arp_exporter.sh<<EOF
 #! /bin/bash
 /sbin/arp -a > /home/arp_out.txt
 # sleep 0.5

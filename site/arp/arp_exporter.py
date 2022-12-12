@@ -35,7 +35,7 @@ class JsonCollector(object):
       cmd2 = f"yes | cp -rfa {ping_file_path} {previous_ping_file_path}"
       subprocess.run(cmd2, shell=True)
       
-      arpout_json = "/home/arpOut.json"
+      arpout_json = "/home/arp_out.json"
       f = open(arpout_json)
       lines = f.readlines()
 

@@ -11,7 +11,7 @@ import subprocess
 class JsonCollector(object):
   def collect(self):
     # Fetch the files see if any file has changed
-    output_file = "/home/arpOut.json"
+    output_file = "/home/arp_out.json"
     previous_file = "/home/prev.json"
     cur_file = open(output_file)
     cur_lines = cur_file.readlines()

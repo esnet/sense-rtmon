@@ -47,7 +47,6 @@ while True:
     response = []
     for line in lines[1:-1]:
       response.append(json.loads(line[:-2]))
-    count = 1
     
     # delete previous urls
     with open(delete_file_path,"rt") as fp:
@@ -71,13 +70,14 @@ while True:
         delete_list.append(ping_url)
 
     # post to pushgateway website
+    count = 1
     for entry in response:
       print("pushing")
       metricName = "ARP_Entry_" + str(count) + "_Scrape"
       metric = Metric(metricName, 'ARP Entry', 'summary')
       hostname = entry['hostname']
       if hostname == "?":
-        hostname = "no_name"
+        hostname = f"no_name{str(count)}"
       else:
         hostname = entry['hostname']
       metric.add_sample(metricName, value=1, labels={'hostname': hostname})

@@ -26,6 +26,6 @@ RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/arp/conve
 RUN chmod +x *.sh
 RUN mv dynamic_start.sh /home
 RUN mv run.sh /home
-RUN mv fill_start.py /home
+RUN mv *.py /home
 
 ENTRYPOINT [ "/home/run.sh" ]

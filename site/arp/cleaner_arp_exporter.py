@@ -7,11 +7,13 @@ import sys
 import time
 from subprocess import Popen, PIPE
 import subprocess
+import time
 
 os.chdir("/home")
 # file naming
 receiver_ip_address = str(os.getenv("PUSHGATEWAY_SERVER"))
 interval = int(os.getenv("SCRAPEINTERVAL"))
+duration = int(os.getenv("SCRAPEDURATION"))
 instance_ip = str(os.getenv("MYIP"))
 output_file = "/home/arp_out.json"
 previous_file = "/home/prev.json"
@@ -20,7 +22,12 @@ previous_ping_file_path = "/home/prev_ping_status.txt"
 arpout_json = "/home/arp_out.json"
 delete_file_path = "/home/delete.json"
 
-while True:
+# start = time.time()
+# time_difference = 0
+time_acc = 0
+while time_acc < duration:
+  # count time in seconds
+  time_acc += interval
   # file reading
   ping_file = open(ping_file_path)
   ping_lines = ping_file.readlines()

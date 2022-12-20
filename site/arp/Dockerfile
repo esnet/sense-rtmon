@@ -11,7 +11,7 @@ RUN wget -O /home/dynamic_start.sh https://raw.githubusercontent.com/esnet/sense
 RUN wget -O /home/run.sh https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/arp/run.sh
 RUN wget -O /home/arp_exporter.py https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/arp/arp_exporter.py
 RUN wget -O /home/convert_arp.py https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/arp/convert_arp.py
-RUN wget -O /home/heritage_arp_exporter.py https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/arp/heritage_arp_exporter.py
+RUN wget -O /home/class_arp_exporter.py https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/arp/class_arp_exporter.py
 RUN chmod +x /home/*.sh
 
 ENTRYPOINT [ "/home/run.sh" ]

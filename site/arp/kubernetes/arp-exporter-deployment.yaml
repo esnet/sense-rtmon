@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: arp-exporter
+  name: arp-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: arp-exporter
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: arp-exporter
+    spec:
+      containers:
+        - env:
+            - name: ARP_PORT
+              value: "9192"
+            - name: HOST2IP
+              value: 198.32.43.15
+            - name: MYIP
+              value: ucsd_cluster
+            - name: PUSHGATEWAY_SERVER
+              value: http://dev2.virnao.com:9091
+            - name: SCRAPEDURATION
+              value: "900"
+            - name: SCRAPEINTERVAL
+              value: "30"
+          image: zhenboyan/rocky_arp_exporter:latest
+          name: arp-exporter
+          ports:
+            - containerPort: 9192
+          resources: {}
+      restartPolicy: Always
+status: {}

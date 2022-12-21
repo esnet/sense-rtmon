@@ -5,8 +5,8 @@ services:
     image: zhenboyan/rocky_node_exporter:latest
     network_mode: "host" # needs host network
     environment: # change the folloing environment variables
-      - MYIP=198.32.43.16
+      - MYIP=ucsd_cluster
       - PUSHGATEWAY_SERVER=dev2.virnao.com:9091
       - NODE_PORT=9100
-    # ports:
-    #   - 9100:9100
+    ports: # needed for kompose convert to create kube files
+      - 9100:9100

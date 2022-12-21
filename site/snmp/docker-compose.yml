@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  node-exporter:
+  snmp-exporter:
     image: zhenboyan/rocky_snmp_exporter:latest
     network_mode: "host" # in the future not host option, 
     environment: # change the folloing environment variables
@@ -16,5 +16,5 @@ services:
       # COMMUNITY_STRING should not be pushed to github
       - COMMUNITY_STRING=
       - SNMP_PORT=9116
-    ports:
+    ports: # needed for kompose convert to create kube files
       - 9116:9116

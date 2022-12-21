@@ -1,10 +1,5 @@
 #! /bin/bash
 
-############################# PYTHON SCRIPT FILL OUT ####################
-
-# MYIP=1.1.1.1
-# pushgateway_server=dev2.virnao.com:9091
-
 ############################# CRONTAB ###################################
 echo "Starting Crontab setup"
 > cron_autopush

@@ -1,12 +1,5 @@
 #! /bin/bash
 
-############################# PYTHON SCRIPT FILL OUT ####################
-# MYIP=1.1.1.1
-# pushgateway_server=dev2.virnao.com:9091
-# switch_target=10.10.10.10
-# private_mib=placeholder
-############################# PYTHON SCRIPT FILL OUT ####################
-
 ############################# CRONTAB ###################################
 echo "Starting Crontab setup"
 # create a temporary copy paste file

@@ -12,7 +12,7 @@ grafanaAPIToken: "CONFIG"
 configFile: "config.yml"
 
 hostA: # Host 1
-  IP: 198.32.43.16
+  IP: 198.32.43.16 #ucsd_cluster1
   interfaceName: 'ens2f0np0.1000'
   interfaceIP: '10.10.100.1'
   nodeName: 'sdn-dtn-2-10.ultralight.org'
@@ -23,7 +23,7 @@ hostA: # Host 1
     order: 1
 
 hostB: # Host 2
-  IP: 198.32.43.15
+  IP: 198.32.43.15 #ucsd_cluster2
   interfaceName: 'ens2f0.1000'
   interfaceIP: '10.10.100.2'
   nodeName: 'sdn-dtn-2-11.ultralight.org'

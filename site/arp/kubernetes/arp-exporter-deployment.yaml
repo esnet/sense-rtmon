@@ -34,7 +34,7 @@ spec:
             - name: PUSHGATEWAY_SERVER
               value: http://dev2.virnao.com:9091
             - name: SCRAPEDURATION
-              value: "900"
+              value: "90000"
             - name: SCRAPEINTERVAL
               value: "30"
           image: zhenboyan/rocky_arp_exporter:latest

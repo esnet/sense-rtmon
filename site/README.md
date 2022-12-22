@@ -1,11 +1,7 @@
-# Container Instructions
+# Site Stack
 
-## Node
-- Start Node Exporter: `docker compose up -d` inside `node` directory
-- Configuration file location: `sense-rtmon/config_site/config.yml`
-
-## SNMP
-
-## ARP
-
-## TCP
+## Exporters
+- Each exporter is designed to be run in a standalone container
+- All Docker compose files can be converted into kubernetes' files to be deployed on clusters
+- No volume mapping user in any container to avoid any storage issues   
+- Detailed instruction and explanation of each exporter can be found under each exporter's directory

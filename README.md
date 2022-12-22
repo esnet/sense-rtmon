@@ -1,7 +1,7 @@
 # sense-rtmon (Dynamic Dashboard)
 This package will provide everything needed to install and start `Cloud` and `Site` stack.
 
-## Cloud Stack
+## Cloud Stack (running on a host)
 
 ### Configuration
 - `config.yml` and `multiconfig.yml` files under `config` are configuration examples. 
@@ -17,25 +17,24 @@ This package will provide everything needed to install and start `Cloud` and `Si
 - Run `./start.sh` inside `cloud` directory to deploy `Cloud` stack.
 - Run `./generate.sh` to generate flows in Grafana.
 
+### Stopping/Cleaning
+- `clean.sh` script under each stack directory removes the running containers.
 
-## Site Stack
+## Site Stack (completely containerized)
 
 ### Configuration
-- `config.yml` and `multiconfig.yml` files under `config` are configuration examples. 
-- `site` stack config files are under config_site.
-- To ensure configuration files stay local and no community strings go to the repo run: `git update-index --assume-unchanged config_site/`
+- `site` stack doesn't use any configuration files.
+- Configuration is done inside each exporter's `docker-compose.yml` file. Variables are passed in under `environment` session. 
 
 ### Installation
-- Run `./install.sh` and follow the steps to install necessary dependencies. 
-- The `site` server only needs to execute the installation script inside the cloud directory.
+- Docker Images are pull from DockerHub.
+- To build images run `docker build . -t <user_name>/rocky_<exporter_name>_exporter:latest` under the correct directory 
 
 ### Running
 **NOTE: PLEASE FILL IN CONFIG FILES FIRST BEFORE RUNNING**. 
-- `site` stack consists of `Node`, `SNMP`, `ARP`, and `TCP` (in development) Exporter. Site stack runs on docker compose instead. 
-- Run `./start.sh` inside `site` directory to compose all necessary exporters containers.
-- Run `add_switch.py` to add new switch and start a new SNMP exporter.
-- RERUN START EVERY TIME CONFIGURATION IS UPDATED. 
+- `site` stack consists of `Node`, `SNMP`, `ARP`, and `TCP` (in development) Exporter.
+- Start Exporters: `docker compose up -d` under the exporter directory.
+- Detailed instruction can be found under each exporter's directory.
 
-## Stopping/Cleaning
-- `clean.sh` script under each stack directory removes the running containers.
-- Cleaning script under `site` directory cleans URLs on Cloud Servers' pushgateway site.
+### Stopping/Cleaning
+- Stop docker containers either `docker rm <container_id>` or run `docker compose down -v` under exporters' directory.

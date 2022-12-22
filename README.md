@@ -1,7 +1,7 @@
 # sense-rtmon (Dynamic Dashboard)
 This package will provide everything needed to install and start `Cloud` and `Site` stack.
 
-## Cloud Stack (running on a host)
+## Cloud Stack (running on host)
 
 ### Configuration
 - fill out `config.yml` under `config_cloud` to deploy `cloud stack`.

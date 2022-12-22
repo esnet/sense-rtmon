@@ -4,12 +4,12 @@ This package will provide everything needed to install and start `Cloud` and `Si
 ## Cloud Stack (running on a host)
 
 ### Configuration
-- `config.yml` and `multiconfig.yml` files under `config` are configuration examples. 
+- fill out `config.yml` under `config_cloud` to deploy `cloud stack`.
+- `config.yml` and `multiconfig.yml` files under `config_flow` are configuration examples to generate dashboard. 
 - `cloud` stack uses config_cloud config files to start docker stack. Dashboards use the config_flow config files.
 
 ### Installation
 - Run `./install.sh` and follow the steps to install necessary dependencies. 
-- The `Cloud` server only needs to execute the installation script inside the cloud directory.
 
 ### Running
 **NOTE: PLEASE FILL IN CONFIG FILES FIRST BEFORE RUNNING**. 

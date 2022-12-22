@@ -12,12 +12,11 @@ This package will provide everything needed to install and start `Cloud` and `Si
 - Run `./install.sh` and follow the steps to install necessary dependencies. 
 
 ### Running
-**NOTE: PLEASE FILL IN CONFIG FILES FIRST BEFORE RUNNING**. 
 - `Cloud` stack consists of Grafana, Prometheus, Pushgateway, and Script Exporter containers. 
-- Run `./start.sh` inside `cloud` directory to deploy `Cloud` stack.
-- Run `./generate.sh` to generate flows in Grafana.
+- Run `./start.sh` to deploy `Cloud` stack.
+- Run `./generate.sh` to generate a flow in Grafana.
 
-### Stopping/Cleaning
+### Cleaning
 - `clean.sh` script to removes running containers.
 
 ## Site Stack (completely containerized)
@@ -36,5 +35,5 @@ This package will provide everything needed to install and start `Cloud` and `Si
 - Start Exporters: `docker compose up -d` under the exporter directory.
 - Detailed instruction can be found under each exporter's directory.
 
-### Stopping/Cleaning
+### Stopping
 - Stop docker containers either `docker rm <container_id>` or run `docker compose down -v` under exporters' directory.

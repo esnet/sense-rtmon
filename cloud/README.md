@@ -14,5 +14,5 @@ Run `./start.sh` to deploy `Cloud` stack
 ### Step 4 Generation a Dashboard
 Run `./generate.sh` to generate flows in Grafana
 
-### Stopping/Cleaning
-Run `clean.sh` script to remove running containers
+### Cleaning
+Run `./clean.sh` to remove all running containers

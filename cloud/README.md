@@ -9,10 +9,10 @@
 - This step includes a encryption process. Follow instructions if certs already exist
 
 ### Step 3 Deployment
-- Run `./start.sh` to deploy `Cloud` stack
+Run `./start.sh` to deploy `Cloud` stack
 
 ### Step 4 Generation a Dashboard
-- Run `./generate.sh` to generate flows in Grafana
+Run `./generate.sh` to generate flows in Grafana
 
 ### Stopping/Cleaning
-- `clean.sh` script under each stack directory removes the running containers
+Run `clean.sh` script to remove running containers

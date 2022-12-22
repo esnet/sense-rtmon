@@ -18,7 +18,7 @@ This package will provide everything needed to install and start `Cloud` and `Si
 - Run `./generate.sh` to generate flows in Grafana.
 
 ### Stopping/Cleaning
-- `clean.sh` script under each stack directory removes the running containers.
+- `clean.sh` script to removes running containers.
 
 ## Site Stack (completely containerized)
 

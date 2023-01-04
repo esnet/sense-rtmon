@@ -1,5 +1,5 @@
 # sense-rtmon (Dynamic Dashboard)
-This package will provide everything needed to install and start `Cloud` and `Site` stack.
+This package will provide everything needed to run `cloud` and `site` stack.
 
 ## Cloud Stack (running on host)
 
@@ -19,7 +19,7 @@ This package will provide everything needed to install and start `Cloud` and `Si
 ### Cleaning
 - `clean.sh` script to removes running containers.
 
-## Site Stack (completely containerized)
+## Site Stack (containerized)
 
 ### Configuration
 - `site` stack doesn't use any configuration files.
@@ -27,7 +27,7 @@ This package will provide everything needed to install and start `Cloud` and `Si
 
 ### Installation
 - Docker Images are pull from DockerHub.
-- To build images run `docker build . -t <user_name>/rocky_<exporter_name>_exporter:latest` under the correct directory 
+- To build images run `docker build . -t <user_name>/rocky_<exporter_name>_exporter:latest` under the correct directory. 
 
 ### Running
 **NOTE: PLEASE FILL IN CONFIG FILES FIRST BEFORE RUNNING**. 
@@ -37,3 +37,4 @@ This package will provide everything needed to install and start `Cloud` and `Si
 
 ### Stopping
 - Stop docker containers either `docker rm <container_id>` or run `docker compose down -v` under exporters' directory.
+- Delete pod on cluster: `kubectl delete -n <namespace> deployment <name_of_exporter>-exporter`

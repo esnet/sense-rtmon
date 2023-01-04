@@ -1,11 +1,9 @@
-# ARP Exporter
-
-## Container Instructions
-- Start Arp Exporter: `docker compose up -d` inside `arp` directory
+# ARP Exporter Container Instructions
+- Start ARP Exporter: `docker compose up -d` inside `arp` directory
 
 ### docker-compose.yml
 - Pull docker image `zhenboyan/rocky_arp_exporter:latest` from Docker Hub
-- Arp Exporter needs to run on `Host` Mode 
+- ARP Exporter needs to run on `Host` Mode 
 - Environment variables are used for customization, therefore, no configuration needed
 - Variable values are per run/site  
 
@@ -22,7 +20,7 @@
 
 ### dynamic_start.sh
 - Crontab: schedule the task to run every 15 seconds
-- Task: curl arp exporter output to pushgateway server
+- Task: curl ARP exporter output to pushgateway server
 - Run ARP Exporter (homemade arp_exporter)
 
 ### arp_exporter.py

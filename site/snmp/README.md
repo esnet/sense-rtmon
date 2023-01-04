@@ -1,6 +1,4 @@
-# SNMP Exporter
-
-## Container Instructions
+# SNMP Exporter Container Instructions
 - Start Node Exporter: `docker compose up -d` inside `snmp` directory
 
 ### docker-compose.yml

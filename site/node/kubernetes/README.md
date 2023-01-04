@@ -7,3 +7,5 @@
 - `UCSD Deployment`:
 - Gain Access: https://ucsd-prp.gitlab.io/userdocs/start/quickstart/
 - When the `config` file is stored correctly, deployment : `kubectl apply -f .`
+
+- Set hostNetwork: true

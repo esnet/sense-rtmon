@@ -23,6 +23,7 @@ spec:
       labels:
         io.kompose.service: arp-exporter
     spec:
+      hostNetwork: true
       containers:
         - env:
             - name: ARP_PORT

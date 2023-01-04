@@ -19,12 +19,12 @@ hostA: # Host 1
   vlan: 1000
   switchPort: 
     ifName: 'hundredGigE 1/27'
-    ifVlan: 'Vlan 1000'
+    ifVlan: 'Vlan 1000' 
     order: 1
 
 hostB: # Host 2
   IP: 198.32.43.15 #ucsd_cluster2
-  interfaceName: 'ens2f0.1000'
+  interfaceName: 'ens2f0.1000' # need, could be vlan.number something random ens2|vlan.100
   interfaceIP: '10.10.100.2'
   nodeName: 'sdn-dtn-2-11.ultralight.org'
   vlan: 1000

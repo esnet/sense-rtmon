@@ -26,12 +26,12 @@ if_index2 = "IFINDEXSWITCHHOSTB"
 if_index1 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostA"]["switchPort"]["ifName"]))
 if_index2 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostB"]["switchPort"]["ifName"]))
 
-vlan_if_index=[]
+# vlan_if_index=[]
 
-for i in range(switch_num):
-    letter = chr(ord('A')+i) # A B C D ... 
-    vlan_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portIn"]["ifVlan"])))
-    vlan_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portOut"]["ifVlan"])))    
+# for i in range(switch_num):
+#     letter = chr(ord('A')+i) # A B C D ... 
+#     vlan_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portIn"]["ifVlan"])))
+#     vlan_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portOut"]["ifVlan"])))    
 
 ######################## COMMENTING FOR TESTING ########################
 
@@ -65,10 +65,10 @@ for i in range(switch_num):
     replacements[f"NAMEIF{letter}OUT"] = data[f"switchData{letter}"]["portOut"]["ifName"]
     replacements[f"SWITCH{letter}OUTGOING"] = data[f"switchData{letter}"]["portOut"]["ifName"]
     replacements[f"SWITCH{letter}INCOMING"] = data[f"switchData{letter}"]["portIn"]["ifName"]
-    replacements[f"SWITCH{letter}IF"] = data[f"switchData{letter}"]["switchif"]
+    # replacements[f"SWITCH{letter}IF"] = data[f"switchData{letter}"]["switchif"]
     replacements[f"SNMP{letter}HOSTIP"] = data[f"switchData{letter}"]["SNMPHostIP"]
-    replacements[f"MONITORVLAN{str(i+1)}"] = vlan_if_index[i]
-    replacements[f"MONITORVLAN{str(i+switch_num)}"] = vlan_if_index[i+switch_num]
+    # replacements[f"MONITORVLAN{str(i+1)}"] = vlan_if_index[i]
+    # replacements[f"MONITORVLAN{str(i+switch_num)}"] = vlan_if_index[i+switch_num]
 
 # replacing
 cloud_functions.replacing_json(f"./templates/newTemplate{switch_num}.json","out.json",data,replacements)

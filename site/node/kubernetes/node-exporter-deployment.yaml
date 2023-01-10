@@ -39,7 +39,7 @@ spec:
           image: zhenboyan/rocky_node_exporter:latest
           name: node-exporter
           ports:
-            - containerPort: 9101
+            - containerPort: 9100
           resources: {}
       restartPolicy: Always
 status: {}

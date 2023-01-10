@@ -10,3 +10,4 @@ services:
       - NODE_PORT=9100
     ports: # needed for kompose convert to create kube files
       - 9100:9100
+    

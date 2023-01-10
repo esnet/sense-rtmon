@@ -21,4 +21,4 @@ crond
 # run the node exporter from github
 cd node_exporter
 make build
-./node_exporter
+./node_exporter --web.listen-address=:${NODE_PORT}

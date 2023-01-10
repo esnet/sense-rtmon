@@ -10,9 +10,9 @@ metadata:
   name: node-exporter
 spec:
   ports:
-    - name: "9101"
-      port: 9101
-      targetPort: 9101
+    - name: "9100"
+      port: 9100
+      targetPort: 9100
   selector:
     io.kompose.service: node-exporter
 status:

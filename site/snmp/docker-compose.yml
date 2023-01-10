@@ -17,7 +17,7 @@ services:
       # make sure s(second) is included in timeout. Default unit is ns which is too fast for host to conect to the switch
       - TIMEOUT=5s
       # COMMUNITY_STRING should not be pushed to github
-      - COMMUNITY_STRING=public
+      - COMMUNITY_STRING=
       - SNMP_PORT=9116
     ports: # needed for kompose convert to create kube files
       - 9116:9116

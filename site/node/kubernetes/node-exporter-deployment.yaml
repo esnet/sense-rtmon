@@ -24,6 +24,10 @@ spec:
         io.kompose.service: node-exporter
     spec:
       hostNetwork: true
+      # dnsPolicy: ClusterFirstWithHostNet
+      # dnsPolicy: Default
+      restartPolicy: Always
+      nodeName: k8s-gen4-01.sdsc.optiputer.net
       containers:
         - env:
             - name: MYIP
@@ -35,7 +39,7 @@ spec:
           image: zhenboyan/rocky_node_exporter:latest
           name: node-exporter
           ports:
-            - containerPort: 9100
+            - containerPort: 9101
           resources: {}
       restartPolicy: Always
 status: {}

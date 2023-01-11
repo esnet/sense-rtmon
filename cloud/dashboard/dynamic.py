@@ -24,7 +24,7 @@ if_index2 = "IFINDEXSWITCHHOSTB"
 ######################## COMMENTING FOR TESTING ########################
 
 if_index1 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostA"]["switchPort"]["ifName"]))
-# if_index2 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostB"]["switchPort"]["ifName"]))
+if_index2 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostB"]["switchPort"]["ifName"]))
 
 # vlan_if_index=[]
 

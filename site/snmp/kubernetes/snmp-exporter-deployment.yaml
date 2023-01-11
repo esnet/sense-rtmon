@@ -26,7 +26,7 @@ spec:
       containers:
         - env:
             - name: COMMUNITY_STRING
-              value: public
+              value: 
             - name: MYIP
               value: ucsd_cluster
             - name: OIDS_LIST
@@ -40,7 +40,7 @@ spec:
             - name: SNMP_PORT
               value: "9116"
             - name: SWITCH_TARGET
-              value: 132.249.252.65
+              value: 132.249.2.46
             - name: TIMEOUT
               value: 5s
           image: zhenboyan/rocky_snmp_exporter:latest

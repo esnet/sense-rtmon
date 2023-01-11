@@ -41,5 +41,7 @@ else
     python3 dynamic.py ${config_file} 
 fi
 
+echo ""
+echo ""
 echo "!!   If you do not see: {id:#, slug: <title>, status: success, uid:<>, url:<title>, version: 1}"
 echo "!!   PLEASE RUN ./generate.sh AGAIN, else the dashboards are generated successfully"

@@ -16,7 +16,7 @@ hostA: # Host 1
   interfaceName: 'ens2f0np0.1000'
   interfaceIP: '10.10.100.1'
   nodeName: 'sdn-dtn-2-10.ultralight.org'
-  vlan: 'find_out_later'
+  vlan: 'not_used'
   switchPort: 
     ifName: 'hundredGigE 1/27'
 
@@ -25,9 +25,9 @@ hostB: # Host 2
   interfaceName: 'find_out_later'
   interfaceIP: 'find_out_later'
   nodeName: 'k8s-gen4-01.sdsc.optiputer.net'
-  vlan: 'find_out_later'
+  vlan: 'not_used'
   switchPort: 
-    ifName: 'find_out_later'
+    ifName: ''
 
 ## SECTION 2 SWITCH INFORMATION ##
 switchDataA:
@@ -36,21 +36,21 @@ switchDataA:
   target: 172.16.1.1
   portIn:
     ifName: 'hundredGigE 1/27'
-    vlan: 'find_out_later'
+    vlan: 'not_used'
 
   portOut:
-    ifName: 'find_out_later'
-    vlan: 'find_out_later'
+    ifName: ''
+    vlan: 'not_used'
 
 switchDataB:
   job_name: 'snmp2'
   SNMPHostIP: 'ucsd_cluster'
   target: 132.249.2.46
   portIn:
-    ifName: 'find_out_later'
-    vlan: 'find_out_later'
+    ifName: ''
+    vlan: 'not_used'
     
   portOut:
-    ifName: 'find_out_later'
-    vlan: 'find_out_later'
+    ifName: ''
+    vlan: 'not_used'
     

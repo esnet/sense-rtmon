@@ -10,10 +10,10 @@ grafanaPort: 3000 # Do not change unless container mapping change
 pushgatewayPort: 9091 # Do not change unless container mapping change
 grafanaAPIToken: "CONFIG"
 configFile: "multiconfig.yml"
-
+#ens2f0np0.1000
 hostA: # Host 1
   IP: 198.32.43.16
-  interfaceName: 'ens2f0np0.1000'
+  interfaceName: 'ens2f0np0.43'
   interfaceIP: '10.10.100.1'
   nodeName: 'sdn-dtn-2-10.ultralight.org'
   vlan: 'not_used'
@@ -27,7 +27,7 @@ hostB: # Host 2
   nodeName: 'k8s-gen4-01.sdsc.optiputer.net'
   vlan: 'not_used'
   switchPort: 
-    ifName: ''
+    ifName: 'find_out_later'
 
 ## SECTION 2 SWITCH INFORMATION ##
 switchDataA:
@@ -39,7 +39,7 @@ switchDataA:
     vlan: 'not_used'
 
   portOut:
-    ifName: ''
+    ifName: 'find_out_later'
     vlan: 'not_used'
 
 switchDataB:
@@ -47,10 +47,10 @@ switchDataB:
   SNMPHostIP: 'ucsd_cluster'
   target: 132.249.2.46
   portIn:
-    ifName: ''
+    ifName: 'find_out_later'
     vlan: 'not_used'
     
   portOut:
-    ifName: ''
+    ifName: 'find_out_later'
     vlan: 'not_used'
     

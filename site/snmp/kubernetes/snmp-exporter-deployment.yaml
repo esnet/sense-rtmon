@@ -35,7 +35,7 @@ spec:
             - name: PRIVATE_MIB
               value: dell
             - name: PUSHGATEWAY_SERVER
-              value: dev2.virnao.com:9091
+              value: sense-mon.es.net:9091
             - name: RETRY
               value: "3"
             - name: SNMP_PORT

@@ -3,9 +3,9 @@ switchNum: 2
 dashTitle: "Multi Switch Flow Dashboard"
 debugTitle: "Multi Switch Flow L2 Debugging Dashboard"
 flow: " flow 2 "
-hostIP: 198.124.151.8 # example 198.32.43.16
+hostIP:  172.31.72.189 # example 198.32.43.16
 # The DNS of the host which is running the Grafana container
-grafanaHostIP: 'sense-mon.es.net'
+grafanaHostIP: 'dev2.virnao.com'
 grafanaPort: 3000 # Do not change unless container mapping change
 pushgatewayPort: 9091 # Do not change unless container mapping change
 grafanaAPIToken: "CONFIG"
@@ -16,18 +16,18 @@ hostA: # Host 1
   interfaceName: 'ens2f0np0.1000'
   interfaceIP: '10.10.100.1'
   nodeName: 'sdn-dtn-2-10.ultralight.org'
-  vlan: 1000
+  vlan: 'find_out_later'
   switchPort: 
     ifName: 'hundredGigE 1/27'
 
 hostB: # Host 2
-  IP: 
-  interfaceName: 'ens2f0.1000'
-  interfaceIP: '10.10.100.2'
-  nodeName: ''
-  vlan: 2000
+  IP: 'ucsd_cluster'
+  interfaceName: 'find_out_later'
+  interfaceIP: 'find_out_later'
+  nodeName: 'k8s-gen4-01.sdsc.optiputer.net'
+  vlan: 'find_out_later'
   switchPort: 
-    ifName: ''
+    ifName: 'find_out_later'
 
 ## SECTION 2 SWITCH INFORMATION ##
 switchDataA:
@@ -36,21 +36,21 @@ switchDataA:
   target: 172.16.1.1
   portIn:
     ifName: 'hundredGigE 1/27'
-    vlan: 1000
+    vlan: 'find_out_later'
 
   portOut:
-    ifName: ''
-    vlan: 1000
+    ifName: 'find_out_later'
+    vlan: 'find_out_later'
 
 switchDataB:
   job_name: 'snmp2'
-  SNMPHostIP: 198.32.43.16
-  target: 172.16.1.1
+  SNMPHostIP: 'ucsd_cluster'
+  target: 132.249.2.46
   portIn:
-    ifName: ''
-    vlan: 1000
+    ifName: 'find_out_later'
+    vlan: 'find_out_later'
     
   portOut:
-    ifName: ''
-    vlan: 1000
+    ifName: 'find_out_later'
+    vlan: 'find_out_later'
     

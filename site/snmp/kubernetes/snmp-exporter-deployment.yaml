@@ -23,10 +23,11 @@ spec:
       labels:
         io.kompose.service: snmp-exporter
     spec:
+      nodeName: k8s-gen4-01.sdsc.optiputer.net
       containers:
         - env:
             - name: COMMUNITY_STRING
-              value: 
+              value: public
             - name: MYIP
               value: ucsd_cluster
             - name: OIDS_LIST

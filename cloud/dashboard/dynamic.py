@@ -77,4 +77,3 @@ cloud_functions.replacing_json(f"./templates/debugTemplate{switch_num}.json","ou
 # Run the API script to convert output JSON to Grafana dashboard automatically
 cmd = f"sudo python3 api.py out.json outDebug.json {file_name}"
 subprocess.run(cmd, shell=True)
-print("\n\n!!   If you do not see: {'id':#, 'slug': <title>, 'status': 'success', 'uid':<>, 'url':<title>, 'version': 1}")

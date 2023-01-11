@@ -35,11 +35,11 @@ switchDataA:
   SNMPHostIP: 198.32.43.16
   target: 172.16.1.1
   portIn:
-    ifName: 'hundredGigE 1/27'
+    ifName: 'hundredGigE 1/31'
     vlan: 'not_used'
-
+# Switch 1 (caltech) port  Port-channel_103
   portOut:
-    ifName: 'find_out_later'
+    ifName: 'Port-channel 103'
     vlan: 'not_used'
 
 switchDataB:
@@ -47,10 +47,10 @@ switchDataB:
   SNMPHostIP: 'ucsd_cluster'
   target: 132.249.2.46
   portIn:
-    ifName: 'find_out_later'
+    ifName: 'PortChannel501'
     vlan: 'not_used'
     
   portOut:
-    ifName: 'find_out_later'
+    ifName: 'etp11'
     vlan: 'not_used'
     

@@ -2316,7 +2316,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Switch 1 Flow Summary - Bandwidth Graph - Host 2 Facing Port",
+        "title": "Switch 1 Flow Summary - Bandwidth Graph - Switch 2 Facing Port",
         "tooltip": {
           "shared": true,
           "sort": 0,

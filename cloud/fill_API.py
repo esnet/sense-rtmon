@@ -11,7 +11,7 @@ now = datetime.now()
 current_time = now.strftime("%m/%d_%H:%M")    
 
 # read yml file
-data,file_name = cloud_functions.read_yml_file("config_cloud",sys.argv,1,1)
+data,file_name = cloud_functions.read_yml_file("config_flow",sys.argv,1,1)
 
 print("!!   AUTO CURL MAY FAIL")
 print("!!    Visit Google Doc for Grafana API and add Prometheus as a Data Source Key instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub")

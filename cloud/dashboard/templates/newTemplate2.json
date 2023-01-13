@@ -1094,7 +1094,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum(ifIndex{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
+            "expr": "sum(ifIndex{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1105,7 +1105,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifName{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifName)",
+            "expr": "sum(ifName{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifName)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1116,7 +1116,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifType{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifType)",
+            "expr": "sum(ifType{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifType)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1127,7 +1127,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifPhysAddress{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifPhysAddress)",
+            "expr": "sum(ifPhysAddress{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifPhysAddress)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1138,7 +1138,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifOperStatus{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
+            "expr": "sum(ifOperStatus{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1149,7 +1149,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifMtu{exported_instance=\"SNMPHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
+            "expr": "sum(ifMtu{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1584,7 +1584,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum(ifIndex{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex)",
+            "expr": "sum(ifIndex{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1595,7 +1595,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifName{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex,ifName)",
+            "expr": "sum(ifName{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex,ifName)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1606,7 +1606,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifType{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex,ifType)",
+            "expr": "sum(ifType{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex,ifType)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1617,7 +1617,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifPhysAddress{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex,ifPhysAddress)",
+            "expr": "sum(ifPhysAddress{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex,ifPhysAddress)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1628,7 +1628,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifOperStatus{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex)",
+            "expr": "sum(ifOperStatus{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1639,7 +1639,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifMtu{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex)",
+            "expr": "sum(ifMtu{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,

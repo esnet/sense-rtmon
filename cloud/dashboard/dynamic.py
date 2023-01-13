@@ -59,9 +59,7 @@ replacements["DATAPLANEIPA"] = data["hostA"]["interfaceIP"]
 replacements["DATAPLANEIPB"] = data["hostB"]["interfaceIP"]
 replacements["NODENAMEA"] = data["hostA"]["nodeName"]
 replacements["NODENAMEB"] = data["hostB"]["nodeName"]
-replacements["NAMEIFSWITCHA"] = data["hostA"]["switchPort"]["ifName"]
-replacements["NAMEIFSWITCHB"] = data["hostB"]["switchPort"]["ifName"]
-    
+
 for i in range(switch_num):
     letter = chr(ord('A')+i) # A B C D ... 
     replacements[f"IPSWITCH{letter}"] = data[f"switchData{letter}"]["target"]

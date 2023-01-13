@@ -91,7 +91,7 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 35,
+          "h": 30,
           "w": 24,
           "x": 0,
           "y": 1
@@ -194,13 +194,13 @@
         },
         "id": 123,
         "options": {
-          "content": "```\n NODENAMEA   IFNAMEHOSTA   DATAPLANEIPA\n ```",
+          "content": "```\nnode name: NODENAMEA   if name: IFNAMEHOSTA   DATAPLANEIPA   IPHOSTA    Vlan: VLANA\n ```",
           "mode": "markdown"
         },
         "pluginVersion": "7.5.4",
         "timeFrom": null,
         "timeShift": null,
-        "title": "Host 1 Flow Summary",
+        "title": "Host 1 General Info",
         "type": "text"
       },
       {
@@ -598,7 +598,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Host 1 Flow Summary - Bandwidth Graph",
+        "title": "Host 1 - Flow Bandwidth Graph",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -666,13 +666,13 @@
         },
         "id": 133,
         "options": {
-          "content": "```\n Switch 1   NAMEIFSWITCHA   NAMEIFSWITCHB   IPSWITCHA\n Switch 2   NAMEIFSWITCH2A   NAMEIFSWITCH2B   IPSWITCHB\n ```",
+          "content": "```\nSwitch 1   port in: SWITCHAINCOMING   port out: SWITCHAOUTGOING   switch IP: IPSWITCHA\n Switch 2   port in: SWITCHBINCOMING   port out: SWITCHBOUTGOING   switch IP: IPSWITCHB\n ```",
           "mode": "markdown"
         },
         "pluginVersion": "7.5.4",
         "timeFrom": null,
         "timeShift": null,
-        "title": "Switch 1 & 2 Flow Summary",
+        "title": "Switch 1 & 2 General Info",
         "type": "text"
       },
       {
@@ -1730,7 +1730,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Switch 1 Flow Summary - Bandwidth Graph - Host 1 Facing Port",
+        "title": "Switch 1 - Flow Bandwidth Graph - Facing Host 1 Port",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -2145,7 +2145,7 @@
           "y": 49
         },
         "hiddenSeries": false,
-        "id": 141,
+        "id": 241,
         "legend": {
           "avg": false,
           "current": false,
@@ -2201,7 +2201,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Switch 1 Flow Summary - Bandwidth Graph - Switch 2 Facing Port",
+        "title": "Switch 1 - Flow Bandwidth Graph - Facing Switch 2 Port",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -2241,6 +2241,121 @@
         }
       },
     
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 49
+        },
+        "hiddenSeries": false,
+        "id": 341,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:176",
+            "alias": "recv NAMEIFSWITCHB",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "recv {{ifDescr}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "trans {{ifDescr}}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Switch 2 - Flow Bandwidth Graph - Facing Switch 1 Port",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:118",
+            "format": "Bps",
+            "label": "bw out(-) / in(+)",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:119",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+
     {
         "aliasColors": {},
         "bars": false,
@@ -2316,7 +2431,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Switch 2 Flow Summary - Bandwidth Graph - Host 2 Facing Port",
+        "title": "Switch 2 - Flow Bandwidth Graph - Facing Host 2 Port",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -2385,13 +2500,13 @@
         },
         "id": 149,
         "options": {
-          "content": "```\n NODENAMEB   IFNAMEHOSTB   DATAPLANEIPB\n ```",
+          "content": "```\nnode name: NODENAMEB   if name: IFNAMEHOSTB   DATAPLANEIPB    IPHOSTB    Vlan: VLANB\n ```",
           "mode": "markdown"
         },
         "pluginVersion": "7.5.4",
         "timeFrom": null,
         "timeShift": null,
-        "title": "Host 2 Flow Summary",
+        "title": "Host 2 General Info",
         "type": "text"
       },
       {
@@ -2789,7 +2904,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Host 2 Flow Summary - Bandwidth Graph",
+        "title": "Host 2 - Flow Bandwidth Graph",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -7048,6 +7163,7 @@
         ],
         "valueName": "current"
       },
+
       {
         "aliasColors": {},
         "bars": false,
@@ -7146,6 +7262,106 @@
           "alignLevel": null
         }
       },
+
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "Switch 2 3700 Incoming VLAN Packets",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 191
+        },
+        "hiddenSeries": false,
+        "id": 1185,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "dellNetIfInVlanPkts{ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCHHOSTB|IFINDEXSWITCH2HOSTB|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
+            "interval": "",
+            "legendFormat": "{{ifDescr}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Switch Incoming VLAN Packets",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:745",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:746",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+
       {
         "aliasColors": {},
         "bars": false,
@@ -7194,7 +7410,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "dellNetIfInVlanPkts{ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
+            "expr": "dellNetIfOutVlanPkts{ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
             "instant": false,
             "interval": "",
             "legendFormat": "",
@@ -7245,6 +7461,107 @@
           "alignLevel": null
         }
       },
+
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "Switch 2 3700 Outgoing VLAN Packets",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 191
+        },
+        "hiddenSeries": false,
+        "id": 1187,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "dellNetIfOutVlanPkts{ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCHHOSTB|IFINDEXSWITCH2HOSTB|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Switch Outgoing VLAN Packets",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:745",
+            "format": "decbytes",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:746",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+
       {
         "aliasColors": {},
         "bars": false,

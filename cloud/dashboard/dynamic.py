@@ -26,12 +26,12 @@ if_index2 = "IFINDEXSWITCHHOSTB"
 if_index1 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostA"]["switchPort"]["ifName"]))
 if_index2 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostB"]["switchPort"]["ifName"]))
 
-# vlan_if_index=[]
+switch_if_index=[]
 
-# for i in range(switch_num):
-#     letter = chr(ord('A')+i) # A B C D ... 
-#     vlan_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portIn"]["ifVlan"])))
-#     vlan_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portOut"]["ifVlan"])))    
+for i in range(switch_num):
+    letter = chr(ord('A')+i) # A B C D ... 
+    switch_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portIn"]["ifName"])))
+    switch_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portOut"]["ifName"])))    
 
 ######################## COMMENTING FOR TESTING ########################
 
@@ -46,8 +46,12 @@ replacements["VLANA"] = data["hostA"]["vlan"]
 replacements["VLANB"] = data["hostB"]["vlan"]
 replacements["IFNAMEHOSTA"] = data["hostA"]["interfaceName"]
 replacements["IFNAMEHOSTB"] = data["hostB"]["interfaceName"]
+# this is not finalized yet
 replacements["IFINDEXSWITCHHOSTA"] = if_index1
-replacements["IFINDEXSWITCHHOSTB"] = if_index2
+replacements["IFINDEXSWITCHHOSTB"] = switch_if_index[0]
+replacements["IFINDEXSWITCH2HOSTA"] = switch_if_index[2]
+replacements["IFINDEXSWITCH2HOSTB"] = if_index2
+# this needs an update
 replacements["DATAPLANEIPA"] = data["hostA"]["interfaceIP"]
 replacements["DATAPLANEIPB"] = data["hostB"]["interfaceIP"]
 replacements["NODENAMEA"] = data["hostA"]["nodeName"]

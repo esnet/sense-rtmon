@@ -1094,7 +1094,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum(ifIndex{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
+            "expr": "sum(ifIndex{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1105,7 +1105,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifName{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifName)",
+            "expr": "sum(ifName{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex,ifName)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1116,7 +1116,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifType{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifType)",
+            "expr": "sum(ifType{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex,ifType)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1127,7 +1127,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifPhysAddress{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex,ifPhysAddress)",
+            "expr": "sum(ifPhysAddress{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex,ifPhysAddress)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1138,7 +1138,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifOperStatus{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
+            "expr": "sum(ifOperStatus{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1149,7 +1149,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifMtu{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}) by (ifIndex)",
+            "expr": "sum(ifMtu{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1584,7 +1584,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum(ifIndex{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex)",
+            "expr": "sum(ifIndex{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOSTB\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1595,7 +1595,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifName{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex,ifName)",
+            "expr": "sum(ifName{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOSTB\"}) by (ifIndex,ifName)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1606,7 +1606,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifType{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex,ifType)",
+            "expr": "sum(ifType{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOSTB\"}) by (ifIndex,ifType)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1617,7 +1617,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifPhysAddress{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex,ifPhysAddress)",
+            "expr": "sum(ifPhysAddress{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOSTB\"}) by (ifIndex,ifPhysAddress)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1628,7 +1628,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifOperStatus{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex)",
+            "expr": "sum(ifOperStatus{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOSTB\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1639,7 +1639,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifMtu{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}) by (ifIndex)",
+            "expr": "sum(ifMtu{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOSTB\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1874,7 +1874,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}[1m])*8",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1884,7 +1884,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m])*8",
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}[1m])*8",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1894,7 +1894,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(ifHCInMulticastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInUcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCInBroadcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
+            "expr": "irate(ifHCInMulticastPkts{ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}[1m]) + irate(ifHCInUcastPkts{ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}[1m]) + irate(ifHCInBroadcastPkts{ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}[1m]) ",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1904,7 +1904,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(ifHCOutMulticastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutUcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) + irate(ifHCOutBroadcastPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA\"}[1m]) ",
+            "expr": "irate(ifHCOutMulticastPkts{ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}[1m]) + irate(ifHCOutUcastPkts{ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}[1m]) + irate(ifHCOutBroadcastPkts{ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}[1m]) ",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -2051,7 +2051,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}[1m])*8",
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA|IFINDEXSWITCHHOSTB\"}[1m])*8",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -2061,7 +2061,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}[1m])*8",
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA|IFINDEXSWITCHHOSTB\"}[1m])*8",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -2071,7 +2071,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(ifHCInMulticastPkts{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}[1m]) + irate(ifHCInUcastPkts{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}[1m]) + irate(ifHCInBroadcastPkts{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}[1m]) ",
+            "expr": "irate(ifHCInMulticastPkts{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA|IFINDEXSWITCHHOSTB\"}[1m]) + irate(ifHCInUcastPkts{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA|IFINDEXSWITCHHOSTB\"}[1m]) + irate(ifHCInBroadcastPkts{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA|IFINDEXSWITCHHOSTB\"}[1m]) ",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -2081,7 +2081,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(ifHCOutMulticastPkts{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}[1m]) + irate(ifHCOutUcastPkts{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}[1m]) + irate(ifHCOutBroadcastPkts{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA\"}[1m]) ",
+            "expr": "irate(ifHCOutMulticastPkts{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA|IFINDEXSWITCHHOSTB\"}[1m]) + irate(ifHCOutUcastPkts{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA|IFINDEXSWITCHHOSTB\"}[1m]) + irate(ifHCOutBroadcastPkts{ifIndex=~\"IFINDEXSWITCH2HOSTB|IFINDEXSWITCH2HOSTA|IFINDEXSWITCHHOSTB\"}[1m]) ",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -2179,7 +2179,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOSTB\"}[1m])*8",
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
             "instant": false,
             "interval": "",
             "intervalFactor": 1,
@@ -2188,7 +2188,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOSTB\"}[1m])*8",
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
             "hide": false,
             "instant": false,
             "interval": "",
@@ -7096,7 +7096,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "dellNetIfInVlanPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
+            "expr": "dellNetIfInVlanPkts{ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
             "interval": "",
             "legendFormat": "{{ifDescr}}",
             "refId": "A"
@@ -7194,7 +7194,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "dellNetIfInVlanPkts{ifIndex=~\"IFINDEXSWITCHHOSTB|IFINDEXSWITCHHOSTA|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
+            "expr": "dellNetIfInVlanPkts{ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB|MONITORVLAN1|MONITORVLAN2|MONITORVLAN3\"}",
             "instant": false,
             "interval": "",
             "legendFormat": "",

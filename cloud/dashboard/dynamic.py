@@ -46,12 +46,15 @@ replacements["VLANA"] = data["hostA"]["vlan"]
 replacements["VLANB"] = data["hostB"]["vlan"]
 replacements["IFNAMEHOSTA"] = data["hostA"]["interfaceName"]
 replacements["IFNAMEHOSTB"] = data["hostB"]["interfaceName"]
-# this is not finalized yet
+# switch 1
 replacements["IFINDEXSWITCHHOSTA"] = if_index1
-replacements["IFINDEXSWITCHHOSTB"] = switch_if_index[0]
+replacements["IFINDEXSWITCH1HOSTA"] = switch_if_index[0]
+replacements["IFINDEXSWITCH1HOSTB"] = switch_if_index[1]
+# switch 2
 replacements["IFINDEXSWITCH2HOSTA"] = switch_if_index[2]
-replacements["IFINDEXSWITCH2HOSTB"] = if_index2
-# this needs an update
+replacements["IFINDEXSWITCH2HOSTB"] = switch_if_index[3]
+replacements["IFINDEXSWITCHHOSTB"] = if_index2
+
 replacements["DATAPLANEIPA"] = data["hostA"]["interfaceIP"]
 replacements["DATAPLANEIPB"] = data["hostB"]["interfaceIP"]
 replacements["NODENAMEA"] = data["hostA"]["nodeName"]

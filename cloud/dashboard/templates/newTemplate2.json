@@ -317,7 +317,7 @@
         ],
         "timeFrom": null,
         "timeShift": null,
-        "title": "Host 1 Information",
+        "title": "Host 1 Info",
         "transformations": [
           {
             "id": "seriesToColumns",
@@ -598,7 +598,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Host 1 - Flow Bandwidth Graph",
+        "title": "Host 1 - Flow Bandwidth",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -666,7 +666,7 @@
         },
         "id": 133,
         "options": {
-          "content": "```\nSwitch 1   port in: SWITCHAINCOMING   port out: SWITCHAOUTGOING   switch IP: IPSWITCHA\n Switch 2   port in: SWITCHBINCOMING   port out: SWITCHBOUTGOING   switch IP: IPSWITCHB\n ```",
+          "content": "```\nSwitch 1   port in: SWITCHAINCOMING   port out: SWITCHAOUTGOING   switch IP: IPSWITCHA\nSwitch 2   port in: SWITCHBINCOMING   port out: SWITCHBOUTGOING   switch IP: IPSWITCHB\n ```",
           "mode": "markdown"
         },
         "pluginVersion": "7.5.4",
@@ -1161,7 +1161,7 @@
         ],
         "timeFrom": null,
         "timeShift": null,
-        "title": "Switch 1 Information",
+        "title": "Switch 1 Info",
         "transform": "table",
         "type": "table-old"
       },
@@ -1651,7 +1651,7 @@
         ],
         "timeFrom": null,
         "timeShift": null,
-        "title": "Switch 2 Information",
+        "title": "Switch 2 Info",
         "transform": "table",
         "type": "table-old"
       },
@@ -1730,7 +1730,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Switch 1 - Flow Bandwidth Graph - Facing Host 1 Port",
+        "title": "Switch 1 - Flow Bandwidth - Facing Host 1",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -2201,7 +2201,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Switch 1 - Flow Bandwidth Graph - Facing Switch 2 Port",
+        "title": "Switch 1 - Flow Bandwidth - Facing Switch 2",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -2316,7 +2316,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Switch 2 - Flow Bandwidth Graph - Facing Switch 1 Port",
+        "title": "Switch 2 - Flow Bandwidth - Facing Switch 1",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -2431,7 +2431,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Switch 2 - Flow Bandwidth Graph - Facing Host 2 Port",
+        "title": "Switch 2 - Flow Bandwidth Graph - Facing Host 2",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -2623,7 +2623,7 @@
         ],
         "timeFrom": null,
         "timeShift": null,
-        "title": "Host 2 Information",
+        "title": "Host 2 Info",
         "transformations": [
           {
             "id": "seriesToColumns",
@@ -4770,7 +4770,7 @@
         },
         "id": 8,
         "panels": [],
-        "title": "Element Background Information",
+        "title": "Element Background Info",
         "type": "row"
       },
       {
@@ -6296,7 +6296,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Host 1 Process Schedule Stats Running / Waiting",
+        "title": "Host 1 Process Schedule Stats Running/Waiting",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -6411,7 +6411,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Host 2 Process Schedule Stats Running / Waiting",
+        "title": "Host 2 Process Schedule Stats Running/Waiting",
         "tooltip": {
           "shared": true,
           "sort": 0,

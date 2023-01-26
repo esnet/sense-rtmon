@@ -167,7 +167,7 @@
       "pluginVersion": "1.7.3",
       "timeFrom": null,
       "timeShift": null,
-      "title": "End-to-End Flow Overview",
+      "title": "End-to-End Flow Topology",
       "transformations": [],
       "transparent": true,
       "type": "jdbranham-diagram-panel"

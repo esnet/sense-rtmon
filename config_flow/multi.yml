@@ -22,17 +22,17 @@ hostA: # Host 1
 
 hostB: # Host 2
   IP: 'ucsd_cluster'
-  interfaceName: 'Vlan3911'
+  interfaceName: 'vlan.3911'
   interfaceIP: 'find_out_later'
   nodeName: 'k8s-gen4-01.sdsc.optiputer.net'
   vlan: '3911'
   switchPort: 
-    ifName: 'etp11'
+    ifName: 'etp27'
 
 ## SECTION 2 SWITCH INFORMATION ##
 switchDataA:
   job_name: 'snmp1'
-  SNMPHostIP: 198.32.43.16
+  SNMPHostIP: 'caltech'
   target: 172.16.1.1
   portIn:
     ifName: 'hundredGigE 1/31'
@@ -51,6 +51,6 @@ switchDataB:
     vlan: '3911'
     
   portOut:
-    ifName: 'etp11'
+    ifName: 'etp27'
     vlan: '3911'
     

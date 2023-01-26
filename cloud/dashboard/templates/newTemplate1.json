@@ -63,7 +63,7 @@
       },
       "id": 119,
       "panels": [],
-      "title": "End-to-End Flow Overview",
+      "title": "End-to-End Flow Topology",
       "type": "row"
     },
     {
@@ -161,7 +161,7 @@
       "pluginVersion": "1.7.3",
       "timeFrom": null,
       "timeShift": null,
-      "title": "End-to-End Flow Overview",
+      "title": "End-to-End Flow Topology",
       "type": "jdbranham-diagram-panel"
     },
     {

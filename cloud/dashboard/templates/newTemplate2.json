@@ -333,16 +333,25 @@
             "id": "organize",
             "options": {
               "excludeByName": {
+                "Value 1": true,
+                "Value 2": true,
+                "Value 3": true,
+                "__name__ 1": true,
+                "__name__ 2": true,
+                "__name__ 3": true,
+                "address": true,
                 "broadcast": true,
                 "domainname": true,
                 "duplex": true,
                 "instance": true,
                 "job": true,
-                "name": true
+                "name": true,
+                "version": true
               },
               "indexByName": {},
               "renameByName": {
                 "Value": "MTU",
+                "device": "interface",
                 "name": ""
               }
             }
@@ -2114,16 +2123,25 @@
             "id": "organize",
             "options": {
               "excludeByName": {
+                "Value 1": true,
+                "Value 2": true,
+                "Value 3": true,
+                "__name__ 1": true,
+                "__name__ 2": true,
+                "__name__ 3": true,
+                "address": true,
                 "broadcast": true,
                 "domainname": true,
                 "duplex": true,
                 "instance": true,
                 "job": true,
-                "name": true
+                "name": true,
+                "version": true
               },
               "indexByName": {},
               "renameByName": {
                 "Value": "MTU",
+                "device": "interface",
                 "name": ""
               }
             }

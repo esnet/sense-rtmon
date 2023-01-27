@@ -681,7 +681,7 @@
         "pluginVersion": "7.5.4",
         "timeFrom": null,
         "timeShift": null,
-        "title": "Switch 1 & 2 General Info",
+        "title": "Switch 1 & 2 Device Info",
         "type": "text"
       },
       {
@@ -1170,8 +1170,24 @@
         ],
         "timeFrom": null,
         "timeShift": null,
-        "title": "Switch 1 Info",
+        "title": "Switch 1 Port Info",
         "transform": "table",
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "ifIndex": true
+              },
+              "indexByName": {},
+              "renameByName": {}
+            }
+          }
+        ],
         "type": "table-old"
       },
       {
@@ -1660,8 +1676,24 @@
         ],
         "timeFrom": null,
         "timeShift": null,
-        "title": "Switch 2 Info",
+        "title": "Switch 2 Port Info",
         "transform": "table",
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "ifIndex": true
+              },
+              "indexByName": {},
+              "renameByName": {}
+            }
+          }
+        ],
         "type": "table-old"
       },
       {

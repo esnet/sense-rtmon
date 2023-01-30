@@ -9,10 +9,11 @@ grafanaHostIP: 'sense-mon.es.net'
 grafanaPort: 3000 # Do not change unless container mapping change
 pushgatewayPort: 9091 # Do not change unless container mapping change
 grafanaAPIToken: "CONFIG"
-configFile: "short_multi.yml"
+configFile: "multi.yml"
 #ens2f0np0.1000
 hostA: # Host 1
-  IP: 'caltech'
+  name: 'caltech'
+  IP: '10.251.86.10'
   interfaceName: 'ens2f0np0.3911'
   interfaceIP: '10.251.86.10/24'
   nodeName: 'sdn-dtn-2-10.ultralight.org'
@@ -21,9 +22,10 @@ hostA: # Host 1
     ifName: 'hundredGigE 1/31'
 
 hostB: # Host 2
-  IP: 'ucsd_cluster'
+  name: 'ucsd_cluster'
+  IP: '10.251.86.14'
   interfaceName: 'vlan.3911'
-  interfaceIP: 'find_out_later'
+  interfaceIP: '10.251.86.14'
   nodeName: 'k8s-gen4-01.sdsc.optiputer.net'
   vlan: '3911'
   switchPort: 

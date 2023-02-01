@@ -33,8 +33,8 @@ hostB: # Host 2
 
 ## SECTION 2 SWITCH INFORMATION ##
 switchDataA:
-  job_name: 'snmp1'
-  SNMPHostIP: 'caltech'
+  job_name: 'caltech'
+  SNMPHostIP: '10.251.86.10'
   target: 172.16.1.1
   portIn:
     ifName: 'hundredGigE 1/31'
@@ -45,8 +45,8 @@ switchDataA:
     vlan: '3911'
 
 switchDataB:
-  job_name: 'snmp2'
-  SNMPHostIP: 'ucsd_cluster'
+  job_name: 'ucsd_cluster'
+  SNMPHostIP: '10.251.86.14'
   target: 132.249.2.46
   portIn:
     ifName: 'PortChannel501'

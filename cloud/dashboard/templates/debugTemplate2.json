@@ -175,6 +175,20 @@
         "type": "jdbranham-diagram-panel"
       },
       {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 20,
+          "w": 24,
+          "x": 0,
+          "y": 13
+        },
+        "id": 990,
+        "panels": [],
+        "title": "L2 Debugging",
+        "type": "row"
+      },
+      {
         "datasource": null,
         "description": "",
         "fieldConfig": {

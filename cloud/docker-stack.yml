@@ -16,8 +16,6 @@ services:
       placement:
         constraints:
           - node.role==manager
-      restart_policy:
-        condition: on-failure
 
   pushgateway:
     image: prom/pushgateway
@@ -27,8 +25,6 @@ services:
       placement:
         constraints:
           - node.role==manager
-      restart_policy:
-        condition: on-failure
     networks:
       - monitor-net 
   
@@ -65,7 +61,7 @@ services:
       - 3000
     volumes:
       - $PWD/nginx/:/etc/nginx/conf.d/ # do not change this line if possible
-      - /etc/letsencrypt/live/dev2.virnao.com/fullchain.pem:/etc/letsencrypt/live/dev2.virnao.com/fullchain.pem
-      - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
+      - /etc/pki/tls/certs/sense-mon_es_net_fullchain.cer:/etc/pki/tls/certs/sense-mon_es_net_fullchain.cer
+      - /etc/pki/tls/private/sense-mon.key:/etc/pki/tls/private/sense-mon.key
     
   # nginx reverse proxy Grafana to https

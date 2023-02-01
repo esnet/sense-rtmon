@@ -1,9 +1,9 @@
 #! /bin/bash
-pushgateway=$unique1
-host1=$unique2
-host2=$unique3
-switch_num=$unique4
-switch_ip1=$unique5
+pushgateway=198.124.151.8
+host1=198.32.43.16
+host2=198.32.43.15
+switch_num=1
+switch_ip1=172.16.1.1
 # switch_ip2=$unique6
 flow_vlan=""
 # above lines are filled in by fill_config.py based on the config file used

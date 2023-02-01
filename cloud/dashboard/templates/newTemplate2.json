@@ -166,7 +166,314 @@
         "title": "End-to-End Flow Topology",
         "type": "jdbranham-diagram-panel"
       },
-
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 13
+        },
+        "id": 121,
+        "panels": [],
+        "title": "Flow Summary - NODENAMEA",
+        "type": "row"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 24,
+          "x": 0,
+          "y": 14
+        },
+        "id": 123,
+        "options": {
+          "content": "```\nnode name: NODENAMEA   if name: IFNAMEHOSTA   DATAPLANEIPA   IPHOSTA    Vlan: VLANA\n ```",
+          "mode": "markdown"
+        },
+        "pluginVersion": "7.5.4",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "NODENAMEA General Info",
+        "type": "text"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": null,
+              "filterable": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Time"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 188
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "operstate"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 113
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "machine"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 125,
+        "options": {
+          "frameIndex": 2,
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "7.5.4",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "node_network_info{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}",
+            "format": "time_series",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "node_uname_info{exported_instance=\"IPHOSTA\"}",
+            "format": "time_series",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "node_network_mtu_bytes{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}",
+            "format": "time_series",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "C"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "NODENAMEA Info",
+        "transformations": [
+          {
+            "id": "seriesToColumns",
+            "options": {
+              "byField": "Time"
+            }
+          },
+          {
+            "id": "labelsToFields",
+            "options": {}
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Value 1": true,
+                "Value 2": true,
+                "Value 3": true,
+                "__name__ 1": true,
+                "__name__ 2": true,
+                "__name__ 3": true,
+                "address": true,
+                "broadcast": true,
+                "domainname": true,
+                "duplex": true,
+                "instance": true,
+                "job": true,
+                "name": true,
+                "version": true
+              },
+              "indexByName": {},
+              "renameByName": {
+                "Value": "MTU",
+                "device": "interface",
+                "name": ""
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 23
+        },
+        "hiddenSeries": false,
+        "id": 129,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:176",
+            "alias": "recv IFNAMEHOSTA",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "irate(node_network_receive_bytes_total{exported_instance=\"IPHOSTA\", device=\"IFNAMEHOSTA\"}[1m])*8",
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "recv {{device}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}[1m])*8",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "trans {{device}}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "NODENAMEA - Flow Bandwidth",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:118",
+            "format": "Bps",
+            "label": "bw out(-) / in(+)",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:119",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
       {
         "collapsed": false,
         "datasource": null,
@@ -3984,7 +4291,7 @@
           "h": 20,
           "w": 24,
           "x": 0,
-          "y": 13
+          "y": 178
         },
         "id": 990,
         "panels": [],
@@ -4040,7 +4347,7 @@
           "h": 14,
           "w": 24,
           "x": 0,
-          "y": 22
+          "y": 179
         },
         "id": 991,
         "options": {
@@ -4204,7 +4511,7 @@
           "h": 9,
           "w": 24,
           "x": 0,
-          "y": 17
+          "y": 180
         },
         "id": 992,
         "options": {
@@ -4329,7 +4636,7 @@
           "h": 6,
           "w": 24,
           "x": 0,
-          "y": 17
+          "y": 181
         },
         "id": 993,
         "options": {

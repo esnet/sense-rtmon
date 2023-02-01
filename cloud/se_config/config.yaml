@@ -40,6 +40,6 @@ scripts:
 #    script: ./examples/argsDef.sh 
   - name: multi
     script: ./examples/multiDef.sh
-  # make sure defaul it the last line
+  # make sure default is on the last line
   - name: default
     script: ./examples/args.sh

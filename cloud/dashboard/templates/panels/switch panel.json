@@ -1,0 +1,772 @@
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 30
+    },
+    "id": 131,
+    "panels": [],
+    "title": "Switch Flow Summary - SNMPANAME",
+    "type": "row"
+  },
+  {
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 3,
+      "w": 24,
+      "x": 0,
+      "y": 31
+    },
+    "id": 133,
+    "options": {
+      "content": "```\nSwitch: SNMPANAME   port in: SWITCHAINCOMING   port out: SWITCHAOUTGOING   switch IP: IPSWITCHA\n```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "SNMPANAME Switch Device Info",
+    "type": "text"
+  },
+  {
+    "columns": [],
+    "datasource": null,
+    "description": "Switch Interfaces, MAC Address, MTU, and Operational State",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fontSize": "100%",
+    "gridPos": {
+      "h": 4,
+      "w": 24,
+      "x": 0,
+      "y": 34
+    },
+    "id": 135,
+    "links": [],
+    "pageSize": null,
+    "scroll": true,
+    "showHeader": true,
+    "sort": {
+      "col": 3,
+      "desc": true
+    },
+    "styles": [
+      {
+        "$$hashKey": "object:7776",
+        "alias": "",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "Time",
+        "thresholds": [],
+        "type": "hidden",
+        "unit": "short"
+      },
+      {
+        "$$hashKey": "object:7777",
+        "alias": "Last Status Change",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "MMMM D, YYYY LT",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "Value #A",
+        "thresholds": [],
+        "type": "date",
+        "unit": "short"
+      },
+      {
+        "$$hashKey": "object:7778",
+        "alias": "Admin Status",
+        "align": "auto",
+        "colorMode": "value",
+        "colors": [
+          "rgba(50, 172, 45, 0.97)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(245, 54, 54, 0.9)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 0,
+        "mappingType": 1,
+        "pattern": "Value #B",
+        "thresholds": [
+          "2",
+          "2"
+        ],
+        "type": "string",
+        "unit": "none",
+        "valueMaps": [
+          {
+            "$$hashKey": "object:7885",
+            "text": "enabled",
+            "value": "1"
+          },
+          {
+            "$$hashKey": "object:7886",
+            "text": "disabled",
+            "value": "2"
+          }
+        ]
+      },
+      {
+        "$$hashKey": "object:7779",
+        "alias": "Operational State",
+        "align": "auto",
+        "colorMode": "value",
+        "colors": [
+          "rgba(50, 172, 45, 0.97)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(245, 54, 54, 0.9)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 0,
+        "mappingType": 1,
+        "pattern": "Value #D",
+        "thresholds": [
+          "2",
+          "2"
+        ],
+        "type": "string",
+        "unit": "none",
+        "valueMaps": [
+          {
+            "$$hashKey": "object:7909",
+            "text": "up",
+            "value": "1"
+          },
+          {
+            "$$hashKey": "object:7910",
+            "text": "down",
+            "value": "2"
+          }
+        ]
+      },
+      {
+        "$$hashKey": "object:7780",
+        "alias": "Interface",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 0,
+        "mappingType": 1,
+        "pattern": "ifIndex",
+        "thresholds": [],
+        "type": "number",
+        "unit": "none"
+      },
+      {
+        "$$hashKey": "object:7781",
+        "alias": "",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "Value #C",
+        "thresholds": [],
+        "type": "hidden",
+        "unit": "short"
+      },
+      {
+        "$$hashKey": "object:7782",
+        "alias": "MTU",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 0,
+        "mappingType": 1,
+        "pattern": "Value #E",
+        "thresholds": [],
+        "type": "number",
+        "unit": "none"
+      },
+      {
+        "$$hashKey": "object:7783",
+        "alias": "Speed",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "Value #F",
+        "thresholds": [],
+        "type": "number",
+        "unit": "bps"
+      },
+      {
+        "$$hashKey": "object:7784",
+        "alias": "",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "Value #G",
+        "thresholds": [],
+        "type": "hidden",
+        "unit": "short"
+      },
+      {
+        "$$hashKey": "object:7785",
+        "alias": "Physical Address",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "ifPhysAddress",
+        "thresholds": [],
+        "type": "string",
+        "unit": "short"
+      },
+      {
+        "$$hashKey": "object:7786",
+        "alias": "Type",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "ifType",
+        "thresholds": [],
+        "type": "string",
+        "unit": "short"
+      },
+      {
+        "$$hashKey": "object:7787",
+        "alias": "",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "Value #H",
+        "thresholds": [],
+        "type": "hidden",
+        "unit": "short"
+      },
+      {
+        "$$hashKey": "object:7788",
+        "alias": "",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "Value #I",
+        "thresholds": [],
+        "type": "hidden",
+        "unit": "short"
+      },
+      {
+        "$$hashKey": "object:7789",
+        "alias": "Name",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "ifName",
+        "thresholds": [],
+        "type": "string",
+        "unit": "short"
+      },
+      {
+        "$$hashKey": "object:7790",
+        "alias": "Alias",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "ifAlias",
+        "thresholds": [],
+        "type": "string",
+        "unit": "short"
+      },
+      {
+        "$$hashKey": "object:7791",
+        "alias": "Description",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "ifDescr",
+        "thresholds": [],
+        "type": "string",
+        "unit": "short"
+      },
+      {
+        "$$hashKey": "object:7792",
+        "alias": "Sent",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "Value #J",
+        "thresholds": [],
+        "type": "number",
+        "unit": "bytes"
+      },
+      {
+        "$$hashKey": "object:7793",
+        "alias": "Received",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "Value #K",
+        "thresholds": [],
+        "type": "number",
+        "unit": "bytes"
+      },
+      {
+        "$$hashKey": "object:7794",
+        "alias": "",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "Value #L",
+        "thresholds": [],
+        "type": "hidden",
+        "unit": "short"
+      },
+      {
+        "$$hashKey": "object:7795",
+        "alias": "",
+        "align": "auto",
+        "colorMode": null,
+        "colors": [
+          "rgba(245, 54, 54, 0.9)",
+          "rgba(237, 129, 40, 0.89)",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+        "decimals": 2,
+        "mappingType": 1,
+        "pattern": "Value #M",
+        "thresholds": [],
+        "type": "hidden",
+        "unit": "short"
+      }
+    ],
+    "targets": [
+      {
+        "exemplar": true,
+        "expr": "sum(ifIndex{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex)",
+        "format": "table",
+        "hide": false,
+        "instant": true,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "",
+        "refId": "M"
+      },
+      {
+        "exemplar": true,
+        "expr": "sum(ifName{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex,ifName)",
+        "format": "table",
+        "hide": false,
+        "instant": true,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "",
+        "refId": "I"
+      },
+      {
+        "exemplar": true,
+        "expr": "sum(ifType{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex,ifType)",
+        "format": "table",
+        "hide": false,
+        "instant": true,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "",
+        "refId": "G"
+      },
+      {
+        "exemplar": true,
+        "expr": "sum(ifPhysAddress{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex,ifPhysAddress)",
+        "format": "table",
+        "hide": false,
+        "instant": true,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "",
+        "refId": "C"
+      },
+      {
+        "exemplar": true,
+        "expr": "sum(ifOperStatus{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex)",
+        "format": "table",
+        "hide": false,
+        "instant": true,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "",
+        "refId": "D"
+      },
+      {
+        "exemplar": true,
+        "expr": "sum(ifMtu{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex)",
+        "format": "table",
+        "hide": false,
+        "instant": true,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "",
+        "refId": "E"
+      }
+    ],
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "SNMPANAME Switch Port Info",
+    "transform": "table",
+    "transformations": [
+      {
+        "id": "merge",
+        "options": {}
+      },
+      {
+        "id": "organize",
+        "options": {
+          "excludeByName": {
+            "ifIndex": true
+          },
+          "indexByName": {},
+          "renameByName": {}
+        }
+      }
+    ],
+    "type": "table-old"
+  },
+  {
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 42
+    },
+    "hiddenSeries": false,
+    "id": 139,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv NAMEIFSWITCHA",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+      {
+        "exemplar": true,
+        "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
+        "instant": false,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "recv {{ifDescr}}",
+        "refId": "A"
+      },
+      {
+        "exemplar": true,
+        "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
+        "hide": false,
+        "instant": false,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "trans {{ifDescr}}",
+        "refId": "B"
+      }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "SNMPANAME Switch - Flow Bandwidth - Facing NODENAMEA",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+  {
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 49
+    },
+    "hiddenSeries": false,
+    "id": 241,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv NAMEIFSWITCHB",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+      {
+        "exemplar": true,
+        "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
+        "instant": false,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "recv {{ifDescr}}",
+        "refId": "A"
+      },
+      {
+        "exemplar": true,
+        "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
+        "hide": false,
+        "instant": false,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "trans {{ifDescr}}",
+        "refId": "B"
+      }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "SNMPANAME Switch - Flow Bandwidth - Facing SWITCHAOUTGOING (SNMPBNAME Switch)",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },

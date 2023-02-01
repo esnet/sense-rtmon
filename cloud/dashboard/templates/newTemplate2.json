@@ -177,7 +177,7 @@
         },
         "id": 121,
         "panels": [],
-        "title": "Flow Summary - HOSTANAME",
+        "title": "Flow Summary - NODENAMEA",
         "type": "row"
       },
       {
@@ -4283,20 +4283,6 @@
           "align": false,
           "alignLevel": null
         }
-      },
-      {
-        "collapsed": false,
-        "datasource": null,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 144
-        },
-        "id": 8,
-        "panels": [],
-        "title": "L2 Debugging ARP",
-        "type": "row"
       },
       {
         "datasource": null,

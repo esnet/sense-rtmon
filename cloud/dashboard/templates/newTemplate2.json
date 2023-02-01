@@ -177,7 +177,7 @@
         },
         "id": 121,
         "panels": [],
-        "title": "Flow Summary - NODENAMEA",
+        "title": "Host Flow Summary - NODENAMEA",
         "type": "row"
       },
       {
@@ -485,7 +485,7 @@
         },
         "id": 131,
         "panels": [],
-        "title": "Flow Summary - Switch: SNMPANAME",
+        "title": "Switch Flow Summary - SNMPANAME",
         "type": "row"
       },
       {
@@ -503,13 +503,13 @@
         },
         "id": 133,
         "options": {
-          "content": "```\nSwitch: SNMPANAME   port in: SWITCHAINCOMING   port out: SWITCHAOUTGOING   switch IP: IPSWITCHA\nSwitch: SNMPBNAME   port in: SWITCHBINCOMING   port out: SWITCHBOUTGOING   switch IP: IPSWITCHB\n ```",
+          "content": "```\nSwitch: SNMPANAME   port in: SWITCHAINCOMING   port out: SWITCHAOUTGOING   switch IP: IPSWITCHA\n```",
           "mode": "markdown"
         },
         "pluginVersion": "7.5.4",
         "timeFrom": null,
         "timeShift": null,
-        "title": "Switch: SNMPANAME & 2 Device Info",
+        "title": "SNMPANAME Switch Device Info",
         "type": "text"
       },
       {
@@ -998,7 +998,7 @@
         ],
         "timeFrom": null,
         "timeShift": null,
-        "title": "Switch: SNMPANAME Port Info",
+        "title": "SNMPANAME Switch Port Info",
         "transform": "table",
         "transformations": [
           {
@@ -1019,6 +1019,272 @@
         "type": "table-old"
       },
       {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 42
+        },
+        "hiddenSeries": false,
+        "id": 139,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:176",
+            "alias": "recv NAMEIFSWITCHA",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "recv {{ifDescr}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "trans {{ifDescr}}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "SNMPANAME Switch - Flow Bandwidth - Facing NODENAMEA",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:118",
+            "format": "Bps",
+            "label": "bw out(-) / in(+)",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:119",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 49
+        },
+        "hiddenSeries": false,
+        "id": 241,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:176",
+            "alias": "recv NAMEIFSWITCHB",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "recv {{ifDescr}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "trans {{ifDescr}}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "SNMPANAME Switch - Flow Bandwidth - Facing SWITCHAOUTGOING (SNMPBNAME Switch)",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:118",
+            "format": "Bps",
+            "label": "bw out(-) / in(+)",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:119",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 60
+        },
+        "id": 131,
+        "panels": [],
+        "title": "Switch Flow Summary - SNMPBNAME",
+        "type": "row"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 24,
+          "x": 0,
+          "y": 61
+        },
+        "id": 133,
+        "options": {
+          "content": "```\nSwitch: SNMPBNAME   port in: SWITCHBINCOMING   port out: SWITCHBOUTGOING   switch IP: IPSWITCHB\n ```",
+          "mode": "markdown"
+        },
+        "pluginVersion": "7.5.4",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Switch: SNMPBNAME Device Info",
+        "type": "text"
+      },
+      {
         "columns": [],
         "datasource": null,
         "description": "Switch Interfaces, MAC Address, MTU, and Operational State",
@@ -1031,7 +1297,7 @@
           "h": 4,
           "w": 24,
           "x": 0,
-          "y": 34
+          "y": 62
         },
         "id": 137,
         "links": [],
@@ -1504,7 +1770,7 @@
         ],
         "timeFrom": null,
         "timeShift": null,
-        "title": "Switch: SNMPBNAME Port Info",
+        "title": "SNMPBNAME Switch Port Info",
         "transform": "table",
         "transformations": [
           {
@@ -1540,235 +1806,7 @@
           "h": 7,
           "w": 24,
           "x": 0,
-          "y": 42
-        },
-        "hiddenSeries": false,
-        "id": 139,
-        "legend": {
-          "avg": false,
-          "current": false,
-          "max": false,
-          "min": false,
-          "show": true,
-          "total": false,
-          "values": false
-        },
-        "lines": true,
-        "linewidth": 1,
-        "nullPointMode": "null",
-        "options": {
-          "alertThreshold": true
-        },
-        "percentage": false,
-        "pluginVersion": "7.5.4",
-        "pointradius": 2,
-        "points": false,
-        "renderer": "flot",
-        "seriesOverrides": [
-          {
-            "$$hashKey": "object:176",
-            "alias": "recv NAMEIFSWITCHA",
-            "transform": "negative-Y"
-          }
-        ],
-        "spaceLength": 10,
-        "stack": false,
-        "steppedLine": false,
-        "targets": [
-          {
-            "exemplar": true,
-            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
-            "instant": false,
-            "interval": "",
-            "intervalFactor": 1,
-            "legendFormat": "recv {{ifDescr}}",
-            "refId": "A"
-          },
-          {
-            "exemplar": true,
-            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
-            "hide": false,
-            "instant": false,
-            "interval": "",
-            "intervalFactor": 1,
-            "legendFormat": "trans {{ifDescr}}",
-            "refId": "B"
-          }
-        ],
-        "thresholds": [],
-        "timeFrom": null,
-        "timeRegions": [],
-        "timeShift": null,
-        "title": "Switch: SNMPANAME - Flow Bandwidth - Facing NODENAMEA",
-        "tooltip": {
-          "shared": true,
-          "sort": 0,
-          "value_type": "individual"
-        },
-        "type": "graph",
-        "xaxis": {
-          "buckets": null,
-          "mode": "time",
-          "name": null,
-          "show": true,
-          "values": []
-        },
-        "yaxes": [
-          {
-            "$$hashKey": "object:118",
-            "format": "Bps",
-            "label": "bw out(-) / in(+)",
-            "logBase": 1,
-            "max": null,
-            "min": null,
-            "show": true
-          },
-          {
-            "$$hashKey": "object:119",
-            "format": "short",
-            "label": null,
-            "logBase": 1,
-            "max": null,
-            "min": null,
-            "show": false
-          }
-        ],
-        "yaxis": {
-          "align": false,
-          "alignLevel": null
-        }
-      },
-      {
-        "aliasColors": {},
-        "bars": false,
-        "dashLength": 10,
-        "dashes": false,
-        "datasource": null,
-        "fieldConfig": {
-          "defaults": {},
-          "overrides": []
-        },
-        "fill": 1,
-        "fillGradient": 0,
-        "gridPos": {
-          "h": 7,
-          "w": 24,
-          "x": 0,
-          "y": 49
-        },
-        "hiddenSeries": false,
-        "id": 241,
-        "legend": {
-          "avg": false,
-          "current": false,
-          "max": false,
-          "min": false,
-          "show": true,
-          "total": false,
-          "values": false
-        },
-        "lines": true,
-        "linewidth": 1,
-        "nullPointMode": "null",
-        "options": {
-          "alertThreshold": true
-        },
-        "percentage": false,
-        "pluginVersion": "7.5.4",
-        "pointradius": 2,
-        "points": false,
-        "renderer": "flot",
-        "seriesOverrides": [
-          {
-            "$$hashKey": "object:176",
-            "alias": "recv NAMEIFSWITCHB",
-            "transform": "negative-Y"
-          }
-        ],
-        "spaceLength": 10,
-        "stack": false,
-        "steppedLine": false,
-        "targets": [
-          {
-            "exemplar": true,
-            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
-            "instant": false,
-            "interval": "",
-            "intervalFactor": 1,
-            "legendFormat": "recv {{ifDescr}}",
-            "refId": "A"
-          },
-          {
-            "exemplar": true,
-            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
-            "hide": false,
-            "instant": false,
-            "interval": "",
-            "intervalFactor": 1,
-            "legendFormat": "trans {{ifDescr}}",
-            "refId": "B"
-          }
-        ],
-        "thresholds": [],
-        "timeFrom": null,
-        "timeRegions": [],
-        "timeShift": null,
-        "title": "Switch: SNMPANAME - Flow Bandwidth - Facing SWITCHAOUTGOING (Switch: SNMPBNAME)",
-        "tooltip": {
-          "shared": true,
-          "sort": 0,
-          "value_type": "individual"
-        },
-        "type": "graph",
-        "xaxis": {
-          "buckets": null,
-          "mode": "time",
-          "name": null,
-          "show": true,
-          "values": []
-        },
-        "yaxes": [
-          {
-            "$$hashKey": "object:118",
-            "format": "Bps",
-            "label": "bw out(-) / in(+)",
-            "logBase": 1,
-            "max": null,
-            "min": null,
-            "show": true
-          },
-          {
-            "$$hashKey": "object:119",
-            "format": "short",
-            "label": null,
-            "logBase": 1,
-            "max": null,
-            "min": null,
-            "show": false
-          }
-        ],
-        "yaxis": {
-          "align": false,
-          "alignLevel": null
-        }
-      },
-      {
-        "aliasColors": {},
-        "bars": false,
-        "dashLength": 10,
-        "dashes": false,
-        "datasource": null,
-        "fieldConfig": {
-          "defaults": {},
-          "overrides": []
-        },
-        "fill": 1,
-        "fillGradient": 0,
-        "gridPos": {
-          "h": 7,
-          "w": 24,
-          "x": 0,
-          "y": 49
+          "y": 63
         },
         "hiddenSeries": false,
         "id": 341,
@@ -1827,7 +1865,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Switch: SNMPBNAME - Flow Bandwidth - Facing SWITCHBINCOMING (Switch: SNMPANAME)",
+        "title": "SNMPBNAME Switch - Flow Bandwidth - Facing SWITCHBINCOMING (SNMPANAME Switch)",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -1882,7 +1920,7 @@
           "h": 7,
           "w": 24,
           "x": 0,
-          "y": 49
+          "y": 64
         },
         "hiddenSeries": false,
         "id": 145,
@@ -1941,7 +1979,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "Switch: SNMPBNAME - Flow Bandwidth - Facing NODENAMEB",
+        "title": "SNMPBNAME Switch - Flow Bandwidth - Facing NODENAMEB",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -1987,11 +2025,11 @@
           "h": 1,
           "w": 24,
           "x": 0,
-          "y": 56
+          "y": 65
         },
         "id": 147,
         "panels": [],
-        "title": "Flow Summary - NODENAMEB",
+        "title": "Host Flow Summary - NODENAMEB",
         "type": "row"
       },
       {
@@ -2005,7 +2043,7 @@
           "h": 3,
           "w": 24,
           "x": 0,
-          "y": 57
+          "y": 66
         },
         "id": 149,
         "options": {
@@ -2089,7 +2127,7 @@
           "h": 3,
           "w": 24,
           "x": 0,
-          "y": 60
+          "y": 67
         },
         "id": 151,
         "options": {
@@ -2190,7 +2228,7 @@
           "h": 7,
           "w": 24,
           "x": 0,
-          "y": 66
+          "y": 68
         },
         "hiddenSeries": false,
         "id": 155,

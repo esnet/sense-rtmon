@@ -1,95 +1,74 @@
-switchNum: 3
-dashTitle: "Multi Switch Flow Dashboard"
-debugTitle: "Multi Switch Flow L2 Debugging Dashboard"
-flow: " flow 1 "s
-hostIP: 198.32.43.16 # example 198.32.43.16
-# The DNS of the host which is running the Grafana container
-grafanaHostIP: 'dev2.virnao.com'
-grafanaPort: 3000 # Do not change unless container mapping change
-pushgatewayPort: 9091 # Do not change unless container mapping change
-grafanaAPIToken: "CONFIG"
-configFile: "threeconfig.yml"
+## SECTION 1 GENERAL INFORMATION ##
+title: "Multi Switch Flow Dashboard"
+flow: " flow 2 "
+host_ip: 198.124.151.8 
+grafana_host: 'sense-mon.es.net:3000'
+pushgateway: 'sense-mon.es.net:9091'
+grafana_api: "CONFIG"
 
-# Host 1
-hostA:
-  IP: 198.32.43.16
-  interfaceName: 'ens2f0np0.1000'
-  interfaceIP: '10.10.100.1'
-  nodeName: 'sdn-dtn-2-10.ultralight.org'
-  vlan: 1000
-  switchPort: 
-    ifName: 'hundredGigE 1/27'
-    ifVlan: 'Vlan 1000'
-    order: 1
+host: # Host 1
+  total_num: 2
+  
+  host1:
+    name: 'caltech'
+    IP: '10.251.86.10'
+    interfaceName: 'ens2f0np0.3911'
+    interfaceIP: '10.251.86.10/24'
+    nodeName: 'sdn-dtn-2-10.ultralight.org'
+    vlan: 'not_used'
+    num_port: 1
+    port1: 
+      ifName: 'hundredGigE 1/31'
+      vlan: '3911'
 
-# Host 2
-hostB:
-  IP: 198.32.43.15
-  interfaceName: 'ens2f0.1000'
-  interfaceIP: '10.10.100.2'
-  nodeName: 'sdn-dtn-2-11.ultralight.org'
-  vlan: 1000
-  switchPort: 
-    ifName: 'hundredGigE 1/31'
-    ifVlan: 'Vlan 1000'
-    order: 8
+  host2: # Host 2
+    name: 'ucsd_cluster'
+    IP: '10.251.86.14'
+    interfaceName: 'vlan.3911'
+    interfaceIP: '10.251.86.14'
+    nodeName: 'k8s-gen4-01.sdsc.optiputer.net'
+    vlan: '3911'
+    num_port: 1
+    port1:
+      ifName: 'etp27'
+      vlan: '3911'
 
-switchDataA:
-  job_name: 'snmp1'
-  SNMPHostIP: 198.32.43.16
-  target: 172.16.1.1
-  # switch if format: " - IF: optional" 
-  switchif: "" # optional
-  portIn:
-    ifName: 'hundredGigE 1/27'
-    vlan: 1000
-    ifVlan: 'Vlan 1000'
-    order: 2
-  portOut:
-    ifName: 'hundredGigE 1/31'
-    vlan: 1000
-    ifVlan: 'Vlan 1000'
-    order: 3
+## SECTION 2 SWITCH INFORMATION ##
+switch:
+  total_num: 3
 
-switchDataB:
-  job_name: 'snmp1'
-  SNMPHostIP: 198.32.43.16
-  target: 172.16.1.1
-  # switch if format: " - IF: optional" 
-  switchif: "" # optional
-  portIn:
-    ifName: 'hundredGigE 1/27'
-    vlan: 1000
-    ifVlan: 'Vlan 1000'
-    order: 4
-  portOut:
-    ifName: 'hundredGigE 1/31'
-    vlan: 1000
-    ifVlan: 'Vlan 1000'
-    order: 5
+  switch1:
+    job_name: 'caltech'
+    SNMPHostIP: '10.251.86.10'
+    target: 172.16.1.1
+    num_port: 2
+    port1:
+      ifName: 'hundredGigE 1/31'
+      vlan: '3911'
+    port2:
+      ifName_B: 'Port-channel 103'
+      vlan_B: '3911'
 
-switchDataC:
-  job_name: 'snmp1'
-  SNMPHostIP: 198.32.43.16
-  target: 172.16.1.1
-  # switch if format: " - IF: optional" 
-  switchif: "" # optional
-  portIn:
-    ifName: 'hundredGigE 1/27'
-    vlan: 1000
-    ifVlan: 'Vlan 1000'
-    order: 6
-  portOut:
-    ifName: 'hundredGigE 1/31'
-    vlan: 1000
-    ifVlan: 'Vlan 1000'
-    order: 7
-
-# TCP/ARP Data
-tcpMetrics:
-  port: 9191
-  job_name: 'tcpmetrics'
-
-arpMetrics:
-  port: 9192
-  job_name: 'arpmetrics'
+  switch2:
+    job_name: 'ucsd_cluster'
+    SNMPHostIP: '10.251.86.14'
+    target: 132.249.2.46
+    num_port: 2
+    port1:
+      ifName: 'PortChannel501'
+      vlan: '3911'
+    port2:
+      ifName_B: 'etp27'
+      vlan_B: '3911'   
+  
+  switch3:
+    job_name: 'ucsd_cluster'
+    SNMPHostIP: '10.251.86.14'
+    target: 132.249.2.46
+    num_port: 2
+    port1:
+      ifName: 'PortChannel501'
+      vlan: '3911'
+    port2:
+      ifName_B: 'etp27'
+      vlan_B: '3911'  

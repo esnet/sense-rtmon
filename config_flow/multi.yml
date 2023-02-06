@@ -1,7 +1,6 @@
 ## SECTION 1 GENERAL INFORMATION ##
 switchNum: 2
 dashTitle: "Multi Switch Flow Dashboard"
-debugTitle: "Multi Switch Flow L2 Debugging Dashboard"
 flow: " flow 2 "
 hostIP: 198.124.151.8 # example 198.32.43.16 198.124.151.8 172.31.72.189
 # The DNS of the host which is running the Grafana container

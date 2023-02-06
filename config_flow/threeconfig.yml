@@ -7,68 +7,68 @@ pushgateway: 'sense-mon.es.net:9091'
 grafana_api: "CONFIG"
 
 host: # Host 1
-  total_num: 2
+  num: 2 # Number of hosts
   
   host1:
-    name: 'caltech'
-    IP: '10.251.86.10'
-    interfaceName: 'ens2f0np0.3911'
-    interfaceIP: '10.251.86.10/24'
-    nodeName: 'sdn-dtn-2-10.ultralight.org'
+    institute: 'caltech'
+    node: 'sdn-dtn-2-10.ultralight.org'
+    ip: '10.251.86.10'
+    interface: 'ens2f0np0.3911'
+    interface_ip: '10.251.86.10/24'
     vlan: 'not_used'
     num_port: 1
     port1: 
-      ifName: 'hundredGigE 1/31'
+      if_name: 'hundredGigE 1/31'
       vlan: '3911'
 
   host2: # Host 2
-    name: 'ucsd_cluster'
-    IP: '10.251.86.14'
-    interfaceName: 'vlan.3911'
-    interfaceIP: '10.251.86.14'
-    nodeName: 'k8s-gen4-01.sdsc.optiputer.net'
+    institute: 'ucsd_cluster'
+    node: 'k8s-gen4-01.sdsc.optiputer.net'
+    ip: '10.251.86.14'
+    interface: 'vlan.3911'
+    interface_ip: '10.251.86.14'
     vlan: '3911'
     num_port: 1
     port1:
-      ifName: 'etp27'
+      if_name: 'etp27'
       vlan: '3911'
 
 ## SECTION 2 SWITCH INFORMATION ##
 switch:
-  total_num: 3
+  num: 3 # Number of switches
 
   switch1:
-    job_name: 'caltech'
-    SNMPHostIP: '10.251.86.10'
+    institute: 'caltech'
+    running_from_ip: '10.251.86.10'
     target: 172.16.1.1
     num_port: 2
     port1:
-      ifName: 'hundredGigE 1/31'
+      if_name: 'hundredGigE 1/31'
       vlan: '3911'
     port2:
-      ifName_B: 'Port-channel 103'
-      vlan_B: '3911'
+      if_name: 'Port-channel 103'
+      vlan: '3911'
 
   switch2:
-    job_name: 'ucsd_cluster'
-    SNMPHostIP: '10.251.86.14'
+    institute: 'ucsd_cluster'
+    running_from_ip: '10.251.86.14'
     target: 132.249.2.46
     num_port: 2
     port1:
-      ifName: 'PortChannel501'
+      if_name: 'PortChannel501'
       vlan: '3911'
     port2:
-      ifName_B: 'etp27'
-      vlan_B: '3911'   
+      if_name: 'etp27'
+      vlan: '3911'   
   
   switch3:
     job_name: 'ucsd_cluster'
-    SNMPHostIP: '10.251.86.14'
+    running_from_ip: '10.251.86.14'
     target: 132.249.2.46
     num_port: 2
     port1:
-      ifName: 'PortChannel501'
+      if_name: 'PortChannel501'
       vlan: '3911'
     port2:
-      ifName_B: 'etp27'
-      vlan_B: '3911'  
+      if_name: 'etp27'
+      vlan: '3911'  

@@ -1,0 +1,4730 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": null,
+    "title": "DASHTITLE",
+    "tags": [
+      "templated"
+    ],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Simple End-to-End Flow Monitoring Dashboard",
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 68,
+    "iteration": 1629915600744,
+    "links": [
+      {
+        "asDropdown": false,
+        "icon": "dashboard",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Host Node Exporter",
+        "tooltip": "",
+        "type": "link",
+        "url": "http://GRAFANAHOST:3000/d/rYdddlPWj/node-exporter-full?orgId=1&refresh=1m"
+      },
+      {
+        "asDropdown": false,
+        "icon": "dashboard",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Switch Diagnostics Dashboard",
+        "tooltip": "",
+        "type": "link",
+        "url": "http://GRAFANAHOST:3000/d/A3jB7x9Gz/sdn-testbed-dashboard?orgId=1"
+      }
+    ],
+    "panels": [
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 119,
+        "panels": [],
+        "title": "End-to-End Flow Topology",
+        "type": "row"
+      },
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "valueName": "last"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 24,
+          "w": 24,
+          "x": 0,
+          "y": 1
+        },
+        "id": 117,
+        "options": {
+          "authPassword": "",
+          "authUsername": "",
+          "composites": [],
+          "content": "graph  LR  \n  subgraph  h1  [\"NODENAME1\"]\n  ip{{VLAN: VLANA  -  IP: DATAPLANEIP1}}\n  e(IFNAMEHOST1)\n  end\n  \n  e(IFNAMEHOST1)  ----  sw1s1if[SWITCH2PORT1IF]\n\n  subgraph  sw1  [\"SNMP1NAME Switch\"]\n  subgraph  sw1s1  [\"port\"]\n  sw1s1vlan{{VLAN:  SWITCH1PORT1VLAN}}\n  sw1s1if[SWITCH1PORT1IF]\n  end\n  subgraph  sw1s2  [\"port\"]\n  sw1s2vlan{{VLAN: SWITCH1PORT2VLAN}}\n  sw1s2ifout[SWITCH1PORT1IF]\n  end\n  end\n\n  subgraph  sw2  [\"SNMP2NAME Switch\"]\n  subgraph  sw2s1  [\"port\"]\n  sw2s1vlan{{VLAN: SWITCHBINVLAN}}\n  sw2s1if[SWITCH2PORT1IF]\n  end\n  subgraph  sw2s2  [\"port\"]\n  sw2s2vlan{{VLAN: SWITCH2PORT2VLAN}}\n  sw2s2ifout[SWITCH2PORT2IF]\n  end\n  end\n  \n  sw1s2ifout[SWITCH1PORT2IF]  ----  sw2s1if[SWITCH2PORT1IF]\n  sw2s2ifout[SWITCH2PORT2IF]  ----  e2(IFNAMEHOST2)\n  \n  subgraph  h2  [\"NODENAME2\"]\n  ip2{{VLAN: VLANB  -  IP: DATAPLANEIP2}}  \n  e2(IFNAMEHOST2)\n  end",
+          "legend": {
+            "asTable": true,
+            "displayMode": "table",
+            "gradient": {
+              "enabled": true,
+              "show": true
+            },
+            "hideEmpty": false,
+            "hideZero": false,
+            "placement": "bottom",
+            "show": true,
+            "sortBy": "last",
+            "sortDesc": true,
+            "stats": [
+              "mean",
+              "last",
+              "min",
+              "max",
+              "sum"
+            ]
+          },
+          "maxWidth": true,
+          "mermaidServiceUrl": "",
+          "mermaidThemeVariablesDark": {
+            "classDiagram": {},
+            "common": {
+              "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+            },
+            "flowChart": {},
+            "sequenceDiagram": {},
+            "stateDiagram": {},
+            "userJourneyDiagram": {}
+          },
+          "mermaidThemeVariablesLight": {
+            "classDiagram": {},
+            "common": {
+              "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+            },
+            "flowChart": {},
+            "sequenceDiagram": {},
+            "stateDiagram": {},
+            "userJourneyDiagram": {}
+          },
+          "metricCharacterReplacements": [],
+          "moddedSeriesVal": 0,
+          "mode": "content",
+          "nodeSize": {
+            "minHeight": 40,
+            "minWidth": 30
+          },
+          "pluginVersion": "7.5.4",
+          "style": "",
+          "useBackground": false,
+          "useBasicAuth": false,
+          "valueName": "last"
+        },
+        "pluginVersion": "1.7.3",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "End-to-End Flow Topology",
+        "type": "jdbranham-diagram-panel"
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 13
+        },
+        "id": 121,
+        "panels": [],
+        "title": "Host Flow Summary - NODENAME1",
+        "type": "row"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 24,
+          "x": 0,
+          "y": 14
+        },
+        "id": 123,
+        "options": {
+          "content": "```\nnode name: NODENAME1   if name: IFNAMEHOST1   DATAPLANEIP1   IPHOST1    Vlan: VLANA\n ```",
+          "mode": "markdown"
+        },
+        "pluginVersion": "7.5.4",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "NODENAME1 General Info",
+        "type": "text"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": null,
+              "filterable": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Time"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 188
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "operstate"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 113
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "machine"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 125,
+        "options": {
+          "frameIndex": 2,
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "7.5.4",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "node_network_info{exported_instance=\"IPHOST1\",device=\"IFNAMEHOST1\"}",
+            "format": "time_series",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "node_uname_info{exported_instance=\"IPHOST1\"}",
+            "format": "time_series",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "node_network_mtu_bytes{exported_instance=\"IPHOST1\",device=\"IFNAMEHOST1\"}",
+            "format": "time_series",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "C"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "NODENAME1 Info",
+        "transformations": [
+          {
+            "id": "seriesToColumns",
+            "options": {
+              "byField": "Time"
+            }
+          },
+          {
+            "id": "labelsToFields",
+            "options": {}
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Value 1": true,
+                "Value 2": true,
+                "Value 3": true,
+                "__name__ 1": true,
+                "__name__ 2": true,
+                "__name__ 3": true,
+                "address": true,
+                "broadcast": true,
+                "domainname": true,
+                "duplex": true,
+                "instance": true,
+                "job": true,
+                "name": true,
+                "version": true
+              },
+              "indexByName": {},
+              "renameByName": {
+                "Value": "MTU",
+                "device": "interface",
+                "name": ""
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 23
+        },
+        "hiddenSeries": false,
+        "id": 129,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:176",
+            "alias": "recv IFNAMEHOST1",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "irate(node_network_receive_bytes_total{exported_instance=\"IPHOST1\", device=\"IFNAMEHOST1\"}[1m])*8",
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "recv {{device}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"IPHOST1\",device=\"IFNAMEHOST1\"}[1m])*8",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "trans {{device}}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "NODENAME1 - Flow Bandwidth",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:118",
+            "format": "Bps",
+            "label": "bw out(-) / in(+)",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:119",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 30
+        },
+        "id": 131,
+        "panels": [],
+        "title": "Switch Flow Summary - SNMP1NAME",
+        "type": "row"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 24,
+          "x": 0,
+          "y": 31
+        },
+        "id": 133,
+        "options": {
+          "content": "```\nSwitch: SNMP1NAME   port 1: SWITCH1PORT1IF   port 2: SWITCH1PORT2IF   switch IP: IPSWITCH1\n```",
+          "mode": "markdown"
+        },
+        "pluginVersion": "7.5.4",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "SNMP1NAME Switch Device Info",
+        "type": "text"
+      },
+      {
+        "columns": [],
+        "datasource": null,
+        "description": "Switch Interfaces, MAC Address, MTU, and Operational State",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fontSize": "100%",
+        "gridPos": {
+          "h": 4,
+          "w": 24,
+          "x": 0,
+          "y": 34
+        },
+        "id": 135,
+        "links": [],
+        "pageSize": null,
+        "scroll": true,
+        "showHeader": true,
+        "sort": {
+          "col": 3,
+          "desc": true
+        },
+        "styles": [
+          {
+            "$$hashKey": "object:7776",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Time",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7777",
+            "alias": "Last Status Change",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "MMMM D, YYYY LT",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #A",
+            "thresholds": [],
+            "type": "date",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7778",
+            "alias": "Admin Status",
+            "align": "auto",
+            "colorMode": "value",
+            "colors": [
+              "rgba(50, 172, 45, 0.97)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(245, 54, 54, 0.9)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 0,
+            "mappingType": 1,
+            "pattern": "Value #B",
+            "thresholds": [
+              "2",
+              "2"
+            ],
+            "type": "string",
+            "unit": "none",
+            "valueMaps": [
+              {
+                "$$hashKey": "object:7885",
+                "text": "enabled",
+                "value": "1"
+              },
+              {
+                "$$hashKey": "object:7886",
+                "text": "disabled",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "$$hashKey": "object:7779",
+            "alias": "Operational State",
+            "align": "auto",
+            "colorMode": "value",
+            "colors": [
+              "rgba(50, 172, 45, 0.97)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(245, 54, 54, 0.9)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 0,
+            "mappingType": 1,
+            "pattern": "Value #D",
+            "thresholds": [
+              "2",
+              "2"
+            ],
+            "type": "string",
+            "unit": "none",
+            "valueMaps": [
+              {
+                "$$hashKey": "object:7909",
+                "text": "up",
+                "value": "1"
+              },
+              {
+                "$$hashKey": "object:7910",
+                "text": "down",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "$$hashKey": "object:7780",
+            "alias": "Interface",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 0,
+            "mappingType": 1,
+            "pattern": "ifIndex",
+            "thresholds": [],
+            "type": "number",
+            "unit": "none"
+          },
+          {
+            "$$hashKey": "object:7781",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #C",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7782",
+            "alias": "MTU",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 0,
+            "mappingType": 1,
+            "pattern": "Value #E",
+            "thresholds": [],
+            "type": "number",
+            "unit": "none"
+          },
+          {
+            "$$hashKey": "object:7783",
+            "alias": "Speed",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #F",
+            "thresholds": [],
+            "type": "number",
+            "unit": "bps"
+          },
+          {
+            "$$hashKey": "object:7784",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #G",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7785",
+            "alias": "Physical Address",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "ifPhysAddress",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7786",
+            "alias": "Type",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "ifType",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7787",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #H",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7788",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #I",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7789",
+            "alias": "Name",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "ifName",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7790",
+            "alias": "Alias",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "ifAlias",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7791",
+            "alias": "Description",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "ifDescr",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7792",
+            "alias": "Sent",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #J",
+            "thresholds": [],
+            "type": "number",
+            "unit": "bytes"
+          },
+          {
+            "$$hashKey": "object:7793",
+            "alias": "Received",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #K",
+            "thresholds": [],
+            "type": "number",
+            "unit": "bytes"
+          },
+          {
+            "$$hashKey": "object:7794",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #L",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7795",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #M",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          }
+        ],
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(ifIndex{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCH1PORT1|IFINDEXSWITCHHOST1|IFINDEXSWITCH1PORT2\"}) by (ifIndex)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "M"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(ifName{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOST1|IFINDEXSWITCHHOST1|IFINDEXSWITCH1HOST2\"}) by (ifIndex,ifName)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "I"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(ifType{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOST1|IFINDEXSWITCHHOST1|IFINDEXSWITCH1HOST2\"}) by (ifIndex,ifType)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "G"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(ifPhysAddress{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOST1|IFINDEXSWITCHHOST1|IFINDEXSWITCH1HOST2\"}) by (ifIndex,ifPhysAddress)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "C"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(ifOperStatus{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOST1|IFINDEXSWITCHHOST1|IFINDEXSWITCH1HOST2\"}) by (ifIndex)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "D"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(ifMtu{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOST1|IFINDEXSWITCHHOST1|IFINDEXSWITCH1HOST2\"}) by (ifIndex)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "E"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "SNMP1NAME Switch Port Info",
+        "transform": "table",
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "ifIndex": true
+              },
+              "indexByName": {},
+              "renameByName": {}
+            }
+          }
+        ],
+        "type": "table-old"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 42
+        },
+        "hiddenSeries": false,
+        "id": 139,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:176",
+            "alias": "recv SWITCH1PORT1IF",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOST1\"}[1m])*8",
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "recv {{ifDescr}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOST1\"}[1m])*8",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "trans {{ifDescr}}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "SNMP1NAME Switch - Flow Bandwidth - Facing NODENAME1",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:118",
+            "format": "Bps",
+            "label": "bw out(-) / in(+)",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:119",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 49
+        },
+        "hiddenSeries": false,
+        "id": 241,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:176",
+            "alias": "recv SWITCH1PORT2IF",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOST2\"}[1m])*8",
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "recv {{ifDescr}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOST2\"}[1m])*8",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "trans {{ifDescr}}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "SNMP1NAME Switch - Flow Bandwidth - Facing SWITCH1PORT2IF (SNMP2NAME Switch)",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:118",
+            "format": "Bps",
+            "label": "bw out(-) / in(+)",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:119",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 60
+        },
+        "id": 131,
+        "panels": [],
+        "title": "Switch Flow Summary - SNMP2NAME",
+        "type": "row"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 24,
+          "x": 0,
+          "y": 61
+        },
+        "id": 133,
+        "options": {
+          "content": "```\nSwitch: SNMP2NAME   port 1: SWITCH2PORT1IF   port 2: SWITCH2PORT2IF   switch IP: IPSWITCH2\n ```",
+          "mode": "markdown"
+        },
+        "pluginVersion": "7.5.4",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Switch: SNMP2NAME Device Info",
+        "type": "text"
+      },
+      {
+        "columns": [],
+        "datasource": null,
+        "description": "Switch Interfaces, MAC Address, MTU, and Operational State",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fontSize": "100%",
+        "gridPos": {
+          "h": 4,
+          "w": 24,
+          "x": 0,
+          "y": 62
+        },
+        "id": 137,
+        "links": [],
+        "pageSize": null,
+        "scroll": true,
+        "showHeader": true,
+        "sort": {
+          "col": 3,
+          "desc": true
+        },
+        "styles": [
+          {
+            "$$hashKey": "object:7776",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Time",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7777",
+            "alias": "Last Status Change",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "MMMM D, YYYY LT",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #A",
+            "thresholds": [],
+            "type": "date",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7778",
+            "alias": "Admin Status",
+            "align": "auto",
+            "colorMode": "value",
+            "colors": [
+              "rgba(50, 172, 45, 0.97)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(245, 54, 54, 0.9)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 0,
+            "mappingType": 1,
+            "pattern": "Value #B",
+            "thresholds": [
+              "2",
+              "2"
+            ],
+            "type": "string",
+            "unit": "none",
+            "valueMaps": [
+              {
+                "$$hashKey": "object:7885",
+                "text": "enabled",
+                "value": "1"
+              },
+              {
+                "$$hashKey": "object:7886",
+                "text": "disabled",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "$$hashKey": "object:7779",
+            "alias": "Operational State",
+            "align": "auto",
+            "colorMode": "value",
+            "colors": [
+              "rgba(50, 172, 45, 0.97)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(245, 54, 54, 0.9)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 0,
+            "mappingType": 1,
+            "pattern": "Value #D",
+            "thresholds": [
+              "2",
+              "2"
+            ],
+            "type": "string",
+            "unit": "none",
+            "valueMaps": [
+              {
+                "$$hashKey": "object:7909",
+                "text": "up",
+                "value": "1"
+              },
+              {
+                "$$hashKey": "object:7910",
+                "text": "down",
+                "value": "2"
+              }
+            ]
+          },
+          {
+            "$$hashKey": "object:7780",
+            "alias": "Interface",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 0,
+            "mappingType": 1,
+            "pattern": "ifIndex",
+            "thresholds": [],
+            "type": "number",
+            "unit": "none"
+          },
+          {
+            "$$hashKey": "object:7781",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #C",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7782",
+            "alias": "MTU",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 0,
+            "mappingType": 1,
+            "pattern": "Value #E",
+            "thresholds": [],
+            "type": "number",
+            "unit": "none"
+          },
+          {
+            "$$hashKey": "object:7783",
+            "alias": "Speed",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #F",
+            "thresholds": [],
+            "type": "number",
+            "unit": "bps"
+          },
+          {
+            "$$hashKey": "object:7784",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #G",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7785",
+            "alias": "Physical Address",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "ifPhysAddress",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7786",
+            "alias": "Type",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "ifType",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7787",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #H",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7788",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #I",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7789",
+            "alias": "Name",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "ifName",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7790",
+            "alias": "Alias",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "ifAlias",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7791",
+            "alias": "Description",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "ifDescr",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7792",
+            "alias": "Sent",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #J",
+            "thresholds": [],
+            "type": "number",
+            "unit": "bytes"
+          },
+          {
+            "$$hashKey": "object:7793",
+            "alias": "Received",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #K",
+            "thresholds": [],
+            "type": "number",
+            "unit": "bytes"
+          },
+          {
+            "$$hashKey": "object:7794",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #L",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "$$hashKey": "object:7795",
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #M",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          }
+        ],
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(ifIndex{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2PORT1|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOST2\"}) by (ifIndex)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "M"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(ifName{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2PORT1|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOST2\"}) by (ifIndex,ifName)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "I"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(ifType{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2PORT1|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOST2\"}) by (ifIndex,ifType)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "G"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(ifPhysAddress{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2PORT1|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOST2\"}) by (ifIndex,ifPhysAddress)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "C"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(ifOperStatus{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2PORT1|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOST2\"}) by (ifIndex)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "D"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(ifMtu{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2PORT1|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOST2\"}) by (ifIndex)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "E"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "SNMP2NAME Switch Port Info",
+        "transform": "table",
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "ifIndex": true
+              },
+              "indexByName": {},
+              "renameByName": {}
+            }
+          }
+        ],
+        "type": "table-old"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 63
+        },
+        "hiddenSeries": false,
+        "id": 341,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:176",
+            "alias": "recv SWITCH2PORT1IF",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOST2\"}[1m])*8",
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "recv {{ifDescr}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOST2\"}[1m])*8",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "trans {{ifDescr}}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "SNMP2NAME Switch - Flow Bandwidth - Facing SWITCH2PORT1IF (SNMP1NAME Switch)",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:118",
+            "format": "Bps",
+            "label": "bw out(-) / in(+)",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:119",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 64
+        },
+        "hiddenSeries": false,
+        "id": 145,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:176",
+            "alias": "recv SWITCH2PORT2IF",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOST2\"}[1m])*8",
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "recv {{ifDescr}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOST2\"}[1m])*8",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "trans {{ifDescr}}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "SNMP2NAME Switch - Flow Bandwidth - Facing NODENAME2",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:118",
+            "format": "Bps",
+            "label": "bw out(-) / in(+)",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:119",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 65
+        },
+        "id": 147,
+        "panels": [],
+        "title": "Host Flow Summary - NODENAME2",
+        "type": "row"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 24,
+          "x": 0,
+          "y": 66
+        },
+        "id": 149,
+        "options": {
+          "content": "```\nnode name: NODENAME2   if name: IFNAMEHOST2   DATAPLANEIP2    IPHOST2    Vlan: VLANB\n ```",
+          "mode": "markdown"
+        },
+        "pluginVersion": "7.5.4",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "NODENAME2 General Info",
+        "type": "text"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": null,
+              "filterable": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Time"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 188
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "operstate"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 113
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "machine"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 24,
+          "x": 0,
+          "y": 67
+        },
+        "id": 151,
+        "options": {
+          "frameIndex": 2,
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "7.5.4",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "node_network_info{exported_instance=\"IPHOST2\",device=\"IFNAMEHOST2\"}",
+            "format": "time_series",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "node_uname_info{exported_instance=\"IPHOST2\"}",
+            "format": "time_series",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "node_network_mtu_bytes{exported_instance=\"IPHOST2\",device=\"IFNAMEHOST2\"}",
+            "format": "time_series",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "C"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "NODENAME2 Info",
+        "transformations": [
+          {
+            "id": "seriesToColumns",
+            "options": {
+              "byField": "Time"
+            }
+          },
+          {
+            "id": "labelsToFields",
+            "options": {}
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Value 1": true,
+                "Value 2": true,
+                "Value 3": true,
+                "__name__ 1": true,
+                "__name__ 2": true,
+                "__name__ 3": true,
+                "address": true,
+                "broadcast": true,
+                "domainname": true,
+                "duplex": true,
+                "instance": true,
+                "job": true,
+                "name": true,
+                "version": true
+              },
+              "indexByName": {},
+              "renameByName": {
+                "Value": "MTU",
+                "device": "interface",
+                "name": ""
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 68
+        },
+        "hiddenSeries": false,
+        "id": 155,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:176",
+            "alias": "trans IFNAMEHOST2",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "irate(node_network_receive_bytes_total{exported_instance=\"IPHOST2\", device=\"IFNAMEHOST2\"}[1m])*8",
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "recv {{device}}",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"IPHOST2\",device=\"IFNAMEHOST2\"}[1m])*8",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "trans {{device}}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "NODENAME2 - Flow Bandwidth Graph",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:118",
+            "format": "Bps",
+            "label": "bw out(-) / in(+)",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:119",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 144
+        },
+        "id": 8,
+        "panels": [],
+        "title": "Host Background Load",
+        "type": "row"
+      },
+      {
+        "cacheTimeout": null,
+        "datasource": "Prometheus",
+        "description": "Busy state of all CPU cores together in NODENAME1",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgba(50, 172, 45, 0.97)",
+                  "value": null
+                },
+                {
+                  "color": "rgba(237, 129, 40, 0.89)",
+                  "value": 85
+                },
+                {
+                  "color": "rgba(245, 54, 54, 0.9)",
+                  "value": 95
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 0,
+          "y": 145
+        },
+        "id": 52,
+        "links": [],
+        "options": {
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.4",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "(((count(count(node_cpu_seconds_total{exported_instance=\"IPHOST1\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOST1\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{exported_instance=\"IPHOST1\"}) by (cpu))",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A",
+            "step": 900
+          }
+        ],
+        "title": "NODENAME1 CPU Busy",
+        "type": "gauge"
+      },
+      {
+        "cacheTimeout": null,
+        "datasource": "Prometheus",
+        "description": "Busy state of all CPU cores together (15 min average) for NODENAME1",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgba(50, 172, 45, 0.97)",
+                  "value": null
+                },
+                {
+                  "color": "rgba(237, 129, 40, 0.89)",
+                  "value": 85
+                },
+                {
+                  "color": "rgba(245, 54, 54, 0.9)",
+                  "value": 95
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 6,
+          "y": 145
+        },
+        "id": 55,
+        "links": [],
+        "options": {
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.4",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "avg(node_load15{exported_instance=\"IPHOST1\"}) /  count(count(node_cpu_seconds_total{exported_instance=\"IPHOST1\"}) by (cpu)) * 100",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A",
+            "step": 900
+          }
+        ],
+        "title": "NODENAME1 Sys Load (15m avg)",
+        "type": "gauge"
+      },
+      {
+        "cacheTimeout": null,
+        "datasource": "Prometheus",
+        "description": "Busy state of all CPU cores together in NODENAME2",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgba(50, 172, 45, 0.97)",
+                  "value": null
+                },
+                {
+                  "color": "rgba(237, 129, 40, 0.89)",
+                  "value": 85
+                },
+                {
+                  "color": "rgba(245, 54, 54, 0.9)",
+                  "value": 95
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 12,
+          "y": 145
+        },
+        "id": 53,
+        "links": [],
+        "options": {
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.4",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "(((count(count(node_cpu_seconds_total{exported_instance=\"IPHOST2\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOST2\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{exported_instance=\"IPHOST2\"}) by (cpu))",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A",
+            "step": 900
+          }
+        ],
+        "title": "NODENAME2 CPU Busy",
+        "type": "gauge"
+      },
+      {
+        "cacheTimeout": null,
+        "datasource": "Prometheus",
+        "description": "Busy state of all CPU cores together (15 min average) for NODENAME2",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgba(50, 172, 45, 0.97)",
+                  "value": null
+                },
+                {
+                  "color": "rgba(237, 129, 40, 0.89)",
+                  "value": 85
+                },
+                {
+                  "color": "rgba(245, 54, 54, 0.9)",
+                  "value": 95
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 18,
+          "y": 145
+        },
+        "id": 56,
+        "links": [],
+        "options": {
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.4",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "avg(node_load15{exported_instance=\"IPHOST2\"}) /  count(count(node_cpu_seconds_total{exported_instance=\"IPHOST2\"}) by (cpu)) * 100",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A",
+            "step": 900
+          }
+        ],
+        "title": "NODENAME2 Sys Load (15m avg)",
+        "type": "gauge"
+      },
+      {
+        "cacheTimeout": null,
+        "datasource": "Prometheus",
+        "description": "NODENAME1 Non available RAM memory",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 0,
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgba(50, 172, 45, 0.97)",
+                  "value": null
+                },
+                {
+                  "color": "rgba(237, 129, 40, 0.89)",
+                  "value": 80
+                },
+                {
+                  "color": "rgba(245, 54, 54, 0.9)",
+                  "value": 90
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 0,
+          "y": 149
+        },
+        "hideTimeOverride": false,
+        "id": 58,
+        "links": [],
+        "options": {
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.4",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "((node_memory_MemTotal_bytes{exported_instance=\"IPHOST1\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOST1\"}) / (node_memory_MemTotal_bytes{exported_instance=\"IPHOST1\"} )) * 100",
+            "format": "time_series",
+            "hide": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A",
+            "step": 900
+          },
+          {
+            "exemplar": true,
+            "expr": "100 - ((node_memory_MemAvailable_bytes{exported_instance=\"IPHOST1\"} * 100) / node_memory_MemTotal_bytes{exported_instance=\"IPHOST1\"})",
+            "format": "time_series",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "B",
+            "step": 900
+          }
+        ],
+        "title": "NODENAME1 RAM Used",
+        "type": "gauge"
+      },
+      {
+        "cacheTimeout": null,
+        "datasource": "Prometheus",
+        "description": "NODENAME1 Used Swap",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgba(50, 172, 45, 0.97)",
+                  "value": null
+                },
+                {
+                  "color": "rgba(237, 129, 40, 0.89)",
+                  "value": 10
+                },
+                {
+                  "color": "rgba(245, 54, 54, 0.9)",
+                  "value": 25
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 6,
+          "y": 149
+        },
+        "id": 60,
+        "links": [],
+        "options": {
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.4",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "((node_memory_SwapTotal_bytes{exported_instance=\"IPHOST1\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOST1\"}) / (node_memory_SwapTotal_bytes{exported_instance=\"IPHOST1\"} )) * 100",
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A",
+            "step": 900
+          }
+        ],
+        "title": "NODENAME1 SWAP Used",
+        "type": "gauge"
+      },
+      {
+        "cacheTimeout": null,
+        "datasource": "Prometheus",
+        "description": "NODENAME2 Non available RAM memory",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 0,
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgba(50, 172, 45, 0.97)",
+                  "value": null
+                },
+                {
+                  "color": "rgba(237, 129, 40, 0.89)",
+                  "value": 80
+                },
+                {
+                  "color": "rgba(245, 54, 54, 0.9)",
+                  "value": 90
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 12,
+          "y": 149
+        },
+        "hideTimeOverride": false,
+        "id": 62,
+        "links": [],
+        "options": {
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.4",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "((node_memory_MemTotal_bytes{exported_instance=\"IPHOST2\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOST2\"}) / (node_memory_MemTotal_bytes{exported_instance=\"IPHOST2\"} )) * 100",
+            "format": "time_series",
+            "hide": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A",
+            "step": 900
+          },
+          {
+            "exemplar": true,
+            "expr": "100 - ((node_memory_MemAvailable_bytes{exported_instance=\"IPHOST2\"} * 100) / node_memory_MemTotal_bytes{exported_instance=\"IPHOST2\"})",
+            "format": "time_series",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "B",
+            "step": 900
+          }
+        ],
+        "title": "NODENAME2 RAM Used",
+        "type": "gauge"
+      },
+      {
+        "cacheTimeout": null,
+        "datasource": "Prometheus",
+        "description": "NODENAME2 Used Swap",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgba(50, 172, 45, 0.97)",
+                  "value": null
+                },
+                {
+                  "color": "rgba(237, 129, 40, 0.89)",
+                  "value": 10
+                },
+                {
+                  "color": "rgba(245, 54, 54, 0.9)",
+                  "value": 25
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 18,
+          "y": 149
+        },
+        "id": 61,
+        "links": [],
+        "options": {
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "7.5.4",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "((node_memory_SwapTotal_bytes{exported_instance=\"IPHOST2\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOST2\"}) / (node_memory_SwapTotal_bytes{exported_instance=\"IPHOST2\"} )) * 100",
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A",
+            "step": 900
+          }
+        ],
+        "title": "NODENAME2 SWAP Used",
+        "type": "gauge"
+      },
+      {
+        "aliasColors": {
+          "Busy": "#EAB839",
+          "Busy Iowait": "#890F02",
+          "Busy other": "#1F78C1",
+          "Idle": "#052B51",
+          "Idle - Waiting for something to happen": "#052B51",
+          "guest": "#9AC48A",
+          "idle": "#052B51",
+          "iowait": "#EAB839",
+          "irq": "#BF1B00",
+          "nice": "#C15C17",
+          "softirq": "#E24D42",
+          "steal": "#FCE2DE",
+          "system": "#508642",
+          "user": "#5195CE"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "decimals": 2,
+        "description": "NODENAME1 CPU Load (System, User, I/O Wait, IRQs, Idle, Other)",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 4,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 0,
+          "y": 153
+        },
+        "hiddenSeries": false,
+        "id": 64,
+        "legend": {
+          "alignAsTable": false,
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "sideWidth": 250,
+          "sort": null,
+          "sortDesc": null,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "maxPerRow": 6,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": true,
+        "pluginVersion": "7.5.4",
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:299",
+            "alias": "Busy Iowait",
+            "color": "#890F02"
+          },
+          {
+            "$$hashKey": "object:300",
+            "alias": "Idle",
+            "color": "#7EB26D"
+          },
+          {
+            "$$hashKey": "object:301",
+            "alias": "Busy System",
+            "color": "#EAB839"
+          },
+          {
+            "$$hashKey": "object:302",
+            "alias": "Busy User",
+            "color": "#0A437C"
+          },
+          {
+            "$$hashKey": "object:303",
+            "alias": "Busy Other",
+            "color": "#6D1F62"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": true,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=\"system\",exported_instance=\"IPHOST1\"}[5m])) * 100",
+            "format": "time_series",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Busy System",
+            "refId": "A",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='user',exported_instance=\"IPHOST1\"}[5m])) * 100",
+            "format": "time_series",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Busy User",
+            "refId": "B",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='iowait',exported_instance=\"IPHOST1\"}[5m])) * 100",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Busy Iowait",
+            "refId": "C",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=~\".*irq\",exported_instance=\"IPHOST1\"}[5m])) * 100",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Busy IRQs",
+            "refId": "D",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "sum (irate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',exported_instance=\"IPHOST1\"}[5m])) * 100",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Busy Other",
+            "refId": "E",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOST1\"}[5m])) * 100",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Idle",
+            "refId": "F",
+            "step": 240
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "NODENAME1 CPU Load",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:334",
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "max": "100",
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:335",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {
+          "Busy": "#EAB839",
+          "Busy Iowait": "#890F02",
+          "Busy other": "#1F78C1",
+          "Idle": "#052B51",
+          "Idle - Waiting for something to happen": "#052B51",
+          "guest": "#9AC48A",
+          "idle": "#052B51",
+          "iowait": "#EAB839",
+          "irq": "#BF1B00",
+          "nice": "#C15C17",
+          "softirq": "#E24D42",
+          "steal": "#FCE2DE",
+          "system": "#508642",
+          "user": "#5195CE"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "decimals": 2,
+        "description": "NODENAME2 CPU Load (System, User, I/O Wait, IRQs, Idle, Other)",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 4,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 12,
+          "y": 153
+        },
+        "hiddenSeries": false,
+        "id": 65,
+        "legend": {
+          "alignAsTable": false,
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "sideWidth": 250,
+          "sort": null,
+          "sortDesc": null,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "maxPerRow": 6,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": true,
+        "pluginVersion": "7.5.4",
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:299",
+            "alias": "Busy Iowait",
+            "color": "#890F02"
+          },
+          {
+            "$$hashKey": "object:300",
+            "alias": "Idle",
+            "color": "#7EB26D"
+          },
+          {
+            "$$hashKey": "object:301",
+            "alias": "Busy System",
+            "color": "#EAB839"
+          },
+          {
+            "$$hashKey": "object:302",
+            "alias": "Busy User",
+            "color": "#0A437C"
+          },
+          {
+            "$$hashKey": "object:303",
+            "alias": "Busy Other",
+            "color": "#6D1F62"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": true,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=\"system\",exported_instance=\"IPHOST2\"}[5m])) * 100",
+            "format": "time_series",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Busy System",
+            "refId": "A",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='user',exported_instance=\"IPHOST2\"}[5m])) * 100",
+            "format": "time_series",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Busy User",
+            "refId": "B",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='iowait',exported_instance=\"IPHOST2\"}[5m])) * 100",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Busy Iowait",
+            "refId": "C",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=~\".*irq\",exported_instance=\"IPHOST2\"}[5m])) * 100",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Busy IRQs",
+            "refId": "D",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "sum (irate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',exported_instance=\"IPHOST2\"}[5m])) * 100",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Busy Other",
+            "refId": "E",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOST2\"}[5m])) * 100",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Idle",
+            "refId": "F",
+            "step": 240
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "NODENAME2 CPU Load",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:334",
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "max": "100",
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:335",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {
+          "Apps": "#629E51",
+          "Buffers": "#614D93",
+          "Cache": "#6D1F62",
+          "Cached": "#511749",
+          "Committed": "#508642",
+          "Free": "#0A437C",
+          "Hardware Corrupted - Amount of RAM that the kernel identified as corrupted / not working": "#CFFAFF",
+          "Inactive": "#584477",
+          "PageTables": "#0A50A1",
+          "Page_Tables": "#0A50A1",
+          "RAM_Free": "#E0F9D7",
+          "SWAP Used": "#BF1B00",
+          "Slab": "#806EB7",
+          "Slab_Cache": "#E0752D",
+          "Swap": "#BF1B00",
+          "Swap Used": "#BF1B00",
+          "Swap_Cache": "#C15C17",
+          "Swap_Free": "#2F575E",
+          "Unused": "#EAB839"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "decimals": 2,
+        "description": "NODENAME1 Basic memory usage (RAM Total, Used, Cache, Buffer, Free, SWAP)",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 4,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 0,
+          "y": 160
+        },
+        "hiddenSeries": false,
+        "id": 68,
+        "legend": {
+          "alignAsTable": false,
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "sideWidth": 350,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "maxPerRow": 6,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:641",
+            "alias": "RAM Total",
+            "color": "#E0F9D7",
+            "fill": 0,
+            "stack": false
+          },
+          {
+            "$$hashKey": "object:642",
+            "alias": "RAM Cache + Buffer",
+            "color": "#052B51"
+          },
+          {
+            "$$hashKey": "object:643",
+            "alias": "RAM Free",
+            "color": "#7EB26D"
+          },
+          {
+            "$$hashKey": "object:644",
+            "alias": "Avaliable",
+            "color": "#DEDAF7",
+            "fill": 0,
+            "stack": false
+          }
+        ],
+        "spaceLength": 10,
+        "stack": true,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOST1\"}",
+            "format": "time_series",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "RAM Total",
+            "refId": "A",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOST1\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOST1\"} - (node_memory_Cached_bytes{exported_instance=\"IPHOST1\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOST1\"})",
+            "format": "time_series",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "RAM Used",
+            "refId": "B",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_memory_Cached_bytes{exported_instance=\"IPHOST1\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOST1\"}",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "RAM Cache + Buffer",
+            "refId": "C",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_memory_MemFree_bytes{exported_instance=\"IPHOST1\"}",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "RAM Free",
+            "refId": "D",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "(node_memory_SwapTotal_bytes{exported_instance=\"IPHOST1\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOST1\"})",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "SWAP Used",
+            "refId": "E",
+            "step": 240
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "NODENAME1 Memory Load",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:677",
+            "format": "bytes",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:678",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {
+          "Apps": "#629E51",
+          "Buffers": "#614D93",
+          "Cache": "#6D1F62",
+          "Cached": "#511749",
+          "Committed": "#508642",
+          "Free": "#0A437C",
+          "Hardware Corrupted - Amount of RAM that the kernel identified as corrupted / not working": "#CFFAFF",
+          "Inactive": "#584477",
+          "PageTables": "#0A50A1",
+          "Page_Tables": "#0A50A1",
+          "RAM_Free": "#E0F9D7",
+          "SWAP Used": "#BF1B00",
+          "Slab": "#806EB7",
+          "Slab_Cache": "#E0752D",
+          "Swap": "#BF1B00",
+          "Swap Used": "#BF1B00",
+          "Swap_Cache": "#C15C17",
+          "Swap_Free": "#2F575E",
+          "Unused": "#EAB839"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "decimals": 2,
+        "description": "NODENAME2 Basic memory usage (RAM Total, Used, Cache, Buffer, Free, SWAP)",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 4,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 12,
+          "y": 160
+        },
+        "hiddenSeries": false,
+        "id": 67,
+        "legend": {
+          "alignAsTable": false,
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "sideWidth": 350,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "maxPerRow": 6,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:641",
+            "alias": "RAM Total",
+            "color": "#E0F9D7",
+            "fill": 0,
+            "stack": false
+          },
+          {
+            "$$hashKey": "object:642",
+            "alias": "RAM Cache + Buffer",
+            "color": "#052B51"
+          },
+          {
+            "$$hashKey": "object:643",
+            "alias": "RAM Free",
+            "color": "#7EB26D"
+          },
+          {
+            "$$hashKey": "object:644",
+            "alias": "Avaliable",
+            "color": "#DEDAF7",
+            "fill": 0,
+            "stack": false
+          }
+        ],
+        "spaceLength": 10,
+        "stack": true,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOST2\"}",
+            "format": "time_series",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "RAM Total",
+            "refId": "A",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOST2\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOST2\"} - (node_memory_Cached_bytes{exported_instance=\"IPHOST2\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOST2\"})",
+            "format": "time_series",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "RAM Used",
+            "refId": "B",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_memory_Cached_bytes{exported_instance=\"IPHOST2\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOST2\"}",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "RAM Cache + Buffer",
+            "refId": "C",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_memory_MemFree_bytes{exported_instance=\"IPHOST2\"}",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "RAM Free",
+            "refId": "D",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "(node_memory_SwapTotal_bytes{exported_instance=\"IPHOST2\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOST2\"})",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "SWAP Used",
+            "refId": "E",
+            "step": 240
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "NODENAME2 Memory Load",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:677",
+            "format": "bytes",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:678",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 2,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 10,
+          "w": 12,
+          "x": 0,
+          "y": 167
+        },
+        "hiddenSeries": false,
+        "id": 70,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "maxPerRow": 6,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:1191",
+            "alias": "/.*waiting.*/",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "irate(node_schedstat_running_seconds_total{exported_instance=\"IPHOST1\"}[5m])",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "CPU {{ cpu }} - seconds spent running a process",
+            "refId": "A",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "irate(node_schedstat_waiting_seconds_total{exported_instance=\"IPHOST1\"}[5m])",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "CPU {{ cpu }} - seconds spent by processing waiting for this CPU",
+            "refId": "B",
+            "step": 240
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "NODENAME1 Process Schedule Stats Running/Waiting",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1198",
+            "format": "s",
+            "label": "seconds",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1199",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 2,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 10,
+          "w": 12,
+          "x": 12,
+          "y": 167
+        },
+        "hiddenSeries": false,
+        "id": 71,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "maxPerRow": 6,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "irate(node_schedstat_running_seconds_total{exported_instance=\"IPHOST2\"}[5m])",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "CPU {{ cpu }} - seconds spent running a process",
+            "refId": "A",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "irate(node_schedstat_waiting_seconds_total{exported_instance=\"IPHOST2\"}[5m])",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "CPU {{ cpu }} - seconds spent by processing waiting for this CPU",
+            "refId": "B",
+            "step": 240
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "NODENAME2 Process Schedule Stats Running/Waiting",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1198",
+            "format": "s",
+            "label": "seconds",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1199",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 2,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 10,
+          "w": 12,
+          "x": 0,
+          "y": 177
+        },
+        "hiddenSeries": false,
+        "id": 73,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:1457",
+            "alias": "/.*Critical*./",
+            "color": "#E24D42",
+            "fill": 0
+          },
+          {
+            "$$hashKey": "object:1458",
+            "alias": "/.*Max*./",
+            "color": "#EF843C",
+            "fill": 0
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "node_hwmon_temp_celsius{exported_instance=\"IPHOST1\"}",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "{{ chip }} {{ sensor }} temp",
+            "refId": "A",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_hwmon_temp_crit_alarm_celsius{exported_instance=\"IPHOST1\"}",
+            "format": "time_series",
+            "hide": true,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "{{ chip }} {{ sensor }} Critical Alarm",
+            "refId": "B",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_hwmon_temp_crit_celsius{exported_instance=\"IPHOST1\"}",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "{{ chip }} {{ sensor }} Critical",
+            "refId": "C",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_hwmon_temp_crit_hyst_celsius{exported_instance=\"IPHOST1\"}",
+            "format": "time_series",
+            "hide": true,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "{{ chip }} {{ sensor }} Critical Historical",
+            "refId": "D",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_hwmon_temp_max_celsius{exported_instance=\"IPHOST1\"}",
+            "format": "time_series",
+            "hide": true,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "{{ chip }} {{ sensor }} Max",
+            "refId": "E",
+            "step": 240
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "NODENAME1 Hardware Temperature Monitor",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1475",
+            "format": "celsius",
+            "label": "temperature",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1476",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 2,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 10,
+          "w": 12,
+          "x": 12,
+          "y": 177
+        },
+        "hiddenSeries": false,
+        "id": 74,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.5.4",
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:1457",
+            "alias": "/.*Critical*./",
+            "color": "#E24D42",
+            "fill": 0
+          },
+          {
+            "$$hashKey": "object:1458",
+            "alias": "/.*Max*./",
+            "color": "#EF843C",
+            "fill": 0
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "node_hwmon_temp_celsius{exported_instance=\"IPHOST2\"}",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "{{ chip }} {{ sensor }} temp",
+            "refId": "A",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_hwmon_temp_crit_alarm_celsius{exported_instance=\"IPHOST2\"}",
+            "format": "time_series",
+            "hide": true,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "{{ chip }} {{ sensor }} Critical Alarm",
+            "refId": "B",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_hwmon_temp_crit_celsius{exported_instance=\"IPHOST2\"}",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "{{ chip }} {{ sensor }} Critical",
+            "refId": "C",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_hwmon_temp_crit_hyst_celsius{exported_instance=\"IPHOST2\"}",
+            "format": "time_series",
+            "hide": true,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "{{ chip }} {{ sensor }} Critical Historical",
+            "refId": "D",
+            "step": 240
+          },
+          {
+            "exemplar": true,
+            "expr": "node_hwmon_temp_max_celsius{exported_instance=\"IPHOST2\"}",
+            "format": "time_series",
+            "hide": true,
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "{{ chip }} {{ sensor }} Max",
+            "refId": "E",
+            "step": 240
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "NODENAME2 Hardware Temperature Monitor",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1475",
+            "format": "celsius",
+            "label": "temperature",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1476",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 20,
+          "w": 24,
+          "x": 0,
+          "y": 178
+        },
+        "id": 990,
+        "panels": [],
+        "title": "L2 Debugging",
+        "type": "row"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 0
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "red",
+                    "index": 0,
+                    "text": "FAILURE"
+                  },
+                  "1": {
+                    "color": "green",
+                    "index": 1,
+                    "text": "SUCCESS"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 14,
+          "w": 24,
+          "x": 0,
+          "y": 179
+        },
+        "id": 991,
+        "options": {
+          "alignValue": "center",
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "mergeValues": true,
+          "rowHeight": 0.9,
+          "showValue": "always",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.2.3",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "m_host1_arp_on",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Host1 ARP On",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host1_ping_status",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Host1 Ping Host2",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host1_snmp_mac_status",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Host1 Contains Switch MAC Address",
+            "refId": "C"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host1_snmp_mac_status2",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Host1 Contains Switch2 MAC Address",
+            "refId": "I"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host1_has_host2_arp",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Host1 Contains Host2 IP",
+            "refId": "D"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host2_arp_on",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Host2 ARP On",
+            "refId": "E"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host2_ping_status",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Host2 Ping Host1",
+            "refId": "F"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host2_snmp_mac_status",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Host2 Contains Switch MAC Address",
+            "refId": "G"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host2_has_host1_arp",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Host2 Contains Host1 IP",
+            "refId": "H"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host2_snmp_mac_status2",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Host2 Contains Switch2 MAC Address",
+            "refId": "J"
+          }
+        ],
+        "title": "ARP Exporter Metrics Correlation",
+        "transparent": true,
+        "type": "state-timeline"
+      },
+      {
+        "datasource": null,
+        "description": "SNMP Exporter Metrics Correlation",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 0
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "red",
+                    "index": 0,
+                    "text": "FAILURE"
+                  },
+                  "1": {
+                    "color": "green",
+                    "index": 1,
+                    "text": "SUCCESS"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 180
+        },
+        "id": 992,
+        "options": {
+          "alignValue": "left",
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "mergeValues": true,
+          "rowHeight": 0.9,
+          "showValue": "always",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.2.3",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "m_host1_snmp_on_",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Host1 SNMP Exporter Running",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_switch_host1_mac_",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Switch1 Contains Host1 Mac Address",
+            "refId": "C"
+          },
+          {
+            "exemplar": true,
+            "expr": "SWITCH2_HOSTA_MAC",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Switch2 Contains Host1 Mac Address",
+            "refId": "E"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host2_snmp_on_",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Host2 SNMP Exporter Running",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_switch_host2_mac_",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Switch1 Contains Host2 MAC Address",
+            "refId": "D"
+          },
+          {
+            "exemplar": true,
+            "expr": "SWITCH2_HOSTB_MAC",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Switch2 Contains Host2 Mac Address",
+            "refId": "F"
+          }
+        ],
+        "title": "SNMP Exporter Debugger",
+        "transparent": true,
+        "type": "state-timeline"
+      },
+      {
+        "datasource": null,
+        "description": "Node Exporter Status",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 0
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "red",
+                    "index": 0,
+                    "text": "FAILURE"
+                  },
+                  "1": {
+                    "color": "green",
+                    "index": 1,
+                    "text": "SUCCESS"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 181
+        },
+        "id": 993,
+        "options": {
+          "alignValue": "left",
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "mergeValues": true,
+          "rowHeight": 0.9,
+          "showValue": "always",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.2.3",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "m_host1_node_on",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Host1 Node Exporter",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host2_node_on",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "Host2 Node Exporter",
+            "refId": "B"
+          }
+        ],
+        "title": "Node Exporter Debugger",
+        "transparent": true,
+        "type": "state-timeline"
+      }
+    ],
+    "time": {
+      "from": "now-15m",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "DASHTITLE",
+    "uid": null,
+    "id": null,
+    "version": 2
+  }
+}

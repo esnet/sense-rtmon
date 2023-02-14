@@ -3,7 +3,6 @@
 import requests 
 import json
 import sys
-import yaml
 import os
 sys.path.append("..") # Adds higher directory to python modules path.
 import cloud_functions
@@ -13,6 +12,7 @@ data,file_name = cloud_functions.read_yml_file("config_flow",sys.argv,3,2)
             
 # Get Default Home Dashboard
 url = f"http://{str(data['grafanaHostIP'])}:{str(data['grafanaPort'])}/api/dashboards/db"
+# url = f"{str(data['grafana_host'])}/api/dashboards/db"
 
 # HTTP Post Header
 # Replace with your Grafana API key

@@ -7,44 +7,38 @@ from datetime import datetime
 sys.path.append("..") # Adds higher directory to python modules path.
 import cloud_functions
 
-# parse file and general info
+#### parse file and general info ####
 print("\n\nParsing config file...")
 data,file_name = cloud_functions.read_yml_file("config_flow",sys.argv,1,2)
-rep = cloud_functions.replacement_template() # rep for replacements
+rep = {}
 title = data["title"] + cloud_functions.make_title(data)
-push_metric = f"{data['host_ip']}:9091/metrics" # pushgateway metrics page
+push_metric = f"{data['pushgateway']}/metrics" # pushgateway metrics page
 rep["GRAFANAHOST"] = data['host_ip']
 rep["DASHTITLE"] = title
 
-# process host
+######## process host ########
 print("Process Host Information")
-host_num = data['host']['num']
 host_if_vlan = []
-for i in range(host_num):
-    j = i+1 # j is 1 instead of 0 
-    rep[f"IPHOST{j}"] = data[f"host{j}"]["ip"]
-    rep[f"VLAN{j}"] = data[f"host{j}"]["vlan"]
-    rep[f"IFNAMEHOST{j}"] = data["host{j}"]["interface"]
-    rep[f"DATAPLANEIP{j}"] = data[f"host{j}"]["interface_ip"]
-    rep[f"NODENAME{j}"] = data[f"host{j}"]["node"]
-    rep[f"IFINDEXSWITCHHOST{j}"] = cloud_functions.index_finder(push_metric,data[f"host{j}"]["port{j}"]["ifName"])
+for i in range(1,data['host']['num']+1):
+    rep[f"IPHOST{i}"] = data[f"host{i}"]["ip"]
+    rep[f"VLAN{i}"] = data[f"host{i}"]["vlan"]
+    rep[f"IFNAMEHOST{i}"] = data["host{i}"]["interface"]
+    rep[f"DATAPLANEIP{i}"] = data[f"host{i}"]["interface_ip"]
+    rep[f"NODENAME{i}"] = data[f"host{i}"]["node"]
+    rep[f"IFINDEXSWITCHHOST{i}"] = cloud_functions.index_finder(push_metric,data[f"host{i}"]["port{i}"]["ifName"])
 
-# process switch SNMP needs to be run first
+#### process switch SNMP needs to be run first ####
 print("Process Switch Information")
 print("find correct index from snmp exporter\n\n")
-switch_num = data['switch']['num']
-for i in range(host_num):
-    j = i+1 # j is 1 instead of 0 
-    rep[f"IPSWITCH{j}"] = data[f"switch{j}"]["target"]
-    rep[f"SNMP{j}NAME"]= data[f"switch{j}"]["institute"]
-    rep[f"SNMP{j}HOSTIP"] = data[f"switch{j}"]["running_from_ip"]
+for i in range(1,data['switch']['num']+1):
+    rep[f"IPSWITCH{i}"] = data[f"switch{i}"]["target"]
+    rep[f"SNMP{i}NAME"]= data[f"switch{i}"]["institute"]
+    rep[f"SNMP{i}HOSTIP"] = data[f"switch{i}"]["running_from_ip"]
     
-    num_port = data[f"switch{j}"]["num_port"]
-    for k in range(num_port):
-        l = k+1 # l is 1 instead of 0
-        rep[f"SWITCH{j}PORT{l}IF"] = data[f"switch{j}"][f"port{l}"]["if_name"]
-        rep[f"SWITCH{j}PORT{l}VLAN"]= data[f"switch{j}"][f"port{l}"]["vlan"]
-        rep[f"IFINDEXSWITCH{j}PORT{l}"] = cloud_functions.index_finder(push_metric,data[f"switch{j}"][f"port{l}"]["if_name"])
+    for j in range(i,data[f"switch{i}"]["num_port"]+1):
+        rep[f"SWITCH{i}PORT{j}IF"] = data[f"switch{i}"][f"port{j}"]["if_name"]
+        rep[f"SWITCH{i}PORT{j}VLAN"]= data[f"switch{i}"][f"port{j}"]["vlan"]
+        rep[f"IFINDEXSWITCH{i}PORT{j}"] = cloud_functions.index_finder(push_metric,data[f"switch{i}"][f"port{j}"]["if_name"])
 
 # replacing
 cloud_functions.replacing_json(f"./templates/future_proof.json","out.json",data,rep)

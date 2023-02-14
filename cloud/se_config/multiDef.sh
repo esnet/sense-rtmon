@@ -99,12 +99,12 @@ else
 fi
 
 ####################### SMMP Exporter #################################
-if curl ${pushgateway}:9091/metrics | grep "dot1.*instance=\"${host1}\".*job=\"snmp-exporter\".*"; then
+if curl ${pushgateway}:9091/metrics | grep "ifAlias.*instance=\"${host1}\".*job=\"snmp-exporter\".*target_switch=\"${switch_ip1}\".*"; then
     echo "m_host1_snmp_on_${flow_vlan}{host=\"${host1}\"} 1";
 else 
     echo "m_host1_snmp_on_${flow_vlan}{host=\"${host1}\"} 0";
 fi
-if curl ${pushgateway}:9091/metrics | grep "dot1.*instance=\"${host2}\".*job=\"snmp-exporter\".*"; then
+if curl ${pushgateway}:9091/metrics | grep "ifAlias.*instance=\"${host2}\".*job=\"snmp-exporter\".*target_switch=\"${switch_ip2}\".*"; then
     echo "m_host2_snmp_on_${flow_vlan}{host=\"${host2}\"} 1";
 else 
     echo "m_host2_snmp_on_${flow_vlan}{host=\"${host2}\"} 0";
@@ -137,7 +137,8 @@ if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*
 else 
     echo "m_switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
 fi
-
+# host1 finds its own mac address from switch 2 arp table
+# host1 could find its own mac address from its own node exporter
 if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*"; then
     echo "m_switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
     # echo "host1_mac{mac=\"${host1_mac_no_quote}\"} 1"

@@ -1,6 +1,5 @@
 import json
 import os
-import yaml
 import sys
 import re 
 from datetime import datetime
@@ -18,6 +17,10 @@ print("!!    Visit Google Doc for Grafana API and add Prometheus as a Data Sourc
 
 # curl the API key to here
 curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" +str(current_time) + "\", \"role\": \"Admin\"}' http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys"
+
+# curl the API key to here
+# curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" +str(current_time) + "\", \"role\": \"Admin\"}' http://admin:admin@" + str(data['grafana_host']) + "/api/auth/keys"
+
 token = os.popen(curlCMD).read()
 result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
 api_key = str(result.group(1))

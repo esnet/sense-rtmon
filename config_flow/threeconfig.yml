@@ -1,19 +1,24 @@
 ## SECTION 1 GENERAL INFORMATION ##
 title: "Multi Switch Flow Dashboard"
 flow: " flow 2 "
-host_ip: 198.124.151.8 
+hostIP: 198.124.151.8 
 grafana_host: 'sense-mon.es.net:3000'
 pushgateway: 'sense-mon.es.net:9091'
-grafana_api: "CONFIG"
+grafanaAPIToken: "CONFIG"
 
 host: # Host 1
   num: 2 # Number of hosts
   
-  host1:
-    institute: 'caltech'
+  - institute: 'caltech'
     node: 'sdn-dtn-2-10.ultralight.org'
     ip: '10.251.86.10'
-    interface: 'ens2f0np0.3911'
+    interface: 
+      - name: 'ens2f0np0.3911'
+        peer: 
+           node:
+           port: 
+      - name: ''
+        peer: ...
     interface_ip: '10.251.86.10/24'
     vlan: 'not_used'
     num_port: 1
@@ -21,23 +26,22 @@ host: # Host 1
       if_name: 'hundredGigE 1/31'
       vlan: '3911'
 
-  host2: # Host 2
-    institute: 'ucsd_cluster'
+  - institute: 'ucsd_cluster'
     node: 'k8s-gen4-01.sdsc.optiputer.net'
     ip: '10.251.86.14'
     interface: 'vlan.3911'
+      port1:
+        if_name: 'etp27'
+        vlan: '3911'
     interface_ip: '10.251.86.14'
     vlan: '3911'
     num_port: 1
-    port1:
-      if_name: 'etp27'
-      vlan: '3911'
 
 ## SECTION 2 SWITCH INFORMATION ##
 switch:
   num: 3 # Number of switches
-
-  switch1:
+  # could also do an array style
+  switch1:    
     institute: 'caltech'
     running_from_ip: '10.251.86.10'
     target: 172.16.1.1
@@ -48,6 +52,9 @@ switch:
     port2:
       if_name: 'Port-channel 103'
       vlan: '3911'
+      peer: 
+        node: switch2
+        port: port1
 
   switch2:
     institute: 'ucsd_cluster'
@@ -57,6 +64,9 @@ switch:
     port1:
       if_name: 'PortChannel501'
       vlan: '3911'
+      peer: 
+        node: switch1
+        port: port2
     port2:
       if_name: 'etp27'
       vlan: '3911'   

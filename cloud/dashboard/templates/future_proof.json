@@ -38,7 +38,7 @@
         "title": "Host Node Exporter",
         "tooltip": "",
         "type": "link",
-        "url": "http://IPHOSTA:3000/d/rYdddlPWj/node-exporter-full?orgId=1&refresh=1m"
+        "url": "http://GRAFANAHOST:3000/d/rYdddlPWj/node-exporter-full?orgId=1&refresh=1m"
       },
       {
         "asDropdown": false,
@@ -50,7 +50,7 @@
         "title": "Switch Diagnostics Dashboard",
         "tooltip": "",
         "type": "link",
-        "url": "http://IPHOSTA:3000/d/A3jB7x9Gz/sdn-testbed-dashboard?orgId=1"
+        "url": "http://GRAFANAHOST:3000/d/A3jB7x9Gz/sdn-testbed-dashboard?orgId=1"
       }
     ],
     "panels": [
@@ -103,7 +103,7 @@
           "authPassword": "",
           "authUsername": "",
           "composites": [],
-          "content": "graph  LR  \n  subgraph  h1  [\"NODENAMEA\"]\n  ip{{VLAN: VLANA  -  IP: DATAPLANEIPA}}\n  e(IFNAMEHOSTA)\n  end\n  \n  e(IFNAMEHOSTA)  ----  sw1s1if[NAMEIFAIN]\n\n  subgraph  sw1  [\"SNMPANAME Switch\"]\n  subgraph  sw1s1  [\"port\"]\n  sw1s1vlan{{VLAN:  SWITCHAINVLAN}}\n  sw1s1if[NAMEIFAIN]\n  end\n  subgraph  sw1s2  [\"port\"]\n  sw1s2vlan{{VLAN: SWITCHAOUTVLAN}}\n  sw1s2ifout[NAMEIFAOUT]\n  end\n  end\n\n  subgraph  sw2  [\"SNMPBNAME Switch\"]\n  subgraph  sw2s1  [\"port\"]\n  sw2s1vlan{{VLAN: SWITCHBINVLAN}}\n  sw2s1if[NAMEIFBIN]\n  end\n  subgraph  sw2s2  [\"port\"]\n  sw2s2vlan{{VLAN: SWITCHBOUTVLAN}}\n  sw2s2ifout[NAMEIFBOUT]\n  end\n  end\n  \n  sw1s2ifout[NAMEIFAOUT]  ----  sw2s1if[NAMEIFBIN]\n  sw2s2ifout[NAMEIFBOUT]  ----  e2(IFNAMEHOSTB)\n  \n  subgraph  h2  [\"NODENAMEB\"]\n  ip2{{VLAN: VLANB  -  IP: DATAPLANEIPB}}  \n  e2(IFNAMEHOSTB)\n  end",
+          "content": "graph  LR  \n  subgraph  h1  [\"NODENAME1\"]\n  ip{{VLAN: VLANA  -  IP: DATAPLANEIP1}}\n  e(IFNAMEHOST1)\n  end\n  \n  e(IFNAMEHOST1)  ----  sw1s1if[SWITCH2PORT1IF]\n\n  subgraph  sw1  [\"SNMP1NAME Switch\"]\n  subgraph  sw1s1  [\"port\"]\n  sw1s1vlan{{VLAN:  SWITCH1PORT1VLAN}}\n  sw1s1if[SWITCH1PORT1IF]\n  end\n  subgraph  sw1s2  [\"port\"]\n  sw1s2vlan{{VLAN: SWITCH1PORT2VLAN}}\n  sw1s2ifout[SWITCH1PORT1IF]\n  end\n  end\n\n  subgraph  sw2  [\"SNMP2NAME Switch\"]\n  subgraph  sw2s1  [\"port\"]\n  sw2s1vlan{{VLAN: SWITCHBINVLAN}}\n  sw2s1if[SWITCH2PORT1IF]\n  end\n  subgraph  sw2s2  [\"port\"]\n  sw2s2vlan{{VLAN: SWITCH2PORT2VLAN}}\n  sw2s2ifout[SWITCH2PORT2IF]\n  end\n  end\n  \n  sw1s2ifout[SWITCH1PORT2IF]  ----  sw2s1if[SWITCH2PORT1IF]\n  sw2s2ifout[SWITCH2PORT2IF]  ----  e2(IFNAMEHOST2)\n  \n  subgraph  h2  [\"NODENAME2\"]\n  ip2{{VLAN: VLANB  -  IP: DATAPLANEIP2}}  \n  e2(IFNAMEHOST2)\n  end",
           "legend": {
             "asTable": true,
             "displayMode": "table",
@@ -177,7 +177,7 @@
         },
         "id": 121,
         "panels": [],
-        "title": "Host Flow Summary - NODENAMEA",
+        "title": "Host Flow Summary - NODENAME1",
         "type": "row"
       },
       {
@@ -195,13 +195,13 @@
         },
         "id": 123,
         "options": {
-          "content": "```\nnode name: NODENAMEA   if name: IFNAMEHOSTA   DATAPLANEIPA   IPHOSTA    Vlan: VLANA\n ```",
+          "content": "```\nnode name: NODENAME1   if name: IFNAMEHOST1   DATAPLANEIP1   IPHOST1    Vlan: VLANA\n ```",
           "mode": "markdown"
         },
         "pluginVersion": "7.5.4",
         "timeFrom": null,
         "timeShift": null,
-        "title": "NODENAMEA General Info",
+        "title": "NODENAME1 General Info",
         "type": "text"
       },
       {
@@ -287,7 +287,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "node_network_info{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}",
+            "expr": "node_network_info{exported_instance=\"IPHOST1\",device=\"IFNAMEHOST1\"}",
             "format": "time_series",
             "hide": false,
             "instant": true,
@@ -297,7 +297,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_uname_info{exported_instance=\"IPHOSTA\"}",
+            "expr": "node_uname_info{exported_instance=\"IPHOST1\"}",
             "format": "time_series",
             "hide": false,
             "instant": true,
@@ -307,7 +307,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_network_mtu_bytes{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}",
+            "expr": "node_network_mtu_bytes{exported_instance=\"IPHOST1\",device=\"IFNAMEHOST1\"}",
             "format": "time_series",
             "hide": false,
             "instant": true,
@@ -318,7 +318,7 @@
         ],
         "timeFrom": null,
         "timeShift": null,
-        "title": "NODENAMEA Info",
+        "title": "NODENAME1 Info",
         "transformations": [
           {
             "id": "seriesToColumns",
@@ -403,7 +403,7 @@
         "seriesOverrides": [
           {
             "$$hashKey": "object:176",
-            "alias": "recv IFNAMEHOSTA",
+            "alias": "recv IFNAMEHOST1",
             "transform": "negative-Y"
           }
         ],
@@ -413,7 +413,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "irate(node_network_receive_bytes_total{exported_instance=\"IPHOSTA\", device=\"IFNAMEHOSTA\"}[1m])*8",
+            "expr": "irate(node_network_receive_bytes_total{exported_instance=\"IPHOST1\", device=\"IFNAMEHOST1\"}[1m])*8",
             "instant": false,
             "interval": "",
             "intervalFactor": 1,
@@ -422,7 +422,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"IPHOSTA\",device=\"IFNAMEHOSTA\"}[1m])*8",
+            "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"IPHOST1\",device=\"IFNAMEHOST1\"}[1m])*8",
             "hide": false,
             "instant": false,
             "interval": "",
@@ -435,7 +435,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "NODENAMEA - Flow Bandwidth",
+        "title": "NODENAME1 - Flow Bandwidth",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -485,7 +485,7 @@
         },
         "id": 131,
         "panels": [],
-        "title": "Switch Flow Summary - SNMPANAME",
+        "title": "Switch Flow Summary - SNMP1NAME",
         "type": "row"
       },
       {
@@ -503,13 +503,13 @@
         },
         "id": 133,
         "options": {
-          "content": "```\nSwitch: SNMPANAME   port in: SWITCHAINCOMING   port out: SWITCHAOUTGOING   switch IP: IPSWITCHA\n```",
+          "content": "```\nSwitch: SNMP1NAME   port 1: SWITCH1PORT1IF   port 2: SWITCH1PORT2IF   switch IP: IPSWITCH1\n```",
           "mode": "markdown"
         },
         "pluginVersion": "7.5.4",
         "timeFrom": null,
         "timeShift": null,
-        "title": "SNMPANAME Switch Device Info",
+        "title": "SNMP1NAME Switch Device Info",
         "type": "text"
       },
       {
@@ -931,7 +931,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum(ifIndex{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex)",
+            "expr": "sum(ifIndex{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCH1PORT1|IFINDEXSWITCHHOST1|IFINDEXSWITCH1PORT2\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -942,7 +942,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifName{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex,ifName)",
+            "expr": "sum(ifName{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOST1|IFINDEXSWITCHHOST1|IFINDEXSWITCH1HOST2\"}) by (ifIndex,ifName)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -953,7 +953,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifType{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex,ifType)",
+            "expr": "sum(ifType{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOST1|IFINDEXSWITCHHOST1|IFINDEXSWITCH1HOST2\"}) by (ifIndex,ifType)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -964,7 +964,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifPhysAddress{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex,ifPhysAddress)",
+            "expr": "sum(ifPhysAddress{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOST1|IFINDEXSWITCHHOST1|IFINDEXSWITCH1HOST2\"}) by (ifIndex,ifPhysAddress)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -975,7 +975,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifOperStatus{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex)",
+            "expr": "sum(ifOperStatus{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOST1|IFINDEXSWITCHHOST1|IFINDEXSWITCH1HOST2\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -986,7 +986,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifMtu{exported_instance=\"SNMPAHOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOSTA|IFINDEXSWITCHHOSTA|IFINDEXSWITCH1HOSTB\"}) by (ifIndex)",
+            "expr": "sum(ifMtu{exported_instance=\"SNMP1HOSTIP\",ifIndex=~\"IFINDEXSWITCH1HOST1|IFINDEXSWITCHHOST1|IFINDEXSWITCH1HOST2\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -998,7 +998,7 @@
         ],
         "timeFrom": null,
         "timeShift": null,
-        "title": "SNMPANAME Switch Port Info",
+        "title": "SNMP1NAME Switch Port Info",
         "transform": "table",
         "transformations": [
           {
@@ -1061,7 +1061,7 @@
         "seriesOverrides": [
           {
             "$$hashKey": "object:176",
-            "alias": "recv NAMEIFSWITCHA",
+            "alias": "recv SWITCH1PORT1IF",
             "transform": "negative-Y"
           }
         ],
@@ -1071,7 +1071,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOST1\"}[1m])*8",
             "instant": false,
             "interval": "",
             "intervalFactor": 1,
@@ -1080,7 +1080,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOSTA\"}[1m])*8",
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOST1\"}[1m])*8",
             "hide": false,
             "instant": false,
             "interval": "",
@@ -1093,7 +1093,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "SNMPANAME Switch - Flow Bandwidth - Facing NODENAMEA",
+        "title": "SNMP1NAME Switch - Flow Bandwidth - Facing NODENAME1",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -1175,7 +1175,7 @@
         "seriesOverrides": [
           {
             "$$hashKey": "object:176",
-            "alias": "recv NAMEIFSWITCHB",
+            "alias": "recv SWITCH1PORT2IF",
             "transform": "negative-Y"
           }
         ],
@@ -1185,7 +1185,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOST2\"}[1m])*8",
             "instant": false,
             "interval": "",
             "intervalFactor": 1,
@@ -1194,7 +1194,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOST2\"}[1m])*8",
             "hide": false,
             "instant": false,
             "interval": "",
@@ -1207,7 +1207,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "SNMPANAME Switch - Flow Bandwidth - Facing SWITCHAOUTGOING (SNMPBNAME Switch)",
+        "title": "SNMP1NAME Switch - Flow Bandwidth - Facing SWITCH1PORT2IF (SNMP2NAME Switch)",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -1257,7 +1257,7 @@
         },
         "id": 131,
         "panels": [],
-        "title": "Switch Flow Summary - SNMPBNAME",
+        "title": "Switch Flow Summary - SNMP2NAME",
         "type": "row"
       },
       {
@@ -1275,13 +1275,13 @@
         },
         "id": 133,
         "options": {
-          "content": "```\nSwitch: SNMPBNAME   port in: SWITCHBINCOMING   port out: SWITCHBOUTGOING   switch IP: IPSWITCHB\n ```",
+          "content": "```\nSwitch: SNMP2NAME   port 1: SWITCH2PORT1IF   port 2: SWITCH2PORT2IF   switch IP: IPSWITCH2\n ```",
           "mode": "markdown"
         },
         "pluginVersion": "7.5.4",
         "timeFrom": null,
         "timeShift": null,
-        "title": "Switch: SNMPBNAME Device Info",
+        "title": "Switch: SNMP2NAME Device Info",
         "type": "text"
       },
       {
@@ -1703,7 +1703,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum(ifIndex{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOSTB\"}) by (ifIndex)",
+            "expr": "sum(ifIndex{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2PORT1|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOST2\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1714,7 +1714,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifName{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOSTB\"}) by (ifIndex,ifName)",
+            "expr": "sum(ifName{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2PORT1|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOST2\"}) by (ifIndex,ifName)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1725,7 +1725,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifType{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOSTB\"}) by (ifIndex,ifType)",
+            "expr": "sum(ifType{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2PORT1|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOST2\"}) by (ifIndex,ifType)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1736,7 +1736,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifPhysAddress{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOSTB\"}) by (ifIndex,ifPhysAddress)",
+            "expr": "sum(ifPhysAddress{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2PORT1|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOST2\"}) by (ifIndex,ifPhysAddress)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1747,7 +1747,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifOperStatus{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOSTB\"}) by (ifIndex)",
+            "expr": "sum(ifOperStatus{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2PORT1|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOST2\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1758,7 +1758,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum(ifMtu{exported_instance=\"SNMPBHOSTIP\",ifIndex=~\"IFINDEXSWITCH2HOSTA|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOSTB\"}) by (ifIndex)",
+            "expr": "sum(ifMtu{exported_instance=\"SNMP2HOSTIP\",ifIndex=~\"IFINDEXSWITCH2PORT1|IFINDEXSWITCH2HOSTB|IFINDEXSWITCHHOST2\"}) by (ifIndex)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -1770,7 +1770,7 @@
         ],
         "timeFrom": null,
         "timeShift": null,
-        "title": "SNMPBNAME Switch Port Info",
+        "title": "SNMP2NAME Switch Port Info",
         "transform": "table",
         "transformations": [
           {
@@ -1833,7 +1833,7 @@
         "seriesOverrides": [
           {
             "$$hashKey": "object:176",
-            "alias": "recv NAMEIFSWITCHB",
+            "alias": "recv SWITCH2PORT1IF",
             "transform": "negative-Y"
           }
         ],
@@ -1843,7 +1843,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOST2\"}[1m])*8",
             "instant": false,
             "interval": "",
             "intervalFactor": 1,
@@ -1852,7 +1852,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOSTB\"}[1m])*8",
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOST2\"}[1m])*8",
             "hide": false,
             "instant": false,
             "interval": "",
@@ -1865,7 +1865,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "SNMPBNAME Switch - Flow Bandwidth - Facing SWITCHBINCOMING (SNMPANAME Switch)",
+        "title": "SNMP2NAME Switch - Flow Bandwidth - Facing SWITCH2PORT1IF (SNMP1NAME Switch)",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -1947,7 +1947,7 @@
         "seriesOverrides": [
           {
             "$$hashKey": "object:176",
-            "alias": "recv NAMEIFSWITCHB",
+            "alias": "recv SWITCH2PORT2IF",
             "transform": "negative-Y"
           }
         ],
@@ -1957,7 +1957,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOSTB\"}[1m])*8",
+            "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCHHOST2\"}[1m])*8",
             "instant": false,
             "interval": "",
             "intervalFactor": 1,
@@ -1966,7 +1966,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOSTB\"}[1m])*8",
+            "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCHHOST2\"}[1m])*8",
             "hide": false,
             "instant": false,
             "interval": "",
@@ -1979,7 +1979,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "SNMPBNAME Switch - Flow Bandwidth - Facing NODENAMEB",
+        "title": "SNMP2NAME Switch - Flow Bandwidth - Facing NODENAME2",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -2029,7 +2029,7 @@
         },
         "id": 147,
         "panels": [],
-        "title": "Host Flow Summary - NODENAMEB",
+        "title": "Host Flow Summary - NODENAME2",
         "type": "row"
       },
       {
@@ -2047,13 +2047,13 @@
         },
         "id": 149,
         "options": {
-          "content": "```\nnode name: NODENAMEB   if name: IFNAMEHOSTB   DATAPLANEIPB    IPHOSTB    Vlan: VLANB\n ```",
+          "content": "```\nnode name: NODENAME2   if name: IFNAMEHOST2   DATAPLANEIP2    IPHOST2    Vlan: VLANB\n ```",
           "mode": "markdown"
         },
         "pluginVersion": "7.5.4",
         "timeFrom": null,
         "timeShift": null,
-        "title": "NODENAMEB General Info",
+        "title": "NODENAME2 General Info",
         "type": "text"
       },
       {
@@ -2139,7 +2139,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "node_network_info{exported_instance=\"IPHOSTB\",device=\"IFNAMEHOSTB\"}",
+            "expr": "node_network_info{exported_instance=\"IPHOST2\",device=\"IFNAMEHOST2\"}",
             "format": "time_series",
             "hide": false,
             "instant": true,
@@ -2149,7 +2149,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_uname_info{exported_instance=\"IPHOSTB\"}",
+            "expr": "node_uname_info{exported_instance=\"IPHOST2\"}",
             "format": "time_series",
             "hide": false,
             "instant": true,
@@ -2159,7 +2159,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_network_mtu_bytes{exported_instance=\"IPHOSTB\",device=\"IFNAMEHOSTB\"}",
+            "expr": "node_network_mtu_bytes{exported_instance=\"IPHOST2\",device=\"IFNAMEHOST2\"}",
             "format": "time_series",
             "hide": false,
             "instant": true,
@@ -2170,7 +2170,7 @@
         ],
         "timeFrom": null,
         "timeShift": null,
-        "title": "NODENAMEB Info",
+        "title": "NODENAME2 Info",
         "transformations": [
           {
             "id": "seriesToColumns",
@@ -2255,7 +2255,7 @@
         "seriesOverrides": [
           {
             "$$hashKey": "object:176",
-            "alias": "trans IFNAMEHOSTB",
+            "alias": "trans IFNAMEHOST2",
             "transform": "negative-Y"
           }
         ],
@@ -2265,7 +2265,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "irate(node_network_receive_bytes_total{exported_instance=\"IPHOSTB\", device=\"IFNAMEHOSTB\"}[1m])*8",
+            "expr": "irate(node_network_receive_bytes_total{exported_instance=\"IPHOST2\", device=\"IFNAMEHOST2\"}[1m])*8",
             "instant": false,
             "interval": "",
             "intervalFactor": 1,
@@ -2274,7 +2274,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"IPHOSTB\",device=\"IFNAMEHOSTB\"}[1m])*8",
+            "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"IPHOST2\",device=\"IFNAMEHOST2\"}[1m])*8",
             "hide": false,
             "instant": false,
             "interval": "",
@@ -2287,7 +2287,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "NODENAMEB - Flow Bandwidth Graph",
+        "title": "NODENAME2 - Flow Bandwidth Graph",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -2343,7 +2343,7 @@
       {
         "cacheTimeout": null,
         "datasource": "Prometheus",
-        "description": "Busy state of all CPU cores together in NODENAMEA",
+        "description": "Busy state of all CPU cores together in NODENAME1",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -2406,7 +2406,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "(((count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTA\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOSTA\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTA\"}) by (cpu))",
+            "expr": "(((count(count(node_cpu_seconds_total{exported_instance=\"IPHOST1\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOST1\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{exported_instance=\"IPHOST1\"}) by (cpu))",
             "hide": false,
             "interval": "",
             "intervalFactor": 1,
@@ -2415,13 +2415,13 @@
             "step": 900
           }
         ],
-        "title": "NODENAMEA CPU Busy",
+        "title": "NODENAME1 CPU Busy",
         "type": "gauge"
       },
       {
         "cacheTimeout": null,
         "datasource": "Prometheus",
-        "description": "Busy state of all CPU cores together (15 min average) for NODENAMEA",
+        "description": "Busy state of all CPU cores together (15 min average) for NODENAME1",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -2484,7 +2484,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "avg(node_load15{exported_instance=\"IPHOSTA\"}) /  count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTA\"}) by (cpu)) * 100",
+            "expr": "avg(node_load15{exported_instance=\"IPHOST1\"}) /  count(count(node_cpu_seconds_total{exported_instance=\"IPHOST1\"}) by (cpu)) * 100",
             "hide": false,
             "interval": "",
             "intervalFactor": 1,
@@ -2493,13 +2493,13 @@
             "step": 900
           }
         ],
-        "title": "NODENAMEA Sys Load (15m avg)",
+        "title": "NODENAME1 Sys Load (15m avg)",
         "type": "gauge"
       },
       {
         "cacheTimeout": null,
         "datasource": "Prometheus",
-        "description": "Busy state of all CPU cores together in NODENAMEB",
+        "description": "Busy state of all CPU cores together in NODENAME2",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -2562,7 +2562,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "(((count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTB\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOSTB\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTB\"}) by (cpu))",
+            "expr": "(((count(count(node_cpu_seconds_total{exported_instance=\"IPHOST2\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOST2\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{exported_instance=\"IPHOST2\"}) by (cpu))",
             "hide": false,
             "interval": "",
             "intervalFactor": 1,
@@ -2571,13 +2571,13 @@
             "step": 900
           }
         ],
-        "title": "NODENAMEB CPU Busy",
+        "title": "NODENAME2 CPU Busy",
         "type": "gauge"
       },
       {
         "cacheTimeout": null,
         "datasource": "Prometheus",
-        "description": "Busy state of all CPU cores together (15 min average) for NODENAMEB",
+        "description": "Busy state of all CPU cores together (15 min average) for NODENAME2",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -2640,7 +2640,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "avg(node_load15{exported_instance=\"IPHOSTB\"}) /  count(count(node_cpu_seconds_total{exported_instance=\"IPHOSTB\"}) by (cpu)) * 100",
+            "expr": "avg(node_load15{exported_instance=\"IPHOST2\"}) /  count(count(node_cpu_seconds_total{exported_instance=\"IPHOST2\"}) by (cpu)) * 100",
             "hide": false,
             "interval": "",
             "intervalFactor": 1,
@@ -2649,13 +2649,13 @@
             "step": 900
           }
         ],
-        "title": "NODENAMEB Sys Load (15m avg)",
+        "title": "NODENAME2 Sys Load (15m avg)",
         "type": "gauge"
       },
       {
         "cacheTimeout": null,
         "datasource": "Prometheus",
-        "description": "NODENAMEA Non available RAM memory",
+        "description": "NODENAME1 Non available RAM memory",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -2712,7 +2712,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "((node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOSTA\"}) / (node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\"} )) * 100",
+            "expr": "((node_memory_MemTotal_bytes{exported_instance=\"IPHOST1\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOST1\"}) / (node_memory_MemTotal_bytes{exported_instance=\"IPHOST1\"} )) * 100",
             "format": "time_series",
             "hide": true,
             "interval": "",
@@ -2723,7 +2723,7 @@
           },
           {
             "exemplar": true,
-            "expr": "100 - ((node_memory_MemAvailable_bytes{exported_instance=\"IPHOSTA\"} * 100) / node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\"})",
+            "expr": "100 - ((node_memory_MemAvailable_bytes{exported_instance=\"IPHOST1\"} * 100) / node_memory_MemTotal_bytes{exported_instance=\"IPHOST1\"})",
             "format": "time_series",
             "hide": false,
             "interval": "",
@@ -2733,13 +2733,13 @@
             "step": 900
           }
         ],
-        "title": "NODENAMEA RAM Used",
+        "title": "NODENAME1 RAM Used",
         "type": "gauge"
       },
       {
         "cacheTimeout": null,
         "datasource": "Prometheus",
-        "description": "NODENAMEA Used Swap",
+        "description": "NODENAME1 Used Swap",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -2802,7 +2802,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "((node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTA\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOSTA\"}) / (node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTA\"} )) * 100",
+            "expr": "((node_memory_SwapTotal_bytes{exported_instance=\"IPHOST1\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOST1\"}) / (node_memory_SwapTotal_bytes{exported_instance=\"IPHOST1\"} )) * 100",
             "interval": "",
             "intervalFactor": 1,
             "legendFormat": "",
@@ -2810,13 +2810,13 @@
             "step": 900
           }
         ],
-        "title": "NODENAMEA SWAP Used",
+        "title": "NODENAME1 SWAP Used",
         "type": "gauge"
       },
       {
         "cacheTimeout": null,
         "datasource": "Prometheus",
-        "description": "NODENAMEB Non available RAM memory",
+        "description": "NODENAME2 Non available RAM memory",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -2873,7 +2873,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "((node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOSTB\"}) / (node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\"} )) * 100",
+            "expr": "((node_memory_MemTotal_bytes{exported_instance=\"IPHOST2\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOST2\"}) / (node_memory_MemTotal_bytes{exported_instance=\"IPHOST2\"} )) * 100",
             "format": "time_series",
             "hide": true,
             "interval": "",
@@ -2884,7 +2884,7 @@
           },
           {
             "exemplar": true,
-            "expr": "100 - ((node_memory_MemAvailable_bytes{exported_instance=\"IPHOSTB\"} * 100) / node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\"})",
+            "expr": "100 - ((node_memory_MemAvailable_bytes{exported_instance=\"IPHOST2\"} * 100) / node_memory_MemTotal_bytes{exported_instance=\"IPHOST2\"})",
             "format": "time_series",
             "hide": false,
             "interval": "",
@@ -2894,13 +2894,13 @@
             "step": 900
           }
         ],
-        "title": "NODENAMEB RAM Used",
+        "title": "NODENAME2 RAM Used",
         "type": "gauge"
       },
       {
         "cacheTimeout": null,
         "datasource": "Prometheus",
-        "description": "NODENAMEB Used Swap",
+        "description": "NODENAME2 Used Swap",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -2963,7 +2963,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "((node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTB\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOSTB\"}) / (node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTB\"} )) * 100",
+            "expr": "((node_memory_SwapTotal_bytes{exported_instance=\"IPHOST2\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOST2\"}) / (node_memory_SwapTotal_bytes{exported_instance=\"IPHOST2\"} )) * 100",
             "interval": "",
             "intervalFactor": 1,
             "legendFormat": "",
@@ -2971,7 +2971,7 @@
             "step": 900
           }
         ],
-        "title": "NODENAMEB SWAP Used",
+        "title": "NODENAME2 SWAP Used",
         "type": "gauge"
       },
       {
@@ -2996,7 +2996,7 @@
         "dashes": false,
         "datasource": "Prometheus",
         "decimals": 2,
-        "description": "NODENAMEA CPU Load (System, User, I/O Wait, IRQs, Idle, Other)",
+        "description": "NODENAME1 CPU Load (System, User, I/O Wait, IRQs, Idle, Other)",
         "fieldConfig": {
           "defaults": {
             "links": []
@@ -3073,7 +3073,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=\"system\",exported_instance=\"IPHOSTA\"}[5m])) * 100",
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=\"system\",exported_instance=\"IPHOST1\"}[5m])) * 100",
             "format": "time_series",
             "hide": false,
             "interval": "",
@@ -3084,7 +3084,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='user',exported_instance=\"IPHOSTA\"}[5m])) * 100",
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='user',exported_instance=\"IPHOST1\"}[5m])) * 100",
             "format": "time_series",
             "hide": false,
             "interval": "",
@@ -3095,7 +3095,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='iowait',exported_instance=\"IPHOSTA\"}[5m])) * 100",
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='iowait',exported_instance=\"IPHOST1\"}[5m])) * 100",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3105,7 +3105,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=~\".*irq\",exported_instance=\"IPHOSTA\"}[5m])) * 100",
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=~\".*irq\",exported_instance=\"IPHOST1\"}[5m])) * 100",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3115,7 +3115,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum (irate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',exported_instance=\"IPHOSTA\"}[5m])) * 100",
+            "expr": "sum (irate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',exported_instance=\"IPHOST1\"}[5m])) * 100",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3125,7 +3125,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOSTA\"}[5m])) * 100",
+            "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOST1\"}[5m])) * 100",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3138,7 +3138,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "NODENAMEA CPU Load",
+        "title": "NODENAME1 CPU Load",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -3199,7 +3199,7 @@
         "dashes": false,
         "datasource": "Prometheus",
         "decimals": 2,
-        "description": "NODENAMEB CPU Load (System, User, I/O Wait, IRQs, Idle, Other)",
+        "description": "NODENAME2 CPU Load (System, User, I/O Wait, IRQs, Idle, Other)",
         "fieldConfig": {
           "defaults": {
             "links": []
@@ -3276,7 +3276,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=\"system\",exported_instance=\"IPHOSTB\"}[5m])) * 100",
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=\"system\",exported_instance=\"IPHOST2\"}[5m])) * 100",
             "format": "time_series",
             "hide": false,
             "interval": "",
@@ -3287,7 +3287,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='user',exported_instance=\"IPHOSTB\"}[5m])) * 100",
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='user',exported_instance=\"IPHOST2\"}[5m])) * 100",
             "format": "time_series",
             "hide": false,
             "interval": "",
@@ -3298,7 +3298,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='iowait',exported_instance=\"IPHOSTB\"}[5m])) * 100",
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='iowait',exported_instance=\"IPHOST2\"}[5m])) * 100",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3308,7 +3308,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=~\".*irq\",exported_instance=\"IPHOSTB\"}[5m])) * 100",
+            "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=~\".*irq\",exported_instance=\"IPHOST2\"}[5m])) * 100",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3318,7 +3318,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum (irate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',exported_instance=\"IPHOSTB\"}[5m])) * 100",
+            "expr": "sum (irate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq',exported_instance=\"IPHOST2\"}[5m])) * 100",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3328,7 +3328,7 @@
           },
           {
             "exemplar": true,
-            "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOSTB\"}[5m])) * 100",
+            "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle',exported_instance=\"IPHOST2\"}[5m])) * 100",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3341,7 +3341,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "NODENAMEB CPU Load",
+        "title": "NODENAME2 CPU Load",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -3407,7 +3407,7 @@
         "dashes": false,
         "datasource": "Prometheus",
         "decimals": 2,
-        "description": "NODENAMEA Basic memory usage (RAM Total, Used, Cache, Buffer, Free, SWAP)",
+        "description": "NODENAME1 Basic memory usage (RAM Total, Used, Cache, Buffer, Free, SWAP)",
         "fieldConfig": {
           "defaults": {
             "links": []
@@ -3481,7 +3481,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\"}",
+            "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOST1\"}",
             "format": "time_series",
             "hide": false,
             "interval": "",
@@ -3492,7 +3492,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOSTA\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOSTA\"} - (node_memory_Cached_bytes{exported_instance=\"IPHOSTA\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOSTA\"})",
+            "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOST1\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOST1\"} - (node_memory_Cached_bytes{exported_instance=\"IPHOST1\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOST1\"})",
             "format": "time_series",
             "hide": false,
             "interval": "",
@@ -3503,7 +3503,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_memory_Cached_bytes{exported_instance=\"IPHOSTA\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOSTA\"}",
+            "expr": "node_memory_Cached_bytes{exported_instance=\"IPHOST1\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOST1\"}",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3513,7 +3513,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_memory_MemFree_bytes{exported_instance=\"IPHOSTA\"}",
+            "expr": "node_memory_MemFree_bytes{exported_instance=\"IPHOST1\"}",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3523,7 +3523,7 @@
           },
           {
             "exemplar": true,
-            "expr": "(node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTA\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOSTA\"})",
+            "expr": "(node_memory_SwapTotal_bytes{exported_instance=\"IPHOST1\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOST1\"})",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3536,7 +3536,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "NODENAMEA Memory Load",
+        "title": "NODENAME1 Memory Load",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -3602,7 +3602,7 @@
         "dashes": false,
         "datasource": "Prometheus",
         "decimals": 2,
-        "description": "NODENAMEB Basic memory usage (RAM Total, Used, Cache, Buffer, Free, SWAP)",
+        "description": "NODENAME2 Basic memory usage (RAM Total, Used, Cache, Buffer, Free, SWAP)",
         "fieldConfig": {
           "defaults": {
             "links": []
@@ -3676,7 +3676,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\"}",
+            "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOST2\"}",
             "format": "time_series",
             "hide": false,
             "interval": "",
@@ -3687,7 +3687,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOSTB\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOSTB\"} - (node_memory_Cached_bytes{exported_instance=\"IPHOSTB\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOSTB\"})",
+            "expr": "node_memory_MemTotal_bytes{exported_instance=\"IPHOST2\"} - node_memory_MemFree_bytes{exported_instance=\"IPHOST2\"} - (node_memory_Cached_bytes{exported_instance=\"IPHOST2\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOST2\"})",
             "format": "time_series",
             "hide": false,
             "interval": "",
@@ -3698,7 +3698,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_memory_Cached_bytes{exported_instance=\"IPHOSTB\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOSTB\"}",
+            "expr": "node_memory_Cached_bytes{exported_instance=\"IPHOST2\"} + node_memory_Buffers_bytes{exported_instance=\"IPHOST2\"}",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3708,7 +3708,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_memory_MemFree_bytes{exported_instance=\"IPHOSTB\"}",
+            "expr": "node_memory_MemFree_bytes{exported_instance=\"IPHOST2\"}",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3718,7 +3718,7 @@
           },
           {
             "exemplar": true,
-            "expr": "(node_memory_SwapTotal_bytes{exported_instance=\"IPHOSTB\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOSTB\"})",
+            "expr": "(node_memory_SwapTotal_bytes{exported_instance=\"IPHOST2\"} - node_memory_SwapFree_bytes{exported_instance=\"IPHOST2\"})",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3731,7 +3731,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "NODENAMEB Memory Load",
+        "title": "NODENAME2 Memory Load",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -3828,7 +3828,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "irate(node_schedstat_running_seconds_total{exported_instance=\"IPHOSTA\"}[5m])",
+            "expr": "irate(node_schedstat_running_seconds_total{exported_instance=\"IPHOST1\"}[5m])",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3838,7 +3838,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(node_schedstat_waiting_seconds_total{exported_instance=\"IPHOSTA\"}[5m])",
+            "expr": "irate(node_schedstat_waiting_seconds_total{exported_instance=\"IPHOST1\"}[5m])",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3851,7 +3851,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "NODENAMEA Process Schedule Stats Running/Waiting",
+        "title": "NODENAME1 Process Schedule Stats Running/Waiting",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -3942,7 +3942,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "irate(node_schedstat_running_seconds_total{exported_instance=\"IPHOSTB\"}[5m])",
+            "expr": "irate(node_schedstat_running_seconds_total{exported_instance=\"IPHOST2\"}[5m])",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3952,7 +3952,7 @@
           },
           {
             "exemplar": true,
-            "expr": "irate(node_schedstat_waiting_seconds_total{exported_instance=\"IPHOSTB\"}[5m])",
+            "expr": "irate(node_schedstat_waiting_seconds_total{exported_instance=\"IPHOST2\"}[5m])",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -3965,7 +3965,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "NODENAMEB Process Schedule Stats Running/Waiting",
+        "title": "NODENAME2 Process Schedule Stats Running/Waiting",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -4068,7 +4068,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "node_hwmon_temp_celsius{exported_instance=\"IPHOSTA\"}",
+            "expr": "node_hwmon_temp_celsius{exported_instance=\"IPHOST1\"}",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -4078,7 +4078,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_hwmon_temp_crit_alarm_celsius{exported_instance=\"IPHOSTA\"}",
+            "expr": "node_hwmon_temp_crit_alarm_celsius{exported_instance=\"IPHOST1\"}",
             "format": "time_series",
             "hide": true,
             "interval": "",
@@ -4089,7 +4089,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_hwmon_temp_crit_celsius{exported_instance=\"IPHOSTA\"}",
+            "expr": "node_hwmon_temp_crit_celsius{exported_instance=\"IPHOST1\"}",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -4099,7 +4099,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_hwmon_temp_crit_hyst_celsius{exported_instance=\"IPHOSTA\"}",
+            "expr": "node_hwmon_temp_crit_hyst_celsius{exported_instance=\"IPHOST1\"}",
             "format": "time_series",
             "hide": true,
             "interval": "",
@@ -4110,7 +4110,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_hwmon_temp_max_celsius{exported_instance=\"IPHOSTA\"}",
+            "expr": "node_hwmon_temp_max_celsius{exported_instance=\"IPHOST1\"}",
             "format": "time_series",
             "hide": true,
             "interval": "",
@@ -4124,7 +4124,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "NODENAMEA Hardware Temperature Monitor",
+        "title": "NODENAME1 Hardware Temperature Monitor",
         "tooltip": {
           "shared": true,
           "sort": 0,
@@ -4227,7 +4227,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "node_hwmon_temp_celsius{exported_instance=\"IPHOSTB\"}",
+            "expr": "node_hwmon_temp_celsius{exported_instance=\"IPHOST2\"}",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -4237,7 +4237,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_hwmon_temp_crit_alarm_celsius{exported_instance=\"IPHOSTB\"}",
+            "expr": "node_hwmon_temp_crit_alarm_celsius{exported_instance=\"IPHOST2\"}",
             "format": "time_series",
             "hide": true,
             "interval": "",
@@ -4248,7 +4248,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_hwmon_temp_crit_celsius{exported_instance=\"IPHOSTB\"}",
+            "expr": "node_hwmon_temp_crit_celsius{exported_instance=\"IPHOST2\"}",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 2,
@@ -4258,7 +4258,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_hwmon_temp_crit_hyst_celsius{exported_instance=\"IPHOSTB\"}",
+            "expr": "node_hwmon_temp_crit_hyst_celsius{exported_instance=\"IPHOST2\"}",
             "format": "time_series",
             "hide": true,
             "interval": "",
@@ -4269,7 +4269,7 @@
           },
           {
             "exemplar": true,
-            "expr": "node_hwmon_temp_max_celsius{exported_instance=\"IPHOSTB\"}",
+            "expr": "node_hwmon_temp_max_celsius{exported_instance=\"IPHOST2\"}",
             "format": "time_series",
             "hide": true,
             "interval": "",
@@ -4283,7 +4283,7 @@
         "timeFrom": null,
         "timeRegions": [],
         "timeShift": null,
-        "title": "NODENAMEB Hardware Temperature Monitor",
+        "title": "NODENAME2 Hardware Temperature Monitor",
         "tooltip": {
           "shared": true,
           "sort": 0,

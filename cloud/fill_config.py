@@ -15,6 +15,17 @@ pushgateway_server = f"{data['grafanaHostIP']}:f{pushgateway_port}"
 host1IP = data['hostA']['IP']
 host2IP = data['hostB']['IP']
 
+# switch_num = data['switch']['num']
+# hostip = data['hostIP']
+# pushgateway = data['pushgateway']
+# hosts_ip = []
+# host_num = data['host']['num']
+# for i in range(host_num):
+#     hosts_ip.append(data['host'][f'host{i+1}']['ip'])
+# swtich_target = []
+# for i in range(switch_num):
+#     swtich_target.append(data['switch'][f'switch{i+1}']['target'])
+
 # read in args.sh file
 with open('./se_config/args.sh', 'r') as file:
     write_data = file.readlines()

@@ -44,7 +44,8 @@ RUN wget https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/snmp/fill
 # configuration files can be variables themsleves, run time variable
 # multi use for multi runs more dynamic situation
 # !CUSTIMIZATION! 
-
+RUN export PATH=$PATH:/usr/local/go/bin
+RUN export MIBDIRS=/home/librenms/mibs/
 # move all wget files to /home directory
 RUN mv generator_template.yml /home
 # RUN mv *.yml /home/config.yml

@@ -226,3 +226,23 @@ def replacement_template():
     'DEBUGTITLE': "DEBUGTITLE"}
 
     return replacements
+
+# def replacement_template():
+#     replacements = {}
+#     for i in range(1,31):
+#         replacements[f'MONITORVLAN{i}'] = f"MONITORVLAN{i}"
+#         replacements[f'IPHOST{i}'] = f"IPHOST{i}"
+#         replacements[f'VLAN{i}'] = f"VLAN{i}"
+#         replacements[f'IFNAMEHOST{i}'] = f"IFNAMEHOST{i}"
+#         replacements[f'DATAPLANEIP{i}'] = f"DATAPLANEIP{i}"
+#         replacements[f'NODENAME{i}'] = f"NODENAME{i}"
+#         replacements[f'IFINDEXSWITCHHOST{i}'] = f"IFINDEXSWITCHHOST{i}"
+#         replacements[f'IPSWITCH{i}'] = f"IPSWITCH{i}"
+#         replacements[f'SNMP{i}NAME'] = f"SNMP{i}NAME"
+#         replacements[f"SNMP{i}HOSTIP"] = f"SNMP{i}HOSTIP"
+
+    
+#     replacements['DASHTITLE'] = "DASHTITLE"
+    
+
+#     return replacements

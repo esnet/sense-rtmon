@@ -32,7 +32,7 @@ hostB: # Host 2
   vlan: '3911'
   switchPort: 
     ifName: 'etp27'
-    peer:
+    peer: 
       name: 'switchDataB'
       ifName: 'etp27'
 

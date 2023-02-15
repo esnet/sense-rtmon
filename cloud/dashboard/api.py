@@ -8,7 +8,7 @@ sys.path.append("..") # Adds higher directory to python modules path.
 import cloud_functions
 
 print("\n\nParsing config file...")
-data,file_name = cloud_functions.read_yml_file("config_flow",sys.argv,3,2)
+data,file_name = cloud_functions.read_yml_file("config_flow",sys.argv,2,2)
             
 # Get Default Home Dashboard
 url = f"http://{str(data['grafanaHostIP'])}:{str(data['grafanaPort'])}/api/dashboards/db"
@@ -22,12 +22,12 @@ headers = {"Authorization": str(data['grafanaAPIToken']),
 
 # Open and load out.json input
 f = open(sys.argv[1],)
-f2 = open(sys.argv[2],)
+# f2 = open(sys.argv[2],)
 x = json.load(f)
-x2 = json.load(f2)
+# x2 = json.load(f2)
 
 # HTTP Post Request
 r = requests.post(url=url, headers=headers, data=json.dumps(x), verify=False)
 print(r.json())
-r2 = requests.post(url=url, headers=headers, data=json.dumps(x2), verify=False)
-print(r2.json())
+# r2 = requests.post(url=url, headers=headers, data=json.dumps(x2), verify=False)
+# print(r2.json())

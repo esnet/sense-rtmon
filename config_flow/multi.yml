@@ -68,8 +68,8 @@ switchDataB:
       ifName: 'PortChannel501'
 
   portOut:
-    ifName: 'hostB'
+    ifName: 'etp27'
     vlan: '3911'
     peer:
-      name: 'switchDataA'
+      name: 'hostB'
       ifName: 'etp27'

@@ -1,4 +1,4 @@
-# Site Configuration files under `config_cloud`
+# Cloud Configuration files under `config_flow`
 The configuration files are broken into 3 sections.
 - General Information is needed for all exporters.
 - SNMP Metrics are only needed if the SNMP exporter is running on this host. It can be omitted if SNMP is not used. 

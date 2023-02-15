@@ -3,33 +3,10 @@ import os
 import yaml
 import sys
 import re 
+import cloud_functions
 
-# get this host's IP address
-owd = os.getcwd()
-os.chdir("..")
-config_path = str(os.path.abspath(os.curdir)) +"/config_flow"
-infpth = config_path + "/config.yml"
-os.chdir(owd)
-data = {}
-file_name = "config.yml"
-
-# argument given
-if len(sys.argv) > 1:
-    file_name = str(sys.argv[1])
-    file_path = config_path + "/" + file_name
-    print(f"\n Config file {file_path}\n")
-    with open(file_path, 'r') as stream:
-        try:
-            data = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(f"\n Config file {file_path} could not be found in the config directory\n")
-        
-else: # default config file
-    with open(infpth, 'r') as stream:
-        try:
-            data = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(f"\n Config file {infpth} could not be found in the config directory\n")
+# read yml file
+data,file_name = cloud_functions.read_yml_file("config_flow",sys.argv,1,1)
                 
 switchNum = data['switchNum']
 hostip = data['hostIP']
@@ -48,11 +25,9 @@ for each_line in write_data:
     each_line = re.sub("host1=.*", f"host1={host1IP}", each_line)
     each_line = re.sub("host2=.*", f"host2={host2IP}", each_line)
     each_line = re.sub("switch_num=.*", f"switch_num={str(switchNum)}", each_line)
-    if switchNum == 1:
-        switch_target1 = data['switchData']['target']
-        each_line = re.sub("switch_ip1=.*", f"switch_ip1={switch_target1}", each_line)
-    elif switchNum == 2:
-        switch_target1 = data['switchDataA']['target']
+    switch_target1 = data['switchDataA']['target']
+    each_line = re.sub("switch_ip1=.*", f"switch_ip1={switch_target1}", each_line)
+    if switchNum == 2:
         switch_target2 = data['switchDataB']['target']
         each_line = re.sub("switch_ip1=.*", f"switch_ip1={switch_target1}", each_line)
         each_line = re.sub("switch_ip2=.*", f"switch_ip2={switch_target2}", each_line)

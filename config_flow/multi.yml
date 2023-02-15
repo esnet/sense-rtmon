@@ -1,0 +1,58 @@
+## SECTION 1 GENERAL INFORMATION ##
+switchNum: 2
+dashTitle: "Multi Switch Flow Dashboard"
+debugTitle: "Multi Switch Flow L2 Debugging Dashboard"
+flow: " flow 2 "
+hostIP: 198.124.151.8 # example 198.32.43.16 198.124.151.8 172.31.72.189
+# The DNS of the host which is running the Grafana container
+grafanaHostIP: 'sense-mon.es.net'
+grafanaPort: 3000 # Do not change unless container mapping change
+pushgatewayPort: 9091 # Do not change unless container mapping change
+grafanaAPIToken: "Bearer eyJrIjoiUlRFZnI4eWlPRFdicDZ2dWszdXROcnJUN3lDSDhZQXYiLCJuIjoiMDIvMDFfMTg6MjciLCJpZCI6MX0="
+configFile: "multi.yml"
+#ens2f0np0.1000
+hostA: # Host 1
+  name: 'caltech'
+  IP: '10.251.86.10'
+  interfaceName: 'ens2f0np0.3911'
+  interfaceIP: '10.251.86.10/24'
+  nodeName: 'sdn-dtn-2-10.ultralight.org'
+  vlan: 'not_used'
+  switchPort: 
+    ifName: 'hundredGigE 1/31'
+
+hostB: # Host 2
+  name: 'ucsd_cluster'
+  IP: '10.251.86.14'
+  interfaceName: 'vlan.3911'
+  interfaceIP: '10.251.86.14'
+  nodeName: 'k8s-gen4-01.sdsc.optiputer.net'
+  vlan: '3911'
+  switchPort: 
+    ifName: 'etp27'
+
+## SECTION 2 SWITCH INFORMATION ##
+switchDataA:
+  job_name: 'caltech'
+  SNMPHostIP: '10.251.86.10'
+  target: 172.16.1.1
+  portIn:
+    ifName: 'hundredGigE 1/31'
+    vlan: '3911'
+# Switch 1 (caltech) port  Port-channel_103
+  portOut:
+    ifName: 'Port-channel 103'
+    vlan: '3911'
+
+switchDataB:
+  job_name: 'ucsd_cluster'
+  SNMPHostIP: '10.251.86.14'
+  target: 132.249.2.46
+  portIn:
+    ifName: 'PortChannel501'
+    vlan: '3911'
+    
+  portOut:
+    ifName: 'etp27'
+    vlan: '3911'
+    

@@ -1,17 +1,17 @@
+## SECTION 1 GENERAL INFORMATION ##
 switchNum: 2
 dashTitle: "Multi Switch Flow Dashboard"
 debugTitle: "Multi Switch Flow L2 Debugging Dashboard"
-flow: " flow 1 "
-hostIP: 198.32.43.16 # example 198.32.43.16
+flow: " flow 2 "
+hostIP: 198.124.151.8 # example 198.32.43.16
 # The DNS of the host which is running the Grafana container
-grafanaHostIP: 'dev2.virnao.com'
+grafanaHostIP: 'sense-mon.es.net'
 grafanaPort: 3000 # Do not change unless container mapping change
 pushgatewayPort: 9091 # Do not change unless container mapping change
 grafanaAPIToken: "CONFIG"
 configFile: "multiconfig.yml"
 
-# Host 1
-hostA:
+hostA: # Host 1
   IP: 198.32.43.16
   interfaceName: 'ens2f0np0.1000'
   interfaceIP: '10.10.100.1'
@@ -22,8 +22,7 @@ hostA:
     ifVlan: 'Vlan 1000'
     order: 1
 
-# Host 2
-hostB:
+hostB: # Host 2
   IP: 198.32.43.15
   interfaceName: 'ens2f0.1000'
   interfaceIP: '10.10.100.2'
@@ -34,6 +33,7 @@ hostB:
     ifVlan: 'Vlan 1000'
     order: 6
 
+## SECTION 2 SWITCH INFORMATION ##
 switchDataA:
   job_name: 'snmp1'
   SNMPHostIP: 198.32.43.16
@@ -45,6 +45,7 @@ switchDataA:
     vlan: 1000
     ifVlan: 'Vlan 1000'
     order: 2
+
   portOut:
     ifName: 'hundredGigE 1/31'
     vlan: 1000
@@ -52,7 +53,7 @@ switchDataA:
     order: 3
 
 switchDataB:
-  job_name: 'snmp1'
+  job_name: 'snmp2'
   SNMPHostIP: 198.32.43.16
   target: 172.16.1.1
   # switch if format: " - IF: optional" 
@@ -68,11 +69,11 @@ switchDataB:
     ifVlan: 'Vlan 1000'
     order: 5
 
-# TCP/ARP Data
-tcpMetrics:
-  port: 9191
-  job_name: 'tcpmetrics'
-
+## SECTION 3 TCP and ARP (possible more in the future) ##
 arpMetrics:
   port: 9192
   job_name: 'arpmetrics'
+
+tcpMetrics:
+  port: 9191
+  job_name: 'tcpmetrics'

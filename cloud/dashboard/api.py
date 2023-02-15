@@ -5,38 +5,27 @@ import json
 import sys
 import yaml
 import os
+sys.path.append("..") # Adds higher directory to python modules path.
+import cloud_functions
 
-owd = os.getcwd()
-os.chdir("..")
-os.chdir("..")
-config_path = str(os.path.abspath(os.curdir)) +"/config_flow"
-infpth = config_path + "/config.yml"
-os.chdir(owd)
-data = {}
-with open(infpth, 'r') as stream:
-    try:
-        data = yaml.safe_load(stream)
-    except yaml.YAMLError as exc:
-        pass
-
-# http or https depending on Grafana setting
-# if data['encrypted']:
-#     server = "https://" + str(data['grafanaHostIP']) + ":" + str(data['grafanaPort'])
-# else:
-server = "http://" + str(data['grafanaHostIP']) + ":" + str(data['grafanaPort'])
-    
+print("\n\nParsing config file...")
+data,file_name = cloud_functions.read_yml_file("config_flow",sys.argv,3,2)
+            
 # Get Default Home Dashboard
-url = server + "/api/dashboards/db"
+url = f"http://{str(data['grafanaHostIP'])}:{str(data['grafanaPort'])}/api/dashboards/db"
+
 # HTTP Post Header
 # Replace with your Grafana API key
 headers = {"Authorization": str(data['grafanaAPIToken']),
             "Content-Type": "application/json",
             "Accept": "application/json"}
+
 # Open and load out.json input
 f = open(sys.argv[1],)
 f2 = open(sys.argv[2],)
 x = json.load(f)
 x2 = json.load(f2)
+
 # HTTP Post Request
 print(url)
 r = requests.post(url=url, headers=headers, data=json.dumps(x), verify=False)

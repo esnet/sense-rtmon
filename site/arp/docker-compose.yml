@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  arp-exporter:
+    image: zhenboyan/rocky_arp_exporter:latest
+    network_mode: "host" # ARP needs host network
+    environment: # change the folloing environment variables
+      - MYIP=ucsd_cluster
+      - HOST2IP=198.32.43.15
+      - PUSHGATEWAY_SERVER=http://dev2.virnao.com:9091 # try https if encrypted 
+      - ARP_PORT=9192
+      - SCRAPEDURATION=90000
+      - SCRAPEINTERVAL=30 
+      # - optional given by user for starting port 
+    ports:
+      - 9192:9192

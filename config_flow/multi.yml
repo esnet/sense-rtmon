@@ -7,7 +7,7 @@ hostIP: 198.124.151.8 # example 198.32.43.16 198.124.151.8 172.31.72.189
 grafanaHostIP: 'sense-mon.es.net'
 grafanaPort: 3000 # Do not change unless container mapping change
 pushgatewayPort: 9091 # Do not change unless container mapping change
-grafanaAPIToken: "CONFIG"
+grafanaAPIToken: "Bearer eyJrIjoiYVRhMVU0djJaNHNwQTRwaGRVc2R4V3lpa2UxRWsyTjYiLCJuIjoiZGVtbyIsImlkIjoxfQ=="
 configFile: "multi.yml"
 #ens2f0np0.1000
 hostA: # Host 1
@@ -19,16 +19,22 @@ hostA: # Host 1
   vlan: 'not_used'
   switchPort: 
     ifName: 'hundredGigE 1/31'
+    peer:
+      name: 'switchDataA'
+      ifName: 'hundredGigE 1/31'
 
 hostB: # Host 2
   name: 'ucsd_cluster'
-  IP: '10.251.86.14'
+  IP: '10.251.86.12'
   interfaceName: 'vlan.3911'
-  interfaceIP: '10.251.86.14'
-  nodeName: 'k8s-gen4-01.sdsc.optiputer.net'
+  interfaceIP: '10.251.86.12'
+  nodeName: 'k8s-gen4-02.sdsc.optiputer.net'
   vlan: '3911'
   switchPort: 
     ifName: 'etp27'
+    peer:
+      name: 'switchDataB'
+      ifName: 'etp27'
 
 ## SECTION 2 SWITCH INFORMATION ##
 switchDataA:
@@ -38,20 +44,32 @@ switchDataA:
   portIn:
     ifName: 'hundredGigE 1/31'
     vlan: '3911'
+    peer:
+      name: 'hostA'
+      ifName: 'hundredGigE 1/31'
+
 # Switch 1 (caltech) port  Port-channel_103
   portOut:
     ifName: 'Port-channel 103'
     vlan: '3911'
+    peer:
+      name: 'switchDataB'
+      ifName: 'PortChannel501'
 
 switchDataB:
   job_name: 'ucsd_cluster'
-  SNMPHostIP: '10.251.86.14'
+  SNMPHostIP: '10.251.86.12'
   target: 132.249.2.46
   portIn:
     ifName: 'PortChannel501'
     vlan: '3911'
-    
+    peer:
+      name: 'switchDataA'
+      ifName: 'PortChannel501'
+
   portOut:
-    ifName: 'etp27'
+    ifName: 'hostB'
     vlan: '3911'
-    
+    peer:
+      name: 'switchDataA'
+      ifName: 'etp27'

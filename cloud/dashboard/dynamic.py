@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 import re
-import yaml
 import sys
 import subprocess
-import os
 from datetime import datetime
 sys.path.append("..") # Adds higher directory to python modules path.
 import cloud_functions
@@ -36,10 +34,8 @@ for i in range(switch_num):
 ######################## COMMENTING FOR TESTING ########################
 
 dash_title = data["dashTitle"] + cloud_functions.make_title(data)
-debug_title = data["debugTitle"] + cloud_functions.make_title(data)
 replacements = cloud_functions.replacement_template()
 replacements["DASHTITLE"] = dash_title
-replacements["DEBUGTITLE"] = debug_title
 replacements["IPHOSTA"] = data["hostA"]["IP"]
 replacements["IPHOSTB"] = data["hostB"]["IP"]
 replacements["VLANA"] = data["hostA"]["vlan"]
@@ -77,7 +73,6 @@ for i in range(switch_num):
 
 # replacing
 cloud_functions.replacing_json(f"./templates/newTemplate{switch_num}.json","out.json",data,replacements)
-# cloud_functions.replacing_json(f"./templates/debugTemplate{switch_num}.json","outDebug.json",data,replacements)
 
 # Run the API script to convert output JSON to Grafana dashboard automatically
 cmd = f"sudo python3 api.py out.json outDebug.json {file_name}"

@@ -62,6 +62,8 @@ if switchNum >= 2:
         switch_target2 = data['switchDataB']['target']
         each_line = re.sub("switch_ip1=.*", f"switch_ip1={switch_target1}", each_line)
         each_line = re.sub("switch_ip2=.*", f"switch_ip2={switch_target2}", each_line)
+        # each_line = re.sub("mac_source1=.*", f"data['switchDataA']['mac_table_name']", each_line)
+        # each_line = re.sub("mac_source2=.*", f"data['switchDataB']['mac_table_name']", each_line)
         mult_data.append(each_line)
         
     with open('./se_config/multiDef.sh', 'w') as file:

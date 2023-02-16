@@ -5,6 +5,8 @@ host2=10.251.86.14
 switch_num=2
 switch_ip1=172.16.1.1
 switch_ip2=132.249.2.46
+mac_source1="dot1dTpFdbAddress"
+mac_source2="ipNetToMediaPhysAddress"
 flow_vlan=""
 # above lines are filled in by fill_config.py based on the config file used
 
@@ -61,30 +63,30 @@ fi
 # fi
 
 # SNMP mac address check switch 1
-if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip1}\".*mac_address.*"; then
-    echo "m_host1_snmp_mac_status{host=\"${host1}\"} 1"
-    # echo "switch1_mac{mac=\"${switch1_mac_no_quote}\"} 1"
-else 
-    echo "m_host1_snmp_mac_status{host=\"${host1}\"} 0"
-fi
-if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip1}\".*mac_address.*"; then
-    echo "m_host2_snmp_mac_status{host=\"${host2}\"} 1"
-    # echo "switch1_mac{mac=\"${switch1_mac_no_quote}\"} 1"
-else 
-    echo "m_host2_snmp_mac_status{host=\"${host2}\"} 0"
-fi
+# if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip1}\".*mac_address.*"; then
+#     echo "m_host1_snmp_mac_status{host=\"${host1}\"} 1"
+#     # echo "switch1_mac{mac=\"${switch1_mac_no_quote}\"} 1"
+# else 
+#     echo "m_host1_snmp_mac_status{host=\"${host1}\"} 0"
+# fi
+# if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip1}\".*mac_address.*"; then
+#     echo "m_host2_snmp_mac_status{host=\"${host2}\"} 1"
+#     # echo "switch1_mac{mac=\"${switch1_mac_no_quote}\"} 1"
+# else 
+#     echo "m_host2_snmp_mac_status{host=\"${host2}\"} 0"
+# fi
 
-# SNMP mac address check switch 2
-if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
-    echo "m_host1_snmp_mac_status2{host=\"${host1}\"} 1"
-else 
-    echo "m_host1_snmp_mac_status2{host=\"${host1}\"} 0"
-fi
-if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
-    echo "m_host2_snmp_mac_status2{host=\"${host2}\"} 1"
-else 
-    echo "m_host2_snmp_mac_status2{host=\"${host2}\"} 0"
-fi
+# # SNMP mac address check switch 2
+# if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host1}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
+#     echo "m_host1_snmp_mac_status2{host=\"${host1}\"} 1"
+# else 
+#     echo "m_host1_snmp_mac_status2{host=\"${host1}\"} 0"
+# fi
+# if curl ${pushgateway}:9091/metrics | grep ".*instance=\"${host2}\".*ip_address=\"${switch_ip2}\".*mac_address.*"; then
+#     echo "m_host2_snmp_mac_status2{host=\"${host2}\"} 1"
+# else 
+#     echo "m_host2_snmp_mac_status2{host=\"${host2}\"} 0"
+# fi
 
 # ARP IP check
 if curl ${pushgateway}:9091/metrics | grep "instance=\"${host1}\",ip_address=\"${host2}\""; then
@@ -125,31 +127,31 @@ host2_mac_no_quote=$(echo ${host2_mac_no_quote#*\"})
 
 # find host1 and host2 mac addressed on SNMP metrics from switch
 # ^^ makes the mac addresses in upper case. SNMP mac addresses are in uppercase
-if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*"; then
-    echo "m_switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
+if curl ${pushgateway}:9091/metrics | grep ".*${mac_source1}=${host1_mac^^}.*"; then
+    echo "m_switch1_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
     # echo "host1_mac{mac=\"${host1_mac_no_quote}\"} 1"
 else 
-    echo "m_switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
+    echo "m_switch1_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
 fi
-if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*"; then
-    echo "m_switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
+if curl ${pushgateway}:9091/metrics | grep ".*${mac_source1}=${host2_mac^^}.*"; then
+    echo "m_switch1_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
     # echo "host2_mac{mac=\"${host2_mac_no_quote}\"} 1"
 else 
-    echo "m_switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
+    echo "m_switch1_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
 fi
 # host1 finds its own mac address from switch 2 arp table
 # host1 could find its own mac address from its own node exporter
-if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host1_mac^^}.*"; then
-    echo "m_switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
+if curl ${pushgateway}:9091/metrics | grep ".*${mac_source2}=${host1_mac^^}.*"; then
+    echo "m_switch2_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
     # echo "host1_mac{mac=\"${host1_mac_no_quote}\"} 1"
 else 
-    echo "m_switch_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
+    echo "m_switch2_host1_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
 fi
-if curl ${pushgateway}:9091/metrics | grep ".*dot1dTpFdbAddress=${host2_mac^^}.*"; then
-    echo "m_switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
+if curl ${pushgateway}:9091/metrics | grep ".*${mac_source2}=${host2_mac^^}.*"; then
+    echo "m_switch2_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 1";
     # echo "host2_mac{mac=\"${host2_mac_no_quote}\"} 1"
 else 
-    echo "m_switch_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
+    echo "m_switch2_host2_mac_${flow_vlan}{host=\"${switch_ip1}\"} 0";
 fi
 
 ####################### NODE Exporter #################################

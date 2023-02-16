@@ -16,7 +16,7 @@ hostA: # Host 1
   interfaceName: 'ens2f0np0.3911'
   interfaceIP: '10.251.86.10/24'
   nodeName: 'sdn-dtn-2-10.ultralight.org'
-  vlan: 'not_used'
+  vlan: '3911'
   switchPort: 
     ifName: 'hundredGigE 1/31'
     peer:

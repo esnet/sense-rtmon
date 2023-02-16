@@ -3085,7 +3085,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "|NODENAMEA| ARP Running",
+            "legendFormat": "ARP Exporter on  NODENAMEA",
             "refId": "A"
           },
           {
@@ -3094,7 +3094,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "|NODENAMEA| --ping-> |NODENAMEB|",
+            "legendFormat": "NODENAMEA  ---ping-->  NODENAMEB",
             "refId": "B"
           },
           {
@@ -3104,7 +3104,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "|NODENAMEA| has |NODENAMEB| IP",
+            "legendFormat": "NODENAMEB IP ∈ {NODENAMEA ARP Table}",
             "refId": "D"
           },
           {
@@ -3113,7 +3113,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "|NODENAMEB| ARP Running",
+            "legendFormat": "ARP Exporter on  NODENAMEB",
             "refId": "E"
           },
           {
@@ -3122,7 +3122,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "|NODENAMEB| --ping-> |NODENAMEA|",
+            "legendFormat": "NODENAMEB  ---ping-->  NODENAMEA",
             "refId": "F"
           },
           {
@@ -3132,7 +3132,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "|NODENAMEB| has |NODENAMEA| IP",
+            "legendFormat": "NODENAMEA IP ∈ {NODENAMEB ARP Table}",
             "refId": "J"
           }
         ],
@@ -3213,7 +3213,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "SNMPANAME Switch SNMP Running",
+            "legendFormat": "Exporting SNMPANAME SNMP Metrics",
             "refId": "A"
           },
           {
@@ -3240,7 +3240,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "SNMPBNAME Switch SNMP Running",
+            "legendFormat": "Exporting SNMPBNAME SNMP Metrics",
             "refId": "D"
           },
           {

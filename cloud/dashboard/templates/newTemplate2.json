@@ -3085,7 +3085,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "NODENAMEA ARP Running",
+            "legendFormat": "|NODENAMEA| ARP Running",
             "refId": "A"
           },
           {
@@ -3094,7 +3094,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "NODENAMEA Pings NODENAMEB",
+            "legendFormat": "|NODENAMEA| --ping-> |NODENAMEB|",
             "refId": "B"
           },
           {
@@ -3104,7 +3104,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "NODENAMEA Contains NODENAMEB IP",
+            "legendFormat": "|NODENAMEA| has |NODENAMEB| IP",
             "refId": "D"
           },
           {
@@ -3113,7 +3113,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "NODENAMEB ARP On",
+            "legendFormat": "|NODENAMEB| ARP Running",
             "refId": "E"
           },
           {
@@ -3122,7 +3122,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "NODENAMEB Pings NODENAMEA",
+            "legendFormat": "|NODENAMEB| --ping-> |NODENAMEA|",
             "refId": "F"
           },
           {
@@ -3132,7 +3132,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "NODENAMEB Contains SNMPANAME IP",
+            "legendFormat": "|NODENAMEB| has |NODENAMEA| IP",
             "refId": "J"
           }
         ],
@@ -3213,7 +3213,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "SNMPANAME Switch",
+            "legendFormat": "SNMPANAME Switch SNMP Running",
             "refId": "A"
           },
           {
@@ -3240,7 +3240,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "SNMPBNAME Switch",
+            "legendFormat": "SNMPBNAME Switch SNMP Running",
             "refId": "D"
           },
           {
@@ -3262,96 +3262,6 @@
           }
         ],
         "title": "SNMP Exporter Debugger",
-        "transparent": true,
-        "type": "state-timeline"
-      },
-      {
-        "datasource": null,
-        "description": "Node Exporter Status",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "fillOpacity": 70,
-              "lineWidth": 0
-            },
-            "mappings": [
-              {
-                "options": {
-                  "0": {
-                    "color": "red",
-                    "index": 0,
-                    "text": "FAILURE"
-                  },
-                  "1": {
-                    "color": "green",
-                    "index": 1,
-                    "text": "SUCCESS"
-                  }
-                },
-                "type": "value"
-              }
-            ],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 6,
-          "w": 24,
-          "x": 0,
-          "y": 181
-        },
-        "id": 993,
-        "options": {
-          "alignValue": "left",
-          "legend": {
-            "displayMode": "list",
-            "placement": "bottom"
-          },
-          "mergeValues": true,
-          "rowHeight": 0.9,
-          "showValue": "always",
-          "tooltip": {
-            "mode": "single"
-          }
-        },
-        "pluginVersion": "8.2.3",
-        "targets": [
-          {
-            "exemplar": true,
-            "expr": "m_host1_node_on",
-            "hide": false,
-            "instant": false,
-            "interval": "",
-            "legendFormat": "NODENAMEA",
-            "refId": "A"
-          },
-          {
-            "exemplar": true,
-            "expr": "m_host2_node_on",
-            "hide": false,
-            "instant": false,
-            "interval": "",
-            "legendFormat": "NODENAMEB",
-            "refId": "B"
-          }
-        ],
-        "title": "Node Exporter Debugger",
         "transparent": true,
         "type": "state-timeline"
       }

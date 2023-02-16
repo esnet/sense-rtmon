@@ -1226,7 +1226,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "SNMPANAME Contains NODENAMEA MAC Address",
+            "legendFormat": "SNMPANAME contains NODENAMEA MAC Address",
             "refId": "B"
           },
           {
@@ -1235,7 +1235,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "SNMPBNAME Contains NODENAMEA MAC Address",
+            "legendFormat": "SNMPBNAME contains NODENAMEA MAC Address",
             "refId": "C"
           },
           {
@@ -1252,7 +1252,7 @@
             "expr": "m_switch1_host2_mac_",
             "hide": false,
             "interval": "",
-            "legendFormat": "SNMPANAME Contains NODENAMEB MAC Address",
+            "legendFormat": "SNMPANAME contains NODENAMEB MAC Address",
             "refId": "E"
           },
           {
@@ -1261,7 +1261,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "SNMPBNAME Contains NODENAMEB Mac Address",
+            "legendFormat": "SNMPBNAME contains NODENAMEB Mac Address",
             "refId": "F"
           }
         ],

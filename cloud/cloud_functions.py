@@ -58,7 +58,7 @@ def replacing_json(input,output,data,replacements):
 def make_title(data):
     current_time = datetime.now().strftime("%m/%d_%H:%M")
     timeTxt = " | [" + str(current_time) + "]"        
-    title = f" {str(data['flow'])} || {str(data['hostA']['interfaceName'])} -- {data['switchDataA']['job_name']} switch -- {data['switchDataB']['job_name']} switch --{str(data['hostB']['interfaceName'])} {timeTxt}"
+    title = f" {str(data['flow'])} || {str(data['hostA']['interfaceName'])} -- {data['switchDataA']['job_name']} switch -- {data['switchDataB']['job_name']} switch -- {str(data['hostB']['interfaceName'])} {timeTxt}"
     return title
 
 def index_finder(pushgateway_metrics,name):

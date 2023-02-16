@@ -1,7 +1,7 @@
 ## SECTION 1 GENERAL INFORMATION ##
 switchNum: 2
-dashTitle: "Multi Switch Flow Dashboard"
-flow: " demo flow "
+dashTitle: "Multi-Switch Real-time Monitoring"
+flow: " Demo Flow "
 hostIP: 198.124.151.8 # example 198.32.43.16 198.124.151.8 172.31.72.189
 # The DNS of the host which is running the Grafana container
 grafanaHostIP: 'sense-mon.es.net'

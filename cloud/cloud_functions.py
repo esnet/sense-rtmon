@@ -50,17 +50,22 @@ def replacing_json(input,output,data,replacements):
             outfile.write(line)
 
 # make a title according to the configuration file
+# def make_title(data):
+#     current_time = datetime.now().strftime("%m/%d_%H:%M")
+#     timeTxt = " | [" + str(current_time) + "]"        
+#     title = f" {str(data['flow'])} || {str(data['configFile'])} || {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}-- {data['switchNum']}-switch --{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
+#     return title
 def make_title(data):
     current_time = datetime.now().strftime("%m/%d_%H:%M")
     timeTxt = " | [" + str(current_time) + "]"        
-    title = f" {str(data['flow'])} || {str(data['configFile'])} || {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}-- {data['switchNum']}-switch --{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
+    title = f" {str(data['flow'])} || {str(data['hostA']['interfaceName'])} -- {data['switchDataA']['job_name']} switch -- {data['switchDataB']['job_name']} switch --{str(data['hostB']['interfaceName'])} {timeTxt}"
     return title
 
-def index_finder(pushgateway_metrics,name):
-    cmd = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{name}\".*'"
-    grep = subprocess.check_output(cmd,shell=True).decode()
-    if_index = re.search('ifIndex="(.+?)\"',grep).group(1)
-    return if_index
+# def index_finder(pushgateway_metrics,name):
+#     cmd = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{name}\".*'"
+#     grep = subprocess.check_output(cmd,shell=True).decode()
+#     if_index = re.search('ifIndex="(.+?)\"',grep).group(1)
+#     return if_index
 
 # make a template of replacement that can be used for up to 10 switches
 def replacement_template():

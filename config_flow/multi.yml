@@ -7,9 +7,9 @@ hostIP: 198.124.151.8 # example 198.32.43.16 198.124.151.8 172.31.72.189
 grafanaHostIP: 'sense-mon.es.net'
 grafanaPort: 3000 # Do not change unless container mapping change
 pushgatewayPort: 9091 # Do not change unless container mapping change
-grafanaAPIToken: "Bearer eyJrIjoiYVRhMVU0djJaNHNwQTRwaGRVc2R4V3lpa2UxRWsyTjYiLCJuIjoiZGVtbyIsImlkIjoxfQ=="
+grafanaAPIToken: "Bearer eyJrIjoiWEZOMUZBbVNIM1JGaXBDQ2xwTkhESmJDa0hwSXdZNDUiLCJuIjoiZnJpZGF5IiwiaWQiOjF9=="
 configFile: "multi.yml"
-#ens2f0np0.1000
+
 hostA: # Host 1
   name: 'caltech'
   IP: '10.251.86.10'

@@ -1395,7 +1395,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "ping NODENAMEB",
+            "legendFormat": "ping NODENAMEA",
             "refId": "B"
           },
           {

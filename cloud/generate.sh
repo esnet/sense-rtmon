@@ -2,6 +2,7 @@
 
 echo ""
 echo "!!    Available Configuration files under /config_flow:"
+printf "\n"
 echo $(ls ../config_flow/)
 printf "\n"
 read -r -p "Enter Configuration File to Generate Dashboards (only the name of the file is needed): " config_file

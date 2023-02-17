@@ -26,7 +26,7 @@ tee update_arp_exporter.sh<<EOF
 python3 /home/convert_arp.py /home/arp_out.txt /home/arp_out.json
 # sleep 0.5
 ping -c 1 ${HOST2IP}
-if [ $? -eq 0 ]; then 
+if [ \$? -eq 0 ]; then 
   echo "${HOST2IP}/ping_status/1" > /home/ping_status.txt
 else
   echo "${HOST2IP}/ping_status/0" > /home/ping_status.txt

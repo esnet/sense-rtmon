@@ -11,7 +11,7 @@ grafanaAPIToken: "Bearer eyJrIjoiWEZOMUZBbVNIM1JGaXBDQ2xwTkhESmJDa0hwSXdZNDUiLCJ
 configFile: "multi.yml"
 
 hostA: # Host 1
-  name: 'caltech'
+  name: 'Caltech'
   IP: '10.251.86.10'
   interfaceName: 'ens2f0np0.3911'
   interfaceIP: '10.251.86.10/24'
@@ -24,7 +24,7 @@ hostA: # Host 1
       ifName: 'hundredGigE 1/31'
 
 hostB: # Host 2
-  name: 'ucsd_cluster'
+  name: 'UCSD Cluster'
   IP: '10.251.86.12'
   interfaceName: 'vlan.3911'
   interfaceIP: '10.251.86.12'
@@ -38,7 +38,7 @@ hostB: # Host 2
 
 ## SECTION 2 SWITCH INFORMATION ##
 switchDataA:
-  job_name: 'caltech'
+  job_name: 'Caltech LRT-SDN-R02-Dell-Z9100'
   SNMPHostIP: '10.251.86.10'
   target: 172.16.1.1
   portIn:
@@ -57,7 +57,7 @@ switchDataA:
       ifName: 'PortChannel501'
 
 switchDataB:
-  job_name: 'ucsd_cluster'
+  job_name: 'UCSD SN3700'
   SNMPHostIP: '10.251.86.12'
   target: 132.249.2.46
   portIn:

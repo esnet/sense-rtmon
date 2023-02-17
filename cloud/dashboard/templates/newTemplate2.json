@@ -1062,7 +1062,7 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 10,
+          "h": 5,
           "w": 24,
           "x": 0,
           "y": 76
@@ -1089,17 +1089,8 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "ARP Exporter Running on  NODENAMEA",
+            "legendFormat": "ARP Exporter Active",
             "refId": "A"
-          },
-          {
-            "exemplar": true,
-            "expr": "m_host2_arp_on",
-            "hide": false,
-            "instant": false,
-            "interval": "",
-            "legendFormat": "ARP Exporter Running on  NODENAMEB",
-            "refId": "B"
           },
           {
             "exemplar": true,
@@ -1107,17 +1098,8 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "NODENAMEA  ---ping>>>  NODENAMEB",
-            "refId": "C"
-          },
-          {
-            "exemplar": true,
-            "expr": "m_host2_ping_status",
-            "hide": false,
-            "instant": false,
-            "interval": "",
-            "legendFormat": "NODENAMEA  <<<ping---  NODENAMEB",
-            "refId": "D"
+            "legendFormat": "ping NODENAMEB",
+            "refId": "B"
           },
           {
             "exemplar": true,
@@ -1126,27 +1108,17 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "NODENAMEB IP Address ∈ {NODENAMEA ARP Table}",
-            "refId": "E"
-          },
-          {
-            "exemplar": true,
-            "expr": "m_host2_has_host1_arp",
-            "format": "time_series",
-            "hide": false,
-            "instant": false,
-            "interval": "",
-            "legendFormat": "NODENAMEA IP Address ∈ {NODENAMEB ARP Table}",
-            "refId": "F"
+            "legendFormat": "ARP Table contains NODENAMEB IP Address",
+            "refId": "C"
           }
         ],
-        "title": "ARP Exporter Metrics Correlation",
+        "title": "NODENAMEA Metrics/MAC Correlation",
         "transparent": true,
         "type": "state-timeline"
       },
       {
         "datasource": null,
-        "description": "SNMP Exporter Metrics Correlation",
+        "description": "",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -1190,14 +1162,14 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 10,
+          "h": 5,
           "w": 24,
           "x": 0,
-          "y": 77
+          "y": 78
         },
-        "id": 992,
+        "id": 991,
         "options": {
-          "alignValue": "left",
+          "alignValue": "center",
           "legend": {
             "displayMode": "list",
             "placement": "bottom"
@@ -1217,7 +1189,7 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "Exporting SNMPANAME SNMP Metrics",
+            "legendFormat": "SNMP Exporter Active",
             "refId": "A"
           },
           {
@@ -1226,8 +1198,97 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "SNMPANAME contains NODENAMEA MAC Address",
+            "legendFormat": "contains NODENAMEA MAC Address",
             "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_switch1_host2_mac_",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "contains NODENAMEB MAC Address",
+            "refId": "C"
+          }
+        ],
+        "title": "SNMPANME Metrics/MAC Correlation",
+        "transparent": true,
+        "type": "state-timeline"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 0
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "red",
+                    "index": 0,
+                    "text": "FAILURE"
+                  },
+                  "1": {
+                    "color": "green",
+                    "index": 1,
+                    "text": "SUCCESS"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 24,
+          "x": 0,
+          "y": 79
+        },
+        "id": 991,
+        "options": {
+          "alignValue": "center",
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "mergeValues": true,
+          "rowHeight": 0.9,
+          "showValue": "always",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.2.3",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "m_host2_snmp_on_",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "SNMP Exporter Active",
+            "refId": "A"
           },
           {
             "exemplar": true,
@@ -1235,25 +1296,8 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "SNMPBNAME contains NODENAMEA MAC Address",
-            "refId": "C"
-          },
-          {
-            "exemplar": true,
-            "expr": "m_host2_snmp_on_",
-            "hide": false,
-            "instant": false,
-            "interval": "",
-            "legendFormat": "Exporting SNMPBNAME SNMP Metrics",
-            "refId": "D"
-          },
-          {
-            "exemplar": true,
-            "expr": "m_switch1_host2_mac_",
-            "hide": false,
-            "interval": "",
-            "legendFormat": "SNMPANAME contains NODENAMEB MAC Address",
-            "refId": "E"
+            "legendFormat": "contains NODENAMEA MAC Address",
+            "refId": "B"
           },
           {
             "exemplar": true,
@@ -1261,11 +1305,111 @@
             "hide": false,
             "instant": false,
             "interval": "",
-            "legendFormat": "SNMPBNAME contains NODENAMEB Mac Address",
-            "refId": "F"
+            "legendFormat": "contains NODENAMEB Mac Address",
+            "refId": "C"
           }
         ],
-        "title": "SNMP Exporter Debugger",
+        "title": "SNMPBNAME Metrics/MAC Correlation",
+        "transparent": true,
+        "type": "state-timeline"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 0
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "red",
+                    "index": 0,
+                    "text": "FAILURE"
+                  },
+                  "1": {
+                    "color": "green",
+                    "index": 1,
+                    "text": "SUCCESS"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 24,
+          "x": 0,
+          "y": 80
+        },
+        "id": 991,
+        "options": {
+          "alignValue": "center",
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "mergeValues": true,
+          "rowHeight": 0.9,
+          "showValue": "always",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.2.3",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "m_host2_arp_on",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "ARP Exporter Active",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host2_ping_status",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "ping NODENAMEB",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "m_host2_has_host1_arp",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "ARP Table contains NODENAMEA IP Address",
+            "refId": "C"
+          }
+        ],
+        "title": "NODENAMEB Metrics/MAC Correlation",
         "transparent": true,
         "type": "state-timeline"
       },
@@ -3267,7 +3411,7 @@
       }
     ],
     "time": {
-      "from": "now-15m",
+      "from": "now-5m",
       "to": "now"
     },
     "timepicker": {},

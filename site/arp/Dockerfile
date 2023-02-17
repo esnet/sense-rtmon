@@ -1,4 +1,4 @@
-FROM rockylinux
+FROM rockylinux:9.1.20221221
 
 # download dependencies 
 RUN cd /home 

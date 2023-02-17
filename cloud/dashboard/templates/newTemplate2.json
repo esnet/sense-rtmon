@@ -1222,7 +1222,7 @@
           },
           {
             "exemplar": true,
-            "expr": "m_switch2_host1_mac_",
+            "expr": "m_switch1_host1_mac_",
             "hide": false,
             "instant": false,
             "interval": "",

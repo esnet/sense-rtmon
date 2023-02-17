@@ -1112,7 +1112,7 @@
             "refId": "C"
           }
         ],
-        "title": "NODENAMEA Metrics/MAC Correlation",
+        "title": "NODENAMEA ARP/MAC Correlation",
         "transparent": true,
         "type": "state-timeline"
       },
@@ -1210,7 +1210,7 @@
             "refId": "C"
           }
         ],
-        "title": "SNMPANAME Metrics/MAC Correlation",
+        "title": "SNMPANAME ARP/MAC Correlation",
         "transparent": true,
         "type": "state-timeline"
       },
@@ -1309,7 +1309,7 @@
             "refId": "C"
           }
         ],
-        "title": "SNMPBNAME Metrics/MAC Correlation",
+        "title": "SNMPBNAME ARP/MAC Correlation",
         "transparent": true,
         "type": "state-timeline"
       },
@@ -1409,7 +1409,7 @@
             "refId": "C"
           }
         ],
-        "title": "NODENAMEB Metrics/MAC Correlation",
+        "title": "NODENAMEB ARP/MAC Correlation",
         "transparent": true,
         "type": "state-timeline"
       },

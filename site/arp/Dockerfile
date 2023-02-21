@@ -3,7 +3,7 @@ FROM rockylinux:9.1.20221221
 # download dependencies 
 RUN cd /home 
 RUN yum -y update
-RUN yum -y install python3 git make wget cronie pip net-tools
+RUN yum -y install python3 git make wget cronie pip net-tools iputils
 RUN pip install pyyaml pyyaml requests prometheus_client
 
 # these files will be changed depend the configuration file below

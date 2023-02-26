@@ -1,0 +1,108 @@
+## SECTION 1 GENERAL INFORMATION ##
+title: "Multi Switch Flow Dashboard"
+flow: " flow 2 "
+hostIP: 198.124.151.8 
+grafana_host: 'sense-mon.es.net:3000'
+pushgateway: 'sense-mon.es.net:9091'
+grafanaAPIToken: "CONFIG"
+
+node: # Host 1
+  - name: 'Caltech Host'
+    type: 'host' 
+    node: 'sdn-dtn-2-10.ultralight.org'
+    ip: 10.251.86.10
+    interface: 
+      - name: 'ens2f0np0.3911'
+        vlan: '3911'
+        peer: 
+          node: 'Caltech Host'
+          interface: 'ens2f0np0.3911'
+          vlan: '3911'
+      - name: 'hundredGigE 1/31'
+        vlan: '3911'
+        peer: 
+           node: 'Caltech LRT-SDN-R02-Dell-Z9100'
+           interface: 'hundredGigE 1/31'
+           vlan: '3911'
+  
+  - name: 'UCSD Host'
+    type: 'host'
+    node: 'k8s-gen4-01.sdsc.optiputer.net'
+    ip: 10.251.86.14
+    interface: 
+      - name: 'vlan.3911'
+        vlan: '3911'
+        peer: 
+          node: 'self'
+          interface: 'self'
+      - name: 'etp27'
+        vlan: '3911'
+        peer: 
+           node:
+           interface:
+           vlan:
+  
+  - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
+    type: 'switch'
+    node: 'k8s-gen4-02.sdsc.optiputer.net'
+    ip: 172.16.1.1
+    SNMPHostIP: 10.251.86.10
+    interface: 
+      - name: 'hundredGigE 1/31'
+        vlan: '3911'
+        peer: 
+          node: 'sdn-dtn-2-10.ultralight.org'
+          interface: 'hundredGigE 1/31'
+          vlan: '3911'
+      - name: 'interface-channel 103'
+        vlan: '3911'
+        peer: 
+          node: 'sdn-dtn-2-10.ultralight.org'
+          interface: 'interfaceChannel501'
+          vlan: '3911'
+
+## SECTION 2 SWITCH INFORMATION ##
+switch:
+  num: 3 # Number of switches
+  # could also do an array style
+  switch1:    
+    institute: 'caltech'
+    running_from_ip: '10.251.86.10'
+    target: 172.16.1.1
+    num_interface: 2
+    interface1:
+      if_name: 'hundredGigE 1/31'
+      vlan: '3911'
+    interface2:
+      if_name: 'interface-channel 103'
+      vlan: '3911'
+      peer: 
+        node: switch2
+        interface: interface1
+
+  switch2:
+    institute: 'ucsd_cluster'
+    running_from_ip: '10.251.86.14'
+    target: 132.249.2.46
+    num_interface: 2
+    interface1:
+      if_name: 'interfaceChannel501'
+      vlan: '3911'
+      peer: 
+        node: switch1
+        interface: interface2
+    interface2:
+      if_name: 'etp27'
+      vlan: '3911'   
+  
+  switch3:
+    job_name: 'ucsd_cluster'
+    running_from_ip: '10.251.86.14'
+    target: 132.249.2.46
+    num_interface: 2
+    interface1:
+      if_name: 'interfaceChannel501'
+      vlan: '3911'
+    interface2:
+      if_name: 'etp27'
+      vlan: '3911'  

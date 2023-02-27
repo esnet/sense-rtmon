@@ -6,33 +6,21 @@ grafana_host: 'sense-mon.es.net:3000'
 pushgateway: 'sense-mon.es.net:9091'
 grafanaAPIToken: "CONFIG"
 
-node: # Host 1
+## Section 2 Hosts & Switches all under nodes ##
+node:
+
   - name: 'sdn-dtn-2-10.ultralight.org'
     type: 'host' 
     ip: 10.251.86.10
     interface: 
       - name: 'ens2f0np0.3911'
         vlan: 'not used'
-
+      # doesn't have a peer for this interface
       - name: 'hundredGigE 1/31'
         vlan: 'not used'
         peer: 
         - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
           interface: 'hundredGigE 1/31'
-          vlan: 'not used'
-  
-  - name: 'k8s-gen4-01.sdsc.optiputer.net'
-    type: 'host'
-    ip: 10.251.86.14
-    interface: 
-      - name: 'vlan.3911'
-        vlan: 'not used'
-
-      - name: 'etp28'
-        vlan: 'not used'
-        peer: 
-        - name: 'SN3700'
-          interface: 'etp28'
           vlan: 'not used'
   
   - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
@@ -70,5 +58,19 @@ node: # Host 1
         vlan: 'not used'
         peer: 
         - name: 'k8s-gen4-01.sdsc.optiputer.net'
+          interface: 'etp28'
+          vlan: 'not used'
+
+  - name: 'k8s-gen4-01.sdsc.optiputer.net'
+    type: 'host'
+    ip: 10.251.86.14
+    interface: 
+      - name: 'vlan.3911'
+        vlan: 'not used'
+
+      - name: 'etp28'
+        vlan: 'not used'
+        peer: 
+        - name: 'SN3700'
           interface: 'etp28'
           vlan: 'not used'

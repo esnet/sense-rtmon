@@ -26,7 +26,7 @@ node:
   - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
     type: 'switch'
     ip: 172.16.1.1
-    SNMPHostIP: 10.251.86.10
+    SNMPHostIP: 10.251.86.10 # This information might be irrelevant in the future
     interface: 
       - name: 'hundredGigE 1/31'
         vlan: 'not used'

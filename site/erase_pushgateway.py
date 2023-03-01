@@ -1,35 +1,77 @@
-# erase all urls from this host (instance)
-import json
-import os
+# erase all urls on a pushgateway
 import requests
-import yaml
 import sys
-import site_functions
+from bs4 import BeautifulSoup
+import re
 
-# read yml file
-data,file_name = site_functions.read_yml_file("config_site",sys.argv,1,1)
+if len(sys.argv) == 1:
+    # Set the URL of the Pushgateway
+    pushgateway_url = 'http://198.124.151.8:9091'
+else:
+    if "http" in sys.argv[1]:
+        pushgateway_url = sys.argv[1]
+    else:
+        pushgateway_url = f"http://{sys.argv[1]}"
 
-hostip = data['hostIP']
-node_url = f"http://dev2.virnao.com:9091/metrics/job/node-exporter/instance/{hostip}"
-requests.delete(node_url)
+confirm = input("This action will remove all metrics on this pushgateway and it's irrevertible. Do you want to proceed? (y/n): ")
+if confirm.lower() != "y":
+    print("Okay, Operation Cancelled.")
+    exit(0)
 
-target = data['snmpMetricsA']['target']
-snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter/instance/{hostip}/target_switch/{target}"
-requests.delete(snmp_url)
-if data['switchNum'] == 2:
-    target2 = data['snmpMetricsB']['target']
-    snmp_url = f"http://dev2.virnao.com:9091/metrics/job/snmp-exporter2/instance/{hostip}/target_switch/{target2}"
-    requests.delete(snmp_url)
+print("Procedding...")
+    
+main_page_url = f'{pushgateway_url}/'
+response = requests.get(main_page_url)
 
-# delete ARP metrics
-dir = str(os.getcwd())    
-# delete previous urls
-delete_file_path = dir + "/Metrics/ARPMetrics/jsonFiles/delete.json"
-with open(delete_file_path,"rt") as fp:
-# check if the file is empty
-    if os.stat(delete_file_path).st_size != 0:
-        load_delete = json.load(fp)
-        for each_url in load_delete:
-            requests.delete(each_url)
-            
-print("Later added SNMP Exporters need to be deleted manually.")
+# Check if the request was successful
+if response.status_code != 200:
+    print(f'Error getting main page from Pushgateway: {response.status_code} {response.reason}')
+    exit(1)
+
+# Use BeautifulSoup to parse the HTML and extract all span elements
+soup = BeautifulSoup(response.text, 'html.parser')
+span_elements = soup.find_all('span')
+
+new_text = []
+for ele in span_elements:
+    if "badge badge-" in str(ele):
+        # store from warning to light
+        if "warning" in str(ele):
+            block = []
+            under_block = True
+            send = False
+        
+        if "light" in str(ele):
+            send = True
+            under_block = False
+        
+        if under_block:    
+            block.append(ele)
+        
+        if send:
+            new_text.append(block)        
+
+# only keep instance related 
+new_text = [x for x in new_text if "instance" in str(x)]
+# remove non group related urls
+new_text = [x for x in new_text if len(x) >1]
+# remove duplicates
+new_text = [list(t) for t in set(tuple(x) for x in new_text)]
+
+for block in new_text:
+    matches = re.findall(r'>\s*(.*?)\s*<', str(block))
+    matches = [x for x in matches if "=" in x]
+    url = ""
+    
+    for item in matches:
+        left, right = item.split("=")
+        right = right.replace('"', '')
+        url += f"{left}/{right}/"
+
+    url = url.rstrip("/") # remove the trailing slash
+    delete_url = f'{pushgateway_url}/metrics/{url}'
+    print("Deleting the following group: ")
+    print(delete_url)
+    print("")
+    # delete the url (same as Delete Group button)
+    requests.delete(delete_url)

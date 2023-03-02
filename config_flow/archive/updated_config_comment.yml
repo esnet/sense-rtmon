@@ -23,7 +23,6 @@ node:
         vlan: 'not used'
       - &interface2
         name: 'hundredGigE 1/31'
-        ip: 10.251.86.10
         vlan: 'not used'
     peer:
       - from: *interface2
@@ -39,7 +38,6 @@ node:
         vlan: 'not used'
       - &interface4
         name: 'Port-channel 103'
-        ip: 172.16.1.1
         vlan: 'not used'
     peer:
       - from: *interface3
@@ -53,11 +51,9 @@ node:
     interface:
       - &interface5
         name: 'PortChannel501'
-        ip: 132.249.2.46
         vlan: 'not used'
       - &interface6
         name: 'etp28'
-        ip: 132.249.2.46
         vlan: 'not used'
     peer:
       - from: *interface5
@@ -75,7 +71,6 @@ node:
         vlan: 'not used'
       - &interface8
         name: 'etp28'
-        ip: 10.251.86.12
         vlan: 'not used'
     peer:
       - from: *interface8

@@ -17,36 +17,28 @@ node:
         vlan: 'not used'
       # doesn't have a peer for this interface
       - name: 'hundredGigE 1/31'
-        ip: 10.251.86.10
         vlan: 'not used'
         peer: 
         - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
           interface: 'hundredGigE 1/31'
-          ip: 172.16.1.1
           vlan: 'not used'
-           
-     
-  
+
   - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
     type: 'switch'
     # SNMPHostIP: 10.251.86.10 # This information might be irrelevant in the future
     interface: 
       - name: 'hundredGigE 1/31'
-        ip: 172.16.1.1
         vlan: 'not used'
         peer: 
         - name: 'sdn-dtn-2-10.ultralight.org'
           interface: 'hundredGigE 1/31'
-          ip: 10.251.86.10
           vlan: 'not used'
 
       - name: 'Port-channel 103'
-        ip: 172.16.1.1
         vlan: 'not used'
         peer: 
         - name: 'UCSD SN3700'
           interface: 'PortChannel501'
-          ip: 132.249.2.46
           vlan: 'not used'
 
   - name: 'UCSD SN3700'
@@ -54,21 +46,17 @@ node:
     # SNMPHostIP: 10.251.86.12
     interface: 
       - name: 'PortChannel501'
-        ip: 132.249.2.46
         vlan: 'not used'
         peer: 
         - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
-          ip: 172.16.1.1
           interface: 'Port-channel 103'
           vlan: 'not used'
 
       - name: 'etp28'
-        ip: 132.249.2.46
         vlan: 'not used'
         peer: 
         - name: 'k8s-gen4-01.sdsc.optiputer.net'
           interface: 'etp28'
-          ip: 10.251.86.12
           vlan: 'not used'
 
   - name: 'k8s-gen4-02.sdsc.optiputer.net'
@@ -79,10 +67,8 @@ node:
         vlan: 'not used'
       
       - name: 'etp28'
-        ip: 10.251.86.12
         vlan: 'not used'
         peer: 
         - name: 'SN3700'
           interface: 'etp28'
-          ip: 132.249.2.46
           vlan: 'not used'

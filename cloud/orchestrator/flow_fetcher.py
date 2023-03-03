@@ -20,12 +20,11 @@ class TestFlowFetcher(unittest.TestCase):
         self.template = """{
             "Ports": [
               {
-                "Name": "?terminal?",
+                "Port": "?terminal?",
+                "Name": "?port_name?",
                 "Vlan": "?vlan?",
                 "Node": "?node_name?",
-                "sparql": "SELECT DISTINCT  ?vlan_port  ?vlan  WHERE { ?subnet a mrs:SwitchingSubnet. ?subnet nml:hasBidirectionalPort ?vlan_port. ?vlan_port nml:hasLabel ?vlan_l. ?vlan_l nml:value ?vlan. }",
-                "sparql-ext": "SELECT DISTINCT ?terminal ?node_name ?peer WHERE { {?node a nml:Node. ?node nml:name ?node_name. ?node nml:hasBidirectionalPort ?terminal. ?terminal nml:hasBidirectionalPort ?vlan_port. OPTIONAL {?terminal nml:isAlias ?peer.}} UNION { ?node a nml:Topology. ?node nml:name ?node_name. ?node nml:hasBidirectionalPort ?terminal. ?terminal nml:hasBidirectionalPort ?vlan_port. OPTIONAL {?terminal nml:isAlias ?peer.}}}",
-                "required": "true",
+                "Peer": "?peer?",
                 "Host": [
                  {
                    "Interface": "?host_port?",
@@ -34,7 +33,9 @@ class TestFlowFetcher(unittest.TestCase):
                     "required": "false"
                  }
                 ],
-                "Peer": "?peer?"
+                "sparql": "SELECT DISTINCT  ?vlan_port  ?vlan  WHERE { ?subnet a mrs:SwitchingSubnet. ?subnet nml:hasBidirectionalPort ?vlan_port. ?vlan_port nml:hasLabel ?vlan_l. ?vlan_l nml:value ?vlan. }",
+                "sparql-ext": "SELECT DISTINCT ?terminal ?port_name ?node_name ?peer WHERE { {?node a nml:Node. ?node nml:name ?node_name. ?node nml:hasBidirectionalPort ?terminal.  ?terminal nml:hasBidirectionalPort ?vlan_port. OPTIONAL {?terminal nml:name ?port_name.} OPTIONAL {?terminal nml:isAlias ?peer.}} UNION { ?node a nml:Topology. ?node nml:name ?node_name. ?node nml:hasBidirectionalPort ?terminal. ?terminal nml:hasBidirectionalPort ?vlan_port. OPTIONAL {?terminal nml:name ?port_name.} OPTIONAL {?terminal nml:isAlias ?peer.}}}",
+                "required": "true"
               }
             ]
         }"""

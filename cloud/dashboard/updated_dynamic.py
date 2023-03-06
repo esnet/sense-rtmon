@@ -7,6 +7,20 @@ from datetime import datetime
 sys.path.append("..") # Adds higher directory to python modules path.
 import cloud_functions
 
+# This is a sandwich structure to build the json file
+# General Dashboard Top         file_1
+#   Panels                      file_2
+#       Info Panel              file_3
+#       Interface Panel         file_4
+#           Interface targets   file_n
+#   Dashboard Bottom            file_1
+#
+# Once Panels are built, they are added to the general dashboard template
+# 1. write all interface targets inside the panels
+# 2. write all the panels general dashboard template
+# 3. write the general dashboard template to a unique flow file based on the flow ID given in config file 
+
+
 # find the ifIndex of an interface on pushgateway site
 def index_finder(name,pushgateway_metrics):
     cmd = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{name}\".*'"

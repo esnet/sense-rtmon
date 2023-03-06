@@ -1,0 +1,30 @@
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 10001
+    },
+    "id": PANELID,
+    "panels": [],
+    "title": "INFOTITLE1",
+    "title": "NODETYPE Flow Summary - NODENAME",
+    "type": "row"
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 10001
+    },
+    "id": PANELID,
+    "panels": [],
+    "title": "INFOTITLE1",
+    "title": "NODETYPE Flow Summary - NODENAME",
+    "type": "row"
+  },

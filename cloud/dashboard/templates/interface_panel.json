@@ -1,0 +1,24 @@
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 3,
+      "w": 24,
+      "x": 0,
+      "y": "YPOSITION"
+    },
+    "id": "PANELID",
+    "options": {
+      "content": "```\nNODETYPE: NODENAME   Interface: INTERFACEINFO\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "NODENAME - Node Interface Information",
+    "type": "text"
+  }

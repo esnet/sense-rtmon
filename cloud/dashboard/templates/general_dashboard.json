@@ -166,20 +166,6 @@
           "title": "End-to-End Flow Topology",
           "type": "jdbranham-diagram-panel"
         },
-        {
-          "collapsed": false,
-          "datasource": null,
-          "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 13
-          },
-          "id": 121,
-          "panels": [],
-          "title": "Host Flow Summary - NODENAME1",
-          "type": "row"
-        },
         
 INSERTALLPANELS
 

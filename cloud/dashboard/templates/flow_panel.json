@@ -1,4 +1,4 @@
-  {
+{
     "aliasColors": {},
     "bars": false,
     "dashLength": 10,
@@ -14,10 +14,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": YPOSITION
+      "y": "YPOSITION"
     },
     "hiddenSeries": false,
-    "id": 341,
+    "id": "PANELID",
     "legend": {
       "avg": false,
       "current": false,
@@ -41,7 +41,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv SWITCH2PORT1IF",
+        "alias": "recv IFNAME",
         "transform": "negative-Y"
       }
     ],
@@ -49,31 +49,13 @@
     "stack": false,
     "steppedLine": false,
     "targets": [
-      {
-        "exemplar": true,
-        "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOST2\"}[1m])*8",
-        "instant": false,
-        "interval": "",
-        "intervalFactor": 1,
-        "legendFormat": "recv {{ifDescr}}",
-        "refId": "A"
-      },
-      {
-        "exemplar": true,
-        "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOST2\"}[1m])*8",
-        "hide": false,
-        "instant": false,
-        "interval": "",
-        "intervalFactor": 1,
-        "legendFormat": "trans {{ifDescr}}",
-        "refId": "B"
-      }
+INSERTTARGET
     ],
     "thresholds": [],
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "SNMP2NAME Switch - Flow Bandwidth - Facing SWITCH2PORT1IF (SNMP1NAME Switch)",
+    "title": "NODENAME - interface: IFNAME Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,

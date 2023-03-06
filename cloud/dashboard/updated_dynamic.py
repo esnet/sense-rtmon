@@ -101,7 +101,11 @@ with open("./templates/temp.json") as file:
         general_content = infile.read()
         content = general_content.replace("INSERTALLPANELS",all_panels)
         outfile.write(content)
-        
+
+# remove temp file that's no longer needed
+if os.path.exists("./templates/temp.json"):
+    os.remove("./templates/temp.json")
+
 # Run the API script to convert output JSON to Grafana dashboard automatically
 cmd = f"sudo python3 api.py {dashboard_name} {config_file}"
 subprocess.run(cmd, shell=True)

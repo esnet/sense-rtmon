@@ -1,0 +1,152 @@
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 65
+    },
+    "id": 147,
+    "panels": [],
+    "title": "Host Flow Summary - NODENAME2",
+    "type": "row"
+  },
+  {
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 3,
+      "w": 24,
+      "x": 0,
+      "y": 66
+    },
+    "id": 149,
+    "options": {
+      "content": "```\nnode name: NODENAME2   if name: IFNAMEHOST2   DATAPLANEIP2    IPHOST2    Vlan: VLANB\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "NODENAME2 General Info",
+    "type": "text"
+  },
+  {
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 68
+    },
+    "hiddenSeries": false,
+    "id": 155,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "trans IFNAMEHOST2",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+      {
+        "exemplar": true,
+        "expr": "irate(node_network_receive_bytes_total{exported_instance=\"IPHOST2\", device=\"IFNAMEHOST2\"}[1m])*8",
+        "instant": false,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "recv {{device}}",
+        "refId": "A"
+      },
+      {
+        "exemplar": true,
+        "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"IPHOST2\",device=\"IFNAMEHOST2\"}[1m])*8",
+        "hide": false,
+        "instant": false,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "trans {{device}}",
+        "refId": "B"
+      }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "NODENAME2 - Flow Bandwidth Graph",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  }

@@ -16,18 +16,14 @@ url = f"http://{str(data['grafanaHostIP'])}:{str(data['grafanaPort'])}/api/dashb
 
 # HTTP Post Header
 # Replace with your Grafana API key
-headers = {"Authorization": str(data['grafanaAPIToken']),
-            "Content-Type": "application/json",
+headers = {"Authorization": str(data['grafanaAPIToken']), 
+           "Content-Type": "application/json",
             "Accept": "application/json"}
 
 # Open and load out.json input
 f = open(sys.argv[1],)
-# f2 = open(sys.argv[2],)
 x = json.load(f)
-# x2 = json.load(f2)
 
 # HTTP Post Request
 r = requests.post(url=url, headers=headers, data=json.dumps(x), verify=False)
 print(r.json())
-# r2 = requests.post(url=url, headers=headers, data=json.dumps(x2), verify=False)
-# print(r2.json())

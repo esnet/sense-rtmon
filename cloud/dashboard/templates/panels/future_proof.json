@@ -2,7 +2,7 @@
   "dashboard": {
     "id": null,
     "uid": null,
-    "title": "Multi-Switch Real-time Monitoring 03/05_23:46:03",
+    "title": "DASHTITLE",
     "tags": [
       "templated"
     ],
@@ -103,7 +103,7 @@
           "authPassword": "",
           "authUsername": "",
           "composites": [],
-          "content": "graph  LR  \n  subgraph  h1  [\"NODENAME1\"]\n  ip{{VLAN: 3911  -  IP: DATAPLANEIP1}}\n  e(IFNAMEHOST1)\n  end\n  \n  e(IFNAMEHOST1)  ----  sw1s1if[SWITCH2PORT1IF]\n\n  subgraph  sw1  [\"SNMP1NAME Switch\"]\n  subgraph  sw1s1  [\"port\"]\n  sw1s1vlan{{VLAN:  SWITCH1PORT1VLAN}}\n  sw1s1if[SWITCH1PORT1IF]\n  end\n  subgraph  sw1s2  [\"port\"]\n  sw1s2vlan{{VLAN: SWITCH1PORT2VLAN}}\n  sw1s2ifout[SWITCH1PORT1IF]\n  end\n  end\n\n  subgraph  sw2  [\"SNMP2NAME Switch\"]\n  subgraph  sw2s1  [\"port\"]\n  sw2s1vlan{{VLAN: 3911}}\n  sw2s1if[SWITCH2PORT1IF]\n  end\n  subgraph  sw2s2  [\"port\"]\n  sw2s2vlan{{VLAN: SWITCH2PORT2VLAN}}\n  sw2s2ifout[SWITCH2PORT2IF]\n  end\n  end\n  \n  sw1s2ifout[SWITCH1PORT2IF]  ----  sw2s1if[SWITCH2PORT1IF]\n  sw2s2ifout[SWITCH2PORT2IF]  ----  e2(IFNAMEHOST2)\n  \n  subgraph  h2  [\"NODENAME2\"]\n  ip2{{VLAN: 3911  -  IP: DATAPLANEIP2}}  \n  e2(IFNAMEHOST2)\n  end",
+          "content": "graph  LR  \n  subgraph  h1  [\"NODENAME1\"]\n  ip{{VLAN: VLANA  -  IP: DATAPLANEIP1}}\n  e(IFNAMEHOST1)\n  end\n  \n  e(IFNAMEHOST1)  ----  sw1s1if[SWITCH2PORT1IF]\n\n  subgraph  sw1  [\"SNMP1NAME Switch\"]\n  subgraph  sw1s1  [\"port\"]\n  sw1s1vlan{{VLAN:  SWITCH1PORT1VLAN}}\n  sw1s1if[SWITCH1PORT1IF]\n  end\n  subgraph  sw1s2  [\"port\"]\n  sw1s2vlan{{VLAN: SWITCH1PORT2VLAN}}\n  sw1s2ifout[SWITCH1PORT1IF]\n  end\n  end\n\n  subgraph  sw2  [\"SNMP2NAME Switch\"]\n  subgraph  sw2s1  [\"port\"]\n  sw2s1vlan{{VLAN: SWITCHBINVLAN}}\n  sw2s1if[SWITCH2PORT1IF]\n  end\n  subgraph  sw2s2  [\"port\"]\n  sw2s2vlan{{VLAN: SWITCH2PORT2VLAN}}\n  sw2s2ifout[SWITCH2PORT2IF]\n  end\n  end\n  \n  sw1s2ifout[SWITCH1PORT2IF]  ----  sw2s1if[SWITCH2PORT1IF]\n  sw2s2ifout[SWITCH2PORT2IF]  ----  e2(IFNAMEHOST2)\n  \n  subgraph  h2  [\"NODENAME2\"]\n  ip2{{VLAN: VLANB  -  IP: DATAPLANEIP2}}  \n  e2(IFNAMEHOST2)\n  end",
           "legend": {
             "asTable": true,
             "displayMode": "table",
@@ -195,7 +195,7 @@
         },
         "id": 123,
         "options": {
-          "content": "```\nnode name: NODENAME1   if name: IFNAMEHOST1   DATAPLANEIP1   IPHOST1    Vlan: 3911\n ```",
+          "content": "```\nnode name: NODENAME1   if name: IFNAMEHOST1   DATAPLANEIP1   IPHOST1    Vlan: VLANA\n ```",
           "mode": "markdown"
         },
         "pluginVersion": "7.5.4",
@@ -2047,7 +2047,7 @@
         },
         "id": 149,
         "options": {
-          "content": "```\nnode name: NODENAME2   if name: IFNAMEHOST2   DATAPLANEIP2    IPHOST2    Vlan: 3911\n ```",
+          "content": "```\nnode name: NODENAME2   if name: IFNAMEHOST2   DATAPLANEIP2    IPHOST2    Vlan: VLANB\n ```",
           "mode": "markdown"
         },
         "pluginVersion": "7.5.4",
@@ -4722,7 +4722,7 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "Multi-Switch Real-time Monitoring 03/05_23:46:03",
+    "title": "DASHTITLE",
     "uid": null,
     "id": null,
     "version": 2

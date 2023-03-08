@@ -14,10 +14,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": "YPOSITION"
+      "y": YPOSITION
     },
     "hiddenSeries": false,
-    "id": "PANELID",
+    "id": PANELID,
     "legend": {
       "avg": false,
       "current": false,

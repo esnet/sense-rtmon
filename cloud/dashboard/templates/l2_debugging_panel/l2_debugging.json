@@ -1,0 +1,411 @@
+{
+  "collapsed": false,
+  "datasource": null,
+  "gridPos": {
+    "h": 20,
+    "w": 24,
+    "x": 0,
+    "y": 75
+  },
+  "id": 990,
+  "panels": [],
+  "title": "L2 Debugging",
+  "type": "row"
+},
+{
+  "datasource": null,
+  "description": "",
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "palette-classic"
+      },
+      "custom": {
+        "fillOpacity": 70,
+        "lineWidth": 0
+      },
+      "mappings": [
+        {
+          "options": {
+            "0": {
+              "color": "red",
+              "index": 0,
+              "text": "FAILURE"
+            },
+            "1": {
+              "color": "green",
+              "index": 1,
+              "text": "SUCCESS"
+            }
+          },
+          "type": "value"
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "red",
+            "value": 80
+          }
+        ]
+      }
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 6,
+    "w": 24,
+    "x": 0,
+    "y": 76
+  },
+  "id": 991,
+  "options": {
+    "alignValue": "center",
+    "legend": {
+      "displayMode": "list",
+      "placement": "bottom"
+    },
+    "mergeValues": true,
+    "rowHeight": 0.9,
+    "showValue": "always",
+    "tooltip": {
+      "mode": "single"
+    }
+  },
+  "pluginVersion": "8.2.3",
+  "targets": [
+    {
+      "exemplar": true,
+      "expr": "m_host1_arp_on",
+      "hide": false,
+      "instant": false,
+      "interval": "",
+      "legendFormat": "ARP Exporter Active",
+      "refId": "A"
+    },
+    {
+      "exemplar": true,
+      "expr": "m_host1_ping_status",
+      "hide": false,
+      "instant": false,
+      "interval": "",
+      "legendFormat": "ping NODENAMEB",
+      "refId": "B"
+    },
+    {
+      "exemplar": true,
+      "expr": "m_host1_has_host2_arp",
+      "format": "time_series",
+      "hide": false,
+      "instant": false,
+      "interval": "",
+      "legendFormat": "ARP Table contains NODENAMEB IP Address",
+      "refId": "C"
+    }
+  ],
+  "title": "NODENAMEA ARP/MAC Correlation",
+  "transparent": true,
+  "type": "state-timeline"
+},
+{
+  "datasource": null,
+  "description": "",
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "palette-classic"
+      },
+      "custom": {
+        "fillOpacity": 70,
+        "lineWidth": 0
+      },
+      "mappings": [
+        {
+          "options": {
+            "0": {
+              "color": "red",
+              "index": 0,
+              "text": "FAILURE"
+            },
+            "1": {
+              "color": "green",
+              "index": 1,
+              "text": "SUCCESS"
+            }
+          },
+          "type": "value"
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "red",
+            "value": 80
+          }
+        ]
+      }
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 6,
+    "w": 24,
+    "x": 0,
+    "y": 78
+  },
+  "id": 991,
+  "options": {
+    "alignValue": "center",
+    "legend": {
+      "displayMode": "list",
+      "placement": "bottom"
+    },
+    "mergeValues": true,
+    "rowHeight": 0.9,
+    "showValue": "always",
+    "tooltip": {
+      "mode": "single"
+    }
+  },
+  "pluginVersion": "8.2.3",
+  "targets": [
+    {
+      "exemplar": true,
+      "expr": "m_host1_snmp_on_",
+      "hide": false,
+      "instant": false,
+      "interval": "",
+      "legendFormat": "SNMP Exporter Active",
+      "refId": "A"
+    },
+    {
+      "exemplar": true,
+      "expr": "m_switch1_host1_mac_",
+      "hide": false,
+      "instant": false,
+      "interval": "",
+      "legendFormat": "contains NODENAMEA MAC Address",
+      "refId": "B"
+    },
+    {
+      "exemplar": true,
+      "expr": "m_switch1_host2_mac_",
+      "hide": false,
+      "interval": "",
+      "legendFormat": "contains NODENAMEB MAC Address",
+      "refId": "C"
+    }
+  ],
+  "title": "SNMPANAME ARP/MAC Correlation",
+  "transparent": true,
+  "type": "state-timeline"
+},
+{
+  "datasource": null,
+  "description": "",
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "palette-classic"
+      },
+      "custom": {
+        "fillOpacity": 70,
+        "lineWidth": 0
+      },
+      "mappings": [
+        {
+          "options": {
+            "0": {
+              "color": "red",
+              "index": 0,
+              "text": "FAILURE"
+            },
+            "1": {
+              "color": "green",
+              "index": 1,
+              "text": "SUCCESS"
+            }
+          },
+          "type": "value"
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "red",
+            "value": 80
+          }
+        ]
+      }
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 6,
+    "w": 24,
+    "x": 0,
+    "y": 79
+  },
+  "id": 991,
+  "options": {
+    "alignValue": "center",
+    "legend": {
+      "displayMode": "list",
+      "placement": "bottom"
+    },
+    "mergeValues": true,
+    "rowHeight": 0.9,
+    "showValue": "always",
+    "tooltip": {
+      "mode": "single"
+    }
+  },
+  "pluginVersion": "8.2.3",
+  "targets": [
+    {
+      "exemplar": true,
+      "expr": "m_host2_snmp_on_",
+      "hide": false,
+      "instant": false,
+      "interval": "",
+      "legendFormat": "SNMP Exporter Active",
+      "refId": "A"
+    },
+    {
+      "exemplar": true,
+      "expr": "m_switch2_host1_mac_",
+      "hide": false,
+      "instant": false,
+      "interval": "",
+      "legendFormat": "contains NODENAMEA MAC Address",
+      "refId": "B"
+    },
+    {
+      "exemplar": true,
+      "expr": "m_switch2_host2_mac_",
+      "hide": false,
+      "instant": false,
+      "interval": "",
+      "legendFormat": "contains NODENAMEB Mac Address",
+      "refId": "C"
+    }
+  ],
+  "title": "SNMPBNAME ARP/MAC Correlation",
+  "transparent": true,
+  "type": "state-timeline"
+},
+{
+  "datasource": null,
+  "description": "",
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "palette-classic"
+      },
+      "custom": {
+        "fillOpacity": 70,
+        "lineWidth": 0
+      },
+      "mappings": [
+        {
+          "options": {
+            "0": {
+              "color": "red",
+              "index": 0,
+              "text": "FAILURE"
+            },
+            "1": {
+              "color": "green",
+              "index": 1,
+              "text": "SUCCESS"
+            }
+          },
+          "type": "value"
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "red",
+            "value": 80
+          }
+        ]
+      }
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 6,
+    "w": 24,
+    "x": 0,
+    "y": 80
+  },
+  "id": 991,
+  "options": {
+    "alignValue": "center",
+    "legend": {
+      "displayMode": "list",
+      "placement": "bottom"
+    },
+    "mergeValues": true,
+    "rowHeight": 0.9,
+    "showValue": "always",
+    "tooltip": {
+      "mode": "single"
+    }
+  },
+  "pluginVersion": "8.2.3",
+  "targets": [
+    {
+      "exemplar": true,
+      "expr": "m_host2_arp_on",
+      "hide": false,
+      "instant": false,
+      "interval": "",
+      "legendFormat": "ARP Exporter Active",
+      "refId": "A"
+    },
+    {
+      "exemplar": true,
+      "expr": "m_host2_ping_status",
+      "hide": false,
+      "instant": false,
+      "interval": "",
+      "legendFormat": "ping NODENAMEA",
+      "refId": "B"
+    },
+    {
+      "exemplar": true,
+      "expr": "m_host2_has_host1_arp",
+      "format": "time_series",
+      "hide": false,
+      "instant": false,
+      "interval": "",
+      "legendFormat": "ARP Table contains NODENAMEA IP Address",
+      "refId": "C"
+    }
+  ],
+  "title": "NODENAMEB ARP/MAC Correlation",
+  "transparent": true,
+  "type": "state-timeline"
+},

@@ -9,9 +9,9 @@
       "h": 3,
       "w": 24,
       "x": 0,
-      "y": "YPOSITION"
+      "y": YPOSITION
     },
-    "id": "PANELID",
+    "id": PANELID,
     "options": {
       "content": "```\nNODETYPE: NODENAME   Interface: INTERFACEINFO\n ```",
       "mode": "markdown"

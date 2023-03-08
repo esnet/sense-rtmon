@@ -8,14 +8,13 @@ grafana_api_token: "Bearer eyJrIjoiQks2TWZBb3pJOERuaElmNHNTSUpPM25CNFFxa2lpOVIiL
 
 ## Section 2 Hosts & Switches all under nodes ##
 node:
-
   - name: 'sdn-dtn-2-10.ultralight.org'
     type: 'host' 
     interface: 
       - name: 'ens2f0np0.3911'
         vlan: 'not used'
         ip: 10.251.86.10
-      # doesn't have a peer for this interface
+        ping: 10.251.86.12
       - name: 'hundredGigE 1/31'
         vlan: 'not used'
         peer: 
@@ -25,7 +24,6 @@ node:
 
   - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
     type: 'switch'
-    # SNMPHostIP: 10.251.86.10 # This information might be irrelevant in the future
     interface: 
       - name: 'hundredGigE 1/31'
         vlan: 'not used'
@@ -33,21 +31,18 @@ node:
         - name: 'sdn-dtn-2-10.ultralight.org'
           interface: 'hundredGigE 1/31'
           vlan: 'not used'
-
       - name: 'Port-channel 103'
         vlan: 'not used'
         peer: 
         - name: 'UCSD SN3700'
           interface: 'PortChannel501'
           vlan: 'not used'
-
       - name: 'test-test-test1'
         vlan: 'not used'
         peer: 
         - name: 'sdn-dtn-2-10.ultralight.org'
           interface: 'hundredGigE 1/31'
           vlan: 'not used'
-
       - name: 'test-test-test2'
         vlan: 'not used'
         peer: 
@@ -57,7 +52,6 @@ node:
 
   - name: 'UCSD SN3700'
     type: 'switch'
-    # SNMPHostIP: 10.251.86.12
     interface: 
       - name: 'PortChannel501'
         vlan: 'not used'
@@ -65,7 +59,6 @@ node:
         - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
           interface: 'Port-channel 103'
           vlan: 'not used'
-
       - name: 'etp28'
         vlan: 'not used'
         peer: 
@@ -75,7 +68,6 @@ node:
 
   - name: 'test-test-test-3'
     type: 'switch'
-    # SNMPHostIP: 10.251.86.12
     interface: 
       - name: 'PortChannel501'
         vlan: 'not used'
@@ -83,7 +75,6 @@ node:
         - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
           interface: 'Port-channel 103'
           vlan: 'not used'
-
       - name: 'etp28'
         vlan: 'not used'
         peer: 
@@ -104,7 +95,7 @@ node:
       - name: 'vlan.3911'
         vlan: 'not used'
         ip: 10.251.86.12
-      
+        ping: 10.251.86.10      
       - name: 'etp28'
         vlan: 'not used'
         peer: 

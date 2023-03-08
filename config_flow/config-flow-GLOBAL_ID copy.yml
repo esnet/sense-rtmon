@@ -1,21 +1,20 @@
 ## SECTION 1 GENERAL INFORMATION ##
 title: "Multi Switch Flow Dashboard"
-flow: " flow 2 "
-hostIP: 198.124.151.8 
-grafana_host: 'sense-mon.es.net:3000'
-pushgateway: 'sense-mon.es.net:9091'
-grafanaAPIToken: "CONFIG"
+flow: "UNIQUE_GLOBAL_ID"
+host_ip: 198.124.151.8 
+grafana_host: 'http://sense-mon.es.net:3000'
+pushgateway: 'http://sense-mon.es.net:9091'
+grafana_api_token: "Bearer eyJrIjoiQks2TWZBb3pJOERuaElmNHNTSUpPM25CNFFxa2lpOVIiLCJuIjoidGVzdCIsImlkIjoxfQ=="
 
 ## Section 2 Hosts & Switches all under nodes ##
 node:
-
   - name: 'sdn-dtn-2-10.ultralight.org'
     type: 'host' 
     interface: 
       - name: 'ens2f0np0.3911'
-        ip: 10.251.86.10
         vlan: 'not used'
-      # doesn't have a peer for this interface
+        ip: 10.251.86.10
+        ping: 10.251.86.12
       - name: 'hundredGigE 1/31'
         vlan: 'not used'
         peer: 
@@ -25,7 +24,6 @@ node:
 
   - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
     type: 'switch'
-    # SNMPHostIP: 10.251.86.10 # This information might be irrelevant in the future
     interface: 
       - name: 'hundredGigE 1/31'
         vlan: 'not used'
@@ -33,7 +31,6 @@ node:
         - name: 'sdn-dtn-2-10.ultralight.org'
           interface: 'hundredGigE 1/31'
           vlan: 'not used'
-
       - name: 'Port-channel 103'
         vlan: 'not used'
         peer: 
@@ -41,13 +38,29 @@ node:
           interface: 'PortChannel501'
           vlan: 'not used'
 
+  - name: 'UCSD SN3700'
+    type: 'switch'
+    interface: 
+      - name: 'PortChannel501'
+        vlan: 'not used'
+        peer: 
+        - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
+          interface: 'Port-channel 103'
+          vlan: 'not used'
+      - name: 'etp28'
+        vlan: 'not used'
+        peer: 
+        - name: 'k8s-gen4-01.sdsc.optiputer.net'
+          interface: 'etp28'
+          vlan: 'not used'
+
   - name: 'k8s-gen4-02.sdsc.optiputer.net'
     type: 'host'
     interface: 
       - name: 'vlan.3911'
-        ip: 10.251.86.12
         vlan: 'not used'
-      
+        ip: 10.251.86.12
+        ping: 10.251.86.10
       - name: 'etp28'
         vlan: 'not used'
         peer: 

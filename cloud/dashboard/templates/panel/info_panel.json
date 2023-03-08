@@ -5,9 +5,9 @@
       "h": 1,
       "w": 24,
       "x": 0,
-      "y": "YPOSITION"
+      "y": YPOSITION
     },
-    "id": "PANELID",
+    "id": PANELID,
     "panels": [],
     "title": "NODETYPE Flow Summary - NODENAME",
     "type": "row"

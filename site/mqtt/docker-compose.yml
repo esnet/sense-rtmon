@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+    environment:
+      - MQTT_PERSISTENCE=true
+      - MQTT_PERSISTENCE_LOCATION=/mosquitto/data/
+      - MQTT_LOG_DESTINATION=stdout
+      - MQTT_LOG_TYPE=all
+      - MQTT_LOG_TIMESTAMP=true
+      - MQTT_ALLOW_ANONYMOUS=false
+    volumes:
+      - ./data:/mosquitto/data

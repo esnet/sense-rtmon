@@ -4,7 +4,7 @@ flow: "UNIQUE_GLOBAL_ID"
 host_ip: 198.124.151.8 
 grafana_host: 'http://sense-mon.es.net:3000'
 pushgateway: 'http://sense-mon.es.net:9091'
-grafana_api_token: "Bearer eyJrIjoiQks2TWZBb3pJOERuaElmNHNTSUpPM25CNFFxa2lpOVIiLCJuIjoidGVzdCIsImlkIjoxfQ=="
+grafana_api_token: "Bearer eyJrIjoiazN4YUpKVFEzbm8yUFVHdDdDYTBKS3dVWWxQWWp5WjQiLCJuIjoiZGVtbyIsImlkIjoxfQ=="
 
 ## Section 2 Hosts & Switches all under nodes ##
 node:

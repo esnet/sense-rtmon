@@ -27,29 +27,6 @@ class TestFlowFetcher(unittest.TestCase):
                 "Peer": "?peer?",
                 "Host": [
                  {
-                   "Interface": "?host_port?",
-                   "IP Address": "?ipv4?",
-                    "sparql": "SELECT DISTINCT ?host_port ?ipv4 WHERE { ?vlan_port nml:isAlias ?host_vlan_port. ?host_port nml:hasBidirectionalPort ?host_vlan_port. ?host_vlan_port mrs:hasNetworkAddress  ?ipv4na. ?ipv4na mrs:type \\"ipv4-address\\". ?ipv4na mrs:value ?ipv4. }",
-                    "required": "false"
-                 }
-                ],
-                "sparql": "SELECT DISTINCT  ?vlan_port  ?vlan  WHERE { ?subnet a mrs:SwitchingSubnet. ?subnet nml:hasBidirectionalPort ?vlan_port. ?vlan_port nml:hasLabel ?vlan_l. ?vlan_l nml:value ?vlan. }",
-                "sparql-ext": "SELECT DISTINCT ?terminal ?port_name ?node_name ?peer WHERE { {?node a nml:Node. ?node nml:name ?node_name. ?node nml:hasBidirectionalPort ?terminal.  ?terminal nml:hasBidirectionalPort ?vlan_port. OPTIONAL {?terminal nml:name ?port_name.} OPTIONAL {?terminal nml:isAlias ?peer.}} UNION { ?node a nml:Topology. ?node nml:name ?node_name. ?node nml:hasBidirectionalPort ?terminal. ?terminal nml:hasBidirectionalPort ?vlan_port. OPTIONAL {?terminal nml:name ?port_name.} OPTIONAL {?terminal nml:isAlias ?peer.}}}",
-                "required": "true"
-              }
-            ]
-        }"""
-
-        self.template = """{
-            "Ports": [
-              {
-                "Port": "?terminal?",
-                "Name": "?port_name?",
-                "Vlan": "?vlan?",
-                "Node": "?node_name?",
-                "Peer": "?peer?",
-                "Host": [
-                 {
                     "Name": "?host_name?",
                     "Interface": "?host_port_name?",
                     "IPv4": "?ipv4?",

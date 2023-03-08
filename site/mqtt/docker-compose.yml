@@ -6,6 +6,7 @@ services:
     ports:
       - "1883:1883"
     environment:
+      - MQTT_LISTENER=1883
       - MQTT_PERSISTENCE=true
       - MQTT_PERSISTENCE_LOCATION=/mosquitto/data/
       - MQTT_LOG_DESTINATION=stdout

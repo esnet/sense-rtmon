@@ -20,7 +20,6 @@ node:
         peer: 
         - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
           interface: 'hundredGigE 1/31'
-          vlan: 'not used'
 
   - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
     type: 'switch'
@@ -30,13 +29,11 @@ node:
         peer: 
         - name: 'sdn-dtn-2-10.ultralight.org'
           interface: 'hundredGigE 1/31'
-          vlan: 'not used'
       - name: 'Port-channel 103'
         vlan: 'not used'
         peer: 
         - name: 'UCSD SN3700'
           interface: 'PortChannel501'
-          vlan: 'not used'
 
   - name: 'UCSD SN3700'
     type: 'switch'
@@ -46,13 +43,11 @@ node:
         peer: 
         - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
           interface: 'Port-channel 103'
-          vlan: 'not used'
       - name: 'etp28'
         vlan: 'not used'
         peer: 
         - name: 'k8s-gen4-01.sdsc.optiputer.net'
           interface: 'etp28'
-          vlan: 'not used'
 
   - name: 'k8s-gen4-02.sdsc.optiputer.net'
     type: 'host'
@@ -66,4 +61,3 @@ node:
         peer: 
         - name: 'SN3700'
           interface: 'etp28'
-          vlan: 'not used'

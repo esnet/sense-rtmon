@@ -2,7 +2,7 @@
     "dashboard": {
       "id": null,
       "uid": null,
-      "title": "Multi Switch Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 03/08_12:38",
+      "title": "Many Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 03/08_13:04",
       "tags": [
         "templated"
       ],
@@ -348,7 +348,7 @@
     },
     "id": 204,
     "options": {
-      "content": "```\nSwitch: Caltech LRT-SDN-R02-Dell-Z9100   Interface: [{'name': 'hundredGigE 1/31', 'vlan': 'not used', 'peer': [{'name': 'sdn-dtn-2-10.ultralight.org', 'interface': 'hundredGigE 1/31', 'vlan': 'not used'}]}, {'name': 'Port-channel 103', 'vlan': 'not used', 'peer': [{'name': 'UCSD SN3700', 'interface': 'PortChannel501', 'vlan': 'not used'}]}]\n ```",
+      "content": "```\nSwitch: Caltech LRT-SDN-R02-Dell-Z9100   Interface: [{'name': 'hundredGigE 1/31', 'vlan': 'not used', 'peer': [{'name': 'sdn-dtn-2-10.ultralight.org', 'interface': 'hundredGigE 1/31', 'vlan': 'not used'}]}, {'name': 'Port-channel 103', 'vlan': 'not used', 'peer': [{'name': 'UCSD SN3700', 'interface': 'PortChannel501', 'vlan': 'not used'}]}, {'name': 'test-test-test1', 'vlan': 'not used', 'peer': [{'name': 'sdn-dtn-2-10.ultralight.org', 'interface': 'hundredGigE 1/31', 'vlan': 'not used'}]}, {'name': 'test-test-test2', 'vlan': 'not used', 'peer': [{'name': 'UCSD SN3700', 'interface': 'PortChannel501', 'vlan': 'not used'}]}]\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -586,15 +586,243 @@
     }
   },
 {
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 203
+    },
+    "hiddenSeries": false,
+    "id": 209,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv test-test-test1",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "Caltech LRT-SDN-R02-Dell-Z9100 - interface: test-test-test1 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 203
+    },
+    "hiddenSeries": false,
+    "id": 211,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv test-test-test2",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "Caltech LRT-SDN-R02-Dell-Z9100 - interface: test-test-test2 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
     "collapsed": false,
     "datasource": null,
     "gridPos": {
       "h": 1,
       "w": 24,
       "x": 0,
-      "y": 208
+      "y": 212
     },
-    "id": 208,
+    "id": 212,
     "panels": [],
     "title": "Switch Flow Summary - UCSD SN3700",
     "type": "row"
@@ -610,9 +838,9 @@
       "h": 3,
       "w": 24,
       "x": 0,
-      "y": 208
+      "y": 212
     },
-    "id": 209,
+    "id": 213,
     "options": {
       "content": "```\nSwitch: UCSD SN3700   Interface: [{'name': 'PortChannel501', 'vlan': 'not used', 'peer': [{'name': 'Caltech LRT-SDN-R02-Dell-Z9100', 'interface': 'Port-channel 103', 'vlan': 'not used'}]}, {'name': 'etp28', 'vlan': 'not used', 'peer': [{'name': 'k8s-gen4-01.sdsc.optiputer.net', 'interface': 'etp28', 'vlan': 'not used'}]}]\n ```",
       "mode": "markdown"
@@ -639,10 +867,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 208
+      "y": 212
     },
     "hiddenSeries": false,
-    "id": 210,
+    "id": 214,
     "legend": {
       "avg": false,
       "current": false,
@@ -753,10 +981,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 208
+      "y": 212
     },
     "hiddenSeries": false,
-    "id": 212,
+    "id": 216,
     "legend": {
       "avg": false,
       "current": false,
@@ -858,9 +1086,389 @@
       "h": 1,
       "w": 24,
       "x": 0,
-      "y": 213
+      "y": 217
     },
-    "id": 213,
+    "id": 217,
+    "panels": [],
+    "title": "Switch Flow Summary - test-test-test-3",
+    "type": "row"
+  },
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 3,
+      "w": 24,
+      "x": 0,
+      "y": 217
+    },
+    "id": 218,
+    "options": {
+      "content": "```\nSwitch: test-test-test-3   Interface: [{'name': 'PortChannel501', 'vlan': 'not used', 'peer': [{'name': 'Caltech LRT-SDN-R02-Dell-Z9100', 'interface': 'Port-channel 103', 'vlan': 'not used'}]}, {'name': 'etp28', 'vlan': 'not used', 'peer': [{'name': 'k8s-gen4-01.sdsc.optiputer.net', 'interface': 'etp28', 'vlan': 'not used'}]}, {'name': 'test-test-test4', 'vlan': 'not used', 'peer': [{'name': 'k8s-gen4-01.sdsc.optiputer.net', 'interface': 'etp28', 'vlan': 'not used'}]}]\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "test-test-test-3 - Node Interface Information",
+    "type": "text"
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 217
+    },
+    "hiddenSeries": false,
+    "id": 219,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv PortChannel501",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "test-test-test-3 - interface: PortChannel501 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 217
+    },
+    "hiddenSeries": false,
+    "id": 221,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv etp28",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "test-test-test-3 - interface: etp28 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 217
+    },
+    "hiddenSeries": false,
+    "id": 223,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv test-test-test4",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "test-test-test-3 - interface: test-test-test4 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 224
+    },
+    "id": 224,
     "panels": [],
     "title": "Host Flow Summary - k8s-gen4-02.sdsc.optiputer.net",
     "type": "row"
@@ -876,9 +1484,9 @@
       "h": 3,
       "w": 24,
       "x": 0,
-      "y": 213
+      "y": 224
     },
-    "id": 214,
+    "id": 225,
     "options": {
       "content": "```\nHost: k8s-gen4-02.sdsc.optiputer.net   Interface: [{'name': 'vlan.3911', 'vlan': 'not used', 'ip': '10.251.86.12', 'ping': '10.251.86.10'}, {'name': 'etp28', 'vlan': 'not used', 'peer': [{'name': 'SN3700', 'interface': 'etp28', 'vlan': 'not used'}]}]\n ```",
       "mode": "markdown"
@@ -905,10 +1513,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 213
+      "y": 224
     },
     "hiddenSeries": false,
-    "id": 215,
+    "id": 226,
     "legend": {
       "avg": false,
       "current": false,
@@ -1011,7 +1619,7 @@
 },
 "timepicker": {},
 "timezone": "",
-"title": "Multi Switch Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 03/08_12:38",
+"title": "Many Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 03/08_13:04",
 "uid": null,
 "id": null,
 "version": 2

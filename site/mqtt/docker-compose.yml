@@ -13,6 +13,6 @@ services:
       - MQTT_LOG_DESTINATION=stdout
       - MQTT_LOG_TYPE=all
       - MQTT_LOG_TIMESTAMP=true
-      - MQTT_ALLOW_ANONYMOUS=false
-    volumes:
-      - ./data:/mosquitto/data
+      - MQTT_ALLOW_ANONYMOUS=true
+    # volumes:
+    #   - ./data:/mosquitto/data

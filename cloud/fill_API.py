@@ -16,10 +16,10 @@ print("!!   AUTO CURL MAY FAIL")
 print("!!    Visit Google Doc for Grafana API and add Prometheus as a Data Source Key instruction: https://docs.google.com/document/d/e/2PACX-1vRAwtpqlMKbii-hiqMoFD_N5PghMSw2eTMts9VhBww3AoSnXnQkjEcra4ReyLLsXrAuE_VEwLHRg33c/pub")
 
 # curl the API key to here
-curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" +str(current_time) + "\", \"role\": \"Admin\"}' http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys"
+# curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" +str(current_time) + "\", \"role\": \"Admin\"}' http://admin:admin@" + str(data['hostIP']) + ":3000/api/auth/keys"
 
 # curl the API key to here
-# curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" +str(current_time) + "\", \"role\": \"Admin\"}' http://admin:admin@" + str(data['grafana_host']) + "/api/auth/keys"
+curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" +str(current_time) + "\", \"role\": \"Admin\"}' http://admin:admin@" + str(data['grafana_host']) + "/api/auth/keys"
 
 token = os.popen(curlCMD).read()
 result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
@@ -31,7 +31,7 @@ with open(f"config_flow/{str(sys.argv[1])}", 'r') as file:
     write_data = file.readlines()
 file_data = []
 for each_line in write_data:
-    each_line = re.sub("grafanaAPIToken:.*", f"grafanaAPIToken: \"Bearer {api_key}\"", each_line)
+    each_line = re.sub("grafana_api_token:.*", f"grafana_api_token: \"Bearer {api_key}\"", each_line)
     file_data.append(each_line)
 with open(f"config_flow/{str(sys.argv[1])}", 'w') as file:
     file.writelines(file_data)

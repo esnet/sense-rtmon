@@ -1,0 +1,19 @@
+{
+    "exemplar": true,
+    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }

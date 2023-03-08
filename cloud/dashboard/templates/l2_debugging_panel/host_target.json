@@ -1,0 +1,28 @@
+{
+    "exemplar": true,
+    "expr": "m_host2_arp_on",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ARP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "m_host2_ping_status",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ping NODENAMEA",
+    "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "m_host2_has_host1_arp",
+    "format": "time_series",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ARP Table contains NODENAMEA IP Address",
+    "refId": "C"
+  }

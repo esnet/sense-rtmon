@@ -1,0 +1,184 @@
+{
+    "dashboard": {
+      "id": null,
+      "uid": null,
+      "title": "DASHTITLE",
+      "tags": [
+        "templated"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "-- Grafana --",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "description": "Simple End-to-End Flow Monitoring Dashboard",
+      "editable": true,
+      "gnetId": null,
+      "graphTooltip": 0,
+      "id": 68,
+      "iteration": 1629915600744,
+      "links": [
+        {
+          "asDropdown": false,
+          "icon": "dashboard",
+          "includeVars": true,
+          "keepTime": true,
+          "tags": [],
+          "targetBlank": true,
+          "title": "Host Node Exporter",
+          "tooltip": "",
+          "type": "link",
+          "url": "GRAFANAHOST/d/rYdddlPWj/node-exporter-full?orgId=1&refresh=1m"
+        },
+        {
+          "asDropdown": false,
+          "icon": "dashboard",
+          "includeVars": true,
+          "keepTime": true,
+          "tags": [],
+          "targetBlank": true,
+          "title": "Switch Diagnostics Dashboard",
+          "tooltip": "",
+          "type": "link",
+          "url": "GRAFANAHOST/d/A3jB7x9Gz/sdn-testbed-dashboard?orgId=1"
+        }
+      ],
+      "panels": [
+        {
+          "collapsed": false,
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 119,
+          "panels": [],
+          "title": "End-to-End Flow Topology",
+          "type": "row"
+        },
+        {
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "valueName": "last"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 24,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 117,
+          "options": {
+            "authPassword": "",
+            "authUsername": "",
+            "composites": [],
+            "content": "INSERTTOPOLOGY",
+            "legend": {
+              "asTable": true,
+              "displayMode": "table",
+              "gradient": {
+                "enabled": true,
+                "show": true
+              },
+              "hideEmpty": false,
+              "hideZero": false,
+              "placement": "bottom",
+              "show": true,
+              "sortBy": "last",
+              "sortDesc": true,
+              "stats": [
+                "mean",
+                "last",
+                "min",
+                "max",
+                "sum"
+              ]
+            },
+            "maxWidth": true,
+            "mermaidServiceUrl": "",
+            "mermaidThemeVariablesDark": {
+              "classDiagram": {},
+              "common": {
+                "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+              },
+              "flowChart": {},
+              "sequenceDiagram": {},
+              "stateDiagram": {},
+              "userJourneyDiagram": {}
+            },
+            "mermaidThemeVariablesLight": {
+              "classDiagram": {},
+              "common": {
+                "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+              },
+              "flowChart": {},
+              "sequenceDiagram": {},
+              "stateDiagram": {},
+              "userJourneyDiagram": {}
+            },
+            "metricCharacterReplacements": [],
+            "moddedSeriesVal": 0,
+            "mode": "content",
+            "nodeSize": {
+              "minHeight": 40,
+              "minWidth": 30
+            },
+            "pluginVersion": "7.5.4",
+            "style": "",
+            "useBackground": false,
+            "useBasicAuth": false,
+            "valueName": "last"
+          },
+          "pluginVersion": "1.7.3",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "End-to-End Flow Topology",
+          "type": "jdbranham-diagram-panel"
+        },
+        
+INSERTALLPANELS
+
+],
+"time": {
+  "from": "now-15m",
+  "to": "now"
+},
+"timepicker": {},
+"timezone": "",
+"title": "DASHTITLE",
+"uid": null,
+"id": null,
+"version": 2
+}
+}

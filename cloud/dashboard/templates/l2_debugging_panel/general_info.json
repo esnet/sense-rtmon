@@ -1,0 +1,14 @@
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 20,
+      "w": 24,
+      "x": 0,
+      "y": YPOSITION
+    },
+    "id": PANELID,
+    "panels": [],
+    "title": "L2 Debugging",
+    "type": "row"
+  }

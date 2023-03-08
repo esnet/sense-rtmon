@@ -1,0 +1,114 @@
+  {
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": YPOSITION
+    },
+    "hiddenSeries": false,
+    "id": 341,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv SWITCH2PORT1IF",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+      {
+        "exemplar": true,
+        "expr": "irate(ifHCInOctets{ifIndex=~\"IFINDEXSWITCH1HOST2\"}[1m])*8",
+        "instant": false,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "recv {{ifDescr}}",
+        "refId": "A"
+      },
+      {
+        "exemplar": true,
+        "expr": "irate(ifHCOutOctets{ifIndex=~\"IFINDEXSWITCH1HOST2\"}[1m])*8",
+        "hide": false,
+        "instant": false,
+        "interval": "",
+        "intervalFactor": 1,
+        "legendFormat": "trans {{ifDescr}}",
+        "refId": "B"
+      }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "SNMP2NAME Switch - Flow Bandwidth - Facing SWITCH2PORT1IF (SNMP1NAME Switch)",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  }

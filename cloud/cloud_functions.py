@@ -49,18 +49,6 @@ def replacing_json(input,output,data,replacements):
                 line = line.replace(str(src), str(target))
             outfile.write(line)
 
-# make a title according to the configuration file
-# def make_title(data):
-#     current_time = datetime.now().strftime("%m/%d_%H:%M")
-#     timeTxt = " | [" + str(current_time) + "]"        
-#     title = f" {str(data['flow'])} || {str(data['configFile'])} || {str(data['hostA']['interfaceName'])}/{str(data['hostA']['vlan'])}-- {data['switchNum']}-switch --{str(data['hostB']['interfaceName'])}/{str(data['hostB']['vlan'])} {timeTxt}"
-#     return title
-def make_title(data):
-    current_time = datetime.now().strftime("%m/%d_%H:%M")
-    timeTxt = " | [" + str(current_time) + "]"        
-    title = f" {str(data['flow'])} || {str(data['hostA']['interfaceName'])} -- {data['switchDataA']['job_name']} switch -- {data['switchDataB']['job_name']} switch -- {str(data['hostB']['interfaceName'])} {timeTxt}"
-    return title
-
 def index_finder(pushgateway_metrics,name):
     cmd = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{name}\".*'"
     grep = subprocess.check_output(cmd,shell=True).decode()

@@ -1,0 +1,753 @@
+{
+    "dashboard": {
+      "id": null,
+      "uid": null,
+      "title": "Single Switch Dashboard |Flow: test_123_test| 03/08_12:38",
+      "tags": [
+        "templated"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "-- Grafana --",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "description": "Simple End-to-End Flow Monitoring Dashboard",
+      "editable": true,
+      "gnetId": null,
+      "graphTooltip": 0,
+      "id": 68,
+      "iteration": 1629915600744,
+      "links": [
+        {
+          "asDropdown": false,
+          "icon": "dashboard",
+          "includeVars": true,
+          "keepTime": true,
+          "tags": [],
+          "targetBlank": true,
+          "title": "Host Node Exporter",
+          "tooltip": "",
+          "type": "link",
+          "url": "http://sense-mon.es.net:3000/d/rYdddlPWj/node-exporter-full?orgId=1&refresh=1m"
+        },
+        {
+          "asDropdown": false,
+          "icon": "dashboard",
+          "includeVars": true,
+          "keepTime": true,
+          "tags": [],
+          "targetBlank": true,
+          "title": "Switch Diagnostics Dashboard",
+          "tooltip": "",
+          "type": "link",
+          "url": "http://sense-mon.es.net:3000/d/A3jB7x9Gz/sdn-testbed-dashboard?orgId=1"
+        }
+      ],
+      "panels": [
+        {
+          "collapsed": false,
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 119,
+          "panels": [],
+          "title": "End-to-End Flow Topology",
+          "type": "row"
+        },
+        {
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "valueName": "last"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 24,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 117,
+          "options": {
+            "authPassword": "",
+            "authUsername": "",
+            "composites": [],
+            "content": "INSERTTOPOLOGY",
+            "legend": {
+              "asTable": true,
+              "displayMode": "table",
+              "gradient": {
+                "enabled": true,
+                "show": true
+              },
+              "hideEmpty": false,
+              "hideZero": false,
+              "placement": "bottom",
+              "show": true,
+              "sortBy": "last",
+              "sortDesc": true,
+              "stats": [
+                "mean",
+                "last",
+                "min",
+                "max",
+                "sum"
+              ]
+            },
+            "maxWidth": true,
+            "mermaidServiceUrl": "",
+            "mermaidThemeVariablesDark": {
+              "classDiagram": {},
+              "common": {
+                "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+              },
+              "flowChart": {},
+              "sequenceDiagram": {},
+              "stateDiagram": {},
+              "userJourneyDiagram": {}
+            },
+            "mermaidThemeVariablesLight": {
+              "classDiagram": {},
+              "common": {
+                "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+              },
+              "flowChart": {},
+              "sequenceDiagram": {},
+              "stateDiagram": {},
+              "userJourneyDiagram": {}
+            },
+            "metricCharacterReplacements": [],
+            "moddedSeriesVal": 0,
+            "mode": "content",
+            "nodeSize": {
+              "minHeight": 40,
+              "minWidth": 30
+            },
+            "pluginVersion": "7.5.4",
+            "style": "",
+            "useBackground": false,
+            "useBasicAuth": false,
+            "valueName": "last"
+          },
+          "pluginVersion": "1.7.3",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "End-to-End Flow Topology",
+          "type": "jdbranham-diagram-panel"
+        },
+        
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 200
+    },
+    "id": 200,
+    "panels": [],
+    "title": "Host Flow Summary - sdn-dtn-2-10.ultralight.org",
+    "type": "row"
+  },
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 3,
+      "w": 24,
+      "x": 0,
+      "y": 200
+    },
+    "id": 201,
+    "options": {
+      "content": "```\nHost: sdn-dtn-2-10.ultralight.org   Interface: [{'name': 'ens2f0np0.3911', 'vlan': 'not used', 'ip': '10.251.86.10', 'ping': '10.251.86.12'}, {'name': 'hundredGigE 1/31', 'vlan': 'not used', 'peer': [{'name': 'Caltech LRT-SDN-R02-Dell-Z9100', 'interface': 'hundredGigE 1/31', 'vlan': 'not used'}]}]\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "sdn-dtn-2-10.ultralight.org - Node Interface Information",
+    "type": "text"
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 200
+    },
+    "hiddenSeries": false,
+    "id": 202,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv ens2f0np0.3911",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"10.251.86.10\", device=\"ens2f0np0.3911\"}[1m])*8",
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{device}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"10.251.86.10\",device=\"ens2f0np0.3911\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{device}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "sdn-dtn-2-10.ultralight.org - interface: ens2f0np0.3911 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 203
+    },
+    "id": 203,
+    "panels": [],
+    "title": "Switch Flow Summary - Caltech LRT-SDN-R02-Dell-Z9100",
+    "type": "row"
+  },
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 3,
+      "w": 24,
+      "x": 0,
+      "y": 203
+    },
+    "id": 204,
+    "options": {
+      "content": "```\nSwitch: Caltech LRT-SDN-R02-Dell-Z9100   Interface: [{'name': 'hundredGigE 1/31', 'vlan': 'not used', 'peer': [{'name': 'sdn-dtn-2-10.ultralight.org', 'interface': 'hundredGigE 1/31', 'vlan': 'not used'}]}, {'name': 'Port-channel 103', 'vlan': 'not used', 'peer': [{'name': 'UCSD SN3700', 'interface': 'PortChannel501', 'vlan': 'not used'}]}]\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "Caltech LRT-SDN-R02-Dell-Z9100 - Node Interface Information",
+    "type": "text"
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 203
+    },
+    "hiddenSeries": false,
+    "id": 205,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv hundredGigE 1/31",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "Caltech LRT-SDN-R02-Dell-Z9100 - interface: hundredGigE 1/31 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 203
+    },
+    "hiddenSeries": false,
+    "id": 207,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv Port-channel 103",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "Caltech LRT-SDN-R02-Dell-Z9100 - interface: Port-channel 103 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 208
+    },
+    "id": 208,
+    "panels": [],
+    "title": "Host Flow Summary - k8s-gen4-02.sdsc.optiputer.net",
+    "type": "row"
+  },
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 3,
+      "w": 24,
+      "x": 0,
+      "y": 208
+    },
+    "id": 209,
+    "options": {
+      "content": "```\nHost: k8s-gen4-02.sdsc.optiputer.net   Interface: [{'name': 'vlan.3911', 'vlan': 'not used', 'ip': '10.251.86.12', 'ping': '10.251.86.10'}, {'name': 'etp28', 'vlan': 'not used', 'peer': [{'name': 'SN3700', 'interface': 'etp28', 'vlan': 'not used'}]}]\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "k8s-gen4-02.sdsc.optiputer.net - Node Interface Information",
+    "type": "text"
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 208
+    },
+    "hiddenSeries": false,
+    "id": 210,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv vlan.3911",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"10.251.86.12\", device=\"vlan.3911\"}[1m])*8",
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{device}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"10.251.86.12\",device=\"vlan.3911\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{device}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "k8s-gen4-02.sdsc.optiputer.net - interface: vlan.3911 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  }
+
+],
+"time": {
+  "from": "now-15m",
+  "to": "now"
+},
+"timepicker": {},
+"timezone": "",
+"title": "Single Switch Dashboard |Flow: test_123_test| 03/08_12:38",
+"uid": null,
+"id": null,
+"version": 2
+}
+}

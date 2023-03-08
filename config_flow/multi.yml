@@ -1,75 +1,63 @@
 ## SECTION 1 GENERAL INFORMATION ##
-switchNum: 2
-dashTitle: "Multi-Switch Real-time Monitoring"
-flow: " Demo Flow "
-hostIP: 198.124.151.8 # example 198.32.43.16 198.124.151.8 172.31.72.189
-# The DNS of the host which is running the Grafana container
-grafanaHostIP: 'sense-mon.es.net'
-grafanaPort: 3000 # Do not change unless container mapping change
-pushgatewayPort: 9091 # Do not change unless container mapping change
-grafanaAPIToken: "Bearer eyJrIjoiWEZOMUZBbVNIM1JGaXBDQ2xwTkhESmJDa0hwSXdZNDUiLCJuIjoiZnJpZGF5IiwiaWQiOjF9"
-configFile: "multi.yml"
+title: "Multi Switch Flow Dashboard"
+flow: "UNIQUE_GLOBAL_ID"
+host_ip: 198.124.151.8 
+grafana_host: 'http://sense-mon.es.net:3000'
+pushgateway: 'http://sense-mon.es.net:9091'
+grafana_api_token: "Bearer eyJrIjoiazN4YUpKVFEzbm8yUFVHdDdDYTBKS3dVWWxQWWp5WjQiLCJuIjoiZGVtbyIsImlkIjoxfQ=="
 
-hostA: # Host 1
-  name: 'Caltech'
-  IP: '10.251.86.10'
-  interfaceName: 'ens2f0np0.3911'
-  interfaceIP: '10.251.86.10/24'
-  nodeName: 'sdn-dtn-2-10.ultralight.org'
-  vlan: '3911'
-  switchPort: 
-    ifName: 'hundredGigE 1/31'
-    peer:
-      name: 'switchDataA'
-      ifName: 'hundredGigE 1/31'
+## Section 2 Hosts & Switches all under nodes ##
+node:
+  - name: 'sdn-dtn-2-10.ultralight.org'
+    type: 'host' 
+    interface: 
+      - name: 'ens2f0np0.3911'
+        vlan: 'not used'
+        ip: 10.251.86.10
+        ping: 10.251.86.12
+      - name: 'hundredGigE 1/31'
+        vlan: 'not used'
+        peer: 
+        - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
+          interface: 'hundredGigE 1/31'
 
-hostB: # Host 2
-  name: 'UCSD Cluster'
-  IP: '10.251.86.12'
-  interfaceName: 'vlan.3911'
-  interfaceIP: '10.251.86.12'
-  nodeName: 'k8s-gen4-02.sdsc.optiputer.net'
-  vlan: '3911'
-  switchPort: 
-    ifName: 'etp28'
-    peer: 
-      name: 'switchDataB'
-      ifName: 'etp28'
+  - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
+    type: 'switch'
+    interface: 
+      - name: 'hundredGigE 1/31'
+        vlan: 'not used'
+        peer: 
+        - name: 'sdn-dtn-2-10.ultralight.org'
+          interface: 'hundredGigE 1/31'
+      - name: 'Port-channel 103'
+        vlan: 'not used'
+        peer: 
+        - name: 'UCSD SN3700'
+          interface: 'PortChannel501'
 
-## SECTION 2 SWITCH INFORMATION ##
-switchDataA:
-  job_name: 'Caltech LRT-SDN-R02-Dell-Z9100'
-  SNMPHostIP: '10.251.86.10'
-  target: 172.16.1.1
-  portIn:
-    ifName: 'hundredGigE 1/31'
-    vlan: '3911'
-    peer:
-      name: 'hostA'
-      ifName: 'hundredGigE 1/31'
+  - name: 'UCSD SN3700'
+    type: 'switch'
+    interface: 
+      - name: 'PortChannel501'
+        vlan: 'not used'
+        peer: 
+        - name: 'Caltech LRT-SDN-R02-Dell-Z9100'
+          interface: 'Port-channel 103'
+      - name: 'etp28'
+        vlan: 'not used'
+        peer: 
+        - name: 'k8s-gen4-01.sdsc.optiputer.net'
+          interface: 'etp28'
 
-# Switch 1 (caltech) port  Port-channel_103
-  portOut:
-    ifName: 'Port-channel 103'
-    vlan: '3911'
-    peer:
-      name: 'switchDataB'
-      ifName: 'PortChannel501'
-
-switchDataB:
-  job_name: 'UCSD SN3700'
-  SNMPHostIP: '10.251.86.12'
-  target: 132.249.2.46
-  portIn:
-    ifName: 'PortChannel501'
-    vlan: '3911'
-    peer:
-      name: 'switchDataA'
-      ifName: 'PortChannel501'
-
-  portOut:
-    ifName: 'etp28' # 28 for gen2
-    vlan: '3911'
-    peer:
-      name: 'hostB'
-      ifName: 'etp28' # 28 for 
+  - name: 'k8s-gen4-02.sdsc.optiputer.net'
+    type: 'host'
+    interface: 
+      - name: 'vlan.3911'
+        vlan: 'not used'
+        ip: 10.251.86.12
+        ping: 10.251.86.10
+      - name: 'etp28'
+        vlan: 'not used'
+        peer: 
+        - name: 'SN3700'
+          interface: 'etp28'

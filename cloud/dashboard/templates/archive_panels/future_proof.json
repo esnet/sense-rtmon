@@ -38,7 +38,7 @@
         "title": "Host Node Exporter",
         "tooltip": "",
         "type": "link",
-        "url": "http://GRAFANAHOST:3000/d/rYdddlPWj/node-exporter-full?orgId=1&refresh=1m"
+        "url": "GRAFANAHOST/d/rYdddlPWj/node-exporter-full?orgId=1&refresh=1m"
       },
       {
         "asDropdown": false,
@@ -50,7 +50,7 @@
         "title": "Switch Diagnostics Dashboard",
         "tooltip": "",
         "type": "link",
-        "url": "http://GRAFANAHOST:3000/d/A3jB7x9Gz/sdn-testbed-dashboard?orgId=1"
+        "url": "GRAFANAHOST/d/A3jB7x9Gz/sdn-testbed-dashboard?orgId=1"
       }
     ],
     "panels": [

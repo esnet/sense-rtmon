@@ -2,9 +2,9 @@ import paho.mqtt.client as mqtt
 import json
 
 # Define the MQTT broker and topic
-broker_address = "dev2.virnao.com"
+broker_address = "172.31.72.189"
 topic = "example/topic"
-port_num = 9090
+port_num = 3000
 
 # Create an MQTT client instance
 client = mqtt.Client()

@@ -8,7 +8,7 @@ services:
       - "9091:9091"
     volumes:
       - mosquitto_data:/mosquitto/data
-      - mosquitto.conf:/mosquitto/config
+      - mosquitto_config:/mosquitto/config
       - mosquitto_log:/mosquitto/log
 
 volumes:

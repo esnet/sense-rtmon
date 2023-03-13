@@ -9,4 +9,4 @@ services:
     volumes:
        - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
        - ./log/:/mosquitto/log/
-       - data:/mosquitto/data/
+       - ./data:/mosquitto/data/

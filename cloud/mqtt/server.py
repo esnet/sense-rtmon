@@ -20,4 +20,4 @@ print("sending message: " + message_json)
 client.publish(topic, message_json)
 
 # Disconnect from the MQTT broker
-client.disconnect()
+# client.disconnect()

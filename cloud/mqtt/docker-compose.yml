@@ -2,13 +2,10 @@ version: '3'
 
 services:
   mosquitto:
-    image: eclipse-mosquitto:2
+    image: eclipse-mosquitto
     volumes:
       - ./:/mosquitto/config/
       - ./log/:/mosquitto/log/
       - data:/mosquitto/data/
     ports:
       - 9091:9091
-
-volumes:
-  data: ~

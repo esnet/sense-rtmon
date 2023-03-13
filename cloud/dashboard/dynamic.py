@@ -2,79 +2,119 @@
 import re
 import sys
 import subprocess
+import os
 from datetime import datetime
 sys.path.append("..") # Adds higher directory to python modules path.
 import cloud_functions
 
+# This is a sandwich structure to build the json file
+# General Dashboard Top         file_1
+#   Panels                      file_2
+#       Info Panel              file_3
+#       Interface Panel         file_4
+#           Interface targets   file_n
+#   Dashboard Bottom            file_1
+#
+# Once Panels are built, they are added to the general dashboard template
+# 1. write all interface targets inside the panels
+# 2. write all the panels general dashboard template
+# 3. write the general dashboard template to a unique flow file based on the flow ID given in config file 
+
+
+# find the ifIndex of an interface on pushgateway site
+def index_finder(name,pushgateway_metrics):
+    cmd = f"curl {pushgateway_metrics} | tac | grep '.*ifName.*ifName=\"{name}\".*'"
+    grep = subprocess.check_output(cmd,shell=True).decode()
+    if_index = re.search('ifIndex="(.+?)\"',grep).group(1)
+    return if_index
+
+# read a file replace values then return the file in a string
+def replace_file_to_string(file_name,replacements):
+    with open(file_name) as file:
+        content = file.read()
+        for src, target in replacements.items():
+            content = content.replace(str(src), str(target))
+        return content
+    
+# concatenate to a json file
+def concat_json(content,output="./templates/temp.json",end=False):
+    if end == False:
+        content = content + ",\n"
+    with open(output, 'a') as outfile:
+        outfile.write(content)   
+          
+def remove_file(file_path="./templates/temp.json"):
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    
+#### parse file and general info ####
 print("\n\nParsing config file...")
-data,file_name = cloud_functions.read_yml_file("config_flow",sys.argv,1,2)
-switch_num = int(data['switchNum'])
-print("find correct index from snmp exporter\n\n")
-pushgateway_metrics = f"{data['hostIP']}:9091/metrics"
+data,config_file = cloud_functions.read_yml_file("config_flow",sys.argv,1,2)
+title = f'{data["title"]} |Flow: {data["flow"]}| {datetime.now().strftime("%m/%d_%H:%M")}'
+push_metric = f"{data['pushgateway']}/metrics" # pushgateway metrics page
 
-# holders for interface index
-if_index1 = "IFINDEXSWITCHHOSTA"
-if_index2 = "IFINDEXSWITCHHOSTB"
+print("Process each node's information")
+id_num = 200 # start from 200 in case of conflict with previous panels
+for node in data["node"]:
+    # write node info to a json file
+    rep = {}
+    rep["NODENAME"] = node['name']
+    rep["NODETYPE"] = node["type"].capitalize()
+    rep["YPOSITION"] = str(id_num)
+    rep["PANELID"] = str(id_num)
+    info_panel = replace_file_to_string("./templates/panel/info_panel.json",rep)
+    concat_json(info_panel)
+    
+    # write interface to a json file
+    id_num = id_num + 1
+    rep["YPOSTION"] = str(id_num)
+    rep["PANELID"] = str(id_num)
+    rep["INTERFACEINFO"] = str(node['interface'])
+    interface_panel = replace_file_to_string("./templates/panel/interface_panel.json",rep)
+    concat_json(interface_panel)
+    
+    for i,iface in enumerate(node['interface']):
+        # special case host without ip address, no monitoring needed
+        if 'ip' not in iface and node["type"] == "host":
+            continue
+        
+        # write panel file
+        id_num = id_num + 1
+        rep["YPOSTION"] = str(id_num)
+        rep["PANELID"] = str(id_num)
+        rep["IFNAME"] = iface['name']
+        rep["IFVLAN"] = iface['vlan']
+        flow_panel = replace_file_to_string("./templates/panel/flow_panel.json",rep)
+        
+        # find target
+        # if node["type"] == "switch":
+        #     rep["DYNAMICIFINDEX"] = cloud_functions.index_finder(push_metric,iface['name'])    
+        if 'ip' in iface:
+            rep[f"IFIP"] = iface['ip']
+        target_flow = replace_file_to_string(f"./templates/panel/flow_{node['type']}_target.json",rep)
 
+        # write target to panel file
+        flow_panel = flow_panel.replace("INSERTTARGET", target_flow)
+        concat_json(flow_panel)    
+        
+        id_num += 1
 
-### commenting the below allows dashboard generation but the following are needed for SNMP monitoring ###
+# read the temp file and write to the all general dashboard template
+dashboard_name = f"dash_{data['flow']}.json"
+with open("./templates/temp.json") as file:
+    all_panels = file.read()
+    all_panels = all_panels[:-2] # remove the last comma and newline
+    with open("./templates/panel/general_dashboard.json") as infile, open(dashboard_name, 'w') as outfile:
+        general_content = infile.read()
+        general_content = general_content.replace("GRAFANAHOST",data["grafana_host"])
+        general_content = general_content.replace("DASHTITLE",title)
+        content = general_content.replace("INSERTALLPANELS",all_panels)
+        outfile.write(content)
 
-######################## COMMENTING FOR TESTING ########################
-
-if_index1 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostA"]["switchPort"]["ifName"]))
-if_index2 = cloud_functions.index_finder(pushgateway_metrics,str(data["hostB"]["switchPort"]["ifName"]))
-
-switch_if_index=[]
-
-for i in range(switch_num):
-    letter = chr(ord('A')+i) # A B C D ... 
-    switch_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portIn"]["ifName"])))
-    switch_if_index.append(cloud_functions.index_finder(pushgateway_metrics,str(data[f"switchData{letter}"]["portOut"]["ifName"])))    
-
-######################## COMMENTING FOR TESTING ########################
-
-dash_title = data["dashTitle"] + cloud_functions.make_title(data)
-replacements = cloud_functions.replacement_template()
-replacements["DASHTITLE"] = dash_title
-replacements["IPHOSTA"] = data["hostA"]["IP"]
-replacements["IPHOSTB"] = data["hostB"]["IP"]
-replacements["VLANA"] = data["hostA"]["vlan"]
-replacements["VLANB"] = data["hostB"]["vlan"]
-replacements["IFNAMEHOSTA"] = data["hostA"]["interfaceName"]
-replacements["IFNAMEHOSTB"] = data["hostB"]["interfaceName"]
-# switch 1
-replacements["IFINDEXSWITCHHOSTA"] = if_index1
-replacements["IFINDEXSWITCH1HOSTA"] = switch_if_index[0]
-replacements["IFINDEXSWITCH1HOSTB"] = switch_if_index[1]
-# switch 2
-replacements["IFINDEXSWITCH2HOSTA"] = switch_if_index[2]
-replacements["IFINDEXSWITCH2HOSTB"] = switch_if_index[3]
-replacements["IFINDEXSWITCHHOSTB"] = if_index2
-
-replacements["DATAPLANEIPA"] = data["hostA"]["interfaceIP"]
-replacements["DATAPLANEIPB"] = data["hostB"]["interfaceIP"]
-replacements["NODENAMEA"] = data["hostA"]["nodeName"]
-replacements["NODENAMEB"] = data["hostB"]["nodeName"]
-
-for i in range(switch_num):
-    letter = chr(ord('A')+i) # A B C D ... 
-    replacements[f"IPSWITCH{letter}"] = data[f"switchData{letter}"]["target"]
-    replacements[f"SNMP{letter}NAME"]= data[f"switchData{letter}"]["job_name"]
-    replacements[f"SWITCH{letter}INVLAN"]= data[f"switchData{letter}"]["portIn"]["vlan"]
-    replacements[f"SWITCH{letter}OUTVLAN"]= data[f"switchData{letter}"]["portOut"]["vlan"]
-    replacements[f"NAMEIF{letter}IN"] = data[f"switchData{letter}"]["portIn"]["ifName"]
-    replacements[f"NAMEIF{letter}OUT"] = data[f"switchData{letter}"]["portOut"]["ifName"]
-    replacements[f"SWITCH{letter}OUTGOING"] = data[f"switchData{letter}"]["portOut"]["ifName"]
-    replacements[f"SWITCH{letter}INCOMING"] = data[f"switchData{letter}"]["portIn"]["ifName"]
-    # replacements[f"SWITCH{letter}IF"] = data[f"switchData{letter}"]["switchif"]
-    replacements[f"SNMP{letter}HOSTIP"] = data[f"switchData{letter}"]["SNMPHostIP"]
-    # replacements[f"MONITORVLAN{str(i+1)}"] = vlan_if_index[i]
-    # replacements[f"MONITORVLAN{str(i+switch_num)}"] = vlan_if_index[i+switch_num]
-
-# replacing
-cloud_functions.replacing_json(f"./templates/newTemplate{switch_num}.json","out.json",data,replacements)
+# remove temp file that's no longer needed
+if os.path.exists("./templates/temp.json"):
+    os.remove("./templates/temp.json")
 
 # Run the API script to convert output JSON to Grafana dashboard automatically
-# cmd = f"sudo python3 api.py out.json outDebug.json {file_name}"
-cmd = f"sudo python3 api.py out.json {file_name}"
+cmd = f"sudo python3 api.py {dashboard_name} {config_file}"
 subprocess.run(cmd, shell=True)

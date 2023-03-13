@@ -1,0 +1,6 @@
+{
+    "exporter": "node",
+    "pushgateway": "dev2.virnao.com:9091",
+    "name":"my_computer",
+    "status": 1
+}

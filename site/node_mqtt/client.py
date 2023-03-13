@@ -7,18 +7,16 @@ topic = "example/topic"
 port_num = 9091
 
 # Define the file to write the number to
-filename = "./exporter_status/node_exporter"
+filename = "./received_config.json"
 
 # Define a callback function to handle incoming messages
 def on_message(client, userdata, message):
     # Parse the JSON message and extract the string and number values
     message_dict = json.loads(message.payload.decode())
-    exporter = message_dict["exporter"]
-    status = message_dict["status"]
-
-    # Write the number to the file
+    print(message_dict)
+    # Dump json to the file
     with open(filename, "w") as f:
-        f.write(str(status))
+        f.write(json.dumps(message_dict))
 
 # Create an MQTT client instance and set the message callback function
 client = mqtt.Client()

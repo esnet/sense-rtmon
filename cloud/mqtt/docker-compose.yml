@@ -6,7 +6,7 @@ services:
     privileged: true
     network_mode: host
     ports:
-      - "9091:1883"
+      - "9091:9091"
     environment:
       - MQTT_LISTENER=9091
       - MQTT_PERSISTENCE=true

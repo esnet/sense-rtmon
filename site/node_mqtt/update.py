@@ -2,8 +2,8 @@ import json
 import os
 
 # Open the input file
-input_file = "received_config.json"
-prev_file = "prev_config.json"
+input_file = "/home/received_config.json"
+prev_file = "/home/prev_config.json"
 if os.path.exists(input_file) != True:
     print("File does not exist")
     exit(0)

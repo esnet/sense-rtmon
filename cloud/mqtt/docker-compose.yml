@@ -7,4 +7,5 @@ services:
     ports:
       - "9091:9091"
     volumes:
-      - ./mosquitto.conf:/mosquitto/config
+      - ./mosquitto.conf:/mosquitto/config/
+

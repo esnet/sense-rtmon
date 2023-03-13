@@ -4,7 +4,7 @@ import json
 # Define the MQTT broker and topic
 broker_address = "dev2.virnao.com"
 topic = "example/topic"
-port_num = 9091
+port_num = 3000
 
 # Define the file to write the number to
 filename = "./received_config.json"

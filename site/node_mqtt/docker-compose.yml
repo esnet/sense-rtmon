@@ -8,6 +8,7 @@ services:
       - NAME=ucsd_cluster
       - PUSHGATEWAY_SERVER=dev2.virnao.com:9091
       - NODE_PORT=9101
+      - MQTT_PORT=3000
     ports: # needed for kompose convert to create kube files
       - 9101:9101
     

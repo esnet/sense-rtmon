@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   node-exporter:
-    image: zhenboyan/rocky_node_exporter:latest
+    image: zhenboyan/rocky_node_exporter_mqtt:latest
     network_mode: "host" # needs host network
     environment: # change the folloing environment variables
       - NAME=ucsd_cluster

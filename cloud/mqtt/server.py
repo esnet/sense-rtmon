@@ -14,7 +14,7 @@ client.connect(broker_address,port=3000)
 # Create a message in JSON format
 message_dict = {"exporter": "node", "status": 1}
 message_json = json.dumps(message_dict)
-
+print("sending message: " + message_json)
 # Publish the message to the topic
 client.publish(topic, message_json)
 

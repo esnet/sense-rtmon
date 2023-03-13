@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import json
 
 # Define the MQTT broker and topic
-broker_address = "http://dev2.virnao.com"
+broker_address = "dev2.virnao.com"
 topic = "example/topic"
 
 # Define the file to write the number to

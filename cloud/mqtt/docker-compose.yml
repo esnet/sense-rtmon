@@ -1,19 +1,12 @@
 version: '3'
-
 services:
   mosquitto:
     image: eclipse-mosquitto:latest
     container_name: mosquitto
     ports:
-      - "3000:3000"
-    volumes:
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+       - "9091:9091"
 
-    # environment:
-      # - MQTT_LISTENER=9091
-      # - MQTT_PERSISTENCE=true
-      # - MQTT_PERSISTENCE_LOCATION=/mosquitto/data/
-      # - MQTT_LOG_DESTINATION=stdout
-      # - MQTT_LOG_TYPE=all
-      # - MQTT_LOG_TIMESTAMP=true
-      # - MQTT_ALLOW_ANONYMOUS=true
+    volumes:
+       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+       - ./log/:/mosquitto/log/
+       - data:/mosquitto/data/

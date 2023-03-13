@@ -9,7 +9,7 @@ topic = "example/topic"
 client = mqtt.Client()
 
 # Connect to the MQTT broker
-client.connect(broker_address,"port=3000")
+client.connect(broker_address,port=3000)
 
 # Create a message in JSON format
 message_dict = {"exporter": "node", "status": 1}

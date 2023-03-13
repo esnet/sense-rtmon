@@ -24,7 +24,7 @@ client = mqtt.Client()
 client.on_message = on_message
 
 # Connect to the MQTT broker and subscribe to the topic
-client.connect(broker_address, "port=3000")
+client.connect(broker_address, port=3000)
 client.subscribe(topic)
 
 # Start the MQTT client loop to listen for incoming messages

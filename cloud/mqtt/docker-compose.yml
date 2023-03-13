@@ -9,7 +9,7 @@ services:
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
 
-    environment:
+    # environment:
       # - MQTT_LISTENER=9091
       # - MQTT_PERSISTENCE=true
       # - MQTT_PERSISTENCE_LOCATION=/mosquitto/data/

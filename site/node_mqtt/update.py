@@ -21,7 +21,7 @@ with open(input_file, 'r') as f:
                 exit(0)
                 
     # Write the data to the prev file for record
-    json.dump(prev_file)
+    json.dump(data,prev_file)
 
 # Process the data, extract information
 example_data = {

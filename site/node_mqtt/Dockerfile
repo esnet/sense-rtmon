@@ -16,8 +16,8 @@ RUN pip3 install pyyaml paho-mqtt
 # these files will be changed depend the configuration file below
 RUN wget -O /home/dynamic_start.sh https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/node_mqtt/dynamic_start.sh
 RUN wget -O /home/run.sh https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/node_mqtt/run.sh
-RUN wget -O /home/dynamic_start.sh https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/node_mqtt/client.py
-RUN wget -O /home/dynamic_start.sh https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/node_mqtt/update.py
+RUN wget -O /home/client.py https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/node_mqtt/client.py
+RUN wget -O /home/update.py https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/node_mqtt/update.py
 
 RUN chmod +x /home/*.sh
 ENTRYPOINT [ "/home/run.sh" ]

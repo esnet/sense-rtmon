@@ -5,7 +5,7 @@ services:
     image: eclipse-mosquitto:latest
     container_name: mosquitto
     ports:
-      - "9091:9091"
+      - "3000:3000"
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
       - ./log/:/mosquitto/log/

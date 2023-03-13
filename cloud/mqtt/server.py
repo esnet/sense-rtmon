@@ -4,12 +4,13 @@ import json
 # Define the MQTT broker and topic
 broker_address = "dev2.virnao.com"
 topic = "example/topic"
+port_num = 9091
 
 # Create an MQTT client instance
 client = mqtt.Client()
 
 # Connect to the MQTT broker
-client.connect(broker_address,port=3000)
+client.connect(broker_address,port=port_num)
 
 # Create a message in JSON format
 message_dict = {"exporter": "node", "status": 1}

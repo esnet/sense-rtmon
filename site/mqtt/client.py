@@ -4,7 +4,7 @@ import json
 # Define the MQTT broker and topic
 broker_address = "dev2.virnao.com"
 topic = "example/topic"
-
+port_num = 9091
 # Define the file to write the number to
 filename = "./exporter_status/node_exporter"
 
@@ -24,7 +24,7 @@ client = mqtt.Client()
 client.on_message = on_message
 
 # Connect to the MQTT broker and subscribe to the topic
-client.connect(broker_address, port=3000)
+client.connect(broker_address, port=port_num)
 client.subscribe(topic)
 
 # Start the MQTT client loop to listen for incoming messages

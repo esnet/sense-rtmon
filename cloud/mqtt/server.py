@@ -23,9 +23,9 @@ example_data = {
 # Create a message in JSON format
 message_dict = example_data
 message_json = json.dumps(message_dict)
-print("sending message: " + message_json)
 
 while True:
     # Publish the message to the topic
     client.publish(topic, message_json)
+    print("sending message: " + message_json)
     time.sleep(5)

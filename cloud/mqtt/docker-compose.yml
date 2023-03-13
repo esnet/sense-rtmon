@@ -4,6 +4,7 @@ services:
   mosquitto:
     image: eclipse-mosquitto
     privileged: true
+    network_mode: host
     ports:
       - "9091:1883"
     environment:

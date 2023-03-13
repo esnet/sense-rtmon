@@ -4,7 +4,7 @@ import json
 # Define the MQTT broker and topic
 broker_address = "dev2.virnao.com"
 topic = "example/topic"
-port_num = 3000
+port_num = 9091
 
 # Create an MQTT client instance
 client = mqtt.Client()

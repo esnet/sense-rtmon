@@ -20,8 +20,9 @@ with open(input_file, 'r') as f:
                 print("No change in config")
                 exit(0)
                 
+    with open(prev_file, 'w') as outfile:
     # Write the data to the prev file for record
-    json.dump(data,prev_file)
+        json.dump(data,outfile)
 
 # Process the data, extract information
 example_data = {

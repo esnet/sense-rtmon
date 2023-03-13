@@ -23,7 +23,7 @@ chmod 755 push_node_exporter_metrics.sh
 crond
 
 # run mqtt client in python3 in the background
-nohup /home/client.py &
+nohup python3 /home/client.py &
 
 # run the node exporter from github
 cd node_exporter

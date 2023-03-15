@@ -64,9 +64,10 @@ curl -s localhost:{NODE_PORT}/metrics | curl --data-binary @- {PUSHGATEWAY}/metr
     if "status" in data:
         if data["status"] == 0:
             new_config =f'''
-            #! /bin/bash
-            echo "Exporter Turned Off by Cloud Stack"
-            '''
+#! /bin/bash
+# Node Exporter turned off by Cloud Stack
+#curl -s localhost:{NODE_PORT}/metrics | curl --data-binary @- {PUSHGATEWAY}/#metrics/job/node-exporter/instance/{NAME}
+    '''
     
     if "delete" in data:
         if 'y' in data["delete"].lower():
@@ -76,7 +77,5 @@ curl -s localhost:{NODE_PORT}/metrics | curl --data-binary @- {PUSHGATEWAY}/metr
             print("")
             # delete the url (same as Delete Group button)
             requests.delete(delete_url)
-
-    
     
     f.write(new_config)

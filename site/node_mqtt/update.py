@@ -14,12 +14,12 @@ with open(input_file, 'r') as f:
     data = json.load(f)
 
     # if not change in file exit
-    if os.path.exists(prev_file) == True:
-        with open(prev_file, 'r') as f:
-            prev_data = json.load(f)
-            if data == prev_data:
-                print("No change in config")
-                exit(0)
+    # if os.path.exists(prev_file) == True:
+    #     with open(prev_file, 'r') as f:
+    #         prev_data = json.load(f)
+    #         if data == prev_data:
+    #             print("No change in config")
+    #             exit(0)
                 
     with open(prev_file, 'w') as outfile:
     # Write the data to the prev file for record

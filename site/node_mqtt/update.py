@@ -1,6 +1,7 @@
 import json
 import os
 import requests
+import re
 
 # Open the input file
 input_file = "/home/received_config.json"
@@ -35,12 +36,18 @@ example_data = {
     "delete": "yes"
 }
 
+def find_string_between_strings(text, str1, str2):
+    pattern = f"{re.escape(str1)}(.*?){re.escape(str2)}"
+    result = re.findall(pattern, text, re.DOTALL)
+    return result
+
 # Open the output file
-with open('/home/push_node_exporter_metrics.sh', 'w') as f:
+with open('/home/push_node_exporter_metrics.sh', 'r+') as f:
     # default values
-    NODE_PORT = str(os.getenv('NODE_PORT'))
-    NAME = str(os.getenv('NAME'))
-    PUSHGATEWAY = str(os.getenv('PUSHGATEWAY'))
+    file_contents = f.read()
+    NODE_PORT = find_string_between_strings(file_contents, "localhost:", "/metrics |")
+    PUSHGATEWAY = find_string_between_strings(file_contents, "@- :", "/metrics/job")
+    NAME = find_string_between_strings(file_contents, "instance/", "")
     
     # Write the processed data to the output file
     if "pushgateway" in data:

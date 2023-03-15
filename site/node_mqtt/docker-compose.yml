@@ -6,7 +6,7 @@ services:
     network_mode: "host" # needs host network
     environment: # change the folloing environment variables
       - NAME=ucsd_cluster
-      - PUSHGATEWAY_SERVER=dev2.virnao.com:9091
+      - PUSHGATEWAY_SERVER=http://dev2.virnao.com:9091
       - NODE_PORT=9101
       - MQTT_PORT=3000
       - DEVICE=sdn-dtn-2-10.ultralight.org

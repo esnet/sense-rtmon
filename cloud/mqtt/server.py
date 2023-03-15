@@ -13,12 +13,13 @@ client = mqtt.Client()
 # Connect to the MQTT broker
 client.connect(broker_address,port=port_num)
 
-example_data = {
-    "exporter": "node",
-    "pushgateway": "dev2.virnao.com:9091",
-    "name":"my_computer",
-    "status": 1
-}
+# Get the data to send 
+def get_date_from_file(file_path):
+    with open(file_path, 'r') as f:
+        data = json.load(f)
+    return data
+
+example_data = get_date_from_file("node.json")
 
 # Create a message in JSON format
 message_dict = example_data

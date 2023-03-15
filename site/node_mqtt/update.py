@@ -29,7 +29,7 @@ with open(input_file, 'r') as f:
 # Process the data, extract information
 example_data = {
     "exporter": "node",
-    "pushgateway": "dev2.virnao.com:9091",
+    "pushgateway": "http://dev2.virnao.com:9091",
     "name":"ucsd",
     "status": 1,
     "device": "sdn-dtn-2-10.ultralight.org",

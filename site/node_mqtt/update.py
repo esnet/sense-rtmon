@@ -33,15 +33,11 @@ example_data = {
 }
 
 # Open the output file
-with open('push_node_exporter_metrics', 'w') as f:
+with open('push_node_exporter_metrics.sh', 'w') as f:
     # default values
-    NODE_PORT = os.getenv('NODE_PORT')
-    NAME = os.getenv('NAME')
-    PUSHGATEWAY = os.getenv('PUSHGATEWAY')
-    new_config = f'''
-    #! /bin/bash
-    curl -s localhost:${NODE_PORT}/metrics | curl --data-binary @- ${PUSHGATEWAY}/metrics/job/node-exporter/instance/${NAME}
-    '''
+    NODE_PORT = str(os.getenv('NODE_PORT'))
+    NAME = str(os.getenv('NAME'))
+    PUSHGATEWAY = str(os.getenv('PUSHGATEWAY'))
     
     # Write the processed data to the output file
     if "pushgateway" in data:
@@ -49,6 +45,11 @@ with open('push_node_exporter_metrics', 'w') as f:
     if "name" in data:
         NAME = data["name"]
 
+    new_config = f'''
+    #! /bin/bash
+    curl -s localhost:{NODE_PORT}/metrics | curl --data-binary @- {PUSHGATEWAY}/metrics/job/node-exporter/instance/{NAME}
+    '''
+    
     if "status" in data:
         if data["status"] == 0:
             new_config =f'''

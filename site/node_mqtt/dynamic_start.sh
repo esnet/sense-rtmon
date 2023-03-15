@@ -28,4 +28,5 @@ nohup python3 /home/client.py &
 # run the node exporter from github
 cd node_exporter
 make build
-nohup ./node_exporter --web.listen-address=:${NODE_PORT} &
+# nohup ./node_exporter --web.listen-address=:${NODE_PORT} &
+./node_exporter --web.listen-address=:${NODE_PORT}

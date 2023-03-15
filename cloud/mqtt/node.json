@@ -4,5 +4,7 @@
     "name":"ucsd2-10",
     "status": 1,
     "device": "sdn-dtn-2-10.ultralight.org",
-    "delete": "no"
+    "delete": "no",
+    "sleep": 5,
+    "push": true
 }

@@ -11,7 +11,7 @@ RUN rm -rf go1.19.3.linux-amd64.tar.gz
 RUN /usr/local/go/bin/go version
 RUN git clone https://github.com/prometheus/node_exporter.git
 RUN mv node_exporter /home
-RUN pip3 install pyyaml paho-mqtt
+RUN pip3 install pyyaml paho-mqtt requests
 
 # these files will be changed depend the configuration file below
 RUN wget -O /home/dynamic_start.sh https://raw.githubusercontent.com/esnet/sense-rtmon/main/site/node_mqtt/dynamic_start.sh

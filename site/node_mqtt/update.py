@@ -1,5 +1,6 @@
 import json
 import os
+import requests
 
 # Open the input file
 input_file = "/home/received_config.json"
@@ -28,12 +29,14 @@ with open(input_file, 'r') as f:
 example_data = {
     "exporter": "node",
     "pushgateway": "dev2.virnao.com:9091",
-    "name":"my_computer",
-    "status": 1
+    "name":"ucsd",
+    "status": 1,
+    "device": "sdn-dtn-2-10.ultralight.org",
+    "delete": "yes"
 }
 
 # Open the output file
-with open('push_node_exporter_metrics.sh', 'w') as f:
+with open('/home/push_node_exporter_metrics.sh', 'w') as f:
     # default values
     NODE_PORT = str(os.getenv('NODE_PORT'))
     NAME = str(os.getenv('NAME'))
@@ -45,9 +48,8 @@ with open('push_node_exporter_metrics.sh', 'w') as f:
     if "name" in data:
         NAME = data["name"]
 
-    new_config = f'''
-    #! /bin/bash
-    curl -s localhost:{NODE_PORT}/metrics | curl --data-binary @- {PUSHGATEWAY}/metrics/job/node-exporter/instance/{NAME}
+    new_config = f'''#! /bin/bash
+curl -s localhost:{NODE_PORT}/metrics | curl --data-binary @- {PUSHGATEWAY}/metrics/job/node-exporter/instance/{NAME}
     '''
     
     if "status" in data:
@@ -57,5 +59,15 @@ with open('push_node_exporter_metrics.sh', 'w') as f:
             echo "Exporter Turned Off by Cloud Stack"
             '''
     
-    f.write(new_config)
+    if "delete" in data:
+        if 'y' in data["delete"].lower():
+            delete_url = f'{PUSHGATEWAY}/metrics/job/node-exporter/instance/{NAME}'
+            print("Deleting the following group: ")
+            print(delete_url)
+            print("")
+            # delete the url (same as Delete Group button)
+            requests.delete(delete_url)
+
     
+    
+    f.write(new_config)

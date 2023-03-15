@@ -4,7 +4,7 @@ import os
 # Define the MQTT broker and topic
 broker_address = "dev2.virnao.com"
 topic = "example/topic"
-port_num = os.getenv("MQTT_PORT")
+port_num = int(os.getenv("MQTT_PORT"))
 
 # Define the file to write the number to
 filename = "./received_config.json"

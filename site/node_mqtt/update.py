@@ -36,18 +36,20 @@ example_data = {
     "delete": "yes"
 }
 
-def find_string_between_strings(text, str1, str2):
+def find_first_string_between_strings(text, str1, str2):
     pattern = f"{re.escape(str1)}(.*?){re.escape(str2)}"
-    result = re.findall(pattern, text, re.DOTALL)
-    return result
+    result = re.search(pattern, text, re.DOTALL)
+    return result.group(1) if result else None
+
+with open('/home/push_node_exporter_metrics.sh', 'r') as f:
+    file_contents = f.read()
 
 # Open the output file
-with open('/home/push_node_exporter_metrics.sh', 'r+') as f:
+with open('/home/push_node_exporter_metrics.sh', 'w') as f:
     # default values
-    file_contents = f.read()
-    NODE_PORT = find_string_between_strings(file_contents, "localhost:", "/metrics |")
-    PUSHGATEWAY = find_string_between_strings(file_contents, "@- :", "/metrics/job")
-    NAME = find_string_between_strings(file_contents, "instance/", "")
+    NODE_PORT = find_first_string_between_strings(file_contents, "localhost:", "/metrics |")
+    PUSHGATEWAY = find_first_string_between_strings(file_contents, "@- ", "/metrics/job")
+    NAME = find_first_string_between_strings(file_contents, "instance/", "")
     
     # Write the processed data to the output file
     if "pushgateway" in data:

@@ -1,7 +1,7 @@
 {
     "exporter": "node",
     "pushgateway": "http://dev2.virnao.com:9091",
-    "name":"ucsd",
+    "name":"ucsd2-10",
     "status": 1,
     "device": "sdn-dtn-2-10.ultralight.org",
     "delete": "no"

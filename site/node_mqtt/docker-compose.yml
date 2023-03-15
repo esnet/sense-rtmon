@@ -9,6 +9,7 @@ services:
       - PUSHGATEWAY_SERVER=dev2.virnao.com:9091
       - NODE_PORT=9101
       - MQTT_PORT=3000
+      - DEVICE=sdn-dtn-2-10.ultralight.org
     ports: # needed for kompose convert to create kube files
       - 9101:9101
     

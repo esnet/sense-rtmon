@@ -8,7 +8,7 @@ import cloud_functions
 # read yml file
 data,file_name = cloud_functions.read_yml_file("config_flow",sys.argv,1,1)
                 
-switchNum = data['switchNum']
+switchNum = 2
 hostip = data['hostIP']
 pushgateway_port = str(data['pushgatewayPort'])
 pushgateway_server = f"{data['grafanaHostIP']}:f{pushgateway_port}" 

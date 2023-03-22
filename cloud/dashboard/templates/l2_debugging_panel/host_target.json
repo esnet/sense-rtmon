@@ -1,6 +1,6 @@
 {
     "exemplar": true,
-    "expr": "m_host2_arp_on",
+    "expr": "SCRIPT_EXPORTER_ARP",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -9,20 +9,20 @@
   },
   {
     "exemplar": true,
-    "expr": "m_host2_ping_status",
+    "expr": "SCRIPT_EXPORTER_PING",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "ping NODENAMEA",
+    "legendFormat": "ping NODENAME",
     "refId": "B"
   },
   {
     "exemplar": true,
-    "expr": "m_host2_has_host1_arp",
+    "expr": "SCRIPT_EXPORTER_ARP_TABLE",
     "format": "time_series",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "ARP Table contains NODENAMEA IP Address",
+    "legendFormat": "ARP Table contains NODENAME IP Address",
     "refId": "C"
   }

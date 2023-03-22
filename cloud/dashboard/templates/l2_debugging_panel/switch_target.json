@@ -1,6 +1,6 @@
 {
     "exemplar": true,
-    "expr": "m_host1_snmp_on_",
+    "expr": "SCRIPT_EXPORTER_SNMP",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -9,18 +9,18 @@
   },
   {
     "exemplar": true,
-    "expr": "m_switch1_host1_mac_",
+    "expr": "SCRIPT_EXPORTER_HOST1_MAC",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "contains NODENAMEA MAC Address",
+    "legendFormat": "contains NODENAME MAC Address",
     "refId": "B"
   },
   {
     "exemplar": true,
-    "expr": "m_switch1_host2_mac_",
+    "expr": "SCRIPT_EXPORTER_HOST2_MAC",
     "hide": false,
     "interval": "",
-    "legendFormat": "contains NODENAMEB MAC Address",
+    "legendFormat": "contains NODENAME MAC Address",
     "refId": "C"
   }

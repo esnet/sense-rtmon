@@ -51,7 +51,7 @@ def remove_file(file_path="./templates/temp.json"):
 print("\n\nParsing config file...")
 data,config_file = cloud_functions.read_yml_file("config_flow",sys.argv,1,2)
 title = f'{data["title"]} |Flow: {data["flow"]}| {datetime.now().strftime("%m/%d_%H:%M")}'
-push_metric = f"{data['pushgateway']}/metrics" # pushgateway metrics page
+push_metric = data['pushgateway'] # pushgateway metrics page
 
 print("Process each node's information")
 id_num = 200 # start from 200 in case of conflict with previous panels

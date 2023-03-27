@@ -36,11 +36,11 @@ def check_arp(pushgateway, host1_name, host2_name, ping1, ping2,job):
         else:
             os.system("echo 'host{i}_has_host{j}_arp{{host=\"${name}\"}} 0'")   
             
-def check_snmp_on(pushgateway, host_num,host_name, job):
-    if check_pattern(pushgateway,fr'ifAlias.*instance="{host_name}".*job="{job}".*'):
-        os.system("echo 'host{host_num}_arp_on{{host=\"${name}\"}} 1'")
+def check_snmp_on(pushgateway,switch_name,job):
+    if check_pattern(pushgateway,fr'ifAlias.*instance="{switch_name}".*job="{job}".*'):
+        os.system("echo '{switch_name}_snmp_on{{host=\"${switch_name}\"}} 1'")
     else:
-        os.system("echo 'host{host_num}_arp_on{{host=\"${name}\"}} 0'")
+        os.system("echo '{switch_name}_snmp_on{{host=\"${switch_name}\"}} 0'")
 
 def get_mac_from_pushgateway(url, instance, ip_address):
     response = requests.get(url)
@@ -86,10 +86,10 @@ def main():
             host2 = node['name']
             host2_ip = node['interface'][0]['ip']
             ping2 = node['interface'][0]['ping']
-    
+        if node['type'] == 'switch':
+            check_snmp_on(pushgateway, node['name'], "snmpMetrics")
+            
     check_arp(pushgateway, host1, host2, ping1, ping2, "arpMetrics")
-    check_snmp_on(pushgateway, 1, host1, "snmpMetrics")
-    check_snmp_on(pushgateway, 2, host2, "snmpMetrics")
     
     # host1_mac = get_mac_from_pushgateway(pushgateway, host2, host1_ip)
     # host2_mac = get_mac_from_pushgateway(pushgateway, host1, host2_ip)

@@ -60,7 +60,7 @@ class JsonCollector(object):
         # check if the file is empty
         if os.stat(ping_file_path).st_size != 0:
           clean_ping = ping_lines[0].strip()
-          ping_url = f"{receiver_ip_address}/metrics/job/arpMetrics/instance/{instance_ip}/ping_this_ip/{str(clean_ping)}"
+          ping_url = f"{receiver_ip_address}/metrics/job/arpMetrics/instance/{instance_ip}/ping/{str(clean_ping)}"
           if clean_ping[-1] == "1":
             requests.post(ping_url, data="Success_1_failure_0 1\n")
           else:

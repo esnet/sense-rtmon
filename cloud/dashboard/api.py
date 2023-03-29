@@ -21,7 +21,7 @@ headers = {"Authorization": str(data['grafana_api_token']),
             "Accept": "application/json"}
 
 # Open and load out.json input
-f = open(sys.argv[1],)
+f = open(sys.argv[1])
 x = json.load(f)
 
 # HTTP Post Request

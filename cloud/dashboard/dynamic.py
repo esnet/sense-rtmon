@@ -101,37 +101,39 @@ for node in data["node"]:
 
 # L2 debugging tables
 id_num = id_num + 100 # L2 tables start from 100 after flow panels in case of conflict with previous panels
+
+# write node info to a json file
+rep = {}
+rep["YPOSITION"] = str(id_num)
+rep["PANELID"] = str(id_num)
+info_panel = replace_file_to_string("./templates/l2_debugging_panel/info_panel.json",rep)
+concat_json(info_panel)
+
 for i,node in enumerate(data["node"]):
-    # write node info to a json file
+# write table to a temp file
+    id_num = id_num + 1
     rep = {}
     rep["NODENAME"] = node['name']
     rep["NODETYPE"] = node["type"].capitalize()
     rep["YPOSITION"] = str(id_num)
     rep["PANELID"] = str(id_num)
-    info_panel = replace_file_to_string("./templates/l2_debugging_panel/info_panel.json",rep)
-    concat_json(info_panel)
-    
-    # write interface to a table file
-    id_num = id_num + 1
-    rep["YPOSTION"] = str(id_num)
-    rep["PANELID"] = str(id_num)
     l2table = replace_file_to_string("./templates/l2_debugging_panel/table.json",rep)
-    concat_json(l2table)
     
     if node["type"] == "host":
         rep["SCRIPT_EXPORTER_ARP"] = f"SCRIPT_EXPORTER_ARP{i}"
         rep["SCRIPT_EXPORTER_PING"] = f"SCRIPT_EXPORTER_PING{i}"
         rep["SCRIPT_EXPORTER_ARP_TABLE"] = f"SCRIPT_EXPORTER_ARP_TABLE{i}"
-        host_target = replace_file_to_string("./templates/l2_debugging_panel/host_target.json",rep)
-        concat_json(host_target)
+        node_target = replace_file_to_string("./templates/l2_debugging_panel/host_target.json",rep)
     
     elif node["type"] == "switch":
         rep["SCRIPT_EXPORTER_SNMP"] = f"SCRIPT_EXPORTER_SNMP{i}"
         rep["SCRIPT_EXPORTER_HOST1_MAC"] = f"SCRIPT_EXPORTER_HOST1_MAC{i}"
         rep["SCRIPT_EXPORTER_HOST2_MAC"] = f"SCRIPT_EXPORTER_HOST2_MAC{i}"
-        switch_target = replace_file_to_string("./templates/l2_debugging_panel/switch_target.json",rep)
-        concat_json(switch_target)
+        node_target = replace_file_to_string("./templates/l2_debugging_panel/switch_target.json",rep)
     
+    l2table = l2table.replace("INSERTTARGET", node_target)
+    # concat_json(l2table,"./templates/l2_temp.json")
+    concat_json(l2table)
 
 # read the temp file and write to the all general dashboard template
 dashboard_name = f"dash_{data['flow']}.json"

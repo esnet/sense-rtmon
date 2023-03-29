@@ -1,6 +1,6 @@
 {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_TASK1",
+    "expr": "SCRIPT_EXPORTER_ARP",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -9,7 +9,7 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_TASK2",
+    "expr": "SCRIPT_EXPORTER_PING",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -18,7 +18,7 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_TASK3",
+    "expr": "SCRIPT_EXPORTER_ARP_TABLE",
     "format": "time_series",
     "hide": false,
     "instant": false,

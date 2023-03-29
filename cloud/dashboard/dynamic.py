@@ -108,8 +108,9 @@ rep["YPOSITION"] = str(id_num)
 rep["PANELID"] = str(id_num)
 info_panel = replace_file_to_string("./templates/l2_debugging_panel/info_panel.json",rep)
 concat_json(info_panel)
-
-for i,node in enumerate(data["node"]):
+host_count = 0
+switch_count = 0 
+for i,node in enumerate(data["node"],i):
 # write table to a temp file
     id_num = id_num + 1
     rep = {}
@@ -119,20 +120,28 @@ for i,node in enumerate(data["node"]):
     rep["PANELID"] = str(id_num)
     l2table = replace_file_to_string("./templates/l2_debugging_panel/table.json",rep)
     
-    if node["type"] == "host":
-        rep["SCRIPT_EXPORTER_ARP"] = f"SCRIPT_EXPORTER_ARP{i}"
-        rep["SCRIPT_EXPORTER_PING"] = f"SCRIPT_EXPORTER_PING{i}"
-        rep["SCRIPT_EXPORTER_ARP_TABLE"] = f"SCRIPT_EXPORTER_ARP_TABLE{i}"
-        node_target = replace_file_to_string("./templates/l2_debugging_panel/host_target.json",rep)
+    rep["SCRIPT_EXPORTER_TASK1"] = f"SCRIPT_EXPORTER_NODE{i}_TASK1"
+    rep["SCRIPT_EXPORTER_TASK2"] = f"SCRIPT_EXPORTER_NODE{i}_TASK2"
+    rep["SCRIPT_EXPORTER_TASK3"] = f"SCRIPT_EXPORTER_NODE{i}_TASK3"
+    node_target = replace_file_to_string(f"./templates/l2_debugging_panel/{node['type']}_target.json",rep)
     
-    elif node["type"] == "switch":
-        rep["SCRIPT_EXPORTER_SNMP"] = f"SCRIPT_EXPORTER_SNMP{i}"
-        rep["SCRIPT_EXPORTER_HOST1_MAC"] = f"SCRIPT_EXPORTER_HOST1_MAC{i}"
-        rep["SCRIPT_EXPORTER_HOST2_MAC"] = f"SCRIPT_EXPORTER_HOST2_MAC{i}"
-        node_target = replace_file_to_string("./templates/l2_debugging_panel/switch_target.json",rep)
+    
+    # alternative naming
+    # if node["type"] == "host":
+    #     host_count += 1
+    #     rep["SCRIPT_EXPORTER_ARP"] = f"SCRIPT_EXPORTER_ARP{host_count}"
+    #     rep["SCRIPT_EXPORTER_PING"] = f"SCRIPT_EXPORTER_PING{host_count}"
+    #     rep["SCRIPT_EXPORTER_ARP_TABLE"] = f"SCRIPT_EXPORTER_ARP_TABLE{host_count}"
+    #     node_target = replace_file_to_string("./templates/l2_debugging_panel/host_target.json",rep)
+        
+    # elif node["type"] == "switch":
+    #     switch_count += 1
+    #     rep["SCRIPT_EXPORTER_SNMP"] = f"SCRIPT_EXPORTER_SNMP{switch_count}"
+    #     rep["SCRIPT_EXPORTER_HOST1_MAC"] = f"SCRIPT_EXPORTER_HOST1_MAC{switch_count}"
+    #     rep["SCRIPT_EXPORTER_HOST2_MAC"] = f"SCRIPT_EXPORTER_HOST2_MAC{switch_count}"
+    #     node_target = replace_file_to_string("./templates/l2_debugging_panel/switch_target.json",rep)
     
     l2table = l2table.replace("INSERTTARGET", node_target)
-    # concat_json(l2table,"./templates/l2_temp.json")
     concat_json(l2table)
 
 # read the temp file and write to the all general dashboard template

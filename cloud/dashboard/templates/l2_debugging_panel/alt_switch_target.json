@@ -1,6 +1,6 @@
 {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_TASK1",
+    "expr": "SCRIPT_EXPORTER_SNMP",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -9,7 +9,7 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_TASK2",
+    "expr": "SCRIPT_EXPORTER_HOST1_MAC",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -18,7 +18,7 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_TASK3",
+    "expr": "SCRIPT_EXPORTER_HOST2_MAC",
     "hide": false,
     "interval": "",
     "legendFormat": "contains NODENAME MAC Address",

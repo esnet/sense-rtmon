@@ -4,7 +4,7 @@ flow: "test_123_test"
 host_ip: 198.124.151.8 
 grafana_host: 'http://sense-mon.es.net:3000'
 pushgateway: 'http://sense-mon.es.net:9091'
-grafana_api_token: "Bearer eyJrIjoiazN4YUpKVFEzbm8yUFVHdDdDYTBKS3dVWWxQWWp5WjQiLCJuIjoiZGVtbyIsImlkIjoxfQ=="
+grafana_api_token: "Bearer eyJrIjoiRE1sUWtYYzN0T2F6NlRpbTZ3V21SSTNhYzZIZXkyZ0QiLCJuIjoiZGVtbyIsImlkIjoxfQ=="
 
 ## Section 2 Hosts & Switches all under nodes ##
 node:

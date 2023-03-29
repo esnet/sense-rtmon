@@ -2,7 +2,7 @@
     "dashboard": {
       "id": null,
       "uid": null,
-      "title": "Single Switch Dashboard |Flow: test_123_test| 03/08_12:38",
+      "title": "Single Switch Dashboard |Flow: test_123_test| 03/29_12:45",
       "tags": [
         "templated"
       ],
@@ -196,7 +196,7 @@
     },
     "id": 201,
     "options": {
-      "content": "```\nHost: sdn-dtn-2-10.ultralight.org   Interface: [{'name': 'ens2f0np0.3911', 'vlan': 'not used', 'ip': '10.251.86.10', 'ping': '10.251.86.12'}, {'name': 'hundredGigE 1/31', 'vlan': 'not used', 'peer': [{'name': 'Caltech LRT-SDN-R02-Dell-Z9100', 'interface': 'hundredGigE 1/31', 'vlan': 'not used'}]}]\n ```",
+      "content": "```\nHost: sdn-dtn-2-10.ultralight.org   Interface: [{'name': 'ens2f0np0.3911', 'vlan': 'not used', 'ip': '10.251.86.10', 'ping': '10.251.86.12'}, {'name': 'hundredGigE 1/31', 'vlan': 'not used', 'peer': [{'name': 'Caltech LRT-SDN-R02-Dell-Z9100', 'interface': 'hundredGigE 1/31'}]}]\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -348,7 +348,7 @@
     },
     "id": 204,
     "options": {
-      "content": "```\nSwitch: Caltech LRT-SDN-R02-Dell-Z9100   Interface: [{'name': 'hundredGigE 1/31', 'vlan': 'not used', 'peer': [{'name': 'sdn-dtn-2-10.ultralight.org', 'interface': 'hundredGigE 1/31', 'vlan': 'not used'}]}, {'name': 'Port-channel 103', 'vlan': 'not used', 'peer': [{'name': 'UCSD SN3700', 'interface': 'PortChannel501', 'vlan': 'not used'}]}]\n ```",
+      "content": "```\nSwitch: Caltech LRT-SDN-R02-Dell-Z9100   Interface: [{'name': 'hundredGigE 1/31', 'vlan': 'not used', 'peer': [{'name': 'sdn-dtn-2-10.ultralight.org', 'interface': 'hundredGigE 1/31'}]}, {'name': 'Port-channel 103', 'vlan': 'not used', 'peer': [{'name': 'UCSD SN3700', 'interface': 'PortChannel501'}]}]\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -614,7 +614,7 @@
     },
     "id": 209,
     "options": {
-      "content": "```\nHost: k8s-gen4-02.sdsc.optiputer.net   Interface: [{'name': 'vlan.3911', 'vlan': 'not used', 'ip': '10.251.86.12', 'ping': '10.251.86.10'}, {'name': 'etp28', 'vlan': 'not used', 'peer': [{'name': 'SN3700', 'interface': 'etp28', 'vlan': 'not used'}]}]\n ```",
+      "content": "```\nHost: k8s-gen4-02.sdsc.optiputer.net   Interface: [{'name': 'vlan.3911', 'vlan': 'not used', 'ip': '10.251.86.12', 'ping': '10.251.86.10'}, {'name': 'etp28', 'vlan': 'not used', 'peer': [{'name': 'SN3700', 'interface': 'etp28'}]}]\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -736,6 +736,321 @@
       "align": false,
       "alignLevel": null
     }
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 20,
+      "w": 24,
+      "x": 0,
+      "y": 311
+    },
+    "id": 311,
+    "panels": [],
+    "title": "L2 Debugging",
+    "type": "row"
+  },
+
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0
+        },
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 0,
+                "text": "FAILURE"
+              },
+              "1": {
+                "color": "green",
+                "index": 1,
+                "text": "SUCCESS"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 24,
+      "x": 0,
+      "y": 312
+    },
+    "id": 312,
+    "options": {
+      "alignValue": "center",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "always",
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.3",
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "SCRIPT_EXPORTER_NODE1_TASK1",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ARP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "SCRIPT_EXPORTER_NODE1_TASK2",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ping sdn-dtn-2-10.ultralight.org",
+    "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "SCRIPT_EXPORTER_NODE1_TASK3",
+    "format": "time_series",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ARP Table contains sdn-dtn-2-10.ultralight.org IP Address",
+    "refId": "C"
+  }
+    ],
+    "title": "sdn-dtn-2-10.ultralight.org ARP/MAC Correlation",
+    "transparent": true,
+    "type": "state-timeline"
+  },
+
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0
+        },
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 0,
+                "text": "FAILURE"
+              },
+              "1": {
+                "color": "green",
+                "index": 1,
+                "text": "SUCCESS"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 24,
+      "x": 0,
+      "y": 313
+    },
+    "id": 313,
+    "options": {
+      "alignValue": "center",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "always",
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.3",
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "SCRIPT_EXPORTER_NODE2_TASK1",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "SNMP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "SCRIPT_EXPORTER_NODE2_TASK2",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "contains Caltech LRT-SDN-R02-Dell-Z9100 MAC Address",
+    "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "SCRIPT_EXPORTER_NODE2_TASK3",
+    "hide": false,
+    "interval": "",
+    "legendFormat": "contains Caltech LRT-SDN-R02-Dell-Z9100 MAC Address",
+    "refId": "C"
+  }
+    ],
+    "title": "Caltech LRT-SDN-R02-Dell-Z9100 ARP/MAC Correlation",
+    "transparent": true,
+    "type": "state-timeline"
+  },
+
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0
+        },
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 0,
+                "text": "FAILURE"
+              },
+              "1": {
+                "color": "green",
+                "index": 1,
+                "text": "SUCCESS"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 24,
+      "x": 0,
+      "y": 314
+    },
+    "id": 314,
+    "options": {
+      "alignValue": "center",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "always",
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.3",
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "SCRIPT_EXPORTER_NODE3_TASK1",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ARP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "SCRIPT_EXPORTER_NODE3_TASK2",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ping k8s-gen4-02.sdsc.optiputer.net",
+    "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "SCRIPT_EXPORTER_NODE3_TASK3",
+    "format": "time_series",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ARP Table contains k8s-gen4-02.sdsc.optiputer.net IP Address",
+    "refId": "C"
+  }
+    ],
+    "title": "k8s-gen4-02.sdsc.optiputer.net ARP/MAC Correlation",
+    "transparent": true,
+    "type": "state-timeline"
   }
 
 ],
@@ -745,7 +1060,7 @@
 },
 "timepicker": {},
 "timezone": "",
-"title": "Single Switch Dashboard |Flow: test_123_test| 03/08_12:38",
+"title": "Single Switch Dashboard |Flow: test_123_test| 03/29_12:45",
 "uid": null,
 "id": null,
 "version": 2

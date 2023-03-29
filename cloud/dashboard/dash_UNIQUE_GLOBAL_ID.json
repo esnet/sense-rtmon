@@ -2,7 +2,7 @@
     "dashboard": {
       "id": null,
       "uid": null,
-      "title": "Multi Switch Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 03/29_12:32",
+      "title": "Multi Switch Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 03/29_12:57",
       "tags": [
         "templated"
       ],
@@ -174,9 +174,9 @@
       "h": 1,
       "w": 24,
       "x": 0,
-      "y": 200
+      "y": 201
     },
-    "id": 200,
+    "id": 201,
     "panels": [],
     "title": "Host Flow Summary - sdn-dtn-2-10.ultralight.org",
     "type": "row"
@@ -192,9 +192,9 @@
       "h": 3,
       "w": 24,
       "x": 0,
-      "y": 200
+      "y": 202
     },
-    "id": 201,
+    "id": 202,
     "options": {
       "content": "```\nHost: sdn-dtn-2-10.ultralight.org   Interface: [{'name': 'ens2f0np0.3911', 'vlan': 'not used', 'ip': '10.251.86.10', 'ping': '10.251.86.12'}, {'name': 'hundredGigE 1/31', 'vlan': 'not used', 'peer': [{'name': 'Caltech LRT-SDN-R02-Dell-Z9100', 'interface': 'hundredGigE 1/31'}]}]\n ```",
       "mode": "markdown"
@@ -221,10 +221,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 200
+      "y": 203
     },
     "hiddenSeries": false,
-    "id": 202,
+    "id": 203,
     "legend": {
       "avg": false,
       "current": false,
@@ -326,9 +326,9 @@
       "h": 1,
       "w": 24,
       "x": 0,
-      "y": 203
+      "y": 205
     },
-    "id": 203,
+    "id": 205,
     "panels": [],
     "title": "Switch Flow Summary - Caltech LRT-SDN-R02-Dell-Z9100",
     "type": "row"
@@ -344,9 +344,9 @@
       "h": 3,
       "w": 24,
       "x": 0,
-      "y": 203
+      "y": 206
     },
-    "id": 204,
+    "id": 206,
     "options": {
       "content": "```\nSwitch: Caltech LRT-SDN-R02-Dell-Z9100   Interface: [{'name': 'hundredGigE 1/31', 'vlan': 'not used', 'peer': [{'name': 'sdn-dtn-2-10.ultralight.org', 'interface': 'hundredGigE 1/31'}]}, {'name': 'Port-channel 103', 'vlan': 'not used', 'peer': [{'name': 'UCSD SN3700', 'interface': 'PortChannel501'}]}]\n ```",
       "mode": "markdown"
@@ -373,10 +373,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 203
+      "y": 207
     },
     "hiddenSeries": false,
-    "id": 205,
+    "id": 207,
     "legend": {
       "avg": false,
       "current": false,
@@ -487,10 +487,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 203
+      "y": 209
     },
     "hiddenSeries": false,
-    "id": 207,
+    "id": 209,
     "legend": {
       "avg": false,
       "current": false,
@@ -592,9 +592,9 @@
       "h": 1,
       "w": 24,
       "x": 0,
-      "y": 208
+      "y": 211
     },
-    "id": 208,
+    "id": 211,
     "panels": [],
     "title": "Switch Flow Summary - UCSD SN3700",
     "type": "row"
@@ -610,9 +610,9 @@
       "h": 3,
       "w": 24,
       "x": 0,
-      "y": 208
+      "y": 212
     },
-    "id": 209,
+    "id": 212,
     "options": {
       "content": "```\nSwitch: UCSD SN3700   Interface: [{'name': 'PortChannel501', 'vlan': 'not used', 'peer': [{'name': 'Caltech LRT-SDN-R02-Dell-Z9100', 'interface': 'Port-channel 103'}]}, {'name': 'etp28', 'vlan': 'not used', 'peer': [{'name': 'k8s-gen4-01.sdsc.optiputer.net', 'interface': 'etp28'}]}]\n ```",
       "mode": "markdown"
@@ -639,10 +639,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 208
+      "y": 213
     },
     "hiddenSeries": false,
-    "id": 210,
+    "id": 213,
     "legend": {
       "avg": false,
       "current": false,
@@ -753,10 +753,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 208
+      "y": 215
     },
     "hiddenSeries": false,
-    "id": 212,
+    "id": 215,
     "legend": {
       "avg": false,
       "current": false,
@@ -858,9 +858,9 @@
       "h": 1,
       "w": 24,
       "x": 0,
-      "y": 213
+      "y": 217
     },
-    "id": 213,
+    "id": 217,
     "panels": [],
     "title": "Host Flow Summary - k8s-gen4-02.sdsc.optiputer.net",
     "type": "row"
@@ -876,9 +876,9 @@
       "h": 3,
       "w": 24,
       "x": 0,
-      "y": 213
+      "y": 218
     },
-    "id": 214,
+    "id": 218,
     "options": {
       "content": "```\nHost: k8s-gen4-02.sdsc.optiputer.net   Interface: [{'name': 'vlan.3911', 'vlan': 'not used', 'ip': '10.251.86.12', 'ping': '10.251.86.10'}, {'name': 'etp28', 'vlan': 'not used', 'peer': [{'name': 'SN3700', 'interface': 'etp28'}]}]\n ```",
       "mode": "markdown"
@@ -905,10 +905,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 213
+      "y": 219
     },
     "hiddenSeries": false,
-    "id": 215,
+    "id": 219,
     "legend": {
       "avg": false,
       "current": false,
@@ -1010,9 +1010,9 @@
       "h": 20,
       "w": 24,
       "x": 0,
-      "y": 316
+      "y": 321
     },
-    "id": 316,
+    "id": 321,
     "panels": [],
     "title": "L2 Debugging",
     "type": "row"
@@ -1067,9 +1067,9 @@
       "h": 6,
       "w": 24,
       "x": 0,
-      "y": 317
+      "y": 322
     },
-    "id": 317,
+    "id": 322,
     "options": {
       "alignValue": "center",
       "legend": {
@@ -1087,7 +1087,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_ARP0",
+    "expr": "SCRIPT_EXPORTER_NODE1_TASK1",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1096,7 +1096,7 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_PING0",
+    "expr": "SCRIPT_EXPORTER_NODE1_TASK2",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1105,7 +1105,7 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_ARP0_TABLE",
+    "expr": "SCRIPT_EXPORTER_NODE1_TASK3",
     "format": "time_series",
     "hide": false,
     "instant": false,
@@ -1168,9 +1168,9 @@
       "h": 6,
       "w": 24,
       "x": 0,
-      "y": 318
+      "y": 323
     },
-    "id": 318,
+    "id": 323,
     "options": {
       "alignValue": "center",
       "legend": {
@@ -1188,7 +1188,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_SNMP1",
+    "expr": "SCRIPT_EXPORTER_NODE2_TASK1",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1197,7 +1197,7 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_HOST1_MAC1",
+    "expr": "SCRIPT_EXPORTER_NODE2_TASK2",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1206,7 +1206,7 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_HOST2_MAC1",
+    "expr": "SCRIPT_EXPORTER_NODE2_TASK3",
     "hide": false,
     "interval": "",
     "legendFormat": "contains Caltech LRT-SDN-R02-Dell-Z9100 MAC Address",
@@ -1267,9 +1267,9 @@
       "h": 6,
       "w": 24,
       "x": 0,
-      "y": 319
+      "y": 324
     },
-    "id": 319,
+    "id": 324,
     "options": {
       "alignValue": "center",
       "legend": {
@@ -1287,7 +1287,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_SNMP2",
+    "expr": "SCRIPT_EXPORTER_NODE3_TASK1",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1296,7 +1296,7 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_HOST1_MAC2",
+    "expr": "SCRIPT_EXPORTER_NODE3_TASK2",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1305,7 +1305,7 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_HOST2_MAC2",
+    "expr": "SCRIPT_EXPORTER_NODE3_TASK3",
     "hide": false,
     "interval": "",
     "legendFormat": "contains UCSD SN3700 MAC Address",
@@ -1366,9 +1366,9 @@
       "h": 6,
       "w": 24,
       "x": 0,
-      "y": 320
+      "y": 325
     },
-    "id": 320,
+    "id": 325,
     "options": {
       "alignValue": "center",
       "legend": {
@@ -1386,7 +1386,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_ARP3",
+    "expr": "SCRIPT_EXPORTER_NODE4_TASK1",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1395,7 +1395,7 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_PING3",
+    "expr": "SCRIPT_EXPORTER_NODE4_TASK2",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1404,7 +1404,7 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_ARP3_TABLE",
+    "expr": "SCRIPT_EXPORTER_NODE4_TASK3",
     "format": "time_series",
     "hide": false,
     "instant": false,
@@ -1425,7 +1425,7 @@
 },
 "timepicker": {},
 "timezone": "",
-"title": "Multi Switch Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 03/29_12:32",
+"title": "Multi Switch Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 03/29_12:57",
 "uid": null,
 "id": null,
 "version": 2

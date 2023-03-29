@@ -46,7 +46,20 @@ def concat_json(content,output="./templates/temp.json",end=False):
 def remove_file(file_path="./templates/temp.json"):
     if os.path.exists(file_path):
         os.remove(file_path)
-    
+
+# fill in the replacement dictionary of necessary values
+def fill_rep(rep,id_num,node=None,iface=None):
+    id_num += 1
+    rep["YPOSITION"] = str(id_num)
+    rep["PANELID"] = str(id_num)
+    if node!=None:
+        rep["NODENAME"] = node['name']
+        rep["NODETYPE"] = node["type"].capitalize()
+    if iface!=None:
+        rep["IFNAME"] = iface['name']
+        rep["IFVLAN"] = iface['vlan']
+    return rep,id_num
+
 #### parse file and general info ####
 print("\n\nParsing config file...")
 data,config_file = cloud_functions.read_yml_file("config_flow",sys.argv,1,2)
@@ -57,18 +70,12 @@ print("Process each node's information")
 id_num = 200 # start from 200 in case of conflict with previous panels
 for node in data["node"]:
     # write node info to a json file
-    rep = {}
-    rep["NODENAME"] = node['name']
-    rep["NODETYPE"] = node["type"].capitalize()
-    rep["YPOSITION"] = str(id_num)
-    rep["PANELID"] = str(id_num)
+    rep,id_num = fill_rep({},id_num,node)
     info_panel = replace_file_to_string("./templates/panel/info_panel.json",rep)
     concat_json(info_panel)
     
     # write interface to a json file
-    id_num = id_num + 1
-    rep["YPOSTION"] = str(id_num)
-    rep["PANELID"] = str(id_num)
+    rep,id_num = fill_rep(rep,id_num)
     rep["INTERFACEINFO"] = str(node['interface'])
     interface_panel = replace_file_to_string("./templates/panel/interface_panel.json",rep)
     concat_json(interface_panel)
@@ -79,11 +86,7 @@ for node in data["node"]:
             continue
         
         # write panel file
-        id_num = id_num + 1
-        rep["YPOSTION"] = str(id_num)
-        rep["PANELID"] = str(id_num)
-        rep["IFNAME"] = iface['name']
-        rep["IFVLAN"] = iface['vlan']
+        rep,id_num = fill_rep(rep,id_num,node,iface)
         flow_panel = replace_file_to_string("./templates/panel/flow_panel.json",rep)
         
         # find target
@@ -103,21 +106,14 @@ for node in data["node"]:
 id_num = id_num + 100 # L2 tables start from 100 after flow panels in case of conflict with previous panels
 
 # write node info to a json file
-rep = {}
-rep["YPOSITION"] = str(id_num)
-rep["PANELID"] = str(id_num)
+rep,id_num = fill_rep({},id_num)
 info_panel = replace_file_to_string("./templates/l2_debugging_panel/info_panel.json",rep)
 concat_json(info_panel)
 host_count = 0
 switch_count = 0 
 for i,node in enumerate(data["node"],i):
 # write table to a temp file
-    id_num = id_num + 1
-    rep = {}
-    rep["NODENAME"] = node['name']
-    rep["NODETYPE"] = node["type"].capitalize()
-    rep["YPOSITION"] = str(id_num)
-    rep["PANELID"] = str(id_num)
+    rep,id_num = fill_rep({},id_num,node)
     l2table = replace_file_to_string("./templates/l2_debugging_panel/table.json",rep)
     
     rep["SCRIPT_EXPORTER_TASK1"] = f"SCRIPT_EXPORTER_NODE{i}_TASK1"

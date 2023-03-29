@@ -1,0 +1,60 @@
+{
+  "Ports": [
+    {
+      "Port": "urn:ogf:network:ultralight.org:2013:dellos9_s0:hundredGigE_1-10",
+      "Node": "T2_US_Caltech_Test:dellos9_s0",
+      "Peer": "?peer?",
+      "Host": [
+        {
+          "IPv4": "10.251.87.10/24",
+          "Interface": "mlx4p2s1",
+          "Name": "T2_US_Caltech_Test:sandie-1.ultralight.org"
+        }
+      ],
+      "Vlan": "3873",
+      "Name": "hundredGigE 1/10"
+    },
+    {
+      "Port": "urn:ogf:network:ultralight.org:2013:dellos9_s0:Port-channel_103",
+      "Node": "T2_US_Caltech_Test:dellos9_s0",
+      "Peer": "urn:ogf:network:sc-test.cenic.net:2020:aristaeos_s0:Port-Channel501",
+      "Vlan": "3873",
+      "Name": "Port-channel 103"
+    },
+    {
+      "Port": "urn:ogf:network:nrp-nautilus.io:2020:sn3700_s0:Ethernet108",
+      "Node": "T2_US_SDSC:sn3700_s0",
+      "Peer": "?peer?",
+      "Host": [
+        {
+          "IPv4": "10.251.87.11/24",
+          "Interface": "enp65s0np0",
+          "Name": "T2_US_SDSC:k8s-gen4-02.sdsc.optiputer.net"
+        }
+      ],
+      "Vlan": "3873",
+      "Name": "Ethernet108"
+    },
+    {
+      "Port": "urn:ogf:network:nrp-nautilus.io:2020:sn3700_s0:PortChannel501",
+      "Node": "T2_US_SDSC:sn3700_s0",
+      "Peer": "urn:ogf:network:sc-test.cenic.net:2020:aristaeos_s0:Port-Channel502",
+      "Vlan": "3873",
+      "Name": "PortChannel501"
+    },
+    {
+      "Port": "urn:ogf:network:sc-test.cenic.net:2020:aristaeos_s0:Port-Channel502",
+      "Node": "NRM_CENIC:aristaeos_s0",
+      "Peer": "urn:ogf:network:nrp-nautilus.io:2020:sn3700_s0:PortChannel501",
+      "Vlan": "3873",
+      "Name": "Port-Channel502"
+    },
+    {
+      "Port": "urn:ogf:network:sc-test.cenic.net:2020:aristaeos_s0:Port-Channel501",
+      "Node": "NRM_CENIC:aristaeos_s0",
+      "Peer": "urn:ogf:network:ultralight.org:2013:dellos9_s0:Port-channel_103",
+      "Vlan": "3873",
+      "Name": "Port-Channel501"
+    }
+  ]
+}

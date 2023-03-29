@@ -100,7 +100,7 @@ for node in data["node"]:
         id_num += 1
 
 # L2 debugging tables
-id_num = 500 # L2 tables start from 500 in case of conflict with previous panels
+id_num = id_num + 100 # L2 tables start from 100 after flow panels in case of conflict with previous panels
 for i,node in enumerate(data["node"]):
     # write node info to a json file
     rep = {}

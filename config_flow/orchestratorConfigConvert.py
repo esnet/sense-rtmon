@@ -38,12 +38,19 @@ def orchestratorConvert(orchestrator_fname):
 
 	ports = data['Ports']
 	visitedPorts = []
+	hostPeers = []
+	switchPeers = []
 
 	for port in ports:
 
 		if "Host" in port:
 			print("Found host (", port['Host'][0]["Name"] ,") info in SENSE-Orchestrator Config!")
 			print("Parsing host (", port['Host'][0]["Name"] ,") info...")
+
+			hostInfo = [port['Host'][0]["Name"], port['Host'][0]["Interface"], port['Vlan']]
+			switchPeers.append(port['Node'])
+			hostPeers.append(hostInfo)
+
 			outFile.write("  - name: \"")
 			outFile.write(port['Host'][0]["Name"])
 			outFile.write("\"\n")
@@ -69,9 +76,9 @@ def orchestratorConvert(orchestrator_fname):
 				else: 
 					outFile.write("        vlan: 'not used'\n")
 
-				if "IP Address" in iface:
+				if "IPv4" in iface:
 					outFile.write("        ip: ")
-					outFile.write(iface['IP Address'].split("/")[0])
+					outFile.write(iface['IPv4'].split("/")[0])
 					outFile.write("\n")
 
 				outFile.write("        ping: \n")
@@ -93,6 +100,7 @@ def orchestratorConvert(orchestrator_fname):
 					outFile.write("        - name: ")
 					outFile.write(port['Peer'])
 					outFile.write("\n")
+
 				else: 
 					outFile.write("        - name: \n")
 			else: 
@@ -116,6 +124,8 @@ def orchestratorConvert(orchestrator_fname):
 
 			outFile.write("\n")
 			print("Finished parsing host (", port['Host'][0]["Name"] ,") info...\n")
+
+	for port in ports:
 
 		if port['Node'] not in visitedPorts:
 			print("Found switch (", port['Node'],") info in SENSE-Orchestrator Config!")
@@ -154,6 +164,24 @@ def orchestratorConvert(orchestrator_fname):
 							outFile.write("\"\n")
 
 							outFile.write("          vlan: 'not_used'\n")
+						elif p["Node"] in switchPeers:
+							loc = switchPeers.index(p["Node"])
+							peerName = "" if hostPeers[loc][0].startswith("?") else hostPeers[loc][0]
+							peerIface = "" if hostPeers[loc][1].startswith("?") else "\"" +  hostPeers[loc][1] + "\""
+							peerVlan = "" if hostPeers[loc][2].startswith("?") else hostPeers[loc][2]
+
+							outFile.write("        - name: \"")
+							outFile.write(peerName)
+							outFile.write("\"\n")
+
+							outFile.write("          interface: ")
+							outFile.write(peerIface)
+							outFile.write("\n")
+
+							outFile.write("          vlan: ")
+							outFile.write(peerVlan)
+							outFile.write("\n")
+
 						else:
 							outFile.write("        - name: \n")
 							outFile.write("          interface: \n")
@@ -167,6 +195,7 @@ def orchestratorConvert(orchestrator_fname):
 			outFile.write("\n")
 			visitedPorts.append(port['Node'])
 			print("Finished parsing switch (", port['Node'],") info...\n")
+
 
 	print("---------------------------------")
 	print("Dynamically generating config data from SENSE-Orchestrator...")

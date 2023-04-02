@@ -71,7 +71,7 @@ def process_dict_list(dict_list):
         result.append(" | ".join(item_str))
     
     result_str = "\n".join(result)
-    return result
+    return result_str
 
 #### parse file and general info ####
 print("\n\nParsing config file...")

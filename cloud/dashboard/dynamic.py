@@ -82,7 +82,7 @@ for node in data["node"]:
     
     for i,iface in enumerate(node['interface']):
         # special case host without ip address, no monitoring needed
-        if 'ip' not in iface and node["type"] == "host":
+        if 'ping' not in iface and node["type"] == "host":
             continue
         
         # write panel file
@@ -92,8 +92,8 @@ for node in data["node"]:
         # find target
         # if node["type"] == "switch":
         #     rep["DYNAMICIFINDEX"] = cloud_functions.index_finder(push_metric,iface['name'])    
-        if 'ip' in iface:
-            rep[f"IFIP"] = iface['ip']
+        # if 'ip' in iface:
+        rep[f"IFDEVICE"] = iface['name']
         target_flow = replace_file_to_string(f"./templates/panel/flow_{node['type']}_target.json",rep)
 
         # write target to panel file

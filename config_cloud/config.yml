@@ -9,6 +9,7 @@
 # hostB: # Host 2
 #   IP: 198.32.43.15
 
-hostIP: 198.124.151.8
+# hostIP: 198.124.151.8
+hostIP: 172.31.72.189
 ssl_certificate: '/etc/pki/tls/certs/sense-mon_es_net_fullchain.cer' #(fullchain)
 ssl_certificate_key: '/etc/pki/tls/private/sense-mon.key' #(prvikey)

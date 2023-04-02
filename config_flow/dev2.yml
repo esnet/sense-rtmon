@@ -13,8 +13,7 @@ node:
     interface: 
       - name: 'ens2f0np0.3911'
         vlan: 'not used'
-        ip: 10.251.86.10
-        ping: 10.251.86.12
+        ping: 'sdn-dtn-2-10.ultralight.org'
       - name: 'hundredGigE 1/31'
         vlan: 'not used'
         peer: 
@@ -40,8 +39,7 @@ node:
     interface: 
       - name: 'ens2f0np0.3911'
         vlan: 'not used'
-        ip: 10.251.86.10
-        ping: 10.251.86.12
+        ping: sdn-dtn-1-7.ultralight.org
       - name: 'hundredGigE 1/31'
         vlan: 'not used'
         peer: 

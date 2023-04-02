@@ -69,6 +69,8 @@ def process_dict_list(dict_list):
                 value = ', '.join([f"{k}: {v}" for peer in value for k, v in peer.items()])
             item_str.append(f"{key}: {value}")
         result.append(" | ".join(item_str))
+    
+    result_str = "\n".join(result)
     return result
 
 #### parse file and general info ####

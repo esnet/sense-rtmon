@@ -13,7 +13,7 @@
     },
     "id": PANELID,
     "options": {
-      "content": "```\nNODETYPE: NODENAME   Interface: INTERFACEINFO\n ```",
+      "content": "```\nNODETYPE: NODENAME   Interface:\nINTERFACEINFO\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",

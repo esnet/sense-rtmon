@@ -93,7 +93,8 @@ for node in data["node"]:
         # if node["type"] == "switch":
         #     rep["DYNAMICIFINDEX"] = cloud_functions.index_finder(push_metric,iface['name'])    
         # if 'ip' in iface:
-        rep[f"IFDEVICE"] = iface['name']
+        # rep[f"IFDEVICE"] = iface['name']
+        # rep[f"IFDESCR"] = iface['name'] 
         target_flow = replace_file_to_string(f"./templates/panel/flow_{node['type']}_target.json",rep)
 
         # write target to panel file

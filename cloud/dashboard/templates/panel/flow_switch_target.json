@@ -1,6 +1,6 @@
 {
     "exemplar": true,
-    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "expr": "irate(ifHCInOctets{ifDescr=~\"IFNAME\"}[1m])*8",
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
@@ -9,7 +9,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "expr": "irate(ifHCOutOctets{ifDescr=~\"IFNAME\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",

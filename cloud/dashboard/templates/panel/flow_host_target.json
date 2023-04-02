@@ -1,6 +1,6 @@
 {
     "exemplar": true,
-    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"NODENAME\", device=\"IFDEVICE\"}[1m])*8",
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"NODENAME\", device=\"IFNAME\"}[1m])*8",
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
@@ -9,7 +9,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"NODENAME\",device=\"IFDEVICE\"}[1m])*8",
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"NODENAME\",device=\"IFNAME\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",

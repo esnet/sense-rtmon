@@ -11,10 +11,10 @@ node:
   - name: 'sdn-dtn-1-7.ultralight.org'
     type: 'host' 
     interface: 
-      - name: 'ens2f0np0.3911'
+      - name: 'mlx4p1s1.43'
         vlan: 'not used'
         ping: 'sdn-dtn-2-10.ultralight.org'
-      - name: 'hundredGigE 1/31'
+      - name: 'hundredGigE 1/23'
         vlan: 'not used'
         peer: 
         - name: 'dellos9_s0'

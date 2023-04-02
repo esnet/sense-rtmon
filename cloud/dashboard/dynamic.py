@@ -60,6 +60,17 @@ def fill_rep(rep,id_num,node=None,iface=None):
         rep["IFVLAN"] = iface['vlan']
     return rep,id_num
 
+def process_dict_list(dict_list):
+    result = []
+    for item in dict_list:
+        item_str = []
+        for key, value in item.items():
+            if isinstance(value, list):
+                value = ', '.join([f"{k}: {v}" for peer in value for k, v in peer.items()])
+            item_str.append(f"{key}: {value}")
+        result.append(" | ".join(item_str))
+    return result
+
 #### parse file and general info ####
 print("\n\nParsing config file...")
 data,config_file = cloud_functions.read_yml_file("config_flow",sys.argv,1,2)
@@ -76,7 +87,7 @@ for node in data["node"]:
     
     # write interface to a json file
     rep,id_num = fill_rep(rep,id_num)
-    rep["INTERFACEINFO"] = str(node['interface'])
+    rep["INTERFACEINFO"] = process_dict_list(node['interface'])
     interface_panel = replace_file_to_string("./templates/panel/interface_panel.json",rep)
     concat_json(interface_panel)
     

@@ -70,7 +70,7 @@ def process_dict_list(dict_list):
             item_str.append(f"{key}: {value}")
         result.append(" | ".join(item_str))
     
-    result_str = " Interface 2: ".join(result)
+    result_str = "\\n".join(result)
     return result_str
 
 #### parse file and general info ####

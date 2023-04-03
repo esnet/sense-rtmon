@@ -1,6 +1,6 @@
 {
     "exemplar": true,
-    "expr": "NODENAME_SCRIPT_EXPORTER_TASK1",
+    "expr": "SCRIPT_EXPORTER_TASK1",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -9,11 +9,20 @@
   },
   {
     "exemplar": true,
-    "expr": "NODENAME_SCRIPT_EXPORTER_TASK2",
+    "expr": "SCRIPT_EXPORTER_TASK2",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ping NODENAME",
+    "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "SCRIPT_EXPORTER_TASK3",
     "format": "time_series",
     "hide": false,
     "instant": false,
     "interval": "",
     "legendFormat": "ARP Table contains NODENAME IP Address",
-    "refId": "B"
+    "refId": "C"
   }

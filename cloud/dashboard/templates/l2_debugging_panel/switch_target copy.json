@@ -1,4 +1,4 @@
-  {
+{
     "exemplar": true,
     "expr": "NODENAME_SCRIPT_EXPORTER_TASK1",
     "hide": false,

@@ -102,12 +102,7 @@ for node in data["node"]:
         rep,id_num = fill_rep(rep,id_num,node,iface)
         flow_panel = replace_file_to_string("./templates/panel/flow_panel.json",rep)
         
-        # find target
-        # if node["type"] == "switch":
-        #     rep["DYNAMICIFINDEX"] = cloud_functions.index_finder(push_metric,iface['name'])    
-        # if 'ip' in iface:
-        # rep[f"IFDEVICE"] = iface['name']
-        # rep[f"IFDESCR"] = iface['name'] 
+        # write target
         target_flow = replace_file_to_string(f"./templates/panel/flow_{node['type']}_target.json",rep)
 
         # write target to panel file
@@ -123,33 +118,14 @@ id_num = id_num + 100 # L2 tables start from 100 after flow panels in case of co
 rep,id_num = fill_rep({},id_num)
 info_panel = replace_file_to_string("./templates/l2_debugging_panel/info_panel.json",rep)
 concat_json(info_panel)
-host_count = 0
-switch_count = 0 
 for i,node in enumerate(data["node"],i):
-# write table to a temp file
+    # write table to a temp file
     rep,id_num = fill_rep({},id_num,node)
     l2table = replace_file_to_string("./templates/l2_debugging_panel/table.json",rep)
     
-    rep["SCRIPT_EXPORTER_TASK1"] = f"SCRIPT_EXPORTER_NODE{i}_TASK1"
-    rep["SCRIPT_EXPORTER_TASK2"] = f"SCRIPT_EXPORTER_NODE{i}_TASK2"
-    rep["SCRIPT_EXPORTER_TASK3"] = f"SCRIPT_EXPORTER_NODE{i}_TASK3"
+    for i in range(1,4):
+        rep["NODENAME_SCRIPT_EXPORTER_TASK{i}"] = f"{node['name']}SCRIPT_EXPORTER_TASK{i}"
     node_target = replace_file_to_string(f"./templates/l2_debugging_panel/{node['type']}_target.json",rep)
-    
-    
-    # alternative naming
-    # if node["type"] == "host":
-    #     host_count += 1
-    #     rep["SCRIPT_EXPORTER_ARP"] = f"SCRIPT_EXPORTER_ARP{host_count}"
-    #     rep["SCRIPT_EXPORTER_PING"] = f"SCRIPT_EXPORTER_PING{host_count}"
-    #     rep["SCRIPT_EXPORTER_ARP_TABLE"] = f"SCRIPT_EXPORTER_ARP_TABLE{host_count}"
-    #     node_target = replace_file_to_string("./templates/l2_debugging_panel/host_target.json",rep)
-        
-    # elif node["type"] == "switch":
-    #     switch_count += 1
-    #     rep["SCRIPT_EXPORTER_SNMP"] = f"SCRIPT_EXPORTER_SNMP{switch_count}"
-    #     rep["SCRIPT_EXPORTER_HOST1_MAC"] = f"SCRIPT_EXPORTER_HOST1_MAC{switch_count}"
-    #     rep["SCRIPT_EXPORTER_HOST2_MAC"] = f"SCRIPT_EXPORTER_HOST2_MAC{switch_count}"
-    #     node_target = replace_file_to_string("./templates/l2_debugging_panel/switch_target.json",rep)
     
     l2table = l2table.replace("INSERTTARGET", node_target)
     concat_json(l2table)

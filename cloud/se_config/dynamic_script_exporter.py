@@ -13,41 +13,35 @@ def check_pattern(url, pattern):
     content = response.text
     return bool(re.search(pattern, content))
 
-def check_arp(pushgateway, host1_name, host2_name, ping1, ping2,job):
+def check_arp(pushgateway, host1_name, host2_name,ip1,ip2):
     host_name = [host1_name, host2_name]
-    host_name_rev = [host2_name, host1_name]
-    host_ip = [ping1, ping2]
-    num = [1, 2]
-    num_rev = [2, 1]
-    for i,j,name,opposite_name,opposite_ip in zip(num,num_rev,host_name,host_name_rev,host_ip):
+    ips = [ip2, ip1]
+    for name,ip in zip(host_name,ips):
         # check if ARP exporters are on
-        if check_pattern(pushgateway,fr'.*instance="{name}".*job="{job}".*'):
-            os.system("echo 'host{i}_arp_on{{host=\"${name}\"}} 1'")
+        i = 1    
+        if check_pattern(pushgateway,fr'arp_state.*instance="{name}".*'):
+            os.system(f"echo '{name}_SCRIPT_EXPORTER_TASK{i}{{host=\"{name}\"}} 1'")
         else:
-            os.system("echo 'host{i}_arp_on{{host=\"${name}\"}} 0'")
-        # ping check
-        if check_pattern(pushgateway,fr'.*instance="{name}".*ping_status="1".*ping="{opposite_name}".*'):
-            os.system("echo 'host{i}_ping_status{{host=\"${name}\"}} 1'")
-        else:
-            os.system("echo 'host{i}_ping_status{{host=\"${name}\"}} 0'") 
+            os.system(f"echo '{name}_SCRIPT_EXPORTER_TASK{i}{{host=\"{name}\"}} 0'")
+        i += 1
         # ARP IP check, see if the other host is in the ARP table
-        if check_pattern(pushgateway,fr'.*instance="{name}".*ip_address="{opposite_ip}".*'):
-            os.system("echo 'host{i}_has_host{j}_arp{{host=\"${name}\"}} 1'")
+        if check_pattern(pushgateway,fr'arp_state.*IPaddress="{ip}".*instance="{name}".*'):
+            os.system(f"echo '{name}_SCRIPT_EXPORTER_TASK{i}{{host=\"{name}\"}} 1'")
         else:
-            os.system("echo 'host{i}_has_host{j}_arp{{host=\"${name}\"}} 0'")   
-            
+            os.system(f"echo '{name}_SCRIPT_EXPORTER_TASK{i}{{host=\"{name}\"}} 0'")
+        
 def check_snmp_on(pushgateway,switch_name,job):
-    if check_pattern(pushgateway,fr'ifAlias.*instance="{switch_name}".*job="{job}".*'):
-        os.system("echo '{switch_name}_snmp_on{{host=\"${switch_name}\"}} 1'")
+    if check_pattern(pushgateway,fr'ifHCInOctets.*instance="{switch_name}".*job="{job}".*'):
+        os.system(f"echo '{switch_name}_snmp_on{{host=\"{switch_name}\"}} 1'")
     else:
-        os.system("echo '{switch_name}_snmp_on{{host=\"${switch_name}\"}} 0'")
+        os.system(f"echo '{switch_name}_snmp_on{{host=\"{switch_name}\"}} 0'")
 
-def get_mac_from_pushgateway(url, instance, ip_address):
+def get_mac_from_pushgateway(url, hostname, ip_address):
     response = requests.get(url)
     content = response.text
     
-    # Find the line containing both instance and ip_address
-    pattern = fr'.*instance="{instance}".*ip_address="{ip_address}".*'
+    # Find the line containing both hostname and ip_address
+    pattern = fr'.*hostname="{hostname}".*ip_address="{ip_address}".*'
     matched_line = re.search(pattern, content)
     
     if matched_line:
@@ -62,15 +56,15 @@ def get_mac_from_pushgateway(url, instance, ip_address):
     
     return None
 
-def check_snmp_mac(mac_source1,mac_source2,mac1,mac2):
-    sources = [mac_source1, mac_source2]
-    macs = [mac1, mac2]
-    for i,s in enumerate(sources,1):
-        for j,m in enumerate(macs,1):
-            if check_pattern(pushgateway,fr'.*{s}={m.upper()}.*'):
-                os.system("echo 'switch{i}_host{j}_mac{{host=\"${m}\"}} 1'")
-            else:
-                os.system("echo 'switch{i}_host{j}_mac{{host=\"${m}\"}} 0'")
+# def check_snmp_mac(mac_source1,mac_source2,mac1,mac2):
+#     sources = [mac_source1, mac_source2]
+#     macs = [mac1, mac2]
+#     for i,s in enumerate(sources,1):
+#         for j,m in enumerate(macs,1):
+#             if check_pattern(pushgateway,fr'.*{s}={m.upper()}.*'):
+#                 os.system("echo 'switch{i}_host{j}_mac{{host=\"{m}\"}} 1'")
+#             else:
+#                 os.system("echo 'switch{i}_host{j}_mac{{host=\"{m}\"}} 0'")
 
 def main():
     # parse through the config file
@@ -80,16 +74,14 @@ def main():
     for node in data["node"]:
         if node['type'] == 'host':
             host1 = node['name']
-            host1_ip = node['interface'][0]['ip']
             ping1 = node['interface'][0]['ping']
         if node['type'] == 'host' and node['name'] != host1:
             host2 = node['name']
-            host2_ip = node['interface'][0]['ip']
             ping2 = node['interface'][0]['ping']
         if node['type'] == 'switch':
-            check_snmp_on(pushgateway, node['name'], "snmpMetrics")
+            check_snmp_on(pushgateway, node['name'], node['job'])
             
-    check_arp(pushgateway, host1, host2, ping1, ping2, "arpMetrics")
+    check_arp(pushgateway, host1, host2, ping1,ping2)
     
     # host1_mac = get_mac_from_pushgateway(pushgateway, host2, host1_ip)
     # host2_mac = get_mac_from_pushgateway(pushgateway, host1, host2_ip)

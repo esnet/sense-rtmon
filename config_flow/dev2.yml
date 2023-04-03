@@ -22,6 +22,7 @@ node:
 
   - name: 'dellos9_s0'
     type: 'switch'
+    job: 'job-224'
     interface: 
       - name: 'hundredGigE 1/23'
         vlan: 'not used'

@@ -1,7 +1,6 @@
 {
     "exemplar": true,
-    "expr": "irate(ifHCInOctets{ifDescr=~\"IFNAME\"}[1m])*8",
-    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NODENAME\",ifDescr=\"IFNAME\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -9,7 +8,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(ifHCOutOctets{ifDescr=~\"IFNAME\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NODENAME\",ifDescr=\"IFNAME\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",

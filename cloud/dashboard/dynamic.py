@@ -125,7 +125,7 @@ for i,node in enumerate(data["node"],i):
 
     formatted_name = node['name'].replace("-", "_").replace(".", "_").upper()
     for i in range(1,4):
-        rep["NODENAME_SCRIPT_EXPORTER_TASK{i}"] = f"{formatted_name}SCRIPT_EXPORTER_TASK{i}"
+        rep[f"NODENAME_SCRIPT_EXPORTER_TASK{i}"] = f"{formatted_name}_SCRIPT_EXPORTER_TASK{i}"
     node_target = replace_file_to_string(f"./templates/l2_debugging_panel/{node['type']}_target.json",rep)
     
     l2table = l2table.replace("INSERTTARGET", node_target)

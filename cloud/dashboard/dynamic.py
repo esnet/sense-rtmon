@@ -79,7 +79,7 @@ data,config_file = cloud_functions.read_yml_file("config_flow",sys.argv,1,2)
 title = f'{data["title"]} |Flow: {data["flow"]}| {datetime.now().strftime("%m/%d_%H:%M")}'
 push_metric = data['pushgateway'] # pushgateway metrics page
 
-print("Process each node's information")
+print("Process Flow Panels")
 id_num = 200 # start from 200 in case of conflict with previous panels
 for node in data["node"]:
     # write node info to a json file
@@ -115,6 +115,7 @@ for node in data["node"]:
 id_num = id_num + 100 # L2 tables start from 100 after flow panels in case of conflict with previous panels
 
 # write node info to a json file
+print("Process L2 debugging")
 rep,id_num = fill_rep({},id_num)
 info_panel = replace_file_to_string("./templates/l2_debugging_panel/info_panel.json",rep)
 concat_json(info_panel)
@@ -126,7 +127,7 @@ for i,node in enumerate(data["node"],i):
     formatted_name = node['name'].replace("-", "_").replace(".", "_").lower()
     print(formatted_name)
     for i in range(1,4):
-        rep[f"NODENAME_SCRIPT_EXPORTER_TASK{i}"] = f"{formatted_name}_SCRIPT_EXPORTER_TASK{i}"
+        rep[f"NODENAME_SCRIPT_EXPORTER_TASK{i}"] = f"{formatted_name}_script_exporter_task1{i}"
     node_target = replace_file_to_string(f"./templates/l2_debugging_panel/{node['type']}_target.json",rep)
     
     l2table = l2table.replace("INSERTTARGET", node_target)

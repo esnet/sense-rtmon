@@ -15,6 +15,7 @@ def check_pattern(url, pattern):
 
 def check_arp(pushgateway, host_names,ips):
     for name,ip in zip(host_names,ips):
+        name = name.replace("-", "_").replace(".", "_").upper()
         # check if ARP exporters are on
         i = 1    
         if check_pattern(pushgateway,fr'arp_state.*instance="{name}".*'):
@@ -73,8 +74,7 @@ def main():
     ips = []
     for node in data["node"]:
         if node['type'] == 'host':
-            formatted_name = node['name'].replace("-", "_").replace(".", "_").upper()
-            host_names.append(formatted_name)
+            host_names.append(node['name'])
             ips.append(node['interface'][0]['ping'])
         if node['type'] == 'switch':
             check_snmp_on(pushgateway, node['name'], node['job'])

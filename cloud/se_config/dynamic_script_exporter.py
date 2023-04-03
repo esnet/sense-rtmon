@@ -5,6 +5,7 @@ import json
 import sys
 import requests
 import re
+import yaml
 
 def check_pattern(url, pattern):
     response = requests.get(url)
@@ -98,7 +99,7 @@ def read_yml_file(path, sys_argv, order, go_back_folder_num):
 def main():
     # parse through the config file
     print("\n\nParsing config file...")
-    data,config_file = read_yml_file("config_flow",sys.argv,1,3)
+    data,config_file = read_yml_file("config_flow",sys.argv,1,2)
     pushgateway = f"{data['pushgateway']}/metrics" # pushgateway metrics page
     host_names = []
     ips = []

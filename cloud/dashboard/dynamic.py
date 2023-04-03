@@ -123,7 +123,7 @@ for i,node in enumerate(data["node"],i):
     rep,id_num = fill_rep({},id_num,node)
     l2table = replace_file_to_string("./templates/l2_debugging_panel/table.json",rep)
 
-    formatted_name = node['name'].replace("-", "_").replace(".", "_").upper()
+    formatted_name = node['name'].replace("-", "_").replace(".", "_").lower()
     print(formatted_name)
     for i in range(1,4):
         rep[f"NODENAME_SCRIPT_EXPORTER_TASK{i}"] = f"{formatted_name}_SCRIPT_EXPORTER_TASK{i}"

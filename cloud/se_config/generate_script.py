@@ -115,6 +115,9 @@ def main():
     print("\n\nParsing config file...")
     data, config_file = read_yml_file("config_flow", sys.argv, 1, 2)
     pushgateway = f"{data['pushgateway']}/metrics"  # pushgateway metrics page
+    # remove http:// or https://
+    before_sep, sep, after_sep = pushgateway.partition("//")
+    pushgateway = after_sep
     with open('l2debugging.sh', 'w') as f:
         f.write('#!/bin/bash \n')
         host_names = []

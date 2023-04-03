@@ -1,5 +1,5 @@
 #! /bin/bash
-pushgateway=198.124.151.8
+pushgateway=172.31.72.189
 host1=10.251.86.10
 host2=10.251.86.12
 switch_num=2

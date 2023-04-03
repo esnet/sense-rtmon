@@ -32,9 +32,9 @@ def check_arp(pushgateway, host1_name, host2_name,ip1,ip2):
         
 def check_snmp_on(pushgateway,switch_name,job):
     if check_pattern(pushgateway,fr'ifHCInOctets.*instance="{switch_name}".*job="{job}".*'):
-        os.system(f"echo '{switch_name}_snmp_on{{host=\"{switch_name}\"}} 1'")
+        os.system(f"echo '{switch_name}_SCRIPT_EXPORTER_TASK1{{host=\"{switch_name}\"}} 1'")
     else:
-        os.system(f"echo '{switch_name}_snmp_on{{host=\"{switch_name}\"}} 0'")
+        os.system(f"echo '{switch_name}_SCRIPT_EXPORTER_TASK1{{host=\"{switch_name}\"}} 0'")
 
 def get_mac_from_pushgateway(url, hostname, ip_address):
     response = requests.get(url)

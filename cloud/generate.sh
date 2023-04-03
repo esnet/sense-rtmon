@@ -38,12 +38,14 @@ if [ "${config_file}" == "" ]; then
     cd ./se_config
     python3 generate_script.py
     sleep 0.2
+    cd ..
 else 
     echo "!!    config_flow/${config_file} "
     echo "!!    Parsing ${config_file} "
     cd ./se_config
     python3 generate_script.py ${config_file} 
     sleep 0.2
+    cd ..
 fi
 
 echo "!!    Transporting Script Exporter configuration files"

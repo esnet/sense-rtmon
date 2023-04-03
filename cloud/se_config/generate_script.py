@@ -20,17 +20,17 @@ def check_arp(pushgateway, host_names,ips):
         i = 1
         arp_str = arp_str + f'''
         if curl {pushgateway} | grep '.*arp_state.*instance="{name}".*'; then
-            echo "{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 1"
+            echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 1'
         else
-            echo "{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 0"
+            echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 0'
         fi
         '''
         i += 1
         arp_str = arp_str + f'''
         if curl {pushgateway} | grep '.*arp_state.*IPaddress="{ip}".*instance="{name}".*'; then
-            echo "{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 1"
+            echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 1'
         else
-            echo "{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 0"
+            echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 0'
         fi
         '''
         
@@ -41,9 +41,9 @@ def check_snmp_on(pushgateway,switch_name,job):
     formatted_name = switch_name.replace("-", "_").replace(".", "_").lower()
     snmp_str = snmp_str + f'''
     if curl {pushgateway} | grep '.*ifHCInOctets.*instance="{switch_name}".*job="{job}".*'; then
-        echo "{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 1"
+        echo '{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 1'
     else
-        echo "{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 0"
+        echo '{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 0'
     fi
     '''
     return snmp_str
@@ -116,8 +116,8 @@ def main():
     data, config_file = read_yml_file("config_flow", sys.argv, 1, 2)
     pushgateway = f"{data['pushgateway']}/metrics"  # pushgateway metrics page
     # remove http:// or https://
-    before_sep, sep, after_sep = pushgateway.partition("//")
-    pushgateway = after_sep
+    # before_sep, sep, after_sep = pushgateway.partition("//")
+    # pushgateway = after_sep
     with open('l2debugging.sh', 'w') as f:
         f.write('#!/bin/bash \n')
         host_names = []

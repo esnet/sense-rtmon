@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 pushgateway=172.31.72.189
 host1=10.251.86.10
 host2=10.251.86.12

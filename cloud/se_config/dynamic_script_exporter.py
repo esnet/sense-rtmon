@@ -3,7 +3,7 @@
 import os
 import json
 import sys
-sys.path.append("..") # Adds higher directory to python modules path.
+sys.path.append("../..") # Adds higher directory to python modules path.
 import cloud_functions
 import requests
 import re

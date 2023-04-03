@@ -126,6 +126,7 @@ for i,node in enumerate(data["node"],i):
 
     formatted_name = node['name'].replace("-", "_").replace(".", "_").lower()
     print(formatted_name)
+    rep = {}
     for i in range(1,4):
         rep[f"NODENAME_SCRIPT_EXPORTER_TASK{i}"] = f"{formatted_name}_script_exporter_task1{i}"
     node_target = replace_file_to_string(f"./templates/l2_debugging_panel/{node['type']}_target.json",rep)

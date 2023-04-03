@@ -15,22 +15,22 @@ def check_pattern(url, pattern):
 def check_arp(pushgateway, host_names,ips):
     arp_str =""
     for name,ip in zip(host_names,ips):
-        name = name.replace("-", "_").replace(".", "_").lower()
+        formatted_name = name.replace("-", "_").replace(".", "_").lower()
         # check if ARP exporters are on
         i = 1
         arp_str = arp_str + f'''
         if curl {pushgateway} | grep '.*arp_state.*instance="{name}".*'; then
-            echo "{name}_script_exporter_task{i}{{host="{name}"}} 1"
+            echo "{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 1"
         else
-            echo "{name}_script_exporter_task{i}{{host="{name}"}} 0"
+            echo "{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 0"
         fi
         '''
         i += 1
         arp_str = arp_str + f'''
         if curl {pushgateway} | grep '.*arp_state.*IPaddress="{ip}".*instance="{name}".*'; then
-            echo "{name}_script_exporter_task{i}{{host="{name}"}} 1"
+            echo "{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 1"
         else
-            echo "{name}_script_exporter_task{i}{{host="{name}"}} 0"
+            echo "{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 0"
         fi
         '''
         
@@ -38,12 +38,12 @@ def check_arp(pushgateway, host_names,ips):
         
 def check_snmp_on(pushgateway,switch_name,job):
     snmp_str = ""
-    switch_name = switch_name.replace("-", "_").replace(".", "_").lower()
+    formatted_name = switch_name.replace("-", "_").replace(".", "_").lower()
     snmp_str = snmp_str + f'''
     if curl {pushgateway} | grep '.*ifHCInOctets.*instance="{switch_name}".*job="{job}".*'; then
-        echo "{switch_name}_script_exporter_task1{{host="{switch_name}"}} 1"
+        echo "{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 1"
     else
-        echo "{switch_name}_script_exporter_task1{{host="{switch_name}"}} 0"
+        echo "{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 0"
     fi
     '''
     return snmp_str

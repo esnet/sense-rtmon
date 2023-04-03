@@ -67,7 +67,7 @@ def get_mac_from_pushgateway(url, hostname, ip_address):
 def main():
     # parse through the config file
     print("\n\nParsing config file...")
-    data,config_file = cloud_functions.read_yml_file("config_flow",sys.argv,1,4)
+    data,config_file = cloud_functions.read_yml_file("config_flow",sys.argv,1,3)
     pushgateway = f"{data['pushgateway']}/metrics" # pushgateway metrics page
     host_names = []
     ips = []

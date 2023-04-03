@@ -13,27 +13,40 @@ def check_pattern(url, pattern):
     return bool(re.search(pattern, content))
 
 def check_arp(pushgateway, host_names,ips):
+    arp_str =""
     for name,ip in zip(host_names,ips):
-        name = name.replace("-", "_").replace(".", "_").upper()
+        name = name.replace("-", "_").replace(".", "_").lower()
         # check if ARP exporters are on
-        i = 1    
-        if check_pattern(pushgateway,fr'arp_state.*instance="{name}".*'):
-            os.system(f"echo '{name}_SCRIPT_EXPORTER_TASK{i}{{host=\"{name}\"}} 1'")
-        else:
-            os.system(f"echo '{name}_SCRIPT_EXPORTER_TASK{i}{{host=\"{name}\"}} 0'")
+        i = 1
+        arp_str = arp_str + f'''
+        if curl {pushgateway} | grep '.*arp_state.*instance="{name}".*'; then
+            echo "{name}_script_exporter_task{i}{{host="{name}"}} 1"
+        else
+            echo "{name}_script_exporter_task{i}{{host="{name}"}} 0"
+        fi
+        '''
         i += 1
-        # ARP IP check, see if the other host is in the ARP table
-        if check_pattern(pushgateway,fr'arp_state.*IPaddress="{ip}".*instance="{name}".*'):
-            os.system(f"echo '{name}_SCRIPT_EXPORTER_TASK{i}{{host=\"{name}\"}} 1'")
-        else:
-            os.system(f"echo '{name}_SCRIPT_EXPORTER_TASK{i}{{host=\"{name}\"}} 0'")
+        arp_str = arp_str + f'''
+        if curl {pushgateway} | grep '.*arp_state.*IPaddress="{ip}".*instance="{name}".*'; then
+            echo "{name}_script_exporter_task{i}{{host="{name}"}} 1"
+        else
+            echo "{name}_script_exporter_task{i}{{host="{name}"}} 0"
+        fi
+        '''
+        
+    return arp_str
         
 def check_snmp_on(pushgateway,switch_name,job):
-    switch_name = switch_name.replace("-", "_").replace(".", "_").upper()
-    if check_pattern(pushgateway,fr'ifHCInOctets.*instance="{switch_name}".*job="{job}".*'):
-        os.system(f"echo '{switch_name}_SCRIPT_EXPORTER_TASK1{{host=\"{switch_name}\"}} 1'")
-    else:
-        os.system(f"echo '{switch_name}_SCRIPT_EXPORTER_TASK1{{host=\"{switch_name}\"}} 0'")
+    snmp_str = ""
+    switch_name = switch_name.replace("-", "_").replace(".", "_").lower()
+    snmp_str = snmp_str + f'''
+    if curl {pushgateway} | grep '.*ifHCInOctets.*instance="{switch_name}".*job="{job}".*'; then
+        echo "{switch_name}_script_exporter_task1{{host="{switch_name}"}} 1"
+    else
+        echo "{switch_name}_script_exporter_task1{{host="{switch_name}"}} 0"
+    fi
+    '''
+    return snmp_str
 
 def get_mac_from_pushgateway(url, hostname, ip_address):
     response = requests.get(url)
@@ -98,27 +111,25 @@ def read_yml_file(path, sys_argv, order, go_back_folder_num):
     return data,file_name
 
 def main():
-    # Check if there is a command-line argument provided
-    if len(sys.argv) > 1:
-        config_arg = sys.argv[1]
-    else:
-        config_arg = None
-
     # parse through the config file
     print("\n\nParsing config file...")
     data, config_file = read_yml_file("config_flow", sys.argv, 1, 2)
     pushgateway = f"{data['pushgateway']}/metrics"  # pushgateway metrics page
-    host_names = []
-    ips = []
-    for node in data["node"]:
-        if node['type'] == 'host':
-            host_names.append(node['name'])
-            ips.append(node['interface'][0]['ping'])
-        if node['type'] == 'switch':
-            check_snmp_on(pushgateway, node['name'], node['job'])
-
-    check_arp(pushgateway, host_names, ips[::-1])
-    
+    with open('l2debugging.sh', 'w') as f:
+        f.write('#!/bin/bash \n')
+        host_names = []
+        ips = []
+        for node in data["node"]:
+            if node['type'] == 'host':
+                host_names.append(node['name'])
+                ips.append(node['interface'][0]['ping'])
+            if node['type'] == 'switch':
+                snmp_str = check_snmp_on(pushgateway, node['name'], node['job'])
+                f.write(snmp_str)
+            
+        arp_str = check_arp(pushgateway, host_names, ips[::-1])
+        f.write(arp_str)
+    os.system("chmod +x l2debugging.sh")
     # host1_mac = get_mac_from_pushgateway(pushgateway, host2, host1_ip)
     # host2_mac = get_mac_from_pushgateway(pushgateway, host1, host2_ip)
 

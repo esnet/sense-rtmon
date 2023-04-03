@@ -18,28 +18,5 @@ discovery:
   # scheme: https
 
 scripts:
-  - name: test
-    script: ./examples/test.sh
-  - name: ping
-    script: ./examples/ping.sh
-  - name: helloworld
-    script: ./examples/helloworld.sh test
-  - name: showtimeout
-    script: ./examples/showtimeout.sh
-    timeout:
-      max_timeout: 60
-  - name: sleep
-    script: sleep 120
-    timeout:
-      enforced: true
-  - name: docker
-    script: ./examples/docker.sh
-  - name: args
-    script: ./examples/args.sh holder1 holder2 holder3 holder4 holder5 holder6
-#  - name: default
-#    script: ./examples/argsDef.sh 
-  - name: multi
-    script: ./examples/multiDef.sh
-  # make sure default is on the last line
   - name: default
-    script: ./examples/dynamic_script_exporter.py
+    script: ./examples/l2debugging.sh

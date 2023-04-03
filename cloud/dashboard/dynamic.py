@@ -122,9 +122,10 @@ for i,node in enumerate(data["node"],i):
     # write table to a temp file
     rep,id_num = fill_rep({},id_num,node)
     l2table = replace_file_to_string("./templates/l2_debugging_panel/table.json",rep)
-    
+
+    formatted_name = node['name'].replace("-", "_").replace(".", "_").upper()
     for i in range(1,4):
-        rep["NODENAME_SCRIPT_EXPORTER_TASK{i}"] = f"{node['name']}SCRIPT_EXPORTER_TASK{i}"
+        rep["NODENAME_SCRIPT_EXPORTER_TASK{i}"] = f"{formatted_name}SCRIPT_EXPORTER_TASK{i}"
     node_target = replace_file_to_string(f"./templates/l2_debugging_panel/{node['type']}_target.json",rep)
     
     l2table = l2table.replace("INSERTTARGET", node_target)

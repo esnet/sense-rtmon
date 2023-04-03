@@ -73,7 +73,8 @@ def main():
     ips = []
     for node in data["node"]:
         if node['type'] == 'host':
-            host_names.append(node['name'])
+            formatted_name = node['name'].replace("-", "_").replace(".", "_").upper()
+            host_names.append(formatted_name)
             ips.append(node['interface'][0]['ping'])
         if node['type'] == 'switch':
             check_snmp_on(pushgateway, node['name'], node['job'])

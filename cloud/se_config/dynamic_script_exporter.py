@@ -29,6 +29,7 @@ def check_arp(pushgateway, host_names,ips):
             os.system(f"echo '{name}_SCRIPT_EXPORTER_TASK{i}{{host=\"{name}\"}} 0'")
         
 def check_snmp_on(pushgateway,switch_name,job):
+    switch_name = switch_name.replace("-", "_").replace(".", "_").upper()
     if check_pattern(pushgateway,fr'ifHCInOctets.*instance="{switch_name}".*job="{job}".*'):
         os.system(f"echo '{switch_name}_SCRIPT_EXPORTER_TASK1{{host=\"{switch_name}\"}} 1'")
     else:

@@ -13,10 +13,8 @@ def check_pattern(url, pattern):
     content = response.text
     return bool(re.search(pattern, content))
 
-def check_arp(pushgateway, host1_name, host2_name,ip1,ip2):
-    host_name = [host1_name, host2_name]
-    ips = [ip2, ip1]
-    for name,ip in zip(host_name,ips):
+def check_arp(pushgateway, host_names,ips):
+    for name,ip in zip(host_names,ips):
         # check if ARP exporters are on
         i = 1    
         if check_pattern(pushgateway,fr'arp_state.*instance="{name}".*'):
@@ -69,19 +67,18 @@ def get_mac_from_pushgateway(url, hostname, ip_address):
 def main():
     # parse through the config file
     print("\n\nParsing config file...")
-    data,config_file = cloud_functions.read_yml_file("config_flow",sys.argv,1,2)
-    pushgateway = data['pushgateway'] # pushgateway metrics page
+    data,config_file = cloud_functions.read_yml_file("config_flow",sys.argv,1,4)
+    pushgateway = f"{data['pushgateway']}/metrics" # pushgateway metrics page
+    host_names = []
+    ips = []
     for node in data["node"]:
         if node['type'] == 'host':
-            host1 = node['name']
-            ping1 = node['interface'][0]['ping']
-        if node['type'] == 'host' and node['name'] != host1:
-            host2 = node['name']
-            ping2 = node['interface'][0]['ping']
+            host_names.append(node['name'])
+            ips.append(node['interface'][0]['ping'])
         if node['type'] == 'switch':
             check_snmp_on(pushgateway, node['name'], node['job'])
             
-    check_arp(pushgateway, host1, host2, ping1,ping2)
+    check_arp(pushgateway, host_names, ips[::-1])
     
     # host1_mac = get_mac_from_pushgateway(pushgateway, host2, host1_ip)
     # host2_mac = get_mac_from_pushgateway(pushgateway, host1, host2_ip)

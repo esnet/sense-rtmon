@@ -140,15 +140,17 @@ def main():
         for node in data["node"]:
             if node['type'] == 'host':
                 host_names.append(node['name'])
-                ips.append(node['interface'][0]['ping'])
+                ips.append(node['interface'][0]['ip'])
             if node['type'] == 'switch':
                 switch_names.append(node['name'])
                 snmp_str = check_snmp_on(pushgateway, node['name'], node['job'])
 
-        arp_str = check_arp_on(pushgateway, host_names)
-        arp_str = arp_str + check_arp_contain_ip(pushgateway, host_names,ips)
+        arp_str = check_arp_on(pushgateway, host_names) 
+        # host1 contains the ip of host2, vice versa, so we need to reverse the order of ip
+        arp_str = arp_str + check_arp_contain_ip(pushgateway, host_names,ips[::-1])
 
-        macs = get_mac_from_arp(pushgateway, host_names,ips)
+        # host1 contains the ip and mac of host2, vice versa, so we need to reverse the order of ip
+        macs = get_mac_from_arp(pushgateway, host_names,ips[::-1])
         snmp_mac = snmp_mac + check_snmp_mac(pushgateway, switch_names,macs)
         f.write(arp_str)
         f.write(snmp_str)

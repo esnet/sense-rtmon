@@ -134,9 +134,9 @@ for i,node in enumerate(data["node"],i):
     formatted_name = node['name'].replace("-", "_").replace(".", "_").lower()
     rep = get_hosts_names(data,{})
     if node['name'] == rep["HOST1NAME"]:
-        rep["OPPOSITENAME"] = "HOST2NAME"
+        rep["OPPOSITENAME"] = rep["HOST2NAME"]
     else :
-        rep["OPPOSITENAME"] = "HOST1NAME"
+        rep["OPPOSITENAME"] = rep["HOST1NAME"]
     rep["NODENAME"] = formatted_name
     
     for i in range(1,4):

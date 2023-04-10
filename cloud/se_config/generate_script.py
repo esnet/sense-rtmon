@@ -12,7 +12,7 @@ def check_pattern(url, pattern):
     content = response.text
     return bool(re.search(pattern, content))
 
-def check_arp_on(pushgateway, host_names,task):
+def check_arp_on(pushgateway, host_names):
     arp_str =""
     for name in zip(host_names):
         formatted_name = name.replace("-", "_").replace(".", "_").lower()

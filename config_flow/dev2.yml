@@ -4,7 +4,7 @@ flow: "UNIQUE_GLOBAL_ID"
 # host_ip: 198.124.151.8 
 grafana_host: 'http://dev2.virnao.com:3000'
 pushgateway: 'http://dev2.virnao.com:9091'
-grafana_api_token: "Bearer eyJrIjoiOWZFcnFxWDBUNjl2cDFQbVVZcVV0bDJkaUZWQXNvTXEiLCJuIjoiZCIsImlkIjoxfQ=="
+grafana_api_token: "Bearer eyJrIjoiT05BSkJWakFmUkxCaDVadU0wYVhkdEdZc3ZBWng2bGEiLCJuIjoiZCIsImlkIjoxfQ=="
 
 ## Section 2 Hosts & Switches all under nodes ##
 node:

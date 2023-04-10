@@ -13,7 +13,7 @@
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "contains HOST1NODENAME MAC Address",
+    "legendFormat": "contains HOST1NAME MAC Address",
     "refId": "B"
   },
   {
@@ -21,6 +21,6 @@
     "expr": "NODENAME_SCRIPT_EXPORTER_TASK3",
     "hide": false,
     "interval": "",
-    "legendFormat": "contains HOST2NODENAME MAC Address",
+    "legendFormat": "contains HOST2NAME MAC Address",
     "refId": "C"
   }

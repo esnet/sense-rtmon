@@ -14,6 +14,6 @@
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "ARP Table contains NODENAME IP Address",
+    "legendFormat": "ARP Table contains OPPOSITENAME IP Address",
     "refId": "B"
   }

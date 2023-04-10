@@ -73,6 +73,12 @@ def process_dict_list(dict_list):
     result_str = "\\n".join(result)
     return result_str
 
+def get_hosts_names(data,rep):
+    for i,n in enumerate(data["node"],1):
+        if n["type"] == "host":
+            rep[f"HOST{i}NAME"] = n["name"]
+    return rep
+            
 #### parse file and general info ####
 print("\n\nParsing config file...")
 data,config_file = cloud_functions.read_yml_file("config_flow",sys.argv,1,2)
@@ -123,10 +129,16 @@ for i,node in enumerate(data["node"],i):
     # write table to a temp file
     rep,id_num = fill_rep({},id_num,node)
     l2table = replace_file_to_string("./templates/l2_debugging_panel/table.json",rep)
-
+    
+    # process filling info
     formatted_name = node['name'].replace("-", "_").replace(".", "_").lower()
-    print(formatted_name)
-    rep = {}
+    rep = get_hosts_names(data,{})
+    if node['name'] == rep["HOST1NAME"]:
+        rep["OPPOSITENAME"] = "HOST2NAME"
+    else :
+        rep["OPPOSITENAME"] = "HOST1NAME"
+    rep["NODENAME"] = formatted_name
+    
     for i in range(1,4):
         rep[f"NODENAME_SCRIPT_EXPORTER_TASK{i}"] = f"{formatted_name}_script_exporter_task{i}"
     node_target = replace_file_to_string(f"./templates/l2_debugging_panel/{node['type']}_target.json",rep)

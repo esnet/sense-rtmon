@@ -74,9 +74,11 @@ def process_dict_list(dict_list):
     return result_str
 
 def get_hosts_names(data,rep):
-    for i,n in enumerate(data["node"],1):
+    i = 1
+    for n in data["node"]:
         if n["type"] == "host":
             rep[f"HOST{i}NAME"] = n["name"]
+            i += 1
     return rep
             
 #### parse file and general info ####

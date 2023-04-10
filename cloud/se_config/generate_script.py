@@ -18,6 +18,7 @@ def check_arp_on(pushgateway, host_names):
         formatted_name = name.replace("-", "_").replace(".", "_").lower()
         # check if ARP exporters are on
         arp_str = arp_str + f'''
+        # check_arp_on
         if curl {pushgateway} | grep '.*arp_state.*instance="{name}".*'; then
             echo '{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 1'
         else
@@ -31,8 +32,8 @@ def check_arp_contain_ip(pushgateway, host_names,ips):
     arp_str =""
     for name,ip in zip(host_names,ips):
         formatted_name = name.replace("-", "_").replace(".", "_").lower()
-        # check if ARP exporters are on        
         arp_str = arp_str + f'''
+        # check_arp_contain_ip
         if curl {pushgateway} | grep '.*arp_state.*IPaddress="{ip}".*instance="{name}".*'; then
             echo '{formatted_name}_script_exporter_task2{{host="{formatted_name}"}} 1'
         else
@@ -67,6 +68,7 @@ def check_snmp_on(pushgateway,switch_name,job):
     snmp_str = ""
     formatted_name = switch_name.replace("-", "_").replace(".", "_").lower()
     snmp_str = snmp_str + f'''
+    # check_snmp_on
     if curl {pushgateway} | grep '.*ifHCInOctets.*instance="{switch_name}".*job="{job}".*'; then
         echo '{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 1'
     else
@@ -82,6 +84,7 @@ def check_snmp_mac(pushgateway, switch_names,macs):
         # check if mac address of both hosts exist on the switch
         for i,mac in enumerate(macs,2):
             snmp_mac = snmp_mac + f'''
+            # check_snmp_mac
             if curl {pushgateway} | grep '.*mac_table_info.*instance="{name}".*macaddress={mac}.*'; then
                 echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 1'
             else

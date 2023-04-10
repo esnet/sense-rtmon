@@ -129,6 +129,8 @@ def main():
     print("\n\nParsing config file...")
     data, config_file = read_yml_file("config_flow", sys.argv, 1, 2)
     pushgateway = f"{data['pushgateway']}/metrics"  # pushgateway metrics page
+    snmp_mac = ""
+    arp_str = ""
     # remove http:// or https://
     # before_sep, sep, after_sep = pushgateway.partition("//")
     # pushgateway = after_sep

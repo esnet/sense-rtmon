@@ -13,7 +13,7 @@ node:
     interface: 
       - name: 'mlx4p1s1.43'
         vlan: 'not used'
-        ip: 198.32.43.2 # might need to be input manually
+        ip: 198.32.43.1 # might need to be input manually
       - name: 'hundredGigE 1/23'
         vlan: 'not used'
         peer: 

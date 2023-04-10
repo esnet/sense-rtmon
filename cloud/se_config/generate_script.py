@@ -12,30 +12,57 @@ def check_pattern(url, pattern):
     content = response.text
     return bool(re.search(pattern, content))
 
-def check_arp(pushgateway, host_names,ips):
+def check_arp_on(pushgateway, host_names,task):
     arp_str =""
-    for name,ip in zip(host_names,ips):
+    for name in zip(host_names):
         formatted_name = name.replace("-", "_").replace(".", "_").lower()
         # check if ARP exporters are on
-        i = 1
         arp_str = arp_str + f'''
         if curl {pushgateway} | grep '.*arp_state.*instance="{name}".*'; then
-            echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 1'
+            echo '{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 1'
         else
-            echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 0'
-        fi
-        '''
-        i += 1
-        arp_str = arp_str + f'''
-        if curl {pushgateway} | grep '.*arp_state.*IPaddress="{ip}".*instance="{name}".*'; then
-            echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 1'
-        else
-            echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 0'
+            echo '{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 0'
         fi
         '''
         
     return arp_str
-        
+
+def check_arp_contain_ip(pushgateway, host_names,ips):
+    arp_str =""
+    for name,ip in zip(host_names,ips):
+        formatted_name = name.replace("-", "_").replace(".", "_").lower()
+        # check if ARP exporters are on        
+        arp_str = arp_str + f'''
+        if curl {pushgateway} | grep '.*arp_state.*IPaddress="{ip}".*instance="{name}".*'; then
+            echo '{formatted_name}_script_exporter_task2{{host="{formatted_name}"}} 1'
+        else
+            echo '{formatted_name}_script_exporter_task2{{host="{formatted_name}"}} 0'
+        fi
+        '''
+    return arp_str
+
+
+def get_mac_from_arp(pushgateway, host_names,ips):
+    response = requests.get(pushgateway)
+    content = response.text
+    host_hwadd = []
+    for name,ip in zip(host_names,ips):
+        pattern = f'.*arp_state.*IPaddress="{ip}".*instance="{name}".*'
+        match = re.search(pattern, content)
+        if match:
+            line = match.group(0)
+
+            # Extract the string between 'HWaddress=' and ','
+            hwaddress_pattern = r'HWaddress=(.*?),'
+            hwaddress_match = re.search(hwaddress_pattern, line)
+
+            if hwaddress_match:
+                host_hwadd.append(hwaddress_match.group(1))
+
+    # Reverse the order of the MAC address, as it is stored in reverse order 
+    return host_hwadd[::-1]
+
+
 def check_snmp_on(pushgateway,switch_name,job):
     snmp_str = ""
     formatted_name = switch_name.replace("-", "_").replace(".", "_").lower()
@@ -48,35 +75,22 @@ def check_snmp_on(pushgateway,switch_name,job):
     '''
     return snmp_str
 
-def get_mac_from_pushgateway(url, hostname, ip_address):
-    response = requests.get(url)
-    content = response.text
-    
-    # Find the line containing both hostname and ip_address
-    pattern = fr'.*hostname="{hostname}".*ip_address="{ip_address}".*'
-    matched_line = re.search(pattern, content)
-    
-    if matched_line:
-        line = matched_line.group()
-        
-        # Extract the value of the mac_address field
-        mac_address_pattern = r'mac_address="(.*?)"'
-        mac_address_match = re.search(mac_address_pattern, line)
-        
-        if mac_address_match:
-            return mac_address_match.group(1)
-    
-    return None
+def check_snmp_mac(pushgateway, switch_names,macs):
+    snmp_mac =""
+    for name in switch_names:
+        formatted_name = name.replace("-", "_").replace(".", "_").lower()
+        # check if mac address of both hosts exist on the switch
+        for i,mac in enumerate(macs,2):
+            snmp_mac = snmp_mac + f'''
+            if curl {pushgateway} | grep '.*mac_table_info.*instance="{name}".*macaddress={mac}.*'; then
+                echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 1'
+            else
+                echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 0'
+            fi
+            '''
+            
+    return snmp_mac
 
-# def check_snmp_mac(mac_source1,mac_source2,mac1,mac2):
-#     sources = [mac_source1, mac_source2]
-#     macs = [mac1, mac2]
-#     for i,s in enumerate(sources,1):
-#         for j,m in enumerate(macs,1):
-#             if check_pattern(pushgateway,fr'.*{s}={m.upper()}.*'):
-#                 os.system("echo 'switch{i}_host{j}_mac{{host=\"{m}\"}} 1'")
-#             else:
-#                 os.system("echo 'switch{i}_host{j}_mac{{host=\"{m}\"}} 0'")
 def read_yml_file(path, sys_argv, order, go_back_folder_num):
     # locate path
     if path[0] != "/":
@@ -121,17 +135,24 @@ def main():
     with open('l2debugging.sh', 'w') as f:
         f.write('#!/bin/bash \n')
         host_names = []
+        switch_names = []
         ips = []
         for node in data["node"]:
             if node['type'] == 'host':
                 host_names.append(node['name'])
                 ips.append(node['interface'][0]['ping'])
             if node['type'] == 'switch':
+                switch_names.append(node['name'])
                 snmp_str = check_snmp_on(pushgateway, node['name'], node['job'])
-                f.write(snmp_str)
-            
-        arp_str = check_arp(pushgateway, host_names, ips[::-1])
+
+        arp_str = check_arp_on(pushgateway, host_names)
+        arp_str = arp_str + check_arp_contain_ip(pushgateway, host_names,ips)
+
+        macs = get_mac_from_arp(pushgateway, host_names,ips)
+        snmp_mac = snmp_mac + check_snmp_mac(pushgateway, switch_names,macs)
         f.write(arp_str)
+        f.write(snmp_str)
+
     os.system("chmod +x l2debugging.sh")
     # host1_mac = get_mac_from_pushgateway(pushgateway, host2, host1_ip)
     # host2_mac = get_mac_from_pushgateway(pushgateway, host1, host2_ip)

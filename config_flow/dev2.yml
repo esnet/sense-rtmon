@@ -13,7 +13,7 @@ node:
     interface: 
       - name: 'mlx4p1s1.43'
         vlan: 'not used'
-        ping: 'sdn-dtn-2-10.ultralight.org'
+        ip: 198.32.43.16 # might need to be input manually
       - name: 'hundredGigE 1/23'
         vlan: 'not used'
         peer: 
@@ -35,12 +35,13 @@ node:
         - name: 'sdn-dtn-2-10.ultralight.org'
           interface: 'hundredGigE 1/31'
 
-  - name: 'sdn-dtn-2-10.ultralight.org'
+  - name: 'arbitrary_host'
     type: 'host' 
     interface: 
-      - name: 'ens2f0np0.3911'
+      - name: 'mlx4p1s1.43'
         vlan: 'not used'
         ping: sdn-dtn-1-7.ultralight.org
+        ip: 198.32.43.2 # might need to be input manually
       - name: 'hundredGigE 1/31'
         vlan: 'not used'
         peer: 

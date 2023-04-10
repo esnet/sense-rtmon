@@ -14,7 +14,7 @@ def check_pattern(url, pattern):
 
 def check_arp_on(pushgateway, host_names):
     arp_str =""
-    for name in zip(host_names):
+    for name in host_names:
         formatted_name = name.replace("-", "_").replace(".", "_").lower()
         # check if ARP exporters are on
         arp_str = arp_str + f'''

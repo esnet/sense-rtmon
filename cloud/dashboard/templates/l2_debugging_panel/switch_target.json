@@ -1,6 +1,6 @@
   {
     "exemplar": true,
-    "expr": "NODENAME_SCRIPT_EXPORTER_TASK1",
+    "expr": "NODENAME_script_exporter_task1",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -9,7 +9,7 @@
   },
   {
     "exemplar": true,
-    "expr": "NODENAME_SCRIPT_EXPORTER_TASK2",
+    "expr": "NODENAME_script_exporter_task2",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -18,7 +18,7 @@
   },
   {
     "exemplar": true,
-    "expr": "NODENAME_SCRIPT_EXPORTER_TASK3",
+    "expr": "NODENAME_script_exporter_task13",
     "hide": false,
     "interval": "",
     "legendFormat": "contains HOST2NAME MAC Address",

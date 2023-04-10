@@ -1,6 +1,6 @@
 {
     "exemplar": true,
-    "expr": "NODENAME_SCRIPT_EXPORTER_TASK1",
+    "expr": "NODENAME_script_exporter_task1",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -9,7 +9,7 @@
   },
   {
     "exemplar": true,
-    "expr": "NODENAME_SCRIPT_EXPORTER_TASK2",
+    "expr": "NODENAME_script_exporter_task2",
     "format": "time_series",
     "hide": false,
     "instant": false,

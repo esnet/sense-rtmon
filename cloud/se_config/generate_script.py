@@ -129,7 +129,7 @@ def main():
     print("\n\nParsing config file...")
     data, config_file = read_yml_file("config_flow", sys.argv, 1, 2)
     pushgateway = f"{data['pushgateway']}/metrics"  # pushgateway metrics page
-    snmp_mac = ""
+    snmp_str = ""
     arp_str = ""
     # remove http:// or https://
     # before_sep, sep, after_sep = pushgateway.partition("//")
@@ -153,7 +153,7 @@ def main():
 
         # host1 contains the ip and mac of host2, vice versa, so we need to reverse the order of ip
         macs = get_mac_from_arp(pushgateway, host_names,ips[::-1])
-        snmp_mac = snmp_mac + check_snmp_mac(pushgateway, switch_names,macs)
+        snmp_str = snmp_str + check_snmp_mac(pushgateway, switch_names,macs)
         f.write(arp_str)
         f.write(snmp_str)
 

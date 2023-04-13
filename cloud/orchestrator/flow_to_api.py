@@ -8,8 +8,8 @@ import requests
 import pprint
 import simplejson as json
 
-os.environ["X509_USER_KEY"] = '/etc/grid-security/hostkey.pem'
-os.environ["X509_USER_CERT"] = '/etc/grid-security/hostcert.pem'
+os.environ["X509_USER_KEY"] = '/root/sense-o.es.net-ssl/sense-o.key'
+os.environ["X509_USER_CERT"] = '/root/sense-o.es.net-ssl/sense-o.crt'
 
 
 def getUTCnow():
@@ -46,12 +46,13 @@ def debugActions(cls, dataIn, dataUpd):
 
 
 class SiteRMAPI():
-    def __init__(self, hostname, sitename):
+    def __init__(self, hostname, sitename, node_data):
         print(hostname, sitename)
         self.hostname = hostname
         self.sitename = sitename
+        self.node_data = node_data
 
-    def test(self,node_data):
+    def test(self):
         """Test Prometheus Push Debug API"""
         for data in node_data:
             outsuc = {"out": ["running"], "err": "", "exitCode": 0}
@@ -94,5 +95,5 @@ if __name__ == "__main__":
         })
 
     params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename': 'T2_US_Caltech_Test'}
-    api = SiteRMAPI(**params)
+    api = SiteRMAPI(**params,node_data=node_data)
     api.test(node_data)

@@ -96,4 +96,4 @@ if __name__ == "__main__":
 
     params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename': 'T2_US_Caltech_Test'}
     api = SiteRMAPI(**params,node_data=node_data)
-    api.test(node_data)
+    api.test()

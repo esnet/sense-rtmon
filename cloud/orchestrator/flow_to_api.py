@@ -75,7 +75,7 @@ def prepare_node (node,flow):
         'hostname': node['name'],
         'hosttype': node['type'],
         'type': 'prometheus-push',
-        'metadata': {'instance': node['name'], 'sense_mon_id':  flow},
+        'metadata': {'instance': node['name'], 'flow': flow},
         'gateway': pushgateway_host,
         'runtime': str(int(getUTCnow())+node['runtime']),
         'resolution': '5'

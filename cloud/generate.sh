@@ -35,6 +35,11 @@ fi
 if [ "${config_file}" == "" ]; then
     echo "!!    config_flow/config.yml"
     echo "!!    Parsing config.yml"
+    # send API
+    # cd ./orchestrator
+    # python3 flow_to_api.py config.yml
+    # cd ..
+    # generate script exporter
     cd ./se_config
     python3 generate_script.py
     sleep 0.2
@@ -42,15 +47,23 @@ if [ "${config_file}" == "" ]; then
 else 
     echo "!!    config_flow/${config_file} "
     echo "!!    Parsing ${config_file} "
+        # send API
+    # cd ./orchestrator
+    # python3 flow_to_api.py ${config_file}
+    # cd ..
+    # generate script exporter
     cd ./se_config
     python3 generate_script.py ${config_file} 
     sleep 0.2
     cd ..
 fi
 
+
 echo "!!    Transporting Script Exporter configuration files"
 yes | cp -rfa se_config/. script_exporter/examples
 sleep 1
+echo "!! restart script exporter"
+# restart script exporter docker
 
 cd dashboard
 if [ "${config_file}" == "" ]; then

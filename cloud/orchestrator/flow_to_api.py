@@ -70,6 +70,19 @@ def read_file(filename):
         input_text_cleaned = '\n'.join(lines)
     return input_text_cleaned
 
+def prepare_node (node):
+    dict_node = {
+        'hostname': node['name'],
+        'hosttype': node['type'],
+        'type': 'prometheus-push',
+        'metadata': {'instance': node['name'], 'sense_mon_id':  node['sense_mon_id']},
+        'gateway': pushgateway_host,
+        'runtime': str(int(getUTCnow())+node['runtime']),
+        'resolution': '5'
+    }
+    return dict_node
+    
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python script.py <config_filename>")
@@ -84,19 +97,12 @@ if __name__ == "__main__":
     node_data = []
 
     for node in data['node']:
-        sub_node = {
-            'hostname': node['name'],
-            'hosttype': node['type'],
-            'type': 'prometheus-push',
-            'metadata': {'instance': node['name'], 'sense_mon_id':  node['sense_mon_id']},
-            'gateway': pushgateway_host,
-            'runtime': str(int(getUTCnow())+node['runtime']),
-            'resolution': '5'
-        }
+        sub_node = prepare_node(node)
         node_data.append(sub_node)
         
         if node['type'] == 'host':
             if node['arp'] == 'on':
+                sub_node = prepare_node(node)
                 sub_node['type'] = 'arp-push'
                 node_data.append(sub_node)
 

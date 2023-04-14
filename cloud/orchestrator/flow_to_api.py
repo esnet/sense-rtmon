@@ -88,18 +88,19 @@ if __name__ == "__main__":
             'hostname': node['name'],
             'hosttype': node['type'],
             'type': 'prometheus-push',
-            'sense_mon_id': node['sense_mon_id'],
-            'metadata': {'instance': node['name']},
+            'metadata': {'instance': node['name'], 'sense_mon_id':  node['sense_mon_id']},
             'gateway': pushgateway_host,
             'runtime': str(int(getUTCnow())+node['runtime']),
             'resolution': '5'
         }
+        node_data.append(sub_node)
         
         if node['type'] == 'host':
             if node['arp'] == 'on':
                 sub_node['type'] = 'arp-push'
+                node_data.append(sub_node)
+
         
-        node_data.append(sub_node)
 
     params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename': 'T2_US_Caltech_Test'}
     api = SiteRMAPI(**params,node_data=node_data)

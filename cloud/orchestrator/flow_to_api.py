@@ -107,11 +107,12 @@ if __name__ == "__main__":
                 node_data.append(sub_node)
 
         
-    for node in node_data:
-        print(node)
-    # params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename': 'T2_US_Caltech_Test'}
-    # api = SiteRMAPI(**params,node_data=node_data)
-    # api.test()
+    # for node in node_data:
+    #     print(node)
+    
+    params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename': 'T2_US_Caltech_Test'}
+    api = SiteRMAPI(**params,node_data=node_data)
+    api.test()
     
 # for data in [{'hostname': 'sdn-dtn-1-7.ultralight.org', 'hosttype': 'host',
 #             'type': 'prometheus-push', 'metadata': {'instance': 'sdn-dtn-1-7.ultralight.org', 'flow_id': 'unqiue_test_id'},

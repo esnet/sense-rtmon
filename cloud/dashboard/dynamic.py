@@ -109,7 +109,7 @@ for node in data["node"]:
     
     for i,iface in enumerate(node['interface']):
         # special case host without ip address, no monitoring needed
-        if 'ping' not in iface and node["type"] == "host":
+        if 'ip' not in iface and node["type"] == "host":
             continue
         
         # write panel file

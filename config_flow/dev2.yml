@@ -47,7 +47,6 @@ node:
     interface: 
       - name: 'mlx4p1s1.43'
         vlan: 'not used'
-        ping: sdn-dtn-1-7.ultralight.org
         ip: 198.32.43.2 # might need to be input manually
       - name: 'hundredGigE 1/31'
         vlan: 'not used'

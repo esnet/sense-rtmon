@@ -101,7 +101,8 @@ if __name__ == "__main__":
                 node_data.append(sub_node)
 
         
-    print (node_data)
+    for node in node_data:
+        print(node)
     # params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename': 'T2_US_Caltech_Test'}
     # api = SiteRMAPI(**params,node_data=node_data)
     # api.test()

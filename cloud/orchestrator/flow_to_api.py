@@ -95,8 +95,9 @@ if __name__ == "__main__":
             'resolution': '5'
         }
         
-        if node['arp'] == 'on':
-            sub_node['type'] = 'arp-push'
+        if node['type'] == 'host':
+            if node['arp'] == 'on':
+                sub_node['type'] = 'arp-push'
         
         node_data.append(sub_node)
 

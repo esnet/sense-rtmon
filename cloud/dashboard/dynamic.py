@@ -50,6 +50,8 @@ def remove_file(file_path="./templates/temp.json"):
 # fill in the replacement dictionary of necessary values
 def fill_rep(rep,id_num,node=None,iface=None):
     id_num += 1
+    rep["ID_UNIQUE"] = unqiue_id
+    rep["UNIQUE_ID_FIELD"] = unique_id_field
     rep["YPOSITION"] = str(id_num)
     rep["PANELID"] = str(id_num)
     if node!=None:
@@ -86,6 +88,10 @@ print("\n\nParsing config file...")
 data,config_file = cloud_functions.read_yml_file("config_flow",sys.argv,1,2)
 title = f'{data["title"]} |Flow: {data["flow"]}| {datetime.now().strftime("%m/%d_%H:%M")}'
 push_metric = data['pushgateway'] # pushgateway metrics page
+
+#### changes in the future, name of the field ####
+unique_id_field = "flow" # unique id feild in the template
+unqiue_id = data[unique_id_field] # flow id
 
 print("Process Flow Panels")
 id_num = 200 # start from 200 in case of conflict with previous panels

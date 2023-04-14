@@ -12,43 +12,43 @@ def check_pattern(url, pattern):
     content = response.text
     return bool(re.search(pattern, content))
 
-def check_arp_on(pushgateway, host_names):
+def check_arp_on(pushgateway, host_names,id_name,id):
     arp_str =""
     for name in host_names:
         formatted_name = name.replace("-", "_").replace(".", "_").lower()
         # check if ARP exporters are on
         arp_str = arp_str + f'''
         # check_arp_on
-        if curl {pushgateway} | grep '.*arp_state.*instance="{name}".*'; then
-            echo '{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 1'
+        if curl {pushgateway} | grep '.*arp_state.*instance="{name}".*{id_name}="{id}".*'; then
+            echo '{formatted_name}_script_exporter_task1_{id}{{host="{formatted_name}"}} 1'
         else
-            echo '{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 0'
+            echo '{formatted_name}_script_exporter_task1_{id}{{host="{formatted_name}"}} 0'
         fi
         '''
         
     return arp_str
 
-def check_arp_contain_ip(pushgateway, host_names,ips):
+def check_arp_contain_ip(pushgateway, host_names,ips,id_name,id):
     arp_str =""
     for name,ip in zip(host_names,ips):
         formatted_name = name.replace("-", "_").replace(".", "_").lower()
         arp_str = arp_str + f'''
         # check_arp_contain_ip
-        if curl {pushgateway} | grep '.*arp_state.*IPaddress="{ip}".*instance="{name}".*'; then
-            echo '{formatted_name}_script_exporter_task2{{host="{formatted_name}"}} 1'
+        if curl {pushgateway} | grep '.*arp_state.*IPaddress="{ip}".*instance="{name}".*{id_name}="{id}".*'; then
+            echo '{formatted_name}_script_exporter_task2_{id}{{host="{formatted_name}"}} 1'
         else
-            echo '{formatted_name}_script_exporter_task2{{host="{formatted_name}"}} 0'
+            echo '{formatted_name}_script_exporter_task2_{id}{{host="{formatted_name}"}} 0'
         fi
         '''
     return arp_str
 
 
-def get_mac_from_arp(pushgateway, host_names,ips):
+def get_mac_from_arp(pushgateway, host_names,ips,id_name,id):
     response = requests.get(pushgateway)
     content = response.text
     host_hwadd = []
     for name,ip in zip(host_names,ips):
-        pattern = f'.*arp_state.*IPaddress="{ip}".*instance="{name}".*'
+        pattern = f'.*arp_state.*IPaddress="{ip}".*instance="{name}".*{id_name}="{id}".*'
         match = re.search(pattern, content)
         if match:
             line = match.group(0)
@@ -64,20 +64,20 @@ def get_mac_from_arp(pushgateway, host_names,ips):
     return host_hwadd[::-1]
 
 
-def check_snmp_on(pushgateway,switch_name,job):
+def check_snmp_on(pushgateway,switch_name,job,id_name,id):
     snmp_str = ""
     formatted_name = switch_name.replace("-", "_").replace(".", "_").lower()
     snmp_str = snmp_str + f'''
     # check_snmp_on
-    if curl {pushgateway} | grep '.*ifHCInOctets.*instance="{switch_name}".*job="{job}".*'; then
-        echo '{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 1'
+    if curl {pushgateway} | grep '.*ifHCInOctets.*instance="{switch_name}".*{id_name}="{id}".*'; then
+        echo '{formatted_name}_script_exporter_task1_{id}{{host="{formatted_name}"}} 1'
     else
-        echo '{formatted_name}_script_exporter_task1{{host="{formatted_name}"}} 0'
+        echo '{formatted_name}_script_exporter_task1_{id}{{host="{formatted_name}"}} 0'
     fi
     '''
     return snmp_str
 
-def check_snmp_mac(pushgateway, switch_names,macs):
+def check_snmp_mac(pushgateway, switch_names,macs,id_name,id):
     snmp_mac =""
     for name in switch_names:
         formatted_name = name.replace("-", "_").replace(".", "_").lower()
@@ -85,10 +85,10 @@ def check_snmp_mac(pushgateway, switch_names,macs):
         for i,mac in enumerate(macs,2):
             snmp_mac = snmp_mac + f'''
             # check_snmp_mac
-            if curl {pushgateway} | grep '.*mac_table_info.*instance="{name}".*macaddress={mac}.*'; then
-                echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 1'
+            if curl {pushgateway} | grep '.*mac_table_info.*instance="{name}".*macaddress={mac}.*{id_name}="{id}".*'; then
+                echo '{formatted_name}_script_exporter_task{i}_{id}{{host="{formatted_name}"}} 1'
             else
-                echo '{formatted_name}_script_exporter_task{i}{{host="{formatted_name}"}} 0'
+                echo '{formatted_name}_script_exporter_task{i}_{id}{{host="{formatted_name}"}} 0'
             fi
             '''
             
@@ -142,21 +142,23 @@ def main():
         host_names = []
         switch_names = []
         ips = []
+        id_name = "sense_mon_id"
+        id = data['flow']
         for node in data["node"]:
             if node['type'] == 'host':
                 host_names.append(node['name'])
                 ips.append(node['interface'][0]['ip'])
             if node['type'] == 'switch':
                 switch_names.append(node['name'])
-                snmp_str = check_snmp_on(pushgateway, node['name'], node['job'])
+                snmp_str = check_snmp_on(pushgateway, node['name'], node['job'],id_name,id)
 
-        arp_str = check_arp_on(pushgateway, host_names) 
+        arp_str = check_arp_on(pushgateway, host_names,id_name,id) 
         # host1 contains the ip of host2, vice versa, so we need to reverse the order of ip
-        arp_str = arp_str + check_arp_contain_ip(pushgateway, host_names,ips[::-1])
+        arp_str = arp_str + check_arp_contain_ip(pushgateway, host_names,ips[::-1],id_name,id)
 
         # host1 contains the ip and mac of host2, vice versa, so we need to reverse the order of ip
-        macs = get_mac_from_arp(pushgateway, host_names,ips[::-1])
-        snmp_str = snmp_str + check_snmp_mac(pushgateway, switch_names,macs)
+        macs = get_mac_from_arp(pushgateway, host_names,ips,id_name,id)
+        snmp_str = snmp_str + check_snmp_mac(pushgateway, switch_names,macs,id_name,id)
         f.write(arp_str)
         f.write(snmp_str)
 

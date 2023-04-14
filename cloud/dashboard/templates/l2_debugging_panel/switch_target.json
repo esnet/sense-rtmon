@@ -1,6 +1,6 @@
   {
     "exemplar": true,
-    "expr": "NODENAME_script_exporter_task1",
+    "expr": "NODENAME_script_exporter_task1_ID_UNIQUE",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -9,7 +9,7 @@
   },
   {
     "exemplar": true,
-    "expr": "NODENAME_script_exporter_task2",
+    "expr": "NODENAME_script_exporter_task2_ID_UNIQUE",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -18,7 +18,7 @@
   },
   {
     "exemplar": true,
-    "expr": "NODENAME_script_exporter_task13",
+    "expr": "NODENAME_script_exporter_task3_ID_UNIQUE",
     "hide": false,
     "interval": "",
     "legendFormat": "contains HOST2NAME MAC Address",

@@ -70,12 +70,12 @@ def read_file(filename):
         input_text_cleaned = '\n'.join(lines)
     return input_text_cleaned
 
-def prepare_node (node):
+def prepare_node (node,flow):
     dict_node = {
         'hostname': node['name'],
         'hosttype': node['type'],
         'type': 'prometheus-push',
-        'metadata': {'instance': node['name'], 'sense_mon_id':  node['sense_mon_id']},
+        'metadata': {'instance': node['name'], 'sense_mon_id':  flow},
         'gateway': pushgateway_host,
         'runtime': str(int(getUTCnow())+node['runtime']),
         'resolution': '5'
@@ -92,17 +92,17 @@ if __name__ == "__main__":
     input_text_cleaned = read_file(filename)
     # Load the YAML data
     data = yaml.safe_load(input_text_cleaned)
-
+    flow = data['flow']
     pushgateway_host = data['pushgateway']
     node_data = []
 
     for node in data['node']:
-        sub_node = prepare_node(node)
+        sub_node = prepare_node(node,flow)
         node_data.append(sub_node)
         
         if node['type'] == 'host':
             if node['arp'] == 'on':
-                sub_node = prepare_node(node)
+                sub_node = prepare_node(node,flow)
                 sub_node['type'] = 'arp-push'
                 node_data.append(sub_node)
 

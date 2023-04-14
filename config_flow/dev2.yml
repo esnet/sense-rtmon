@@ -11,7 +11,7 @@ node:
   - name: 'sdn-dtn-1-7.ultralight.org'
     type: 'host' 
     arp: 'on'
-    runtime: '10' # minutes
+    runtime: 10 # minutes
     sense_mon_id: 'siterm-2'
     interface: 
       - name: 'mlx4p1s1.43'
@@ -26,7 +26,7 @@ node:
   - name: 'dellos9_s0'
     type: 'switch'
     sense_mon_id: 'siterm-2'
-    runtime: '10' # minutes
+    runtime: 10 # minutes
     interface: 
       - name: 'hundredGigE 1/23'
         vlan: 'not used'
@@ -42,7 +42,7 @@ node:
   - name: 'arbitrary_host'
     type: 'host'
     arp: 'off'
-    runtime: '10' # minutes
+    runtime: 10 # minutes
     sense_mon_id: 'siterm-2' 
     interface: 
       - name: 'mlx4p1s1.43'

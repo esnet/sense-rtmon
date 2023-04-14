@@ -84,16 +84,35 @@ if __name__ == "__main__":
     node_data = []
 
     for node in data['node']:
-        node_data.append({
+        sub_node = {
             'hostname': node['name'],
             'hosttype': node['type'],
             'type': 'prometheus-push',
+            'sense_mon_id': node['sense_mon_id'],
             'metadata': {'instance': node['name']},
             'gateway': pushgateway_host,
-            'runtime': str(int(getUTCnow())+610),
+            'runtime': str(int(getUTCnow())+node['runtime']),
             'resolution': '5'
-        })
+        }
+        
+        if node['arp'] == 'on':
+            sub_node['type'] = 'arp-push'
+        
+        node_data.append(sub_node)
 
     params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename': 'T2_US_Caltech_Test'}
     api = SiteRMAPI(**params,node_data=node_data)
     api.test()
+    
+# for data in [{'hostname': 'sdn-dtn-1-7.ultralight.org', 'hosttype': 'host',
+#             'type': 'prometheus-push', 'metadata': {'instance': 'sdn-dtn-1-7.ultralight.org', 'flow_id': 'unqiue_test_id'},
+#             'gateway': 'dev2.virnao.com:9091', 'runtime': str(int(getUTCnow())+610),
+#             'resolution': '5'},
+#             {'hostname': 'sdn-dtn-1-7.ultralight.org', 'hosttype': 'host',
+#             'type': 'arp-push', 'metadata': {'instance': 'sdn-dtn-1-7.ultralight.org'},
+#             'gateway': 'dev2.virnao.com:9091', 'runtime': str(int(getUTCnow())+610),
+#             'resolution': '5'},
+#             {'hostname': 'dellos9_s0', 'hosttype': 'host',
+#             'type': 'prometheus-push', 'metadata': {'instance': 'dellos9_s0'},
+#             'gateway': 'dev2.virnao.com:9091', 'runtime': str(int(getUTCnow())+610),
+#             'resolution': '5'}]:

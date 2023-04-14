@@ -64,7 +64,7 @@ def get_mac_from_arp(pushgateway, host_names,ips,id_name,id):
     return host_hwadd[::-1]
 
 
-def check_snmp_on(pushgateway,switch_name,job,id_name,id):
+def check_snmp_on(pushgateway,switch_name,id_name,id):
     snmp_str = ""
     formatted_name = switch_name.replace("-", "_").replace(".", "_").lower()
     snmp_str = snmp_str + f'''
@@ -150,7 +150,7 @@ def main():
                 ips.append(node['interface'][0]['ip'])
             if node['type'] == 'switch':
                 switch_names.append(node['name'])
-                snmp_str = check_snmp_on(pushgateway, node['name'], node['job'],id_name,id)
+                snmp_str = check_snmp_on(pushgateway, node['name'],id_name,id)
 
         arp_str = check_arp_on(pushgateway, host_names,id_name,id) 
         # host1 contains the ip of host2, vice versa, so we need to reverse the order of ip

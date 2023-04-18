@@ -10,201 +10,227 @@ def orchestratorConvert(orchestrator_fname):
 	print("Loaded JSON data...")
 	print("Parsing JSON data...\n")
 
-	# output filename
-	ofname = "sampleConverted.yaml"
-	outFile = open(ofname, "w")
-
-	# User generated configs not available from SENSE Orchestrator
-	outFile.write("## SECTION 1 GENERAL INFORMATION ##\n")
-	outFile.write("title: \n")
-	outFile.write("flow: \n")
-
-	uuidStr = str(uuid.uuid4())
-	uuidConfig = "flow_uuid: \"" + uuidStr + "\"\n"
-	outFile.write(uuidConfig)
-
-	outFile.write("host_ip: \n")
-	outFile.write("grafana_host: \n")
-	outFile.write("pushgateway: \n")
-	outFile.write("grafana_api_token: \n\n")
-
-	print("---------------------------------")
-	print("Writing User Generated Configs...")
-	print("---------------------------------\n")
-	# Dynamically generated node data from SENSE Orchestrator JSON
-
-	outFile.write("## Section 2 Hosts & Switches all under nodes ##\n")
-	outFile.write("node:\n")
-
 	ports = data['Ports']
-	visitedPorts = []
-	hostPeers = []
-	switchPeers = []
 
+	flows = {}
+	# Build unknown flow bucket for those with no flowID
+	flows["unknown"] = []
+
+	# Identify flows in SENSE-O Metadata Manifest
 	for port in ports:
+		if "Flow" in port:
+			if port["Flow"] in flows.keys():
+				flows[port["Flow"]].append(port)
+			else:
+				print("---------------------------------")
+				print("Detected new flow: flow ID = \'", port["Flow"] ,"\'...")
+				print("---------------------------------\n")
+				flows[port["Flow"]] = []
+				flows[port["Flow"]].append(port)
+		else:
+			flows["unknown"].append(port)
 
-		if "Host" in port:
-			print("Found host (", port['Host'][0]["Name"] ,") info in SENSE-Orchestrator Config!")
-			print("Parsing host (", port['Host'][0]["Name"] ,") info...")
+	# Per-flow SENSE-RTMON config translation
+	for flow in flows.keys():
 
-			hostInfo = [port['Host'][0]["Name"], port['Host'][0]["Interface"], port['Vlan']]
-			switchPeers.append(port['Node'])
-			hostPeers.append(hostInfo)
+		if (not flow == "unknown") or (flow == "unknown" and not len(flows["unknown"]) == 0):
 
-			outFile.write("  - name: \"")
-			outFile.write(port['Host'][0]["Name"])
-			outFile.write("\"\n")
+			visitedPorts = []
+			hostPeers = []
+			switchPeers = []
+			
+			# output filename
+			ofname = "config/config_" + str(flow) + ".yaml"
+			outFile = open(ofname, "w")
 
-			outFile.write("    type: \"host\"\n")
-			outFile.write("    interface:\n")
+			# User generated configs not available from SENSE Orchestrator
+			outFile.write("## SECTION 1 GENERAL INFORMATION ##\n")
+			outFile.write("title: \n")
+			outFile.write("flow: \n")
 
-			for iface in port['Host']:
-				if "Interface" in iface:
-					if not iface["Interface"].startswith("?"):
-						outFile.write("      - name: \"")
-						outFile.write(iface['Interface'])
-						outFile.write("\"\n")
-					else:
-						outFile.write("      - name: \n")
-				else:
-					outFile.write("      - name: \n")
+			uuidStr = str(uuid.uuid4())
+			uuidConfig = "flow_uuid: \"" + uuidStr + "\"\n"
+			outFile.write(uuidConfig)
 
-				if "Vlan" in iface:
-					outFile.write("        vlan: ")
-					outFile.write(iface['Vlan'])
-					outFile.write("\n")
-				else: 
-					outFile.write("        vlan: 'not used'\n")
+			outFile.write("host_ip: \n")
+			outFile.write("grafana_host: \n")
+			outFile.write("pushgateway: \n")
+			outFile.write("grafana_api_token: \n\n")
 
-				if "IPv4" in iface:
-					outFile.write("        ip: ")
-					outFile.write(iface['IPv4'].split("/")[0])
-					outFile.write("\n")
+			print("---------------------------------")
+			print("Writing User Generated Configs: flow ID = \'", flow ,"\'...")
+			print("---------------------------------\n")
+			# Dynamically generated node data from SENSE Orchestrator JSON
 
-				outFile.write("        ping: \n")
+			outFile.write("## Section 2 Hosts & Switches all under nodes ##\n")
+			outFile.write("node:\n")
 
-			outFile.write("      - name: \"")
-			outFile.write(port['Node'])
-			outFile.write("\"\n")
+			# Per-flow translate to SENSE-RTMON system-specific config
+			for port in flows[flow]:
 
-			if "Vlan" in port:
-				outFile.write("        vlan: ")
-				outFile.write(port['Vlan'])
-				outFile.write("\n")
-			else: 
-				outFile.write("        vlan: 'not used'\n")	
+				if "Host" in port:
+					print("Found host (", port['Host'][0]["Name"] ,") info in SENSE-Orchestrator Config!")
+					print("Parsing host (", port['Host'][0]["Name"] ,") info...")
 
-			outFile.write("        peer: \n")
-			if "Peer" in port:
-				if not port["Peer"].startswith("?"):
-					outFile.write("        - name: ")
-					outFile.write(port['Peer'])
-					outFile.write("\n")
+					hostInfo = [port['Host'][0]["Name"], port['Host'][0]["Interface"], port['Vlan']]
+					switchPeers.append(port['Node'])
+					hostPeers.append(hostInfo)
 
-				else: 
-					outFile.write("        - name: \n")
-			else: 
-				outFile.write("        - name: \n")
-
-			if "Interface" in port:
-				outFile.write("          interface: ")
-				outFile.write(port["Interface"])
-				outFile.write("\n")
-			else: 
-				outFile.write("          interface: \n")
-
-			if "Vlan" in port:
-				outFile.write("          vlan: ")
-				outFile.write(port["Vlan"])
-				outFile.write("\n")
-			else: 
-				outFile.write("          vlan: 'not used'\n")
-
-
-
-			outFile.write("\n")
-			print("Finished parsing host (", port['Host'][0]["Name"] ,") info...\n")
-
-	for port in ports:
-
-		if port['Node'] not in visitedPorts:
-			print("Found switch (", port['Node'],") info in SENSE-Orchestrator Config!")
-			print("Parsing switch (", port['Node'],") info...")
-			outFile.write("  - name: \"")
-			currentNode = port['Node']
-			outFile.write(port['Node'])
-			outFile.write("\"\n")
-
-			outFile.write("    type: \"switch\"\n")
-			outFile.write("    interface:\n")
-
-			for p in ports:
-				if p["Node"] == currentNode:
-
-					outFile.write("      - name: \"")
-					outFile.write(p['Port'].split(":")[-1])
+					outFile.write("  - name: \"")
+					outFile.write(port['Host'][0]["Name"])
 					outFile.write("\"\n")
 
-					if "Vlan" in p:
-						outFile.write("        vlan: ")
-						outFile.write(p["Vlan"])
-						outFile.write("\n")
-					else:
-						outFile.write("        vlan: 'not used'\n")
+					outFile.write("    type: \"host\"\n")
+					outFile.write("    interface:\n")
 
-					outFile.write("        peer:\n")
-					if "Peer" in p:
-						if not p["Peer"].startswith("?"):
-							outFile.write("        - name: \"")
-							outFile.write(p["Peer"].split(":")[-2])
-							outFile.write("\"\n")
-
-							outFile.write("          interface: \"")
-							outFile.write(p["Peer"].split(":")[-1])
-							outFile.write("\"\n")
-
-							outFile.write("          vlan: 'not_used'\n")
-						elif p["Node"] in switchPeers:
-							loc = switchPeers.index(p["Node"])
-							peerName = "" if hostPeers[loc][0].startswith("?") else hostPeers[loc][0]
-							peerIface = "" if hostPeers[loc][1].startswith("?") else "\"" +  hostPeers[loc][1] + "\""
-							peerVlan = "" if hostPeers[loc][2].startswith("?") else hostPeers[loc][2]
-
-							outFile.write("        - name: \"")
-							outFile.write(peerName)
-							outFile.write("\"\n")
-
-							outFile.write("          interface: ")
-							outFile.write(peerIface)
-							outFile.write("\n")
-
-							outFile.write("          vlan: ")
-							outFile.write(peerVlan)
-							outFile.write("\n")
-
+					for iface in port['Host']:
+						if "Interface" in iface:
+							if not iface["Interface"].startswith("?"):
+								outFile.write("      - name: \"")
+								outFile.write(iface['Interface'])
+								outFile.write("\"\n")
+							else:
+								outFile.write("      - name: \n")
 						else:
+							outFile.write("      - name: \n")
+
+						if "Vlan" in iface:
+							outFile.write("        vlan: ")
+							outFile.write(iface['Vlan'])
+							outFile.write("\n")
+						else: 
+							outFile.write("        vlan: 'not used'\n")
+
+						if "IPv4" in iface:
+							outFile.write("        ip: ")
+							outFile.write(iface['IPv4'].split("/")[0])
+							outFile.write("\n")
+
+						outFile.write("        ping: \n")
+
+					outFile.write("      - name: \"")
+					outFile.write(port['Node'])
+					outFile.write("\"\n")
+
+					if "Vlan" in port:
+						outFile.write("        vlan: ")
+						outFile.write(port['Vlan'])
+						outFile.write("\n")
+					else: 
+						outFile.write("        vlan: 'not used'\n")	
+
+					outFile.write("        peer: \n")
+					if "Peer" in port:
+						if not port["Peer"].startswith("?"):
+							outFile.write("        - name: ")
+							outFile.write(port['Peer'])
+							outFile.write("\n")
+
+						else: 
 							outFile.write("        - name: \n")
-							outFile.write("          interface: \n")
-							outFile.write("          vlan: \n")	
-					else:
+					else: 
 						outFile.write("        - name: \n")
+
+					if "Interface" in port:
+						outFile.write("          interface: ")
+						outFile.write(port["Interface"])
+						outFile.write("\n")
+					else: 
 						outFile.write("          interface: \n")
-						outFile.write("          vlan: \n")
+
+					if "Vlan" in port:
+						outFile.write("          vlan: ")
+						outFile.write(port["Vlan"])
+						outFile.write("\n")
+					else: 
+						outFile.write("          vlan: 'not used'\n")
+
+
 
 					outFile.write("\n")
-			outFile.write("\n")
-			visitedPorts.append(port['Node'])
-			print("Finished parsing switch (", port['Node'],") info...\n")
+					print("Finished parsing host (", port['Host'][0]["Name"] ,") info...\n")
+
+			for port in ports:
+
+				if port['Node'] not in visitedPorts:
+					print("Found switch (", port['Node'],") info in SENSE-Orchestrator Config!")
+					print("Parsing switch (", port['Node'],") info...")
+					outFile.write("  - name: \"")
+					currentNode = port['Node']
+					outFile.write(port['Node'])
+					outFile.write("\"\n")
+
+					outFile.write("    type: \"switch\"\n")
+					outFile.write("    interface:\n")
+
+					for p in ports:
+						if p["Node"] == currentNode:
+
+							outFile.write("      - name: \"")
+							outFile.write(p['Port'].split(":")[-1])
+							outFile.write("\"\n")
+
+							if "Vlan" in p:
+								outFile.write("        vlan: ")
+								outFile.write(p["Vlan"])
+								outFile.write("\n")
+							else:
+								outFile.write("        vlan: 'not used'\n")
+
+							outFile.write("        peer:\n")
+							if "Peer" in p:
+								if not p["Peer"].startswith("?"):
+									outFile.write("        - name: \"")
+									outFile.write(p["Peer"].split(":")[-2])
+									outFile.write("\"\n")
+
+									outFile.write("          interface: \"")
+									outFile.write(p["Peer"].split(":")[-1])
+									outFile.write("\"\n")
+
+									outFile.write("          vlan: 'not_used'\n")
+								elif p["Node"] in switchPeers:
+									loc = switchPeers.index(p["Node"])
+									peerName = "" if hostPeers[loc][0].startswith("?") else hostPeers[loc][0]
+									peerIface = "" if hostPeers[loc][1].startswith("?") else "\"" +  hostPeers[loc][1] + "\""
+									peerVlan = "" if hostPeers[loc][2].startswith("?") else hostPeers[loc][2]
+
+									outFile.write("        - name: \"")
+									outFile.write(peerName)
+									outFile.write("\"\n")
+
+									outFile.write("          interface: ")
+									outFile.write(peerIface)
+									outFile.write("\n")
+
+									outFile.write("          vlan: ")
+									outFile.write(peerVlan)
+									outFile.write("\n")
+
+								else:
+									outFile.write("        - name: \n")
+									outFile.write("          interface: \n")
+									outFile.write("          vlan: \n")	
+							else:
+								outFile.write("        - name: \n")
+								outFile.write("          interface: \n")
+								outFile.write("          vlan: \n")
+
+							outFile.write("\n")
+					outFile.write("\n")
+					visitedPorts.append(port['Node'])
+					print("Finished parsing switch (", port['Node'],") info...\n")
 
 
-	print("---------------------------------")
-	print("Dynamically generating config data from SENSE-Orchestrator...")
-	print("---------------------------------")
+			print("---------------------------------")
+			print("Dynamically generating config data from SENSE-Orchestrator...")
+			print("---------------------------------")
 
-	outFile.close()
+			outFile.close()
 
-	with open('sampleConverted.yaml', 'r') as readF:
-		print(readF.read())
+			with open(ofname, 'r') as readF:
+				print(readF.read())
+
 
 try:
 	configName = sys.argv[1]

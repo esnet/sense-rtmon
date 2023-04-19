@@ -3,7 +3,7 @@
 echo ""
 echo "!!    Available Configuration files under /config_flow, type in one of the below:"
 printf "\n"
-echo $(ls ../config_flow/)
+echo $(ls ../config_flow/*.yml)
 printf "\n"
 read -r -p "Enter Configuration File to Generate Dashboards: " config_file
 printf "\n"

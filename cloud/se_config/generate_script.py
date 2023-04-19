@@ -20,9 +20,9 @@ def check_arp_on(pushgateway, host_names,id_name,id):
         arp_str = arp_str + f'''
         # check_arp_on
         if curl {pushgateway} | grep '.*arp_state.*instance="{name}".*{id_name}="{id}".*'; then
-            echo '{formatted_name}_script_exporter_task1_{id}{{host="{formatted_name}"}} 1'
+            echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 1'
         else
-            echo '{formatted_name}_script_exporter_task1_{id}{{host="{formatted_name}"}} 0'
+            echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 0'
         fi
         '''
         
@@ -142,7 +142,7 @@ def main():
         host_names = []
         switch_names = []
         ips = []
-        id_name = "sense_mon_id"
+        id_name = "flow"
         id = data['flow']
         for node in data["node"]:
             if node['type'] == 'host':

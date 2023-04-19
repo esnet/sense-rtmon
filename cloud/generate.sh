@@ -36,9 +36,9 @@ if [ "${config_file}" == "" ]; then
     echo "!!    config_flow/config.yml"
     echo "!!    Parsing config.yml"
     # send API
-    # cd ./orchestrator
-    # python3 flow_to_api.py config.yml
-    # cd ..
+    cd ./orchestrator
+    python3 flow_to_api.py config.yml
+    cd ..
     # generate script exporter
     cd ./se_config
     python3 generate_script.py
@@ -47,10 +47,10 @@ if [ "${config_file}" == "" ]; then
 else 
     echo "!!    config_flow/${config_file} "
     echo "!!    Parsing ${config_file} "
-        # send API
-    # cd ./orchestrator
-    # python3 flow_to_api.py ${config_file}
-    # cd ..
+    # send API
+    cd ./orchestrator
+    python3 flow_to_api.py ${config_file}
+    cd ..
     # generate script exporter
     cd ./se_config
     python3 generate_script.py ${config_file} 
@@ -63,7 +63,8 @@ echo "!!    Transporting Script Exporter configuration files"
 yes | cp -rfa se_config/. script_exporter/examples
 sleep 1
 echo "!! restart script exporter"
-# restart script exporter docker
+# script has been reconfigured, restart script exporter
+docker rm -f $(docker ps -a --format "{{.Names}}" | grep "script_exporter")
 
 cd dashboard
 if [ "${config_file}" == "" ]; then
@@ -72,7 +73,6 @@ else
     python3 dynamic.py ${config_file} 
 fi
 
-echo ""
-echo ""
+echo -e "\n"
 echo "!!   If you do not see: {id:#, slug: <title>, status: success, uid:<>, url:<title>, version: 1}"
 echo "!!   PLEASE RUN ./generate.sh AGAIN, else the dashboards are generated successfully"

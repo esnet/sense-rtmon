@@ -1,12 +1,11 @@
-## SECTION 1 GENERAL INFORMATION ##
+flow: "rtmon-5"
 title: "Dev2 Testing Flow"
-flow: "rtmon-4"
 # host_ip: 198.124.151.8 
 grafana_host: 'http://dev2.virnao.com:3000'
 pushgateway: 'http://dev2.virnao.com:9091'
 grafana_api_token: "Bearer eyJrIjoiT05BSkJWakFmUkxCaDVadU0wYVhkdEdZc3ZBWng2bGEiLCJuIjoiZCIsImlkIjoxfQ=="
 
-## Section 2 Hosts & Switches all under nodes ##
+## Hosts & Switches all under nodes ##
 node:
   - name: 'sdn-dtn-1-7.ultralight.org'
     type: 'host' 

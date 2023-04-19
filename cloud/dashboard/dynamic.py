@@ -143,6 +143,7 @@ for i,node in enumerate(data["node"],i):
     # process filling info
     formatted_name = node['name'].replace("-", "_").replace(".", "_").lower()
     rep = get_hosts_names(data,{})
+    rep["ID_UNIQUE"] = unqiue_id
     if node['name'] == rep["HOST1NAME"]:
         rep["OPPOSITENAME"] = rep["HOST2NAME"]
     else :

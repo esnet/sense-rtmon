@@ -132,6 +132,7 @@ id_num = id_num + 100 # L2 tables start from 100 after flow panels in case of co
 print("Process L2 debugging")
 rep,id_num = fill_rep({},id_num)
 unqiue_id = data[unique_id_field].replace('-', '_') # flow id Grafana doesn't like - in raw metrics
+rep["ID_UNIQUE"] = unqiue_id
 info_panel = replace_file_to_string("./templates/l2_debugging_panel/info_panel.json",rep)
 concat_json(info_panel)
 for i,node in enumerate(data["node"],i):

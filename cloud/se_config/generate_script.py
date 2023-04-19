@@ -34,7 +34,7 @@ def check_arp_contain_ip(pushgateway, host_names,ips,id_name,id):
         formatted_name = name.replace("-", "_").replace(".", "_").lower()
         arp_str = arp_str + f'''
         # check_arp_contain_ip
-        if curl {pushgateway} | grep '.*arp_state.*' | grep '.*{id_name}="{id}".*' | grep '.*instance="{name}".* | grep '.*IPaddress="{ip}".*'; then
+        if curl {pushgateway} | grep '.*arp_state.*' | grep '.*{id_name}="{id}".*' | grep '.*instance="{name}".*' | grep '.*IPaddress="{ip}".*'; then
             echo '{formatted_name}_script_exporter_task2_{id.replace('-', '_')}{{host="{formatted_name}"}} 1'
         else
             echo '{formatted_name}_script_exporter_task2_{id.replace('-', '_')}{{host="{formatted_name}"}} 0'
@@ -69,7 +69,7 @@ def check_snmp_on(pushgateway,switch_name,id_name,id):
     formatted_name = switch_name.replace("-", "_").replace(".", "_").lower()
     snmp_str = snmp_str + f'''
     # check_snmp_on
-    if curl {pushgateway} | grep '.*ifHCInOctets.*' | grep '.*instance="{switch_name}.*"' | grep '.*{id_name}="{id}".*'; then
+    if curl {pushgateway} | grep '.*ifHCInOctets.*' | grep '.*instance="{switch_name}".*' | grep '.*{id_name}="{id}".*'; then
         echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 1'
     else
         echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 0'

@@ -3,7 +3,7 @@
 echo ""
 echo "!!    Available Configuration files under /config_flow, type in one of the below:"
 printf "\n"
-echo $(ls ../config_flow/*.yml)
+# echo $(ls ../config_flow/*.yml)
 for file in ../config_flow/*.yml; do
   basename "$file"
 done

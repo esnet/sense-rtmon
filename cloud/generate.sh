@@ -23,25 +23,17 @@ if [ "${API}" == "y" ] || [ "${API}" == "Y" ]; then
     sleep 2
 fi 
 
-# if [ "${config_file}" == "" ]; then
-#     echo "!!    config_flow/config.yml"
-#     echo "!!    Parsing config.yml"
-#     python3 fill_config.py
-#     sleep 0.2
-# else 
-#     echo "!!    config_flow/${config_file} "
-#     echo "!!    Parsing ${config_file} "
-#     python3 fill_config.py ${config_file} 
-#     sleep 0.2
-# fi
-
 if [ "${config_file}" == "" ]; then
     echo "!!    config_flow/config.yml"
     echo "!!    Parsing config.yml"
+    echo "!!    If it's new configuration or different flow id, make sure to send API request to site rm"
     # send API
-    cd ./orchestrator
-    python3 flow_to_api.py config.yml
-    cd ..
+    read -r -p "Send API Request to site rm? [y/n]: " siterm 
+    if [ "${API}" == "y" ] || [ "${API}" == "Y" ]; then
+        cd ./orchestrator
+        python3 flow_to_api.py config.yml
+        cd ..
+    fi
     # generate script exporter
     cd ./se_config
     python3 generate_script.py
@@ -50,10 +42,14 @@ if [ "${config_file}" == "" ]; then
 else 
     echo "!!    config_flow/${config_file} "
     echo "!!    Parsing ${config_file} "
+    echo "!!    If it's new configuration or different flow id, make sure to send API request to site rm"
     # send API
-    cd ./orchestrator
-    python3 flow_to_api.py ${config_file}
-    cd ..
+    read -r -p "Send API Request to site rm? [y/n]: " siterm 
+    if [ "${API}" == "y" ] || [ "${API}" == "Y" ]; then    
+        cd ./orchestrator
+        python3 flow_to_api.py ${config_file}
+        cd ..
+    fi
     # generate script exporter
     cd ./se_config
     python3 generate_script.py ${config_file} 

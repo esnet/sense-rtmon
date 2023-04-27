@@ -1,0 +1,57 @@
+graph TB
+    %% Host 1
+    subgraph h1 [Host 1]
+        ip{{VLAN: 1000 - IP: 1.1.1.1}}
+        e(ens2f0np0.3911)
+    end
+
+    %% Switch 1
+    subgraph sw1 [Switch 1]
+        subgraph sw1s1 [interface 1]
+            sw1s1vlan{{VLAN: 1000}}
+            sw1s1if[interfaceX.1000]
+        end
+        subgraph sw1s2 [interface 2]
+            sw1s2vlan{{VLAN: 1000}}
+            sw1s2ifout[InterfaceX.1000]
+        end
+    end
+
+    %% Switch 2
+    subgraph sw2 [Switch 2]
+        subgraph sw2s1 [interface 1]
+            sw2s1vlan{{VLAN: 1000}}
+            sw2s1if[InterfaceX.1000]
+        end
+        subgraph sw2s2 [interface 2]
+            sw2s2vlan{{VLAN: 1000}}
+            sw2s2ifout[interfaceX.1000]
+        end
+    end
+
+    %% Switch 3
+    subgraph sw3 [Switch 3]
+        subgraph sw3s1 [interface 1]
+            sw3s1vlan{{VLAN: 1000}}
+            sw3s1if[InterfaceX.1000]
+        end
+        subgraph sw3s2 [interface 2]
+            sw3s2vlan{{VLAN: 1000}}
+            sw3s2ifout[interfaceX.1000]
+        end
+    end
+
+    %% Host 2
+    subgraph h2 [Host 2]
+        ip2{{VLAN: 1000 - IP: 1.1.1.1}}
+        e2(interfaceX.1000)
+    end
+
+    %% Positioning & Connections
+    e(interfaceX.1000) ---|connection| sw1s1if[hundredGigE 1/31]
+    sw1s1if -.- sw1s2ifout
+    sw1s2ifout ---|connection| sw2s1if
+    sw2s1if -.- sw2s2ifout
+    sw2s2ifout ---|connection| sw3s1if
+    sw3s1if -.- sw3s2ifout
+    sw3s2ifout ---|connection| e2(interfaceX.1000)

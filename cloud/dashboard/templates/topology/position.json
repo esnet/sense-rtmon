@@ -1,0 +1,7 @@
+e(interfaceX.1000) ---|connection| sw1s1if[hundredGigE 1/31]
+sw1s1if -.- sw1s2ifout
+sw1s2ifout ---|connection| sw2s1if
+sw2s1if -.- sw2s2ifout
+sw2s2ifout ---|connection| sw3s1if
+sw3s1if -.- sw3s2ifout
+sw3s2ifout ---|connection| e2(interfaceX.1000)

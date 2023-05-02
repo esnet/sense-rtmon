@@ -9,7 +9,7 @@ graph TB
     subgraph sw1 [Switch 1]
         subgraph sw1s1 [interface 1]
             sw1s1vlan{{VLAN: 1000}}
-            sw1s1if[interfaceX.1000]
+            sw1s1if[hundredGigE 1/31]
         end
         subgraph sw1s2 [interface 2]
             sw1s2vlan{{VLAN: 1000}}
@@ -48,10 +48,10 @@ graph TB
     end
 
     %% Positioning & Connections
-    e(interfaceX.1000) ---|connection| sw1s1if[hundredGigE 1/31]
+    e ---|connection| sw1s1if
     sw1s1if -.- sw1s2ifout
     sw1s2ifout ---|connection| sw2s1if
     sw2s1if -.- sw2s2ifout
     sw2s2ifout ---|connection| sw3s1if
     sw3s1if -.- sw3s2ifout
-    sw3s2ifout ---|connection| e2(interfaceX.1000)
+    sw3s2ifout ---|connection| e2

@@ -45,7 +45,7 @@ else
     echo "!!    If it's new configuration or different flow id, make sure to send API request to site rm"
     # send API
     read -r -p "Send API Request to site rm? [y/n]: " siterm 
-    if [ "${API}" == "y" ] || [ "${API}" == "Y" ]; then    
+    if [ "${siterm}" == "y" ] || [ "${siterm}" == "Y" ]; then    
         cd ./orchestrator
         python3 flow_to_api.py ${config_file}
         cd ..

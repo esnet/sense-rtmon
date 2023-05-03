@@ -110,7 +110,7 @@ if __name__ == "__main__":
     # for node in node_data:
     #     print(node)
     
-    params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename': 'T2_US_Caltech_Test'}
+    params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename': 'T2_US_Caltech_Test'} # given by orchestrator
     api = SiteRMAPI(**params,node_data=node_data)
     api.test()
     print("API Request Completed")

@@ -1,15 +1,10 @@
 ###### Clean Slate Environment ######
-# switchNum: 1
-# hostIP: 172.31.72.189 # 198.32.43.16
-# # The DNS of the host which is running the Grafana container
-# grafanaHostIP: 'dev2.virnao.com'
-# pushgatewayPort: 9091 # Do not change unless container mapping change
-# hostA: # Host 1
-#   IP: 198.32.43.16
-# hostB: # Host 2
-#   IP: 198.32.43.15
+# hostIP: 172.31.72.189
+# ssl_certificate: '/etc/pki/tls/certs/sense-mon_es_net_fullchain.cer' #(fullchain)
+# ssl_certificate_key: '/etc/pki/tls/private/sense-mon.key' #(prvikey)
 
-# hostIP: 198.124.151.8
-hostIP: 172.31.72.189
-ssl_certificate: '/etc/pki/tls/certs/sense-mon_es_net_fullchain.cer' #(fullchain)
-ssl_certificate_key: '/etc/pki/tls/private/sense-mon.key' #(prvikey)
+ssl_certificate_key: '/root/sense-o.es.net-ssl/sense-o.key'
+ssl_certificate: '/root/sense-o.es.net-ssl/sense-o.crt'
+grafana_host: 'http://dev2.virnao.com:3000'
+pushgateway: 'http://dev2.virnao.com:9091'
+grafana_api_token: "Bearer eyJrIjoiT05BSkJWakFmUkxCaDVadU0wYVhkdEdZc3ZBWng2bGEiLCJuIjoiZCIsImlkIjoxfQ=="

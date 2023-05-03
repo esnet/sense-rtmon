@@ -113,6 +113,7 @@ if __name__ == "__main__":
     params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename': 'T2_US_Caltech_Test'}
     api = SiteRMAPI(**params,node_data=node_data)
     api.test()
+    print("API Request Completed")
     
 # for data in [{'hostname': 'sdn-dtn-1-7.ultralight.org', 'hosttype': 'host',
 #             'type': 'prometheus-push', 'metadata': {'instance': 'sdn-dtn-1-7.ultralight.org', 'flow_id': 'unqiue_test_id'},

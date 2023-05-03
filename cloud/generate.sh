@@ -29,7 +29,7 @@ if [ "${config_file}" == "" ]; then
     echo "!!    If it's new configuration or different flow id, make sure to send API request to site rm"
     # send API
     read -r -p "Send API Request to site rm? [y/n]: " siterm 
-    if [ "${API}" == "y" ] || [ "${API}" == "Y" ]; then
+    if [ "${siterm}" == "y" ] || [ "${siterm}" == "Y" ]; then
         cd ./orchestrator
         python3 flow_to_api.py config.yml
         cd ..
@@ -53,7 +53,6 @@ else
     # generate script exporter
     cd ./se_config
     python3 generate_script.py ${config_file} 
-    sleep 0.2
     cd ..
 fi
 

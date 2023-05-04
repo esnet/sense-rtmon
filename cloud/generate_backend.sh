@@ -1,6 +1,7 @@
 #! /bin/bash
 echo "Usage:"
 echo "./generate_backend.sh <your path to config file (config_cloud path is extended by default)> "
+echo "This script fetches API token, sends API request to site rm, generates script exporter configuration files, and generates grafana dashboards"
 
 config_file=$1
 

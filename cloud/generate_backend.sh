@@ -5,7 +5,8 @@ echo "./generate_backend.sh <your path to config file (config_cloud path is exte
 config_file=$1
 
 if [ "${config_file}" == "" ]; then
-    echo "no config file given"
+    echo ""
+    echo "!!    No config file given"
     exit 1
 fi
 

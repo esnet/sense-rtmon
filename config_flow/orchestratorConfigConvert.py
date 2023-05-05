@@ -75,6 +75,9 @@ def orchestratorConvert(orchestrator_fname):
 
 			outFile.write("grafana_api_token: \n\n")
 
+			outFile.write("hostname:  \n")
+			outFile.write("sitename: \n")
+
 			print("---------------------------------")
 			print("Writing User Generated Configs: flow ID = \'", flow ,"\'...")
 			print("---------------------------------\n")

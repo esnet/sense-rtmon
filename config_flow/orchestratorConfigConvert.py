@@ -1,7 +1,10 @@
 import json
 import os
 import uuid
+import yaml
 import sys
+
+from time import gmtime, strftime
 
 
 def orchestratorConvert(orchestrator_fname):
@@ -9,6 +12,11 @@ def orchestratorConvert(orchestrator_fname):
 	data = json.load(f)
 	print("Loaded JSON data...")
 	print("Parsing JSON data...\n")
+
+ 	# Loading in config_cloud/config.yml
+	with open("../config_cloud/config.yml", 'r') as f:
+	    cloudConfig = yaml.safe_load(f)
+
 
 	ports = data['Ports']
 
@@ -40,21 +48,31 @@ def orchestratorConvert(orchestrator_fname):
 			switchPeers = []
 			
 			# output filename
-			ofname = "config/config_" + str(flow) + ".yaml"
+			ofname = "auto_config/config_" + str(flow) + ".yaml"
 			outFile = open(ofname, "w")
 
 			# User generated configs not available from SENSE Orchestrator
 			outFile.write("## SECTION 1 GENERAL INFORMATION ##\n")
-			outFile.write("title: \n")
-			outFile.write("flow: \n")
 
-			uuidStr = str(uuid.uuid4())
-			uuidConfig = "flow_uuid: \"" + uuidStr + "\"\n"
+
+			# Flow information
+			flowStr = strftime("%Y-%m-%d-%H-%M-%S", gmtime())
+			uuidStr = "rtmon-" + str(flowStr)
+			uuidConfig = "flow: \"" + uuidStr + "\"\n"
 			outFile.write(uuidConfig)
 
-			outFile.write("host_ip: \n")
-			outFile.write("grafana_host: \n")
-			outFile.write("pushgateway: \n")
+
+			# title
+			outFile.write("title: \"PlaceholderArbitraryTitle\" \n")
+
+			# writing Grafana configs from cloud/config.yml
+			grafanaConfig = "grafana_host: \"" + str(cloudConfig['grafana_host']) + "\"\n"
+			outFile.write(grafanaConfig)
+
+			pushgatewayConfig = "pushgateway: \"" + str(cloudConfig['pushgateway']) + "\"\n"
+			outFile.write(pushgatewayConfig)
+
+
 			outFile.write("grafana_api_token: \n\n")
 
 			print("---------------------------------")
@@ -81,6 +99,9 @@ def orchestratorConvert(orchestrator_fname):
 					outFile.write("\"\n")
 
 					outFile.write("    type: \"host\"\n")
+					# default is arp=on, runtime = 610 seconds
+					outFile.write("    arp: 'on'\n")
+					outFile.write("    runtime: 610\n")
 					outFile.write("    interface:\n")
 
 					for iface in port['Host']:
@@ -106,7 +127,7 @@ def orchestratorConvert(orchestrator_fname):
 							outFile.write(iface['IPv4'].split("/")[0])
 							outFile.write("\n")
 
-						outFile.write("        ping: \n")
+						# outFile.write("        ping: \n")
 
 					outFile.write("      - name: \"")
 					outFile.write(port['Node'])
@@ -161,6 +182,7 @@ def orchestratorConvert(orchestrator_fname):
 					outFile.write("\"\n")
 
 					outFile.write("    type: \"switch\"\n")
+					outFile.write("    runtime: 610\n")
 					outFile.write("    interface:\n")
 
 					for p in ports:

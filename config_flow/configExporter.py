@@ -2,8 +2,11 @@ import time
 import sys
 import hashlib
 from urllib.request import urlopen, Request
+import subprocess
+import os
+import yaml
 
-SCRAPE_DURATION = 3
+SCRAPE_DURATION = 5
 
 if len(sys.argv) <= 2:
 	HOST = ""
@@ -49,6 +52,15 @@ while True:
             print("\n----------------------------------------------------------------------")
             print("Flow description has changed! Propogating changes to site exporters...")
             print("----------------------------------------------------------------------\n")
+
+            # config = yaml.load(response)
+            # with open("./config_flow/auto_config/hosted_config.yaml", "w") as outfile:
+            #     yaml.dump(config, outfile)
+
+            os.chdir("../cloud")
+            cmd = f"./generate_backend.sh auto_config/config_unknown.yaml"
+            subprocess.run(cmd, shell=True)
+
             # again read the website
             response = urlopen(url).read()
  

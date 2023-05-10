@@ -8,3 +8,7 @@ ssl_certificate: '/root/sense-o.es.net-ssl/sense-o.crt'
 grafana_host: 'http://dev2.virnao.com:3000'
 pushgateway: 'http://dev2.virnao.com:9091'
 grafana_api_token: "Bearer eyJrIjoiT05BSkJWakFmUkxCaDVadU0wYVhkdEdZc3ZBWng2bGEiLCJuIjoiZCIsImlkIjoxfQ=="
+siterm_url_map:
+  "urn:ogf:network:nrp-nautilus.io:2020": https://sense-prpdev-fe.sdn-lb.ultralight.org/T2_US_SDSC/sitefe/v1
+  "urn:ogf:network:ultralight.org:2013": https://sense-caltech-fe.sdn-lb.ultralight.org/T2_US_Caltech_Test/sitefe/v1
+  "urn:ogf:network:sc-test.cenic.net:2020": https://sense-ladowntown-fe.sdn-lb.ultralight.org/NRM_CENIC/sitefe/v1

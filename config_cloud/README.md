@@ -7,4 +7,5 @@
 - with these information, it's sufficient to deploy `cloud stack` but not enough to generate dashboard
 - see `config_flow` on needed information to generate dashboard 
 
-
+## Future work
+Moving the following information to this configuration: grafana_host,  pushgateway, grafana_api_token

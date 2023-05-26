@@ -6,7 +6,18 @@ echo "||                                          ||"
 ## Read inputs
 while getopts l: flag; do
     case "${flag}" in
-    l) input_lets=${OPTARG} ;;
+    l) 
+    # Prevents from unintended value for the flag.
+        if [ $OPTARG -gt 3 ]; then
+            echo "Flag ${OPTARG} not available"
+            echo "The Flags Available: "
+            echo "      1) Let's Encrypt signed certificate. (this machine must be reachable via over the internet by the domain name)"
+            echo "      2) Using existing certificates."
+            echo "      3) Finish install after downloading script exporter and setting up necessary dependencies"
+            exit 1
+        fi
+        input_lets=${OPTARG} ;;
+
     esac
 done
 
@@ -58,7 +69,10 @@ if [ -z "$input_lets" ]; then
     sslmode=${sslmode:-1}
 else
     echo "Let's Encrypt command-line input found."
-    sslmode=${input_lets:-1}
+    # sslmode=${input_lets:-1}
+    # ':-' Parameter Expansion is redundant because $input_lets will never be null in the else block.
+    # Check is already done {-z "$input_lets"}
+    sslmode=$input_lets
 fi
 
 if [ "$sslmode" == "1" ]; then # Let's Encrypt

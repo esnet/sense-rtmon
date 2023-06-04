@@ -17,6 +17,10 @@ while getopts l: flag; do
             exit 1
         fi
         input_lets=${OPTARG} ;;
+    # Push the error message to stderr
+    *)  echo "Illegal option" >&2; 
+        exit 1;;
+        # stops the installation
 
     esac
 done

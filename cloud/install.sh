@@ -99,9 +99,9 @@ if [ "$sslmode" == "2" ]; then # existing certificate
     read -r -p "ssl certificate key (privkey): " ssl_certificate_key
     read -r -p "Please enter the domain name of this machine: " domain
     read -r -p "Grafana Running port (default 3000 running behind Nginx): " grafana_port
-    if [ "${grafana_port}" == "" ]; then
-        grafana_port=3000
-    fi
+    
+    grafana_port=${grafana_port:-3000}
+   
 #     sudo tee ./nginx/server_conf<<EOF
 # server_name ${domain};
 # ssl_certificate     "$ssl_certificate";

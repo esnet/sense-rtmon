@@ -13,16 +13,30 @@ sudo lsof -i -P -n | grep 9469
 
 sleep 2
 read -r -p "Config file [press enter for default choice config_cloud/config.yml]: " config_file
-if [ "${config_file}" == "" ]; then
-    echo "!!    Parsing config.yml"
-    python3 prometheus.py
-    sleep 0.2
-else 
-    echo "!!    Parsing ${config_file}"
-    python3 prometheus.py ${config_file}
-    sleep 0.2
-fi
+# if [ "${config_file}" == "" ]; then
+#     echo "!!    Parsing config.yml"
+#     python3 prometheus.py
+#     sleep 0.2
+# else 
+#     echo "!!    Parsing ${config_file}"
+#     python3 prometheus.py ${config_file}
+#     sleep 0.2
+# fi
 
+
+# Setting 'config_file' to its own value if it's already set, else setting it to 'config.yml' as a default.
+# This helps by ensuring that 'config_file' is always set to a useful value, eliminating the need for a conditional check later on.
+config_file=${config_file:-config.yml}
+
+# Using the variable 'config_file' in the echo statement. Because of the previous line, we know 'config_file' is always set here.
+# So we've simplified the code by eliminating an 'if' statement, making it more readable and less error-prone.
+echo "!!    Parsing ${config_file}"
+
+# Running 'prometheus.py' with 'config_file' as an argument. Again, we know 'config_file' is set due to the previous line.
+# This simplifies the code, as we only need one line to run 'prometheus.py', regardless of whether 'config_file' was initially set or not.
+python3 prometheus.py ${config_file}
+
+# Sleep command to allow for any necessary delays, unchanged from the original code.
 sleep 1
 
 # echo "!!    Transporting Script Exporter configuration files"

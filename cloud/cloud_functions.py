@@ -15,28 +15,50 @@ def read_yml_file(path, sys_argv, order, go_back_folder_num):
     for i in range(go_back_folder_num):
         os.chdir("..")
     config_path = str(os.path.abspath(os.curdir)) + path
-    infpth = config_path + "/config.yml"
+    # infpth = config_path + "/config.yml"
+    # case already handled in start.sh by running |python3 prometheus.py config.yml| instead of |python3 prometheus.py|
+    
     os.chdir(owd)
     data = {}
-    file_name = "config.yml"
+
+
+    # file_name = "config.yml" 
+    # we can remove this because there will always be a file name either user gives one or the default config.yml
 
     # argument given
-    if len(sys_argv) > 1:
-        file_name = str(sys_argv[order])
-        file_path = config_path + "/" + file_name
-        print(f"\n Config file {file_path}\n")
-        with open(file_path, 'r') as stream:
-            try:
-                data = yaml.safe_load(stream)
-            except yaml.YAMLError as exc:
-                print(f"\n Config file {file_path} could not be found in the config directory\n")
+    # if len(sys_argv) > 1:
+    #     file_name = str(sys_argv[order])
+    #     file_path = config_path + "/" + file_name
+    #     print(f"\n Config file {file_path}\n")
+    #     with open(file_path, 'r') as stream:
+    #         try:
+    #             data = yaml.safe_load(stream)
+    #         except yaml.YAMLError as exc:
+    #             print(f"\n Config file {file_path} could not be found in the config directory\n")
         
-    else: # default config file
-        with open(infpth, 'r') as stream:
-            try:
-                data = yaml.safe_load(stream)
-            except yaml.YAMLError as exc:
-                print(f"\n Config file {infpth} could not be found in the config directory\n")
+    # else: # default config file
+    #     with open(infpth, 'r') as stream:
+    #         try:
+    #             data = yaml.safe_load(stream)
+    #         except yaml.YAMLError as exc:
+    #             print(f"\n Config file {infpth} could not be found in the config directory\n")
+
+    
+    # Retrieve file name from command line arguments
+    file_name = str(sys_argv[order])
+
+    # Construct the full file path
+    file_path = config_path + "/" + file_name
+
+    print(f"\n Config file {file_path}\n")
+
+    # Open and load YAML file
+    with open(file_path, 'r') as stream:
+        try:
+            data = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(f"\n Config file {file_path} could not be found in the config directory\n")
+        
     
     return data,file_name
 

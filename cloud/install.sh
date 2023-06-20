@@ -96,20 +96,30 @@ if [ "$sslmode" == "2" ]; then # existing certificate
     echo "!!    Using existing certificates (e.g. default path /etc/pki/tls )."
     echo "Please enter the existing certificates and key:"
     read -r -p "ssl certificate (fullchain): " ssl_certificate
-    read -r -p "ssl certificate key (privkey): " ssl_certificate_key
-    read -r -p "Please enter the domain name of this machine: " domain
-    read -r -p "Grafana Running port (default 3000 running behind Nginx): " grafana_port
-    
-    grafana_port=${grafana_port:-3000}
-   
-#     sudo tee ./nginx/server_conf<<EOF
-# server_name ${domain};
-# ssl_certificate     "$ssl_certificate";
-# ssl_certificate_key "$ssl_certificate_key";
-# EOF
+    if [[ -z "$ssl_certificate" ]]; then
+        echo "Information incomplete: ssl certificate is missing."
+        exit 1
+    fi
 
-    # write the first line to proxt_conf
+    read -r -p "ssl certificate key (privkey): " ssl_certificate_key
+    if [[ -z "$ssl_certificate_key" ]]; then
+        echo "Information incomplete: ssl certificate key is missing."
+        exit 1
+    fi
+
+    read -r -p "Please enter the domain name of this machine: " domain
+    if [[ -z "$domain" ]]; then
+        echo "Information incomplete: domain name is missing."
+        exit 1
+    fi
+
+    read -r -p "Grafana Running port (default 3000 running behind Nginx): " grafana_port
+    if [[ -z "$grafana_port" ]]; then
+        grafana_port=3000
+    fi
+
     # echo "!!    If entered port is not 3000, edit docker-stack.yml to match the correct port for Grafana and Nginx Container"
+    if [ ]
     
     python3 certify.py ${domain} ${grafana_port} ${ssl_certificate} ${ssl_certificate_key}
     echo "!!    Success!"

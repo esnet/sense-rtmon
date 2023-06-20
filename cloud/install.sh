@@ -118,8 +118,6 @@ if [ "$sslmode" == "2" ]; then # existing certificate
         grafana_port=3000
     fi
 
-    # echo "!!    If entered port is not 3000, edit docker-stack.yml to match the correct port for Grafana and Nginx Container"
-    if [ ]
     
     python3 certify.py ${domain} ${grafana_port} ${ssl_certificate} ${ssl_certificate_key}
     echo "!!    Success!"

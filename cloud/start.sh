@@ -72,5 +72,5 @@ echo "- enter the IP address NOT DNS"
 sleep 1
 echo ""
 echo "!!    What's next?"
-echo "!!    Generate flow dashboard: run ./generate.sh to generate a dashboard based on the configuration files under config_flow"
+echo "!!    Generate flow dashboard: run python3 main.py  to generate a dashboard based on the configuration files under config_flow"
 echo "!!    Delete the deployment: run ./clean.sh to remove cloud stack"

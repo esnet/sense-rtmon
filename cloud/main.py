@@ -34,6 +34,8 @@ def fetch_data():
        
     
     data = json.loads(response)
+    with open("response.json", 'w') as f:
+        json.dump(data, f, indent=3)
     
     return data
 

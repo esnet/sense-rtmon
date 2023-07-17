@@ -1,0 +1,137 @@
+{
+   "instances": [
+      {
+         "intents": [
+            {
+               "id": "a21bf8b8-d980-4a57-99be-6f308de15a43",
+               "json": "{\"service_instance_uuid\":\"1f9c4385-68b1-48c9-a5cc-fda7c74e79bc\",\"data\":{\"type\":\"Site-L3 over P2P VLAN\",\"connections\":[{\"bandwidth\":{\"qos_class\":\"guaranteedCapped\",\"capacity\":\"1000\"},\"suggest_ip_range\":[{\"start\":\"0::0\\/64\",\"end\":\"0::0\\/64\"}],\"name\":\"Connection 1\",\"terminals\":[{\"vlan_tag\":\"any\",\"assign_ip\":true,\"ipv6_prefix_list\":\"2605:d9c0:2:fff1::\\/64\",\"uri\":\"urn:ogf:network:ultralight.org:2013\"},{\"vlan_tag\":\"any\",\"assign_ip\":true,\"ipv6_prefix_list\":\"2001:48d0:3001:111::\\/64\",\"uri\":\"urn:ogf:network:nrp-nautilus.io:2020\"}]}]},\"service\":\"dnc\",\"options\":[],\"service_profile_uuid\":\"573a933f-9a22-40ac-a9bc-69153a185932\",\"queries\":[]}",
+               "provisioned": true,
+               "creation_time": "2023-04-14 21:47:23",
+               "serviceInstanceUUID": "1f9c4385-68b1-48c9-a5cc-fda7c74e79bc",
+               "serviceDeltaUUID": "bc97fc52-6343-4c95-bb15-fbf4f1cc1ec0"
+            }
+         ],
+         "alias": "Justas-Rucio-Caltech-UCSD.T2",
+         "referenceUUID": "1f9c4385-68b1-48c9-a5cc-fda7c74e79bc",
+         "state": "CANCEL - READY",
+         "owner": "admin",
+         "lastState": "COMMITTED",
+         "timestamp": "2023/02/14 16:58:36",
+         "archived": false
+      },
+      {
+         "intents": [
+            {
+               "id": "169031d9-1e6f-4ade-a152-3d1a3695e887",
+               "json": "{\"service_instance_uuid\":\"d7b72a34-eca6-402e-a646-827aa28cb717\",\"data\":{\"type\":\"Multi-Path P2P VLAN\",\"connections\":[{\"bandwidth\":{\"qos_class\":\"guaranteedCapped\",\"capacity\":\"1000\"},\"name\":\"Connection 1\",\"terminals\":[{\"vlan_tag\":\"any\",\"assign_ip\":false,\"uri\":\"urn:ogf:network:fnal.gov:2023:s0:service+vsw\"},{\"vlan_tag\":\"any\",\"assign_ip\":false,\"uri\":\"urn:ogf:network:maxgigapop.net:2013:ptxn-sense-v1.maxgigapop.net\"}]}]},\"service\":\"dnc\",\"options\":[],\"service_profile_uuid\":\"4d114cba-8861-40b8-b9de-59ba7133f134\",\"queries\":[]}",
+               "provisioned": true,
+               "creation_time": "2023-05-24 16:46:58",
+               "serviceInstanceUUID": "d7b72a34-eca6-402e-a646-827aa28cb717",
+               "serviceDeltaUUID": "2ea6a99c-9e23-4cde-adbf-fe7c7aea4aa0"
+            }
+         ],
+         "alias": "umd-fnal",
+         "referenceUUID": "d7b72a34-eca6-402e-a646-827aa28cb717",
+         "state": "CREATE - READY",
+         "owner": "jbalcas@caltech.edu",
+         "lastState": "COMMITTED",
+         "timestamp": "2023/05/24 16:46:58",
+         "archived": false
+      },
+      {
+         "intents": [
+            {
+               "id": "37829ead-5b1b-4440-b79d-96498e5acd3f",
+               "json": "{\"service_instance_uuid\":\"899620b2-4009-49bf-8bbd-ee54776df622\",\"data\":{\"type\":\"Site-L3 over P2P VLAN\",\"connections\":[{\"bandwidth\":{\"qos_class\":\"guaranteedCapped\",\"capacity\":\"400000\"},\"suggest_ip_range\":[{\"start\":\"0::0\\/64\",\"end\":\"0::0\\/64\"}],\"name\":\"Connection 1\",\"terminals\":[{\"vlan_tag\":\"any\",\"assign_ip\":true,\"ipv6_prefix_list\":\"2605:d9c0:2:fff1::\\/64\",\"uri\":\"urn:ogf:network:ultralight.org:2013\"},{\"vlan_tag\":\"any\",\"assign_ip\":true,\"ipv6_prefix_list\":\"2001:48d0:3001:111::\\/64\",\"uri\":\"urn:ogf:network:nrp-nautilus.io:2020\"}]}]},\"service\":\"dnc\",\"options\":[],\"service_profile_uuid\":\"573a933f-9a22-40ac-a9bc-69153a185932\",\"queries\":[]}",
+               "provisioned": true,
+               "creation_time": "2023-06-13 20:24:27",
+               "serviceInstanceUUID": "899620b2-4009-49bf-8bbd-ee54776df622",
+               "serviceDeltaUUID": "e08ce60b-5e73-4f6b-8ef6-6203f2cfdad5"
+            }
+         ],
+         "alias": "aashay-400",
+         "referenceUUID": "899620b2-4009-49bf-8bbd-ee54776df622",
+         "state": "CREATE - READY",
+         "owner": "aaarora@ucsd.edu",
+         "lastState": "COMMITTED",
+         "timestamp": "2023/06/13 20:24:27",
+         "archived": false
+      },
+      {
+         "intents": [
+            {
+               "id": "02fcd5fb-eaac-478b-be4a-465a1a396848",
+               "json": "{\"service_instance_uuid\":\"39be31cb-d762-4525-ba9e-3b28d7d5b8cf\",\"data\":{\"type\":\"Multi-Path P2P VLAN\",\"connections\":[{\"bandwidth\":{\"qos_class\":\"guaranteedCapped\",\"capacity\":\"1000\"},\"suggest_ip_range\":[{\"start\":\"10.251.88.10\\/24\",\"end\":\"10.251.88.20\\/24\"}],\"name\":\"Connection 1\",\"terminals\":[{\"vlan_tag\":\"any\",\"assign_ip\":true,\"uri\":\"urn:ogf:network:ultralight.org:2013:sandie-1.ultralight.org\"},{\"vlan_tag\":\"any\",\"assign_ip\":true,\"uri\":\"urn:ogf:network:nrp-nautilus.io:2020:k8s-gen4-01.sdsc.optiputer.net\"}]}]},\"service\":\"dnc\",\"options\":[],\"service_profile_uuid\":\"cdc69fd2-8c41-4066-983c-65510fa88530\",\"queries\":[]}",
+               "provisioned": true,
+               "creation_time": "2023-06-15 23:39:32",
+               "serviceInstanceUUID": "39be31cb-d762-4525-ba9e-3b28d7d5b8cf",
+               "serviceDeltaUUID": "95f33507-7368-4a66-ba3a-dee17cd74e8b"
+            }
+         ],
+         "alias": "Caltech-UCSD-L2-SANDIE1.T3",
+         "referenceUUID": "39be31cb-d762-4525-ba9e-3b28d7d5b8cf",
+         "state": "CANCEL - READY",
+         "owner": "admin",
+         "lastState": "COMMITTED",
+         "timestamp": "2023/06/15 20:30:40",
+         "archived": false
+      },
+      {
+         "intents": [
+            {
+               "id": "ac8d0e46-d0e7-4707-bf2a-afa2108f5c50",
+               "json": "{\"service_instance_uuid\":\"5ea5084a-6757-4130-8021-7bf2bc38c231\",\"data\":{\"type\":\"Multi-Path P2P VLAN\",\"connections\":[{\"bandwidth\":{\"qos_class\":\"guaranteedCapped\",\"capacity\":\"1000\"},\"suggest_ip_range\":[{\"start\":\"0.0.0.0\\/24\",\"end\":\"0.0.0.0\\/24\"}],\"name\":\"Connection 1\",\"terminals\":[{\"vlan_tag\":\"any\",\"assign_ip\":true,\"uri\":\"urn:ogf:network:ultralight.org:2013:sdn-dtn-2-11.ultralight.org\"},{\"vlan_tag\":\"any\",\"assign_ip\":true,\"uri\":\"urn:ogf:network:nrp-nautilus-prod.io:2020:k8s-igrok-02.calit2.optiputer.net\"}]}]},\"service\":\"dnc\",\"options\":[],\"service_profile_uuid\":\"f5179790-c42b-4978-a027-9d1e977354eb\",\"queries\":[]}",
+               "provisioned": true,
+               "creation_time": "2023-07-16 03:49:45",
+               "serviceInstanceUUID": "5ea5084a-6757-4130-8021-7bf2bc38c231",
+               "serviceDeltaUUID": "49f51a6b-1df1-43cf-89d7-7c359de8927e"
+            }
+         ],
+         "alias": "XLK",
+         "referenceUUID": "5ea5084a-6757-4130-8021-7bf2bc38c231",
+         "state": "REINSTATE - READY",
+         "owner": "sdasgupta@lbl.gov",
+         "lastState": "COMMITTED",
+         "timestamp": "2023/07/12 17:41:00",
+         "archived": false
+      },
+      {
+         "intents": [
+            {
+               "id": "7dfcd1e0-bda5-48d5-a029-56143c0e65ab",
+               "json": "{\"service_instance_uuid\":\"3180aa1a-f5b6-4f8e-8a1c-61c5e640cd18\",\"data\":{\"type\":\"Multi-Path P2P VLAN\",\"connections\":[{\"bandwidth\":{\"qos_class\":\"guaranteedCapped\",\"capacity\":\"1000\"},\"suggest_ip_range\":[{\"start\":\"0.0.0.0\\/30\",\"end\":\"0.0.0.0\\/30\"}],\"name\":\"Connection 1\",\"terminals\":[{\"vlan_tag\":\"any\",\"assign_ip\":true,\"uri\":\"urn:ogf:network:ultralight.org:2013:sdn-dtn-1-7.ultralight.org\"},{\"vlan_tag\":\"any\",\"assign_ip\":true,\"uri\":\"urn:ogf:network:ultralight.org:2013:sdn-dtn-2-11.ultralight.org\"}]}]},\"service\":\"dnc\",\"options\":[],\"service_profile_uuid\":\"ca660eb3-899c-49bf-8e18-d5c0dcbb9fdf\",\"queries\":[]}",
+               "provisioned": false,
+               "creation_time": "2023-07-16 02:46:58",
+               "serviceInstanceUUID": "3180aa1a-f5b6-4f8e-8a1c-61c5e640cd18",
+               "serviceDeltaUUID": "c4f84436-3a65-4049-a0d1-5326463f8028"
+            }
+         ],
+         "alias": "SENSE-RTMON",
+         "referenceUUID": "3180aa1a-f5b6-4f8e-8a1c-61c5e640cd18",
+         "state": "CREATE - FAILED",
+         "owner": "sdasgupta@lbl.gov",
+         "lastState": "INIT",
+         "timestamp": "2023/07/16 02:46:57",
+         "archived": false
+      },
+      {
+         "intents": [
+            {
+               "id": "67d1b2f7-a4ad-43e6-af70-42b0e651b5b2",
+               "json": "{\"service_instance_uuid\":\"a1e0b73c-35ff-49cd-b6c1-9f7d52902638\",\"data\":{\"type\":\"Multi-Path P2P VLAN\",\"connections\":[{\"bandwidth\":{\"qos_class\":\"guaranteedCapped\",\"capacity\":\"1000\"},\"suggest_ip_range\":[{\"start\":\"0.0.0.0\\/30\",\"end\":\"0.0.0.0\\/30\"}],\"name\":\"Connection 1\",\"terminals\":[{\"vlan_tag\":\"any\",\"assign_ip\":true,\"uri\":\"urn:ogf:network:ultralight.org:2013:sdn-dtn-1-7.ultralight.org\"},{\"vlan_tag\":\"any\",\"assign_ip\":true,\"uri\":\"urn:ogf:network:ultralight.org:2013:sdn-dtn-2-11.ultralight.org\"}]}]},\"service\":\"dnc\",\"options\":[],\"service_profile_uuid\":\"ca660eb3-899c-49bf-8e18-d5c0dcbb9fdf\",\"queries\":[]}",
+               "provisioned": true,
+               "creation_time": "2023-07-16 02:49:00",
+               "serviceInstanceUUID": "a1e0b73c-35ff-49cd-b6c1-9f7d52902638",
+               "serviceDeltaUUID": "94358571-4fbf-4593-ae8a-2f0e0dff0e00"
+            }
+         ],
+         "alias": "CALTECH 2",
+         "referenceUUID": "a1e0b73c-35ff-49cd-b6c1-9f7d52902638",
+         "state": "CREATE - READY",
+         "owner": "sdasgupta@lbl.gov",
+         "lastState": "COMMITTED",
+         "timestamp": "2023/07/16 02:49:00",
+         "archived": false
+      }
+   ]
+}

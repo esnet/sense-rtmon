@@ -1,0 +1,580 @@
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 201
+    },
+    "id": 201,
+    "panels": [],
+    "title": "Switch Flow Summary - NRM_CENIC:aristaeos_s0",
+    "type": "row"
+  },
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 5,
+      "w": 24,
+      "x": 0,
+      "y": 202
+    },
+    "id": 202,
+    "options": {
+      "content": "```\nSwitch: NRM_CENIC:aristaeos_s0   Interface:\nname: Port-Channel502 | vlan: 3873 | peer: name: sn3700_s0, interface: PortChannel501, vlan: not_used\nname: Port-Channel501 | vlan: 3873 | peer: name: dellos9_s0, interface: Port-channel_103, vlan: not_used\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "NRM_CENIC:aristaeos_s0 - Node Interface Information",
+    "type": "text"
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 203
+    },
+    "hiddenSeries": false,
+    "id": 203,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv Port-Channel502",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel502 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 205
+    },
+    "hiddenSeries": false,
+    "id": 205,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv Port-Channel501",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel501 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 207
+    },
+    "id": 207,
+    "panels": [],
+    "title": "Switch Flow Summary - T2_US_Caltech_Test:dellos9_s0",
+    "type": "row"
+  },
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 5,
+      "w": 24,
+      "x": 0,
+      "y": 208
+    },
+    "id": 208,
+    "options": {
+      "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: Port-channel_103 | vlan: 3873 | peer: name: aristaeos_s0, interface: Port-Channel501, vlan: not_used\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "T2_US_Caltech_Test:dellos9_s0 - Node Interface Information",
+    "type": "text"
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 209
+    },
+    "hiddenSeries": false,
+    "id": 209,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv Port-channel_103",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: Port-channel_103 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 211
+    },
+    "id": 211,
+    "panels": [],
+    "title": "Switch Flow Summary - T2_US_SDSC:sn3700_s0",
+    "type": "row"
+  },
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 5,
+      "w": 24,
+      "x": 0,
+      "y": 212
+    },
+    "id": 212,
+    "options": {
+      "content": "```\nSwitch: T2_US_SDSC:sn3700_s0   Interface:\nname: PortChannel501 | vlan: 3873 | peer: name: aristaeos_s0, interface: Port-Channel502, vlan: not_used\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "T2_US_SDSC:sn3700_s0 - Node Interface Information",
+    "type": "text"
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 213
+    },
+    "hiddenSeries": false,
+    "id": 213,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv PortChannel501",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "T2_US_SDSC:sn3700_s0 - interface: PortChannel501 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 20,
+      "w": 24,
+      "x": 0,
+      "y": 315
+    },
+    "id": 315,
+    "panels": [],
+    "title": "L2 Debugging",
+    "type": "row"
+  },

@@ -5,8 +5,64 @@ import re
 from datetime import datetime
 import sys
 import requests
+def generate_mermaid(data):
+    # Make Host 1
+    host_template = "graph TB\n"
+    host=[]
+    switch = []
+    tag = 65
+    delta = 1123
 
-def api(data, dashboard):
+    for node in data['node']:
+        if node['type'] == "host":
+            template = f"subgraph \"HOST {node['name']}\"\n"
+            number = 1
+            host1 = []
+            for inter in node['interface']:
+                text = ""
+                try:
+                    text = f"IP: {inter['ip']}"
+                except:
+                    text = f"VLAN: {inter['vlan']}"
+                t = f"subgraph \"Interface: {number}\"\n in{tag}({inter['name']}) \n in{delta}({text})\nend\n"
+                host1.append(f"in{delta}")
+                number += 1
+                delta += 1
+                tag += 1
+                template += t
+            template += "end\n"
+            host_template += template
+            host.append(host1)
+        if node['type'] == 'switch':
+            template = f"subgraph \"Switch {node['name']}\"\n"
+            number = 1
+            for inter in node['interface']:
+                t = f"subgraph \"Interface: {number}\"\n in{tag}({inter['name']}) \n in{delta}(Vlan: {inter['vlan']})\nend\n"
+                switch.append(f"in{delta}")
+                number += 1
+                delta += 1
+                tag += 1
+                template += t
+            template += "end\n"
+            host_template += template
+
+    for i in range(0, len(switch) - 1):
+        if i % 2 == 0:
+            host_template += f"{switch[i]} -.-> {switch[i + 1]}\n"
+        else:
+            host_template += f"{switch[i]} --> {switch[i + 1]}\n"
+    for i in range(0, len(host)):
+        for j in range(0, len(host[i]) - 1):
+            host_template += f"{host[i][j]} -.-> {host[i][j + 1]}\n"
+    
+    try:
+        host_template += f"{host[0][1]} --> {switch[0]}\n"
+        host_template += f"{switch[len(switch) - 1]} --> {host[1][0]}\n"
+    except:
+        sys.exit()
+            
+    return host_template
+def api(data, dashboard, lp):
     url = f"{str(data['grafana_host'])}/api/dashboards/db"
     
 
@@ -19,6 +75,8 @@ def api(data, dashboard):
     # Open and load out.json input
     f = open(dashboard)
     x = json.load(f)
+    
+    x['dashboard']['panels'][1]['options']['content'] = generate_mermaid(lp)
 
     # HTTP Post Request
     r = requests.post(url=url, headers=headers, data=json.dumps(x), verify=False)
@@ -27,7 +85,9 @@ def api(data, dashboard):
 
 
 def dynamic(data):
-    # fill in the replacement dictionary of necessary values
+    lp = data
+    if os.path.exists("./dashboard/templates/temp.json"):
+        os.remove("./dashboard/templates/temp.json")
     def fill_rep(rep,id_num,node=None,iface=None):
         id_num += 1
         rep["ID_UNIQUE"] = unqiue_id
@@ -86,12 +146,17 @@ def dynamic(data):
     
 
     id_num = 200 # start from 200 in case of conflict with previous panels
-
+    with open("data.json", 'w') as f:
+        json.dump(data, f, indent=2)
     for node in data["node"]:
         # write node info to a json file
+
         rep,id_num = fill_rep({},id_num,node)
+        with open("data95.json", 'w') as f:
+            json.dump(rep, f, indent=2)
         info_panel = replace_file_to_string("./dashboard/templates/panel/info_panel.json",rep)
         concat_json(info_panel)
+
         
         # write interface to a json file
         rep,id_num = fill_rep(rep,id_num)
@@ -160,12 +225,12 @@ def dynamic(data):
             general_content = general_content.replace("GRAFANAHOST",data["grafana_host"])
             general_content = general_content.replace("DASHTITLE",title)
             content = general_content.replace("INSERTALLPANELS",all_panels)
+            
             outfile.write(content)
     # remove temp file that's no longer needed
-    if os.path.exists("./dashboard/templates/temp.json"):
-        os.remove("./dashboard/templates/temp.json")
     
-    res = api(data, dashboard_name)
+    
+    res = api(data, dashboard_name, lp)
 
     return res
             

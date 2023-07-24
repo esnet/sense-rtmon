@@ -141,11 +141,11 @@ def delete_dashboard(uid, api_token, grafana_url, name):
     # Check the status code of the response
     if response.status_code == 200:
         print("\033[91m" + f"Dashboard uid : {uid}, name: {name}, deleted successfully." + "\033[0m")
-        time.sleep(10)
+        time.sleep(1)
         return response.json()
     else:
         print(f"Failed to delete dashboard {uid}. Status code: {response.status_code}")
-        time.sleep(10)
+        time.sleep(1)
         return None
 
 def main():
@@ -202,7 +202,7 @@ def main():
             if id in list(live_dashboard):
                 if live_dashboard[id] == reference_data:
                     print(f"This dashboard is already created id :{id}, name: {name}")
-                    time.sleep(5)
+                    time.sleep(1)
                 else:
                     uid = dashboard_recorder[id]['uid']
                     api = dashboard_recorder[id]['api']
@@ -237,7 +237,7 @@ def main():
 
                                 except:
                                     print("Sorry the dashboard for this config data, couldn't be created because the current version is not compatible.")
-                                    time.sleep(2)
+                                    time.sleep(1)
                             except:
                                 print("API creation failed")
                         except:
@@ -278,7 +278,7 @@ def main():
 
                 except:
                     print("Manifest Creation Failed")
-            time.sleep(5)
+            time.sleep(1)
 
             response_fetched[id] = instance
         
@@ -291,7 +291,7 @@ def main():
                 url = dashboard_recorder[id]['url']
                 name_new = dashboard_recorder[id]['name']
                 delete_dashboard(uid, api, url, name_new)
-                time.sleep(2)
+                time.sleep(1)
                 live_dashboard.pop(id, None)
                 dashboard_recorder.pop(id, None)
 
@@ -300,7 +300,7 @@ def main():
         
     
         print("One iteration complete")
-        time.sleep(90)
+        time.sleep(5)
 
 main()
 

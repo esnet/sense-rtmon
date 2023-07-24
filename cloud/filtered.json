@@ -147,7 +147,7 @@
                "queries": []
             },
             "provisioned": true,
-            "creation_time": "2023-07-16 03:49:45",
+            "creation_time": "2023-07-21 17:40:34",
             "serviceInstanceUUID": "5ea5084a-6757-4130-8021-7bf2bc38c231",
             "serviceDeltaUUID": "49f51a6b-1df1-43cf-89d7-7c359de8927e"
          }
@@ -202,17 +202,72 @@
                "queries": []
             },
             "provisioned": true,
-            "creation_time": "2023-07-16 02:49:00",
+            "creation_time": "2023-07-21 17:15:04",
             "serviceInstanceUUID": "a1e0b73c-35ff-49cd-b6c1-9f7d52902638",
             "serviceDeltaUUID": "94358571-4fbf-4593-ae8a-2f0e0dff0e00"
          }
       ],
       "alias": "CALTECH 2",
       "referenceUUID": "a1e0b73c-35ff-49cd-b6c1-9f7d52902638",
-      "state": "CREATE - READY",
+      "state": "REINSTATE - READY",
       "owner": "sdasgupta@lbl.gov",
       "lastState": "COMMITTED",
       "timestamp": "2023/07/16 02:49:00",
+      "archived": false
+   },
+   {
+      "intents": [
+         {
+            "id": "7272fde4-b770-4e7f-8b45-7c1215363a55",
+            "json": {
+               "service_instance_uuid": "4482d7b2-6ac4-41c4-ac6f-b60cfec4629d",
+               "data": {
+                  "type": "Multi-Path P2P VLAN",
+                  "connections": [
+                     {
+                        "bandwidth": {
+                           "qos_class": "guaranteedCapped",
+                           "capacity": "1000"
+                        },
+                        "suggest_ip_range": [
+                           {
+                              "start": "0.0.0.0/30",
+                              "end": "0.0.0.0/30"
+                           }
+                        ],
+                        "name": "Connection 1",
+                        "terminals": [
+                           {
+                              "vlan_tag": "any",
+                              "assign_ip": true,
+                              "uri": "urn:ogf:network:ultralight.org:2013:sdn-dtn-1-7.ultralight.org"
+                           },
+                           {
+                              "vlan_tag": "any",
+                              "assign_ip": true,
+                              "uri": "urn:ogf:network:ultralight.org:2013:sdn-dtn-2-11.ultralight.org"
+                           }
+                        ]
+                     }
+                  ]
+               },
+               "service": "dnc",
+               "options": [],
+               "service_profile_uuid": "ca660eb3-899c-49bf-8e18-d5c0dcbb9fdf",
+               "queries": []
+            },
+            "provisioned": true,
+            "creation_time": "2023-07-21 17:40:55",
+            "serviceInstanceUUID": "4482d7b2-6ac4-41c4-ac6f-b60cfec4629d",
+            "serviceDeltaUUID": "f446ecb8-ed93-488a-86ed-67c4a3aba1e3"
+         }
+      ],
+      "alias": "UC Berkeley - UC SD",
+      "referenceUUID": "4482d7b2-6ac4-41c4-ac6f-b60cfec4629d",
+      "state": "CREATE - READY",
+      "owner": "sdasgupta@lbl.gov",
+      "lastState": "COMMITTED",
+      "timestamp": "2023/07/21 17:40:54",
       "archived": false
    }
 ]

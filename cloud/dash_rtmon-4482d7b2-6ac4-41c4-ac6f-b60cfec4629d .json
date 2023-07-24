@@ -2,7 +2,7 @@
     "dashboard": {
       "id": null,
       "uid": null,
-      "title": "CALTECH 2 |Flow: rtmon-a1e0b73c-35ff-49cd-b6c1-9f7d52902638 | 07/24_03:10",
+      "title": "UC Berkeley - UC SD |Flow: rtmon-4482d7b2-6ac4-41c4-ac6f-b60cfec4629d | 07/24_03:10",
       "tags": [
         "templated"
       ],
@@ -178,7 +178,7 @@
     },
     "id": 201,
     "panels": [],
-    "title": "Host Flow Summary - T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org",
+    "title": "Host Flow Summary - T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org",
     "type": "row"
   },
 {
@@ -196,13 +196,13 @@
     },
     "id": 202,
     "options": {
-      "content": "```\nHost: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org   Interface:\nname: mlx5p1s1 | vlan: not used | ip: 172.18.3.3\nname: T2_US_Caltech_Test:dellos9_s0 | vlan: 3988 | peer: name: None, interface: None, vlan: 3988\n ```",
+      "content": "```\nHost: T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org   Interface:\nname: mlx4p1s1 | vlan: not used | ip: 172.16.3.1\nname: T2_US_Caltech_Test:dellos9_s0 | vlan: 3618 | peer: name: None, interface: None, vlan: 3618\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
     "timeFrom": null,
     "timeShift": null,
-    "title": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org - Node Interface Information",
+    "title": "T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org - Node Interface Information",
     "type": "text"
   },
 {
@@ -248,7 +248,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv mlx5p1s1",
+        "alias": "recv mlx4p1s1",
         "transform": "negative-Y"
       }
     ],
@@ -258,7 +258,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org\", device=\"mlx5p1s1\",flow=\"rtmon-a1e0b73c-35ff-49cd-b6c1-9f7d52902638 \"}[1m])*8",
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org\", device=\"mlx4p1s1\",flow=\"rtmon-4482d7b2-6ac4-41c4-ac6f-b60cfec4629d \"}[1m])*8",
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
@@ -267,7 +267,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org\",device=\"mlx5p1s1\",flow=\"rtmon-a1e0b73c-35ff-49cd-b6c1-9f7d52902638 \"}[1m])*8",
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org\",device=\"mlx4p1s1\",flow=\"rtmon-4482d7b2-6ac4-41c4-ac6f-b60cfec4629d \"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -280,7 +280,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org - interface: mlx5p1s1 Flow Bandwidth",
+    "title": "T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org - interface: mlx4p1s1 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -330,7 +330,7 @@
     },
     "id": 205,
     "panels": [],
-    "title": "Host Flow Summary - T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org",
+    "title": "Host Flow Summary - T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org",
     "type": "row"
   },
 {
@@ -348,13 +348,13 @@
     },
     "id": 206,
     "options": {
-      "content": "```\nHost: T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org   Interface:\nname: mlx4p1s1 | vlan: not used | ip: 172.18.3.2\nname: T2_US_Caltech_Test:dellos9_s0 | vlan: 3988 | peer: name: None, interface: None, vlan: 3988\n ```",
+      "content": "```\nHost: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org   Interface:\nname: mlx5p1s1 | vlan: not used | ip: 172.16.3.2\nname: T2_US_Caltech_Test:dellos9_s0 | vlan: 3618 | peer: name: None, interface: None, vlan: 3618\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
     "timeFrom": null,
     "timeShift": null,
-    "title": "T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org - Node Interface Information",
+    "title": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org - Node Interface Information",
     "type": "text"
   },
 {
@@ -400,7 +400,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv mlx4p1s1",
+        "alias": "recv mlx5p1s1",
         "transform": "negative-Y"
       }
     ],
@@ -410,7 +410,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org\", device=\"mlx4p1s1\",flow=\"rtmon-a1e0b73c-35ff-49cd-b6c1-9f7d52902638 \"}[1m])*8",
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org\", device=\"mlx5p1s1\",flow=\"rtmon-4482d7b2-6ac4-41c4-ac6f-b60cfec4629d \"}[1m])*8",
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
@@ -419,7 +419,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org\",device=\"mlx4p1s1\",flow=\"rtmon-a1e0b73c-35ff-49cd-b6c1-9f7d52902638 \"}[1m])*8",
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org\",device=\"mlx5p1s1\",flow=\"rtmon-4482d7b2-6ac4-41c4-ac6f-b60cfec4629d \"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -432,7 +432,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org - interface: mlx4p1s1 Flow Bandwidth",
+    "title": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org - interface: mlx5p1s1 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -500,7 +500,7 @@
     },
     "id": 210,
     "options": {
-      "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: hundredGigE_1-27 | vlan: 3988 | peer: name: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org, interface: mlx5p1s1, vlan: 3988\nname: hundredGigE_1-23 | vlan: 3988 | peer: name: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org, interface: mlx5p1s1, vlan: 3988\n ```",
+      "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: hundredGigE_1-23 | vlan: 3618 | peer: name: T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org, interface: mlx4p1s1, vlan: 3618\nname: hundredGigE_1-27 | vlan: 3618 | peer: name: T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org, interface: mlx4p1s1, vlan: 3618\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -552,7 +552,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv hundredGigE_1-27",
+        "alias": "recv hundredGigE_1-23",
         "transform": "negative-Y"
       }
     ],
@@ -562,7 +562,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-27\",flow=\"rtmon-a1e0b73c-35ff-49cd-b6c1-9f7d52902638 \"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-23\",flow=\"rtmon-4482d7b2-6ac4-41c4-ac6f-b60cfec4629d \"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -570,7 +570,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-27\",flow=\"rtmon-a1e0b73c-35ff-49cd-b6c1-9f7d52902638 \"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-23\",flow=\"rtmon-4482d7b2-6ac4-41c4-ac6f-b60cfec4629d \"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -583,7 +583,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE_1-27 Flow Bandwidth",
+    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE_1-23 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -665,7 +665,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv hundredGigE_1-23",
+        "alias": "recv hundredGigE_1-27",
         "transform": "negative-Y"
       }
     ],
@@ -675,7 +675,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-23\",flow=\"rtmon-a1e0b73c-35ff-49cd-b6c1-9f7d52902638 \"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-27\",flow=\"rtmon-4482d7b2-6ac4-41c4-ac6f-b60cfec4629d \"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -683,7 +683,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-23\",flow=\"rtmon-a1e0b73c-35ff-49cd-b6c1-9f7d52902638 \"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-27\",flow=\"rtmon-4482d7b2-6ac4-41c4-ac6f-b60cfec4629d \"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -696,7 +696,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE_1-23 Flow Bandwidth",
+    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE_1-27 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -819,7 +819,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:sdn_dtn_2_11_ultralight_org_script_exporter_task1_rtmon_a1e0b73c_35ff_49cd_b6c1_9f7d52902638 ",
+    "expr": "t2_us_caltech_test:sdn_dtn_1_7_ultralight_org_script_exporter_task1_rtmon_4482d7b2_6ac4_41c4_ac6f_b60cfec4629d ",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -828,16 +828,16 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:sdn_dtn_2_11_ultralight_org_script_exporter_task2_rtmon_a1e0b73c_35ff_49cd_b6c1_9f7d52902638 ",
+    "expr": "t2_us_caltech_test:sdn_dtn_1_7_ultralight_org_script_exporter_task2_rtmon_4482d7b2_6ac4_41c4_ac6f_b60cfec4629d ",
     "format": "time_series",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "ARP Table contains T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org IP Address",
+    "legendFormat": "ARP Table contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org IP Address",
     "refId": "B"
   }
     ],
-    "title": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org ARP/MAC Correlation",
+    "title": "T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org ARP/MAC Correlation",
     "transparent": true,
     "type": "state-timeline"
   },
@@ -911,7 +911,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:sdn_dtn_1_7_ultralight_org_script_exporter_task1_rtmon_a1e0b73c_35ff_49cd_b6c1_9f7d52902638 ",
+    "expr": "t2_us_caltech_test:sdn_dtn_2_11_ultralight_org_script_exporter_task1_rtmon_4482d7b2_6ac4_41c4_ac6f_b60cfec4629d ",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -920,16 +920,16 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:sdn_dtn_1_7_ultralight_org_script_exporter_task2_rtmon_a1e0b73c_35ff_49cd_b6c1_9f7d52902638 ",
+    "expr": "t2_us_caltech_test:sdn_dtn_2_11_ultralight_org_script_exporter_task2_rtmon_4482d7b2_6ac4_41c4_ac6f_b60cfec4629d ",
     "format": "time_series",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "ARP Table contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org IP Address",
+    "legendFormat": "ARP Table contains T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org IP Address",
     "refId": "B"
   }
     ],
-    "title": "T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org ARP/MAC Correlation",
+    "title": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org ARP/MAC Correlation",
     "transparent": true,
     "type": "state-timeline"
   },
@@ -1003,7 +1003,7 @@
     "targets": [
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task1_rtmon_a1e0b73c_35ff_49cd_b6c1_9f7d52902638 ",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task1_rtmon_4482d7b2_6ac4_41c4_ac6f_b60cfec4629d ",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1012,19 +1012,19 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task2_rtmon_a1e0b73c_35ff_49cd_b6c1_9f7d52902638 ",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task2_rtmon_4482d7b2_6ac4_41c4_ac6f_b60cfec4629d ",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org MAC Address",
+    "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org MAC Address",
     "refId": "B"
   },
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task3_rtmon_a1e0b73c_35ff_49cd_b6c1_9f7d52902638 ",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task3_rtmon_4482d7b2_6ac4_41c4_ac6f_b60cfec4629d ",
     "hide": false,
     "interval": "",
-    "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org MAC Address",
+    "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org MAC Address",
     "refId": "C"
   }
     ],
@@ -1040,7 +1040,7 @@
 },
 "timepicker": {},
 "timezone": "",
-"title": "CALTECH 2 |Flow: rtmon-a1e0b73c-35ff-49cd-b6c1-9f7d52902638 | 07/24_03:10",
+"title": "UC Berkeley - UC SD |Flow: rtmon-4482d7b2-6ac4-41c4-ac6f-b60cfec4629d | 07/24_03:10",
 "uid": null,
 "id": null,
 "version": 2

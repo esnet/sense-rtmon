@@ -237,6 +237,6 @@ def converter(data, id, name):
         except yaml.YAMLError as exc:
             print("error opening the file")
     
-    os.remove("test.yaml")
+    #os.remove("test.yaml")
     
     return data

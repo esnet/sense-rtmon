@@ -215,6 +215,8 @@ def main():
                     try:
                         manifest = create_manifest(instance)
                         print("Manifest Created Successfully")
+                        with open("manifest.json", 'w') as f:
+                            json.dump(manifest, f, indent=2)
                         time.sleep(1)
                         try:
                             config_data = converter(manifest, id, name)
@@ -250,6 +252,8 @@ def main():
                     manifest = create_manifest(instance)
                     print("Manifest Created Successfully")
                     time.sleep(1)
+                    with open("manifest.json", 'w') as f:
+                        json.dump(manifest, f, indent=2)
                     try:
                         config_data = converter(manifest, id, name)
                         print("Config Created")

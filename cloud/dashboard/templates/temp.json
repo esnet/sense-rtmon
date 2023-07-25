@@ -9,7 +9,7 @@
     },
     "id": 201,
     "panels": [],
-    "title": "Switch Flow Summary - NRM_CENIC:aristaeos_s0",
+    "title": "Host Flow Summary - T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org",
     "type": "row"
   },
 {
@@ -27,13 +27,13 @@
     },
     "id": 202,
     "options": {
-      "content": "```\nSwitch: NRM_CENIC:aristaeos_s0   Interface:\nname: Port-Channel502 | vlan: 3873 | peer: name: sn3700_s0, interface: PortChannel501, vlan: not_used\nname: Port-Channel501 | vlan: 3873 | peer: name: dellos9_s0, interface: Port-channel_103, vlan: not_used\n ```",
+      "content": "```\nHost: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org   Interface:\nname: mlx5p1s1 | vlan: not used | ip: 10.251.88.122\nname: T2_US_Caltech_Test:dellos9_s0 | vlan: 1799 | peer: name: None, interface: None, vlan: 1799\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
     "timeFrom": null,
     "timeShift": null,
-    "title": "NRM_CENIC:aristaeos_s0 - Node Interface Information",
+    "title": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org - Node Interface Information",
     "type": "text"
   },
 {
@@ -79,7 +79,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv Port-Channel502",
+        "alias": "recv mlx5p1s1",
         "transform": "negative-Y"
       }
     ],
@@ -89,7 +89,311 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",    "instant": false,
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org\", device=\"mlx5p1s1\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{device}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org\",device=\"mlx5p1s1\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{device}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org - interface: mlx5p1s1 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 205
+    },
+    "id": 205,
+    "panels": [],
+    "title": "Host Flow Summary - T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net",
+    "type": "row"
+  },
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 5,
+      "w": 24,
+      "x": 0,
+      "y": 206
+    },
+    "id": 206,
+    "options": {
+      "content": "```\nHost: T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net   Interface:\nname: enp33s0f1 | vlan: not used | ip: 10.251.88.123\nname: T2_US_UCSD:s1 | vlan: 1799 | peer: name: None, interface: None, vlan: 1799\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net - Node Interface Information",
+    "type": "text"
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 207
+    },
+    "hiddenSeries": false,
+    "id": 207,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv enp33s0f1",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net\", device=\"enp33s0f1\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{device}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net\",device=\"enp33s0f1\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{device}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net - interface: enp33s0f1 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 209
+    },
+    "id": 209,
+    "panels": [],
+    "title": "Switch Flow Summary - calit2.optiputer.net:2020:prism-core",
+    "type": "row"
+  },
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 5,
+      "w": 24,
+      "x": 0,
+      "y": 210
+    },
+    "id": 210,
+    "options": {
+      "content": "```\nSwitch: calit2.optiputer.net:2020:prism-core   Interface:\nname: pwave | vlan: 1799 | peer: name: aristaeos_s0, interface: Port-Channel502-prismcore, vlan: not_used\nname: k8s-igrok-02 | vlan: 1799 | peer: name: None, interface: None, vlan: None\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "calit2.optiputer.net:2020:prism-core - Node Interface Information",
+    "type": "text"
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 211
+    },
+    "hiddenSeries": false,
+    "id": 211,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv pwave",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"pwave\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -97,7 +401,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"pwave\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -110,7 +414,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel502 Flow Bandwidth",
+    "title": "calit2.optiputer.net:2020:prism-core - interface: pwave Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -165,10 +469,161 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 205
+      "y": 213
     },
     "hiddenSeries": false,
-    "id": 205,
+    "id": 213,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv k8s-igrok-02",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"k8s-igrok-02\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"k8s-igrok-02\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "calit2.optiputer.net:2020:prism-core - interface: k8s-igrok-02 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 215
+    },
+    "id": 215,
+    "panels": [],
+    "title": "Switch Flow Summary - NRM_CENIC:aristaeos_s0",
+    "type": "row"
+  },
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 5,
+      "w": 24,
+      "x": 0,
+      "y": 216
+    },
+    "id": 216,
+    "options": {
+      "content": "```\nSwitch: NRM_CENIC:aristaeos_s0   Interface:\nname: Port-Channel501 | vlan: 1799 | peer: name: dellos9_s0, interface: Port-channel_103, vlan: not_used\nname: Port-Channel502-prismcore | vlan: 1799 | peer: name: prism-core, interface: pwave, vlan: not_used\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "NRM_CENIC:aristaeos_s0 - Node Interface Information",
+    "type": "text"
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 217
+    },
+    "hiddenSeries": false,
+    "id": 217,
     "legend": {
       "avg": false,
       "current": false,
@@ -202,7 +657,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -210,7 +665,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -263,15 +718,128 @@
     }
   },
 {
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 219
+    },
+    "hiddenSeries": false,
+    "id": 219,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv Port-Channel502-prismcore",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502-prismcore\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502-prismcore\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel502-prismcore Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
     "collapsed": false,
     "datasource": null,
     "gridPos": {
       "h": 1,
       "w": 24,
       "x": 0,
-      "y": 207
+      "y": 221
     },
-    "id": 207,
+    "id": 221,
     "panels": [],
     "title": "Switch Flow Summary - T2_US_Caltech_Test:dellos9_s0",
     "type": "row"
@@ -287,11 +855,11 @@
       "h": 5,
       "w": 24,
       "x": 0,
-      "y": 208
+      "y": 222
     },
-    "id": 208,
+    "id": 222,
     "options": {
-      "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: Port-channel_103 | vlan: 3873 | peer: name: aristaeos_s0, interface: Port-Channel501, vlan: not_used\n ```",
+      "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: Port-channel_103 | vlan: 1799 | peer: name: aristaeos_s0, interface: Port-Channel501, vlan: not_used\nname: hundredGigE_1-27 | vlan: 1799 | peer: name: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org, interface: mlx5p1s1, vlan: 1799\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -316,10 +884,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 209
+      "y": 223
     },
     "hiddenSeries": false,
-    "id": 209,
+    "id": 223,
     "legend": {
       "avg": false,
       "current": false,
@@ -353,7 +921,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -361,7 +929,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -414,44 +982,6 @@
     }
   },
 {
-    "collapsed": false,
-    "datasource": null,
-    "gridPos": {
-      "h": 1,
-      "w": 24,
-      "x": 0,
-      "y": 211
-    },
-    "id": 211,
-    "panels": [],
-    "title": "Switch Flow Summary - T2_US_SDSC:sn3700_s0",
-    "type": "row"
-  },
-{
-    "datasource": null,
-    "description": "",
-    "fieldConfig": {
-      "defaults": {},
-      "overrides": []
-    },
-    "gridPos": {
-      "h": 5,
-      "w": 24,
-      "x": 0,
-      "y": 212
-    },
-    "id": 212,
-    "options": {
-      "content": "```\nSwitch: T2_US_SDSC:sn3700_s0   Interface:\nname: PortChannel501 | vlan: 3873 | peer: name: aristaeos_s0, interface: Port-Channel502, vlan: not_used\n ```",
-      "mode": "markdown"
-    },
-    "pluginVersion": "7.5.4",
-    "timeFrom": null,
-    "timeShift": null,
-    "title": "T2_US_SDSC:sn3700_s0 - Node Interface Information",
-    "type": "text"
-  },
-{
     "aliasColors": {},
     "bars": false,
     "dashLength": 10,
@@ -467,10 +997,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 213
+      "y": 225
     },
     "hiddenSeries": false,
-    "id": 213,
+    "id": 225,
     "legend": {
       "avg": false,
       "current": false,
@@ -494,7 +1024,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv PortChannel501",
+        "alias": "recv hundredGigE_1-27",
         "transform": "negative-Y"
       }
     ],
@@ -504,7 +1034,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-27\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -512,7 +1042,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-27\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -525,7 +1055,271 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_SDSC:sn3700_s0 - interface: PortChannel501 Flow Bandwidth",
+    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE_1-27 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 227
+    },
+    "id": 227,
+    "panels": [],
+    "title": "Switch Flow Summary - T2_US_UCSD:s1",
+    "type": "row"
+  },
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 5,
+      "w": 24,
+      "x": 0,
+      "y": 228
+    },
+    "id": 228,
+    "options": {
+      "content": "```\nSwitch: T2_US_UCSD:s1   Interface:\nname: 1_2 | vlan: 1799 | peer: name: T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net, interface: enp33s0f1, vlan: 1799\nname: 1_1 | vlan: 1799 | peer: name: prism-core, interface: k8s-igrok-02, vlan: not_used\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "T2_US_UCSD:s1 - Node Interface Information",
+    "type": "text"
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 229
+    },
+    "hiddenSeries": false,
+    "id": 229,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv 1_2",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_UCSD:s1\",ifDescr=\"1_2\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_UCSD:s1\",ifDescr=\"1_2\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "T2_US_UCSD:s1 - interface: 1_2 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 231
+    },
+    "hiddenSeries": false,
+    "id": 231,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv 1_1",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_UCSD:s1\",ifDescr=\"1_1\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_UCSD:s1\",ifDescr=\"1_1\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "T2_US_UCSD:s1 - interface: 1_1 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -571,10 +1365,590 @@
       "h": 20,
       "w": 24,
       "x": 0,
-      "y": 315
+      "y": 333
     },
-    "id": 315,
+    "id": 333,
     "panels": [],
     "title": "L2 Debugging",
     "type": "row"
+  },
+
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0
+        },
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 0,
+                "text": "FAILURE"
+              },
+              "1": {
+                "color": "green",
+                "index": 1,
+                "text": "SUCCESS"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 24,
+      "x": 0,
+      "y": 334
+    },
+    "id": 334,
+    "options": {
+      "alignValue": "center",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "always",
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.3",
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "t2_us_caltech_test:sdn_dtn_2_11_ultralight_org_script_exporter_task1_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ARP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "t2_us_caltech_test:sdn_dtn_2_11_ultralight_org_script_exporter_task2_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "format": "time_series",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ARP Table contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net IP Address",
+    "refId": "B"
+  }
+    ],
+    "title": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org ARP/MAC Correlation",
+    "transparent": true,
+    "type": "state-timeline"
+  },
+
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0
+        },
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 0,
+                "text": "FAILURE"
+              },
+              "1": {
+                "color": "green",
+                "index": 1,
+                "text": "SUCCESS"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 24,
+      "x": 0,
+      "y": 335
+    },
+    "id": 335,
+    "options": {
+      "alignValue": "center",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "always",
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.3",
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "t2_us_ucsd:k8s_igrok_02_calit2_optiputer_net_script_exporter_task1_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ARP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "t2_us_ucsd:k8s_igrok_02_calit2_optiputer_net_script_exporter_task2_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "format": "time_series",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "ARP Table contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org IP Address",
+    "refId": "B"
+  }
+    ],
+    "title": "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net ARP/MAC Correlation",
+    "transparent": true,
+    "type": "state-timeline"
+  },
+
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0
+        },
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 0,
+                "text": "FAILURE"
+              },
+              "1": {
+                "color": "green",
+                "index": 1,
+                "text": "SUCCESS"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 24,
+      "x": 0,
+      "y": 336
+    },
+    "id": 336,
+    "options": {
+      "alignValue": "center",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "always",
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.3",
+    "targets": [
+  {
+    "exemplar": true,
+    "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task1_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "SNMP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task2_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org MAC Address",
+    "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task3_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "interval": "",
+    "legendFormat": "contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net MAC Address",
+    "refId": "C"
+  }
+    ],
+    "title": "calit2.optiputer.net:2020:prism-core ARP/MAC Correlation",
+    "transparent": true,
+    "type": "state-timeline"
+  },
+
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0
+        },
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 0,
+                "text": "FAILURE"
+              },
+              "1": {
+                "color": "green",
+                "index": 1,
+                "text": "SUCCESS"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 24,
+      "x": 0,
+      "y": 337
+    },
+    "id": 337,
+    "options": {
+      "alignValue": "center",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "always",
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.3",
+    "targets": [
+  {
+    "exemplar": true,
+    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task1_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "SNMP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task2_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org MAC Address",
+    "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task3_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "interval": "",
+    "legendFormat": "contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net MAC Address",
+    "refId": "C"
+  }
+    ],
+    "title": "NRM_CENIC:aristaeos_s0 ARP/MAC Correlation",
+    "transparent": true,
+    "type": "state-timeline"
+  },
+
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0
+        },
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 0,
+                "text": "FAILURE"
+              },
+              "1": {
+                "color": "green",
+                "index": 1,
+                "text": "SUCCESS"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 24,
+      "x": 0,
+      "y": 338
+    },
+    "id": 338,
+    "options": {
+      "alignValue": "center",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "always",
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.3",
+    "targets": [
+  {
+    "exemplar": true,
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task1_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "SNMP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task2_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org MAC Address",
+    "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task3_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "interval": "",
+    "legendFormat": "contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net MAC Address",
+    "refId": "C"
+  }
+    ],
+    "title": "T2_US_Caltech_Test:dellos9_s0 ARP/MAC Correlation",
+    "transparent": true,
+    "type": "state-timeline"
+  },
+
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0
+        },
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 0,
+                "text": "FAILURE"
+              },
+              "1": {
+                "color": "green",
+                "index": 1,
+                "text": "SUCCESS"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 24,
+      "x": 0,
+      "y": 339
+    },
+    "id": 339,
+    "options": {
+      "alignValue": "center",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "always",
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.3",
+    "targets": [
+  {
+    "exemplar": true,
+    "expr": "t2_us_ucsd:s1_script_exporter_task1_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "SNMP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "t2_us_ucsd:s1_script_exporter_task2_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org MAC Address",
+    "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "t2_us_ucsd:s1_script_exporter_task3_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+    "hide": false,
+    "interval": "",
+    "legendFormat": "contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net MAC Address",
+    "refId": "C"
+  }
+    ],
+    "title": "T2_US_UCSD:s1 ARP/MAC Correlation",
+    "transparent": true,
+    "type": "state-timeline"
   },

@@ -1,6 +1,6 @@
 {
-  "flow": "rtmon-899620b2-4009-49bf-8bbd-ee54776df622 ",
-  "title": "aashay-400",
+  "flow": "rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 ",
+  "title": "XLK",
   "grafana_host": "http://dev2.virnao.com:3000",
   "pushgateway": "http://dev2.virnao.com:9091",
   "grafana_api_token": "Bearer eyJrIjoiT2FQU2ZQWkZRV1NQZ0JxTnUyTlp2NGlCT3R6Q2dQUzUiLCJuIjoiMDcvMTVfMjE6MDEiLCJpZCI6MX0=",
@@ -8,28 +8,105 @@
   "sitename": null,
   "node": [
     {
-      "name": "NRM_CENIC:aristaeos_s0",
+      "name": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org",
+      "type": "host",
+      "arp": "on",
+      "runtime": 610,
+      "interface": [
+        {
+          "name": "mlx5p1s1",
+          "vlan": "not used",
+          "ip": "10.251.88.122"
+        },
+        {
+          "name": "T2_US_Caltech_Test:dellos9_s0",
+          "vlan": 1799,
+          "peer": [
+            {
+              "name": null,
+              "interface": null,
+              "vlan": 1799
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net",
+      "type": "host",
+      "arp": "on",
+      "runtime": 610,
+      "interface": [
+        {
+          "name": "enp33s0f1",
+          "vlan": "not used",
+          "ip": "10.251.88.123"
+        },
+        {
+          "name": "T2_US_UCSD:s1",
+          "vlan": 1799,
+          "peer": [
+            {
+              "name": null,
+              "interface": null,
+              "vlan": 1799
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "calit2.optiputer.net:2020:prism-core",
       "type": "switch",
       "runtime": 610,
       "interface": [
         {
-          "name": "Port-Channel502",
-          "vlan": 3873,
+          "name": "pwave",
+          "vlan": 1799,
           "peer": [
             {
-              "name": "sn3700_s0",
-              "interface": "PortChannel501",
+              "name": "aristaeos_s0",
+              "interface": "Port-Channel502-prismcore",
               "vlan": "not_used"
             }
           ]
         },
         {
+          "name": "k8s-igrok-02",
+          "vlan": 1799,
+          "peer": [
+            {
+              "name": null,
+              "interface": null,
+              "vlan": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "NRM_CENIC:aristaeos_s0",
+      "type": "switch",
+      "runtime": 610,
+      "interface": [
+        {
           "name": "Port-Channel501",
-          "vlan": 3873,
+          "vlan": 1799,
           "peer": [
             {
               "name": "dellos9_s0",
               "interface": "Port-channel_103",
+              "vlan": "not_used"
+            }
+          ]
+        },
+        {
+          "name": "Port-Channel502-prismcore",
+          "vlan": 1799,
+          "peer": [
+            {
+              "name": "prism-core",
+              "interface": "pwave",
               "vlan": "not_used"
             }
           ]
@@ -43,7 +120,7 @@
       "interface": [
         {
           "name": "Port-channel_103",
-          "vlan": 3873,
+          "vlan": 1799,
           "peer": [
             {
               "name": "aristaeos_s0",
@@ -51,21 +128,43 @@
               "vlan": "not_used"
             }
           ]
+        },
+        {
+          "name": "hundredGigE_1-27",
+          "vlan": 1799,
+          "peer": [
+            {
+              "name": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org",
+              "interface": "mlx5p1s1",
+              "vlan": 1799
+            }
+          ]
         }
       ]
     },
     {
-      "name": "T2_US_SDSC:sn3700_s0",
+      "name": "T2_US_UCSD:s1",
       "type": "switch",
       "runtime": 610,
       "interface": [
         {
-          "name": "PortChannel501",
-          "vlan": 3873,
+          "name": "1_2",
+          "vlan": 1799,
           "peer": [
             {
-              "name": "aristaeos_s0",
-              "interface": "Port-Channel502",
+              "name": "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net",
+              "interface": "enp33s0f1",
+              "vlan": 1799
+            }
+          ]
+        },
+        {
+          "name": "1_1",
+          "vlan": 1799,
+          "peer": [
+            {
+              "name": "prism-core",
+              "interface": "k8s-igrok-02",
               "vlan": "not_used"
             }
           ]

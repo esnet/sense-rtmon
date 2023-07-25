@@ -121,3 +121,205 @@ DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/Stac
 DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
 DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/899620b2-4009-49bf-8bbd-ee54776df622 HTTP/1.1" 200 1278
 INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "GET /StackV-web/restapi/discover/service/instances HTTP/1.1" 200 7924
+INFO:root:Response Sucessful
+INFO:root:Filter Successful
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/d7b72a34-eca6-402e-a646-827aa28cb717 HTTP/1.1" 200 1114
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/899620b2-4009-49bf-8bbd-ee54776df622 HTTP/1.1" 200 1278
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/5ea5084a-6757-4130-8021-7bf2bc38c231 HTTP/1.1" 200 2554
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): dev2.virnao.com:3000
+DEBUG:urllib3.connectionpool:http://dev2.virnao.com:3000 "POST /api/dashboards/db HTTP/1.1" 200 270
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/a1e0b73c-35ff-49cd-b6c1-9f7d52902638 HTTP/1.1" 200 841
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): dev2.virnao.com:3000
+DEBUG:urllib3.connectionpool:http://dev2.virnao.com:3000 "POST /api/dashboards/db HTTP/1.1" 200 282
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/4482d7b2-6ac4-41c4-ac6f-b60cfec4629d HTTP/1.1" 200 841
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): dev2.virnao.com:3000
+DEBUG:urllib3.connectionpool:http://dev2.virnao.com:3000 "POST /api/dashboards/db HTTP/1.1" 200 298
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "GET /StackV-web/restapi/discover/service/instances HTTP/1.1" 200 7924
+INFO:root:Response Sucessful
+INFO:root:Filter Successful
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/d7b72a34-eca6-402e-a646-827aa28cb717 HTTP/1.1" 200 1114
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/899620b2-4009-49bf-8bbd-ee54776df622 HTTP/1.1" 200 1278
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "GET /StackV-web/restapi/discover/service/instances HTTP/1.1" 200 7924
+INFO:root:Response Sucessful
+INFO:root:Filter Successful
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/d7b72a34-eca6-402e-a646-827aa28cb717 HTTP/1.1" 200 1114
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/899620b2-4009-49bf-8bbd-ee54776df622 HTTP/1.1" 200 1278
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/5ea5084a-6757-4130-8021-7bf2bc38c231 HTTP/1.1" 200 2554
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): dev2.virnao.com:3000
+DEBUG:urllib3.connectionpool:http://dev2.virnao.com:3000 "POST /api/dashboards/db HTTP/1.1" 200 270
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/a1e0b73c-35ff-49cd-b6c1-9f7d52902638 HTTP/1.1" 200 841
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): dev2.virnao.com:3000
+DEBUG:urllib3.connectionpool:http://dev2.virnao.com:3000 "POST /api/dashboards/db HTTP/1.1" 200 282
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/4482d7b2-6ac4-41c4-ac6f-b60cfec4629d HTTP/1.1" 200 841
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): dev2.virnao.com:3000
+DEBUG:urllib3.connectionpool:http://dev2.virnao.com:3000 "POST /api/dashboards/db HTTP/1.1" 200 298
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "GET /StackV-web/restapi/discover/service/instances HTTP/1.1" 200 7924
+INFO:root:Response Sucessful
+INFO:root:Filter Successful
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/d7b72a34-eca6-402e-a646-827aa28cb717 HTTP/1.1" 200 1114
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/899620b2-4009-49bf-8bbd-ee54776df622 HTTP/1.1" 200 1278
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/5ea5084a-6757-4130-8021-7bf2bc38c231 HTTP/1.1" 200 2554
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): dev2.virnao.com:3000
+DEBUG:urllib3.connectionpool:http://dev2.virnao.com:3000 "POST /api/dashboards/db HTTP/1.1" 200 270
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/a1e0b73c-35ff-49cd-b6c1-9f7d52902638 HTTP/1.1" 200 841
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): dev2.virnao.com:3000
+DEBUG:urllib3.connectionpool:http://dev2.virnao.com:3000 "POST /api/dashboards/db HTTP/1.1" 200 282
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/4482d7b2-6ac4-41c4-ac6f-b60cfec4629d HTTP/1.1" 200 841
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): dev2.virnao.com:3000
+DEBUG:urllib3.connectionpool:http://dev2.virnao.com:3000 "POST /api/dashboards/db HTTP/1.1" 200 298
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "GET /StackV-web/restapi/discover/service/instances HTTP/1.1" 200 7924
+INFO:root:Response Sucessful
+INFO:root:Filter Successful
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/d7b72a34-eca6-402e-a646-827aa28cb717 HTTP/1.1" 200 1114
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/899620b2-4009-49bf-8bbd-ee54776df622 HTTP/1.1" 200 1278
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/5ea5084a-6757-4130-8021-7bf2bc38c231 HTTP/1.1" 200 2554
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): dev2.virnao.com:3000
+DEBUG:urllib3.connectionpool:http://dev2.virnao.com:3000 "POST /api/dashboards/db HTTP/1.1" 200 270
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "GET /StackV-web/restapi/discover/service/instances HTTP/1.1" 200 7924
+INFO:root:Response Sucessful
+INFO:root:Filter Successful
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/d7b72a34-eca6-402e-a646-827aa28cb717 HTTP/1.1" 200 1114
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/899620b2-4009-49bf-8bbd-ee54776df622 HTTP/1.1" 200 1278
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/5ea5084a-6757-4130-8021-7bf2bc38c231 HTTP/1.1" 200 2554
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): dev2.virnao.com:3000
+DEBUG:urllib3.connectionpool:http://dev2.virnao.com:3000 "POST /api/dashboards/db HTTP/1.1" 200 270
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "GET /StackV-web/restapi/discover/service/instances HTTP/1.1" 200 7924
+INFO:root:Response Sucessful
+INFO:root:Filter Successful
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/d7b72a34-eca6-402e-a646-827aa28cb717 HTTP/1.1" 200 1114
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/899620b2-4009-49bf-8bbd-ee54776df622 HTTP/1.1" 200 1278
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o.es.net:8543
+DEBUG:urllib3.connectionpool:https://sense-o.es.net:8543 "POST /auth/realms/StackV/protocol/openid-connect/token HTTP/1.1" 200 2398
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): sense-o-dev.es.net:8443
+DEBUG:urllib3.connectionpool:https://sense-o-dev.es.net:8443 "POST /StackV-web/restapi/service/manifest/5ea5084a-6757-4130-8021-7bf2bc38c231 HTTP/1.1" 200 2554
+INFO:root:Manifest Created
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): dev2.virnao.com:3000
+DEBUG:urllib3.connectionpool:http://dev2.virnao.com:3000 "POST /api/dashboards/db HTTP/1.1" 200 270

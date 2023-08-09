@@ -4,6 +4,7 @@ import json
 import re
 from datetime import datetime
 import sys
+import time
 import requests
 def generate_mermaid(data):
     # Make Host 1
@@ -88,6 +89,7 @@ def dynamic(data):
     lp = data
     if os.path.exists("./dashboard/templates/temp.json"):
         os.remove("./dashboard/templates/temp.json")
+        
     def fill_rep(rep,id_num,node=None,iface=None):
         id_num += 1
         rep["ID_UNIQUE"] = unqiue_id
@@ -142,12 +144,13 @@ def dynamic(data):
     push_metric = data['pushgateway']
     unique_id_field = "flow" # unique id feild in the template
     unqiue_id = data[unique_id_field] # flow id
-
+    
     
 
     id_num = 200 # start from 200 in case of conflict with previous panels
     with open("data.json", 'w') as f:
         json.dump(data, f, indent=2)
+    
     for node in data["node"]:
         # write node info to a json file
 
@@ -185,7 +188,7 @@ def dynamic(data):
     
     # L2 debugging tables
     id_num = id_num + 100 # L2 tables start from 100 after flow panels in case of conflict with previous panels
-
+    
     # write node info to a json file
    
     rep,id_num = fill_rep({},id_num)
@@ -193,7 +196,7 @@ def dynamic(data):
     rep["ID_UNIQUE"] = unqiue_id
     info_panel = replace_file_to_string("./dashboard/templates/l2_debugging_panel/info_panel.json",rep)
     concat_json(info_panel)
-
+    
     for i,node in enumerate(data["node"],i):
         # write table to a temp file
         rep,id_num = fill_rep({},id_num,node)
@@ -202,6 +205,8 @@ def dynamic(data):
         # process filling info
         formatted_name = node['name'].replace("-", "_").replace(".", "_").lower()
         rep = get_hosts_names(data,{})
+ 
+       
         rep["ID_UNIQUE"] = unqiue_id
         if node['name'] == rep["HOST1NAME"]:
             rep["OPPOSITENAME"] = rep["HOST2NAME"]
@@ -215,6 +220,7 @@ def dynamic(data):
         
         l2table = l2table.replace("INSERTTARGET", node_target)
         concat_json(l2table)
+   
     # read the temp file and write to the all general dashboard template
     dashboard_name = f"dash_{data['flow']}.json"
     with open("./dashboard/templates/temp.json") as file:

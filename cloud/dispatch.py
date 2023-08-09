@@ -8,8 +8,8 @@ import requests
 import pprint
 import simplejson as json
 
-os.environ["X509_USER_KEY"] = '/root/sense-o.es.net-ssl/sense-o.key'
-os.environ["X509_USER_CERT"] = '/root/sense-o.es.net-ssl/sense-o.crt'
+os.environ["X509_USER_KEY"] = '/Users/sunami/privkey.pem'
+os.environ["X509_USER_CERT"] = '/Users/sunami/cert.pem'
 
 def getUTCnow():
     """Get UTC Time."""
@@ -18,8 +18,10 @@ def getUTCnow():
     return timestamp
 
 def makeRequest(cls, url, params):
+ 
     """Make HTTP Request"""
     url = f"{cls.hostname}{url}"
+
     cert=(os.environ["X509_USER_CERT"], os.environ["X509_USER_KEY"])
     if params.get('verb') == 'GET':
         out = requests.get(url, cert=cert, verify=False)
@@ -27,7 +29,8 @@ def makeRequest(cls, url, params):
         out = requests.post(url, cert=cert, json=params.get('data', {}), verify=False)
     elif params.get('verb') == 'PUT':
         out = requests.put(url, cert=cert, json=params.get('data', {}), verify=False)
-    pprint.pprint(json.loads(out.text))
+    #pprint.pprint(json.loads(out.text))
+    print(json.loads(out.text))
     return json.loads(out.text), out.ok, out
 
 
@@ -51,7 +54,7 @@ class SiteRMAPI():
         self.sitename = sitename
         self.node_data = node_data
 
-    def test(self):
+    def test(self, node_data):
         """Test Prometheus Push Debug API"""
         for data in node_data:
             outsuc = {"out": ["running"], "err": "", "exitCode": 0}
@@ -69,45 +72,46 @@ def read_file(filename):
         input_text_cleaned = '\n'.join(lines)
     return input_text_cleaned
 
-def prepare_node (node,flow):
+def prepare_node (node,flow, pushgateway_host):
     dict_node = {
         'hostname': node['name'],
         'hosttype': node['type'],
         'type': 'prometheus-push',
         'metadata': {'instance': node['name'], 'flow': flow},
         'gateway': pushgateway_host,
-        'runtime': str(int(getUTCnow())+node['runtime']),
+        'runtime': str(int(time.time()) + node['runtime']),  # Add 'runtime' to current Unix timestamp
         'resolution': '5'
     }
+    
     return dict_node
+
     
 
-if __name__ == "__main__":
+def dispatch(data):
     # if len(sys.argv) != 2:
     #     print("Usage: python script.py <config_filename>")
     #     sys.exit(1)
 
-    filename = "test.yaml"
-    input_text_cleaned = read_file(filename)
-    # Load the YAML data
-    data = yaml.safe_load(input_text_cleaned)
+    
     flow = data['flow']
+   
     pushgateway_host = data['pushgateway']
     node_data = []
-
+    
     for node in data['node']:
-        sub_node = prepare_node(node,flow)
+        sub_node = prepare_node(node,flow, pushgateway_host)
         node_data.append(sub_node)
         
         if node['type'] == 'host':
             if node['arp'] == 'on':
-                sub_node = prepare_node(node,flow)
+                sub_node = prepare_node(node,flow,pushgateway_host)
                 sub_node['type'] = 'arp-push'
                 node_data.append(sub_node)
 
-        
+    
     # for node in node_data:
     #     print(node)
+
     if data['hostname'] == None or data['sitename'] == None:
         params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename':   'T2_US_Caltech_Test'} # given by orchestrator
     else: 
@@ -115,8 +119,8 @@ if __name__ == "__main__":
         sitename = data['sitename']
         params = {'hostname': hostname, 'sitename': sitename} # given by orchestrator
     api = SiteRMAPI(**params,node_data=node_data)
-    api.test()
-    print("API Request Completed")
+    api.test(node_data)
+    print("Dispatch Request Completed")
     
 # for data in [{'hostname': 'sdn-dtn-1-7.ultralight.org', 'hosttype': 'host',
 #             'type': 'prometheus-push', 'metadata': {'instance': 'sdn-dtn-1-7.ultralight.org', 'flow_id': 'unqiue_test_id'},

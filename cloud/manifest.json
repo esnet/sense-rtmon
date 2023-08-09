@@ -1,82 +1,34 @@
 {
   "Ports": [
     {
-      "Site": "urn:ogf:network:calit2.optiputer.net:2020:prism-core",
-      "Port": "urn:ogf:network:calit2.optiputer.net:2020:prism-core:pwave",
-      "Node": "calit2.optiputer.net:2020:prism-core",
-      "Peer": "urn:ogf:network:sc-test.cenic.net:2020:aristaeos_s0:Port-Channel502-prismcore",
-      "Vlan": "1799",
-      "Name": "?port_name?"
-    },
-    {
-      "Site": "urn:ogf:network:calit2.optiputer.net:2020:prism-core",
-      "Port": "urn:ogf:network:calit2.optiputer.net:2020:prism-core:k8s-igrok-02",
-      "Node": "calit2.optiputer.net:2020:prism-core",
-      "Peer": "?peer?",
-      "Vlan": "1799",
-      "Name": "?port_name?"
-    },
-    {
-      "Site": "urn:ogf:network:sc-test.cenic.net:2020",
-      "Port": "urn:ogf:network:sc-test.cenic.net:2020:aristaeos_s0:Port-Channel501",
-      "Node": "NRM_CENIC:aristaeos_s0",
-      "Peer": "urn:ogf:network:ultralight.org:2013:dellos9_s0:Port-channel_103",
-      "Vlan": "1799",
-      "Name": "Port-Channel501"
-    },
-    {
-      "Site": "urn:ogf:network:sc-test.cenic.net:2020",
-      "Port": "urn:ogf:network:sc-test.cenic.net:2020:aristaeos_s0:Port-Channel502-prismcore",
-      "Node": "NRM_CENIC:aristaeos_s0",
-      "Peer": "urn:ogf:network:calit2.optiputer.net:2020:prism-core:pwave",
-      "Vlan": "1799",
-      "Name": "Port-Channel502-prismcore"
-    },
-    {
-      "Site": "urn:ogf:network:ultralight.org:2013",
-      "Port": "urn:ogf:network:ultralight.org:2013:dellos9_s0:Port-channel_103",
-      "Node": "T2_US_Caltech_Test:dellos9_s0",
-      "Peer": "urn:ogf:network:sc-test.cenic.net:2020:aristaeos_s0:Port-Channel501",
-      "Vlan": "1799",
-      "Name": "Port-channel 103"
-    },
-    {
       "Site": "urn:ogf:network:ultralight.org:2013",
       "Port": "urn:ogf:network:ultralight.org:2013:dellos9_s0:hundredGigE_1-27",
       "Node": "T2_US_Caltech_Test:dellos9_s0",
       "Peer": "?peer?",
       "Host": [
         {
-          "IPv4": "10.251.88.122/24",
+          "IPv4": "10.251.86.5/30",
           "Interface": "mlx5p1s1",
           "Name": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org"
         }
       ],
-      "Vlan": "1799",
+      "Vlan": "1791",
       "Name": "hundredGigE 1/27"
     },
     {
-      "Site": "urn:ogf:network:nrp-nautilus-prod.io:2020",
-      "Port": "urn:ogf:network:nrp-nautilus-prod.io:2020:s1:1_2",
-      "Node": "T2_US_UCSD:s1",
+      "Site": "urn:ogf:network:ultralight.org:2013",
+      "Port": "urn:ogf:network:ultralight.org:2013:dellos9_s0:hundredGigE_1-23",
+      "Node": "T2_US_Caltech_Test:dellos9_s0",
       "Peer": "?peer?",
       "Host": [
         {
-          "IPv4": "10.251.88.123/24",
-          "Interface": "enp33s0f1",
-          "Name": "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net"
+          "IPv4": "10.251.86.4/30",
+          "Interface": "mlx4p1s1",
+          "Name": "T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org"
         }
       ],
-      "Vlan": "1799",
-      "Name": "12"
-    },
-    {
-      "Site": "urn:ogf:network:nrp-nautilus-prod.io:2020",
-      "Port": "urn:ogf:network:nrp-nautilus-prod.io:2020:s1:1_1",
-      "Node": "T2_US_UCSD:s1",
-      "Peer": "urn:ogf:network:calit2.optiputer.net:2020:prism-core:k8s-igrok-02",
-      "Vlan": "1799",
-      "Name": "11"
+      "Vlan": "1791",
+      "Name": "hundredGigE 1/23"
     }
   ]
 }

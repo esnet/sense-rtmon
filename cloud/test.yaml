@@ -1,6 +1,7 @@
 ## SECTION 1 GENERAL INFORMATION ##
-flow: "rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231"
-title: XLK 
+flow: "rtmon-facd5482-45ec-49e8-9cce-250f98fb29f4
+"
+title: WWXS 
 grafana_host: "http://dev2.virnao.com:3000"
 pushgateway: "http://dev2.virnao.com:9091"
 grafana_api_token: 
@@ -16,102 +17,45 @@ node:
     interface:
       - name: "mlx5p1s1"
         vlan: 'not used'
-        ip: 10.251.88.122
+        ip: 10.251.86.5
       - name: "T2_US_Caltech_Test:dellos9_s0"
-        vlan: 1799
+        vlan: 1791
         peer: 
         - name: 
           interface: 
-          vlan: 1799
+          vlan: 1791
 
-  - name: "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net"
+  - name: "T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org"
     type: "host"
     arp: 'on'
     runtime: 610
     interface:
-      - name: "enp33s0f1"
+      - name: "mlx4p1s1"
         vlan: 'not used'
-        ip: 10.251.88.123
-      - name: "T2_US_UCSD:s1"
-        vlan: 1799
+        ip: 10.251.86.4
+      - name: "T2_US_Caltech_Test:dellos9_s0"
+        vlan: 1791
         peer: 
         - name: 
           interface: 
-          vlan: 1799
-
-  - name: "calit2.optiputer.net:2020:prism-core"
-    type: "switch"
-    runtime: 610
-    interface:
-      - name: "pwave"
-        vlan: 1799
-        peer:
-        - name: "aristaeos_s0"
-          interface: "Port-Channel502-prismcore"
-          vlan: 'not_used'
-
-      - name: "k8s-igrok-02"
-        vlan: 1799
-        peer:
-        - name: 
-          interface: 
-          vlan: 
-
-
-  - name: "NRM_CENIC:aristaeos_s0"
-    type: "switch"
-    runtime: 610
-    interface:
-      - name: "Port-Channel501"
-        vlan: 1799
-        peer:
-        - name: "dellos9_s0"
-          interface: "Port-channel_103"
-          vlan: 'not_used'
-
-      - name: "Port-Channel502-prismcore"
-        vlan: 1799
-        peer:
-        - name: "prism-core"
-          interface: "pwave"
-          vlan: 'not_used'
-
+          vlan: 1791
 
   - name: "T2_US_Caltech_Test:dellos9_s0"
     type: "switch"
     runtime: 610
     interface:
-      - name: "Port-channel_103"
-        vlan: 1799
-        peer:
-        - name: "aristaeos_s0"
-          interface: "Port-Channel501"
-          vlan: 'not_used'
-
       - name: "hundredGigE_1-27"
-        vlan: 1799
+        vlan: 1791
         peer:
         - name: "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org"
           interface: "mlx5p1s1"
-          vlan: 1799
+          vlan: 1791
 
-
-  - name: "T2_US_UCSD:s1"
-    type: "switch"
-    runtime: 610
-    interface:
-      - name: "1_2"
-        vlan: 1799
+      - name: "hundredGigE_1-23"
+        vlan: 1791
         peer:
-        - name: "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net"
-          interface: "enp33s0f1"
-          vlan: 1799
-
-      - name: "1_1"
-        vlan: 1799
-        peer:
-        - name: "prism-core"
-          interface: "k8s-igrok-02"
-          vlan: 'not_used'
+        - name: "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org"
+          interface: "mlx5p1s1"
+          vlan: 1791
 
 

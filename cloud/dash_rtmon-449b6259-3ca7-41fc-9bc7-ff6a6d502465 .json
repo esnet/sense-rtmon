@@ -1,4 +1,173 @@
 {
+    "dashboard": {
+      "id": null,
+      "uid": null,
+      "title": "UCSD 2 |Flow: rtmon-449b6259-3ca7-41fc-9bc7-ff6a6d502465 | 08/09_10:05",
+      "tags": [
+        "templated"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "-- Grafana --",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "description": "Simple End-to-End Flow Monitoring Dashboard",
+      "editable": true,
+      "gnetId": null,
+      "graphTooltip": 0,
+      "id": 68,
+      "iteration": 1629915600744,
+      "links": [
+        {
+          "asDropdown": false,
+          "icon": "dashboard",
+          "includeVars": true,
+          "keepTime": true,
+          "tags": [],
+          "targetBlank": true,
+          "title": "Host Node Exporter",
+          "tooltip": "",
+          "type": "link",
+          "url": "http://dev2.virnao.com:3000/d/rYdddlPWj/node-exporter-full?orgId=1&refresh=1m"
+        },
+        {
+          "asDropdown": false,
+          "icon": "dashboard",
+          "includeVars": true,
+          "keepTime": true,
+          "tags": [],
+          "targetBlank": true,
+          "title": "Switch Diagnostics Dashboard",
+          "tooltip": "",
+          "type": "link",
+          "url": "http://dev2.virnao.com:3000/d/A3jB7x9Gz/sdn-testbed-dashboard?orgId=1"
+        }
+      ],
+      "panels": [
+        {
+          "collapsed": false,
+          "datasource": null,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 119,
+          "panels": [],
+          "title": "End-to-End Flow Topology",
+          "type": "row"
+        },
+        {
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "valueName": "last"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 36,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 117,
+          "options": {
+            "authPassword": "",
+            "authUsername": "",
+            "composites": [],
+            "content": "graph TB\n    subgraph h1 [\"Host 1\"]\n        ip{{VLAN: 1000 - IP: 1.1.1.1}}\n        e(ens2f0np0.3911)\n    end\n\n    subgraph sw1 [\"Switch 1\"]\n        subgraph sw1s1 [\"interface 1\"]\n            sw1s1vlan{{VLAN: 1000}}\n            sw1s1if[\"interfaceX.1000\"]\n        end\n        subgraph sw1s2 [\"interface 2\"]\n            sw1s2vlan{{VLAN: 1000}}\n            sw1s2ifout[\"InterfaceX.1000\"]\n        end\n    end\n\n    subgraph sw2 [\"Switch 2\"]\n        subgraph sw2s1 [\"interface 1\"]\n            sw2s1vlan{{VLAN: 1000}}\n            sw2s1if[\"InterfaceX.1000\"]\n        end\n        subgraph sw2s2 [\"interface 2\"]\n            sw2s2vlan{{VLAN: 1000}}\n            sw2s2ifout[\"interfaceX.1000\"]\n        end\n    end\n\n    subgraph sw3 [\"Switch 3\"]\n        subgraph sw3s1 [\"interface 1\"]\n            sw3s1vlan{{VLAN: 1000}}\n            sw3s1if[\"InterfaceX.1000\"]\n        end\n        subgraph sw3s2 [\"interface 2\"]\n            sw3s2vlan{{VLAN: 1000}}\n            sw3s2ifout[\"interfaceX.1000\"]\n        end\n    end\n\n    subgraph h2 [\"Host 2\"]\n        ip2{{VLAN: 1000 - IP: 1.1.1.1}}\n        e2(interfaceX.1000)\n    end\n\n    e(interfaceX.1000) ---|connection| sw1s1if[\"hundredGigE 1/31\"]\n    sw1s1if -.- sw1s2ifout\n    sw1s2ifout ---|connection| sw2s1if\n    sw2s1if -.- sw2s2ifout\n    sw2s2ifout ---|connection| sw3s1if\n    sw3s1if -.- sw3s2ifout\n    sw3s2ifout ---|connection| e2(interfaceX.1000)\n",
+            "legend": {
+              "asTable": true,
+              "displayMode": "table",
+              "gradient": {
+                "enabled": true,
+                "show": true
+              },
+              "hideEmpty": false,
+              "hideZero": false,
+              "placement": "bottom",
+              "show": true,
+              "sortBy": "last",
+              "sortDesc": true,
+              "stats": [
+                "mean",
+                "last",
+                "min",
+                "max",
+                "sum"
+              ]
+            },
+            "maxWidth": true,
+            "mermaidServiceUrl": "",
+            "mermaidThemeVariablesDark": {
+              "classDiagram": {},
+              "common": {
+                "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+              },
+              "flowChart": {},
+              "sequenceDiagram": {},
+              "stateDiagram": {},
+              "userJourneyDiagram": {}
+            },
+            "mermaidThemeVariablesLight": {
+              "classDiagram": {},
+              "common": {
+                "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+              },
+              "flowChart": {},
+              "sequenceDiagram": {},
+              "stateDiagram": {},
+              "userJourneyDiagram": {}
+            },
+            "metricCharacterReplacements": [],
+            "moddedSeriesVal": 0,
+            "mode": "content",
+            "nodeSize": {
+              "minHeight": 40,
+              "minWidth": 30
+            },
+            "pluginVersion": "7.5.4",
+            "style": "",
+            "useBackground": false,
+            "useBasicAuth": false,
+            "valueName": "last"
+          },
+          "pluginVersion": "1.7.3",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "End-to-End Flow Topology",
+          "type": "jdbranham-diagram-panel"
+        },
+        
+{
     "collapsed": false,
     "datasource": null,
     "gridPos": {
@@ -27,7 +196,7 @@
     },
     "id": 202,
     "options": {
-      "content": "```\nHost: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org   Interface:\nname: mlx5p1s1 | vlan: not used | ip: 10.251.86.5\nname: T2_US_Caltech_Test:dellos9_s0 | vlan: 1791 | peer: name: None, interface: None, vlan: 1791\n ```",
+      "content": "```\nHost: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org   Interface:\nname: mlx5p1s1 | vlan: not used | ip: 10.251.88.121\nname: T2_US_Caltech_Test:dellos9_s0 | vlan: 3615 | peer: name: None, interface: None, vlan: 3615\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -89,7 +258,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org\", device=\"mlx5p1s1\",flow=\"rtmon-facd5482-45ec-49e8-9cce-250f98fb29f4 \"}[1m])*8",
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org\", device=\"mlx5p1s1\",flow=\"rtmon-449b6259-3ca7-41fc-9bc7-ff6a6d502465 \"}[1m])*8",
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
@@ -98,7 +267,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org\",device=\"mlx5p1s1\",flow=\"rtmon-facd5482-45ec-49e8-9cce-250f98fb29f4 \"}[1m])*8",
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org\",device=\"mlx5p1s1\",flow=\"rtmon-449b6259-3ca7-41fc-9bc7-ff6a6d502465 \"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -179,7 +348,7 @@
     },
     "id": 206,
     "options": {
-      "content": "```\nHost: T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org   Interface:\nname: mlx4p1s1 | vlan: not used | ip: 10.251.86.4\nname: T2_US_Caltech_Test:dellos9_s0 | vlan: 1791 | peer: name: None, interface: None, vlan: 1791\n ```",
+      "content": "```\nHost: T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org   Interface:\nname: mlx4p1s1 | vlan: not used | ip: 10.251.88.120\nname: T2_US_Caltech_Test:dellos9_s0 | vlan: 3615 | peer: name: None, interface: None, vlan: 3615\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -241,7 +410,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org\", device=\"mlx4p1s1\",flow=\"rtmon-facd5482-45ec-49e8-9cce-250f98fb29f4 \"}[1m])*8",
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org\", device=\"mlx4p1s1\",flow=\"rtmon-449b6259-3ca7-41fc-9bc7-ff6a6d502465 \"}[1m])*8",
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
@@ -250,7 +419,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org\",device=\"mlx4p1s1\",flow=\"rtmon-facd5482-45ec-49e8-9cce-250f98fb29f4 \"}[1m])*8",
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org\",device=\"mlx4p1s1\",flow=\"rtmon-449b6259-3ca7-41fc-9bc7-ff6a6d502465 \"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -331,7 +500,7 @@
     },
     "id": 210,
     "options": {
-      "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: hundredGigE_1-27 | vlan: 1791 | peer: name: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org, interface: mlx5p1s1, vlan: 1791\nname: hundredGigE_1-23 | vlan: 1791 | peer: name: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org, interface: mlx5p1s1, vlan: 1791\n ```",
+      "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: hundredGigE_1-27 | vlan: 3615 | peer: name: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org, interface: mlx5p1s1, vlan: 3615\nname: hundredGigE_1-23 | vlan: 3615 | peer: name: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org, interface: mlx5p1s1, vlan: 3615\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -393,7 +562,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-27\",flow=\"rtmon-facd5482-45ec-49e8-9cce-250f98fb29f4 \"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-27\",flow=\"rtmon-449b6259-3ca7-41fc-9bc7-ff6a6d502465 \"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -401,7 +570,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-27\",flow=\"rtmon-facd5482-45ec-49e8-9cce-250f98fb29f4 \"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-27\",flow=\"rtmon-449b6259-3ca7-41fc-9bc7-ff6a6d502465 \"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -506,7 +675,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-23\",flow=\"rtmon-facd5482-45ec-49e8-9cce-250f98fb29f4 \"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-23\",flow=\"rtmon-449b6259-3ca7-41fc-9bc7-ff6a6d502465 \"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -514,7 +683,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-23\",flow=\"rtmon-facd5482-45ec-49e8-9cce-250f98fb29f4 \"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-23\",flow=\"rtmon-449b6259-3ca7-41fc-9bc7-ff6a6d502465 \"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -650,7 +819,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:sdn_dtn_2_11_ultralight_org_script_exporter_task1_rtmon_facd5482_45ec_49e8_9cce_250f98fb29f4 ",
+    "expr": "t2_us_caltech_test:sdn_dtn_2_11_ultralight_org_script_exporter_task1_rtmon_449b6259_3ca7_41fc_9bc7_ff6a6d502465 ",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -659,7 +828,7 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:sdn_dtn_2_11_ultralight_org_script_exporter_task2_rtmon_facd5482_45ec_49e8_9cce_250f98fb29f4 ",
+    "expr": "t2_us_caltech_test:sdn_dtn_2_11_ultralight_org_script_exporter_task2_rtmon_449b6259_3ca7_41fc_9bc7_ff6a6d502465 ",
     "format": "time_series",
     "hide": false,
     "instant": false,
@@ -742,7 +911,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:sdn_dtn_1_7_ultralight_org_script_exporter_task1_rtmon_facd5482_45ec_49e8_9cce_250f98fb29f4 ",
+    "expr": "t2_us_caltech_test:sdn_dtn_1_7_ultralight_org_script_exporter_task1_rtmon_449b6259_3ca7_41fc_9bc7_ff6a6d502465 ",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -751,7 +920,7 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:sdn_dtn_1_7_ultralight_org_script_exporter_task2_rtmon_facd5482_45ec_49e8_9cce_250f98fb29f4 ",
+    "expr": "t2_us_caltech_test:sdn_dtn_1_7_ultralight_org_script_exporter_task2_rtmon_449b6259_3ca7_41fc_9bc7_ff6a6d502465 ",
     "format": "time_series",
     "hide": false,
     "instant": false,
@@ -834,7 +1003,7 @@
     "targets": [
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task1_rtmon_facd5482_45ec_49e8_9cce_250f98fb29f4 ",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task1_rtmon_449b6259_3ca7_41fc_9bc7_ff6a6d502465 ",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -843,7 +1012,7 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task2_rtmon_facd5482_45ec_49e8_9cce_250f98fb29f4 ",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task2_rtmon_449b6259_3ca7_41fc_9bc7_ff6a6d502465 ",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -852,7 +1021,7 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task3_rtmon_facd5482_45ec_49e8_9cce_250f98fb29f4 ",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task3_rtmon_449b6259_3ca7_41fc_9bc7_ff6a6d502465 ",
     "hide": false,
     "interval": "",
     "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org MAC Address",
@@ -862,4 +1031,18 @@
     "title": "T2_US_Caltech_Test:dellos9_s0 ARP/MAC Correlation",
     "transparent": true,
     "type": "state-timeline"
-  },
+  }
+
+],
+"time": {
+  "from": "now-15m",
+  "to": "now"
+},
+"timepicker": {},
+"timezone": "",
+"title": "UCSD 2 |Flow: rtmon-449b6259-3ca7-41fc-9bc7-ff6a6d502465 | 08/09_10:05",
+"uid": null,
+"id": null,
+"version": 2
+}
+}

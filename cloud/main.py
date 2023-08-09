@@ -13,6 +13,7 @@ from sense.client.workflow_combined_api import WorkflowCombinedApi
 from sense.client.discover_api import DiscoverApi
 # from generate_s import *
 from dynamic import *
+from dispatch import *
 from converter import converter
 logging.basicConfig(filename='output.log', level=logging.DEBUG)
 
@@ -88,6 +89,7 @@ def create_manifest(instance):
     json_response = json.loads(response)
     manifest = json.loads(json_response['jsonTemplate'])
     logging.info("Manifest Created")
+    
 
     return manifest
 
@@ -118,6 +120,8 @@ def fill_API(data):
 
         logging.info(f"\nAPI Key: Bearer {api_key}")
         logging.info("!!   API CURL COMPLETE")
+    with open("data.json", 'w') as f:
+        json.dump(data, f, indent=2)
 
     return data , api_key
 
@@ -161,6 +165,7 @@ def main():
         response_fetched = {}
         try:
             data = fetch_data()
+            
             time.sleep(1)
         except:
             logging.error("Failed to fetch data. API Error\nMaking another request in 3 mins.")
@@ -171,6 +176,7 @@ def main():
         #Filter the data || only process the data that are create-ready or reinstate-ready
         try:
             data = filter_data(data)
+           
             time.sleep(1)
         except:
             logging.error("Failed to filter data. \nMaking another attempt in 3 mins.")
@@ -197,7 +203,6 @@ def main():
         for instance in data:
             id = instance['intents'][0]['json']['service_instance_uuid']
             name = instance['alias']
-            #print(dashboard_recorder)
             reference_data = instance
             if id in list(live_dashboard):
                 if live_dashboard[id] == reference_data:
@@ -248,23 +253,32 @@ def main():
                     except:
                         print("Manifest Creation Failed")
             else:
+            
                 try:
                     manifest = create_manifest(instance)
                     print("Manifest Created Successfully")
+        
+    
                     time.sleep(1)
                     with open("manifest.json", 'w') as f:
                         json.dump(manifest, f, indent=2)
+                    
+                    
                     try:
+                   
                         config_data = converter(manifest, id, name)
                         print("Config Created")
                         time.sleep(1)
                         try:
                             config_data, api_key = fill_API(config_data)
                             print("API Filled")
+                            
                             time.sleep(1)
                             try:
                                 for_api = dynamic(config_data)
+                              
                                 live_dashboard[id] = reference_data
+                                
                                 dashboard_recorder[id] = {
                                     'uid' : for_api['uid'],
                                     'api' : api_key,
@@ -272,6 +286,11 @@ def main():
                                     'name' : name
                                 }
                                 time.sleep(1)
+                                try: 
+                                    dispatch(config_data)
+                                    print("Data Dispatched")
+                                except:
+                                    print("Dispatch Failed")
                                 
                             except:
                                 print("Sorry the dashboard for this config data, couldn't be created because the current version is not compatible.")

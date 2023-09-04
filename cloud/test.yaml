@@ -1,0 +1,59 @@
+## SECTION 1 GENERAL INFORMATION ##
+flow: "rtmon-4700d4e0-bb7d-4a30-9736-91fa5f2f1852
+"
+title: RTMON 
+grafana_host: "http://dev2.virnao.com:3000"
+pushgateway: "http://dev2.virnao.com:9091"
+grafana_api_token: 
+
+## Section 2 Hosts & Switches all under nodes ##
+node:
+  - name: "T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org"
+    type: "host"
+    arp: 'on'
+    runtime: 610
+    interface:
+      - name: "mlx4p1s1"
+        vlan: 'not used'
+        ip: 172.18.3.2
+      - name: "T2_US_Caltech_Test:dellos9_s0"
+        vlan: 3873
+        peer: 
+        - name: 
+          interface: 
+          vlan: 3873
+
+  - name: "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org"
+    type: "host"
+    arp: 'on'
+    runtime: 610
+    interface:
+      - name: "mlx5p1s1"
+        vlan: 'not used'
+        ip: 172.18.3.3
+      - name: "T2_US_Caltech_Test:dellos9_s0"
+        vlan: 3873
+        peer: 
+        - name: 
+          interface: 
+          vlan: 3873
+
+  - name: "T2_US_Caltech_Test:dellos9_s0"
+    type: "switch"
+    runtime: 610
+    interface:
+      - name: "hundredGigE_1-23"
+        vlan: 3873
+        peer:
+        - name: "T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org"
+          interface: "mlx4p1s1"
+          vlan: 3873
+
+      - name: "hundredGigE_1-27"
+        vlan: 3873
+        peer:
+        - name: "T2_US_Caltech_Test:sdn-dtn-1-7.ultralight.org"
+          interface: "mlx4p1s1"
+          vlan: 3873
+
+

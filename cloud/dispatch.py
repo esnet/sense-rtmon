@@ -30,7 +30,7 @@ def makeRequest(cls, url, params):
     elif params.get('verb') == 'PUT':
         out = requests.put(url, cert=cert, json=params.get('data', {}), verify=False)
     #pprint.pprint(json.loads(out.text))
-    print(json.loads(out.text))
+    #print(json.loads(out.text))
     return json.loads(out.text), out.ok, out
 
 
@@ -107,17 +107,20 @@ def dispatch(data):
                 sub_node = prepare_node(node,flow,pushgateway_host)
                 sub_node['type'] = 'arp-push'
                 node_data.append(sub_node)
+    with open("node_data.json", 'w') as f:
+        json.dump(node_data, f, indent=2)
+    
 
     
     # for node in node_data:
     #     print(node)
-
-    if data['hostname'] == None or data['sitename'] == None:
-        params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename':   'T2_US_Caltech_Test'} # given by orchestrator
-    else: 
-        hostname = data['hostname']
-        sitename = data['sitename']
-        params = {'hostname': hostname, 'sitename': sitename} # given by orchestrator
+    params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename':   'T2_US_Caltech_Test'}
+    # if data['hostname'] == None or data['sitename'] == None:
+    #     params = {'hostname': 'https://sense-caltech-fe.sdn-lb.ultralight.org', 'sitename':   'T2_US_Caltech_Test'} # given by orchestrator
+    # else: 
+    #     hostname = data['hostname']
+    #     sitename = data['sitename']
+    #     params = {'hostname': hostname, 'sitename': sitename} # given by orchestrator
     api = SiteRMAPI(**params,node_data=node_data)
     api.test(node_data)
     print("Dispatch Request Completed")

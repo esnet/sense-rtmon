@@ -4,6 +4,7 @@ import re
 import os
 from datetime import datetime
 import yaml
+import time
 
 def converter(data, id, name):
     # Loading in config_cloud/config.yml
@@ -26,6 +27,8 @@ def converter(data, id, name):
                 flows[port["Flow"]].append(port)
         else:
             flows["unknown"].append(port)
+    print(flows)
+    time.sleep(15)
 
     # Per-flow SENSE-RTMON config translation
     for flow in flows.keys():
@@ -63,8 +66,8 @@ def converter(data, id, name):
 
             outFile.write("grafana_api_token: \n\n")
 
-            outFile.write("hostname:  \n")
-            outFile.write("sitename: \n")
+            # outFile.write("hostname:  \n")
+            # outFile.write("sitename: \n")
 
            
             # Dynamically generated node data from SENSE Orchestrator JSON
@@ -77,7 +80,7 @@ def converter(data, id, name):
 
                 if "Host" in port:
 
-                    hostInfo = [port['Host'][0]["Name"], port['Host'][0]["Interface"], port['Vlan']]
+                    hostInfo =   [port['Host'][0]["Name"], port['Host'][0]["Interface"], port['Vlan']]
                     switchPeers.append(port['Node'])
                     hostPeers.append(hostInfo)
 

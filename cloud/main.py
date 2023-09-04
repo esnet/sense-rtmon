@@ -6,7 +6,7 @@ import sys
 import requests
 import re 
 import os
-from datetime import datetime
+import datetime
 from time import gmtime, strftime
 #from converter import orchestratorConvert
 from sense.client.workflow_combined_api import WorkflowCombinedApi
@@ -101,13 +101,17 @@ def fill_API(data):
                 data['grafana_api_token'] = "Bearer " + api_key
     except:
         # get time for API keys
-        now = datetime.now()
-        current_time = now.strftime("%m/%d_%H:%M")    
+        print("Runningwesfsd")
+        now = datetime.datetime.now()
+        print(now)
+        current_time = now.strftime("%m/%d_%H:%M")  
+        print(current_time)  
 
         # curl the API key to here
-        curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" +str(current_time) + "\", \"role\": \"Admin\"}' http://admin:admin@" + str(data['grafana_host']).split("//")[1] + "/api/auth/keys"
+        curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" + str(current_time) + "\", \"role\": \"Admin\"}' http://admin:ab=*83kl@" + str(data['grafana_host']).split("//")[1] + "/api/auth/keys"
 
         token = os.popen(curlCMD).read()
+        print(token)
         result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
         api_key = str(result.group(1))
 
@@ -125,11 +129,12 @@ def fill_API(data):
 
     return data , api_key
 
-# def generate_dashboard(data):
+def generate_dashboard(data):
 #     generate_script(data)
 #     os.system('yes | cp -rfa se_config/. script_exporter/examples')
 #     os.system('yes | docker rm -f $(docker ps -a --format "{{.Names}}" | grep "script_exporter")')
 #     dynamic(data)
+    pass
 
 def delete_dashboard(uid, api_token, grafana_url, name):
     url = f"{grafana_url}/api/dashboards/uid/{uid}"
@@ -163,8 +168,12 @@ def main():
                 print("\033[32m" + f"{lkj}. Name: {dashboard_recorder[id]['name']}" + "\033[0m")
                 lkj += 1
         response_fetched = {}
+
+
         try:
             data = fetch_data()
+            with open("data_fetch.json", 'w') as f:
+                json.dump(data, f, indent=2)
             
             time.sleep(1)
         except:
@@ -176,7 +185,9 @@ def main():
         #Filter the data || only process the data that are create-ready or reinstate-ready
         try:
             data = filter_data(data)
-           
+            with open("data_filtered.json", 'w') as f:
+                json.dump(data, f, indent=2)
+            
             time.sleep(1)
         except:
             logging.error("Failed to filter data. \nMaking another attempt in 3 mins.")
@@ -262,6 +273,8 @@ def main():
                     time.sleep(1)
                     with open("manifest.json", 'w') as f:
                         json.dump(manifest, f, indent=2)
+                    print(id)
+                    
                     
                     
                     try:
@@ -272,6 +285,10 @@ def main():
                         try:
                             config_data, api_key = fill_API(config_data)
                             print("API Filled")
+                            print(id)
+                            print(name)
+                            with open("converted.json", 'w') as f:
+                                json.dump(config_data, f, indent=2)
                             
                             time.sleep(1)
                             try:
@@ -289,6 +306,7 @@ def main():
                                 try: 
                                     dispatch(config_data)
                                     print("Data Dispatched")
+                                   
                                 except:
                                     print("Dispatch Failed")
                                 
@@ -303,7 +321,9 @@ def main():
                     print("Manifest Creation Failed")
             time.sleep(1)
 
+            
             response_fetched[id] = instance
+
         
         
         # for dashboard not in the current response

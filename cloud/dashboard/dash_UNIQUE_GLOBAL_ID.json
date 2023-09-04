@@ -2,7 +2,7 @@
     "dashboard": {
       "id": null,
       "uid": null,
-      "title": "Multi Switch Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 03/29_12:57",
+      "title": "Multi Switch Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 08/17_03:29",
       "tags": [
         "templated"
       ],
@@ -38,7 +38,7 @@
           "title": "Host Node Exporter",
           "tooltip": "",
           "type": "link",
-          "url": "http://sense-mon.es.net:3000/d/rYdddlPWj/node-exporter-full?orgId=1&refresh=1m"
+          "url": "http://dev2.virnao.com:3000/d/rYdddlPWj/node-exporter-full?orgId=1&refresh=1m"
         },
         {
           "asDropdown": false,
@@ -50,7 +50,7 @@
           "title": "Switch Diagnostics Dashboard",
           "tooltip": "",
           "type": "link",
-          "url": "http://sense-mon.es.net:3000/d/A3jB7x9Gz/sdn-testbed-dashboard?orgId=1"
+          "url": "http://dev2.virnao.com:3000/d/A3jB7x9Gz/sdn-testbed-dashboard?orgId=1"
         }
       ],
       "panels": [
@@ -93,7 +93,7 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 24,
+            "h": 36,
             "w": 24,
             "x": 0,
             "y": 1
@@ -103,7 +103,7 @@
             "authPassword": "",
             "authUsername": "",
             "composites": [],
-            "content": "INSERTTOPOLOGY",
+            "content": "graph TB\n    subgraph h1 [\"Host 1\"]\n        ip{{VLAN: 1000 - IP: 1.1.1.1}}\n        e(ens2f0np0.3911)\n    end\n\n    subgraph sw1 [\"Switch 1\"]\n        subgraph sw1s1 [\"interface 1\"]\n            sw1s1vlan{{VLAN: 1000}}\n            sw1s1if[\"interfaceX.1000\"]\n        end\n        subgraph sw1s2 [\"interface 2\"]\n            sw1s2vlan{{VLAN: 1000}}\n            sw1s2ifout[\"InterfaceX.1000\"]\n        end\n    end\n\n    subgraph sw2 [\"Switch 2\"]\n        subgraph sw2s1 [\"interface 1\"]\n            sw2s1vlan{{VLAN: 1000}}\n            sw2s1if[\"InterfaceX.1000\"]\n        end\n        subgraph sw2s2 [\"interface 2\"]\n            sw2s2vlan{{VLAN: 1000}}\n            sw2s2ifout[\"interfaceX.1000\"]\n        end\n    end\n\n    subgraph sw3 [\"Switch 3\"]\n        subgraph sw3s1 [\"interface 1\"]\n            sw3s1vlan{{VLAN: 1000}}\n            sw3s1if[\"InterfaceX.1000\"]\n        end\n        subgraph sw3s2 [\"interface 2\"]\n            sw3s2vlan{{VLAN: 1000}}\n            sw3s2ifout[\"interfaceX.1000\"]\n        end\n    end\n\n    subgraph h2 [\"Host 2\"]\n        ip2{{VLAN: 1000 - IP: 1.1.1.1}}\n        e2(interfaceX.1000)\n    end\n\n    e(interfaceX.1000) ---|connection| sw1s1if[\"hundredGigE 1/31\"]\n    sw1s1if -.- sw1s2ifout\n    sw1s2ifout ---|connection| sw2s1if\n    sw2s1if -.- sw2s2ifout\n    sw2s2ifout ---|connection| sw3s1if\n    sw3s1if -.- sw3s2ifout\n    sw3s2ifout ---|connection| e2(interfaceX.1000)\n",
             "legend": {
               "asTable": true,
               "displayMode": "table",
@@ -189,14 +189,14 @@
       "overrides": []
     },
     "gridPos": {
-      "h": 3,
+      "h": 5,
       "w": 24,
       "x": 0,
       "y": 202
     },
     "id": 202,
     "options": {
-      "content": "```\nHost: sdn-dtn-2-10.ultralight.org   Interface: [{'name': 'ens2f0np0.3911', 'vlan': 'not used', 'ip': '10.251.86.10', 'ping': '10.251.86.12'}, {'name': 'hundredGigE 1/31', 'vlan': 'not used', 'peer': [{'name': 'Caltech LRT-SDN-R02-Dell-Z9100', 'interface': 'hundredGigE 1/31'}]}]\n ```",
+      "content": "```\nHost: sdn-dtn-2-10.ultralight.org   Interface:\nname: ens2f0np0.3911 | vlan: not used | ip: 10.251.86.10 | ping: 10.251.86.12\nname: hundredGigE 1/31 | vlan: not used | peer: name: Caltech LRT-SDN-R02-Dell-Z9100, interface: hundredGigE 1/31\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -258,7 +258,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"10.251.86.10\", device=\"ens2f0np0.3911\"}[1m])*8",
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"sdn-dtn-2-10.ultralight.org\", device=\"ens2f0np0.3911\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
@@ -267,7 +267,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"10.251.86.10\",device=\"ens2f0np0.3911\"}[1m])*8",
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"sdn-dtn-2-10.ultralight.org\",device=\"ens2f0np0.3911\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -341,14 +341,14 @@
       "overrides": []
     },
     "gridPos": {
-      "h": 3,
+      "h": 5,
       "w": 24,
       "x": 0,
       "y": 206
     },
     "id": 206,
     "options": {
-      "content": "```\nSwitch: Caltech LRT-SDN-R02-Dell-Z9100   Interface: [{'name': 'hundredGigE 1/31', 'vlan': 'not used', 'peer': [{'name': 'sdn-dtn-2-10.ultralight.org', 'interface': 'hundredGigE 1/31'}]}, {'name': 'Port-channel 103', 'vlan': 'not used', 'peer': [{'name': 'UCSD SN3700', 'interface': 'PortChannel501'}]}]\n ```",
+      "content": "```\nSwitch: Caltech LRT-SDN-R02-Dell-Z9100   Interface:\nname: hundredGigE 1/31 | vlan: not used | peer: name: sdn-dtn-2-10.ultralight.org, interface: hundredGigE 1/31\nname: Port-channel 103 | vlan: not used | peer: name: UCSD SN3700, interface: PortChannel501\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -410,8 +410,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
-    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"Caltech LRT-SDN-R02-Dell-Z9100\",ifDescr=\"hundredGigE 1/31\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -419,7 +418,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"Caltech LRT-SDN-R02-Dell-Z9100\",ifDescr=\"hundredGigE 1/31\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -524,8 +523,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
-    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"Caltech LRT-SDN-R02-Dell-Z9100\",ifDescr=\"Port-channel 103\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -533,7 +531,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"Caltech LRT-SDN-R02-Dell-Z9100\",ifDescr=\"Port-channel 103\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -607,14 +605,14 @@
       "overrides": []
     },
     "gridPos": {
-      "h": 3,
+      "h": 5,
       "w": 24,
       "x": 0,
       "y": 212
     },
     "id": 212,
     "options": {
-      "content": "```\nSwitch: UCSD SN3700   Interface: [{'name': 'PortChannel501', 'vlan': 'not used', 'peer': [{'name': 'Caltech LRT-SDN-R02-Dell-Z9100', 'interface': 'Port-channel 103'}]}, {'name': 'etp28', 'vlan': 'not used', 'peer': [{'name': 'k8s-gen4-01.sdsc.optiputer.net', 'interface': 'etp28'}]}]\n ```",
+      "content": "```\nSwitch: UCSD SN3700   Interface:\nname: PortChannel501 | vlan: not used | peer: name: Caltech LRT-SDN-R02-Dell-Z9100, interface: Port-channel 103\nname: etp28 | vlan: not used | peer: name: k8s-gen4-01.sdsc.optiputer.net, interface: etp28\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -676,8 +674,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
-    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"UCSD SN3700\",ifDescr=\"PortChannel501\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -685,7 +682,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"UCSD SN3700\",ifDescr=\"PortChannel501\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -790,8 +787,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(ifHCInOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
-    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"UCSD SN3700\",ifDescr=\"etp28\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -799,7 +795,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(ifHCOutOctets{ifIndex=~\"DYNAMICIFINDEX\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"UCSD SN3700\",ifDescr=\"etp28\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -873,14 +869,14 @@
       "overrides": []
     },
     "gridPos": {
-      "h": 3,
+      "h": 5,
       "w": 24,
       "x": 0,
       "y": 218
     },
     "id": 218,
     "options": {
-      "content": "```\nHost: k8s-gen4-02.sdsc.optiputer.net   Interface: [{'name': 'vlan.3911', 'vlan': 'not used', 'ip': '10.251.86.12', 'ping': '10.251.86.10'}, {'name': 'etp28', 'vlan': 'not used', 'peer': [{'name': 'SN3700', 'interface': 'etp28'}]}]\n ```",
+      "content": "```\nHost: k8s-gen4-02.sdsc.optiputer.net   Interface:\nname: vlan.3911 | vlan: not used | ip: 10.251.86.12 | ping: 10.251.86.10\nname: etp28 | vlan: not used | peer: name: SN3700, interface: etp28\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -942,7 +938,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"10.251.86.12\", device=\"vlan.3911\"}[1m])*8",
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"k8s-gen4-02.sdsc.optiputer.net\", device=\"vlan.3911\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
@@ -951,7 +947,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"10.251.86.12\",device=\"vlan.3911\"}[1m])*8",
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"k8s-gen4-02.sdsc.optiputer.net\",device=\"vlan.3911\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1087,7 +1083,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_NODE1_TASK1",
+    "expr": "sdn_dtn_2_10_ultralight_org_script_exporter_task1_UNIQUE_GLOBAL_ID",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1096,22 +1092,13 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_NODE1_TASK2",
-    "hide": false,
-    "instant": false,
-    "interval": "",
-    "legendFormat": "ping sdn-dtn-2-10.ultralight.org",
-    "refId": "B"
-  },
-  {
-    "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_NODE1_TASK3",
+    "expr": "sdn_dtn_2_10_ultralight_org_script_exporter_task2_UNIQUE_GLOBAL_ID",
     "format": "time_series",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "ARP Table contains sdn-dtn-2-10.ultralight.org IP Address",
-    "refId": "C"
+    "legendFormat": "ARP Table contains k8s-gen4-02.sdsc.optiputer.net IP Address",
+    "refId": "B"
   }
     ],
     "title": "sdn-dtn-2-10.ultralight.org ARP/MAC Correlation",
@@ -1186,9 +1173,9 @@
     },
     "pluginVersion": "8.2.3",
     "targets": [
-{
+  {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_NODE2_TASK1",
+    "expr": "caltech lrt_sdn_r02_dell_z9100_script_exporter_task1_UNIQUE_GLOBAL_ID",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1197,19 +1184,19 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_NODE2_TASK2",
+    "expr": "caltech lrt_sdn_r02_dell_z9100_script_exporter_task2_UNIQUE_GLOBAL_ID",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "contains Caltech LRT-SDN-R02-Dell-Z9100 MAC Address",
+    "legendFormat": "contains sdn-dtn-2-10.ultralight.org MAC Address",
     "refId": "B"
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_NODE2_TASK3",
+    "expr": "caltech lrt_sdn_r02_dell_z9100_script_exporter_task3_UNIQUE_GLOBAL_ID",
     "hide": false,
     "interval": "",
-    "legendFormat": "contains Caltech LRT-SDN-R02-Dell-Z9100 MAC Address",
+    "legendFormat": "contains k8s-gen4-02.sdsc.optiputer.net MAC Address",
     "refId": "C"
   }
     ],
@@ -1285,9 +1272,9 @@
     },
     "pluginVersion": "8.2.3",
     "targets": [
-{
+  {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_NODE3_TASK1",
+    "expr": "ucsd sn3700_script_exporter_task1_UNIQUE_GLOBAL_ID",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1296,19 +1283,19 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_NODE3_TASK2",
+    "expr": "ucsd sn3700_script_exporter_task2_UNIQUE_GLOBAL_ID",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "contains UCSD SN3700 MAC Address",
+    "legendFormat": "contains sdn-dtn-2-10.ultralight.org MAC Address",
     "refId": "B"
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_NODE3_TASK3",
+    "expr": "ucsd sn3700_script_exporter_task3_UNIQUE_GLOBAL_ID",
     "hide": false,
     "interval": "",
-    "legendFormat": "contains UCSD SN3700 MAC Address",
+    "legendFormat": "contains k8s-gen4-02.sdsc.optiputer.net MAC Address",
     "refId": "C"
   }
     ],
@@ -1386,7 +1373,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_NODE4_TASK1",
+    "expr": "k8s_gen4_02_sdsc_optiputer_net_script_exporter_task1_UNIQUE_GLOBAL_ID",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1395,22 +1382,13 @@
   },
   {
     "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_NODE4_TASK2",
-    "hide": false,
-    "instant": false,
-    "interval": "",
-    "legendFormat": "ping k8s-gen4-02.sdsc.optiputer.net",
-    "refId": "B"
-  },
-  {
-    "exemplar": true,
-    "expr": "SCRIPT_EXPORTER_NODE4_TASK3",
+    "expr": "k8s_gen4_02_sdsc_optiputer_net_script_exporter_task2_UNIQUE_GLOBAL_ID",
     "format": "time_series",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "ARP Table contains k8s-gen4-02.sdsc.optiputer.net IP Address",
-    "refId": "C"
+    "legendFormat": "ARP Table contains sdn-dtn-2-10.ultralight.org IP Address",
+    "refId": "B"
   }
     ],
     "title": "k8s-gen4-02.sdsc.optiputer.net ARP/MAC Correlation",
@@ -1425,7 +1403,7 @@
 },
 "timepicker": {},
 "timezone": "",
-"title": "Multi Switch Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 03/29_12:57",
+"title": "Multi Switch Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 08/17_03:29",
 "uid": null,
 "id": null,
 "version": 2

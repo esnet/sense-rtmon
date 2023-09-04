@@ -1,0 +1,5208 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Simple End-to-End Flow Monitoring Dashboard",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 12,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Host Node Exporter",
+      "tooltip": "",
+      "type": "link",
+      "url": "http://dev2.virnao.com:3000/d/rYdddlPWj/node-exporter-full?orgId=1&refresh=1m"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Switch Diagnostics Dashboard",
+      "tooltip": "",
+      "type": "link",
+      "url": "http://dev2.virnao.com:3000/d/A3jB7x9Gz/sdn-testbed-dashboard?orgId=1"
+    }
+  ],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 119,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "End-to-End Flow Topology",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "valueName": "last"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 36,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 117,
+      "options": {
+        "authPassword": "",
+        "authUsername": "",
+        "composites": [],
+        "content": "graph TB\n    subgraph h1 [\"Host 1\"]\n        ip{{VLAN: 1000 - IP: 1.1.1.1}}\n        e(ens2f0np0.3911)\n    end\n\n    subgraph sw1 [\"Switch 1\"]\n        subgraph sw1s1 [\"interface 1\"]\n            sw1s1vlan{{VLAN: 1000}}\n            sw1s1if[\"interfaceX.1000\"]\n        end\n        subgraph sw1s2 [\"interface 2\"]\n            sw1s2vlan{{VLAN: 1000}}\n            sw1s2ifout[\"InterfaceX.1000\"]\n        end\n    end\n\n    subgraph sw2 [\"Switch 2\"]\n        subgraph sw2s1 [\"interface 1\"]\n            sw2s1vlan{{VLAN: 1000}}\n            sw2s1if[\"InterfaceX.1000\"]\n        end\n        subgraph sw2s2 [\"interface 2\"]\n            sw2s2vlan{{VLAN: 1000}}\n            sw2s2ifout[\"interfaceX.1000\"]\n        end\n    end\n\n    subgraph sw3 [\"Switch 3\"]\n        subgraph sw3s1 [\"interface 1\"]\n            sw3s1vlan{{VLAN: 1000}}\n            sw3s1if[\"InterfaceX.1000\"]\n        end\n        subgraph sw3s2 [\"interface 2\"]\n            sw3s2vlan{{VLAN: 1000}}\n            sw3s2ifout[\"interfaceX.1000\"]\n        end\n    end\n\n    subgraph h2 [\"Host 2\"]\n        ip2{{VLAN: 1000 - IP: 1.1.1.1}}\n        e2(interfaceX.1000)\n    end\n\n    e(interfaceX.1000) ---|connection| sw1s1if[\"hundredGigE 1/31\"]\n    sw1s1if -.- sw1s2ifout\n    sw1s2ifout ---|connection| sw2s1if\n    sw2s1if -.- sw2s2ifout\n    sw2s2ifout ---|connection| sw3s1if\n    sw3s1if -.- sw3s2ifout\n    sw3s2ifout ---|connection| e2(interfaceX.1000)\n",
+        "legend": {
+          "asTable": true,
+          "displayMode": "table",
+          "gradient": {
+            "enabled": true,
+            "show": true
+          },
+          "hideEmpty": false,
+          "hideZero": false,
+          "placement": "bottom",
+          "show": true,
+          "showLegend": true,
+          "sortBy": "last",
+          "sortDesc": true,
+          "stats": [
+            "mean",
+            "last",
+            "min",
+            "max",
+            "sum"
+          ]
+        },
+        "maxWidth": true,
+        "mermaidServiceUrl": "",
+        "mermaidThemeVariablesDark": {
+          "classDiagram": {},
+          "common": {
+            "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+          },
+          "flowChart": {},
+          "sequenceDiagram": {},
+          "stateDiagram": {},
+          "userJourneyDiagram": {}
+        },
+        "mermaidThemeVariablesLight": {
+          "classDiagram": {},
+          "common": {
+            "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+          },
+          "flowChart": {},
+          "sequenceDiagram": {},
+          "stateDiagram": {},
+          "userJourneyDiagram": {}
+        },
+        "metricCharacterReplacements": [],
+        "moddedSeriesVal": 0,
+        "mode": "content",
+        "nodeSize": {
+          "minHeight": 40,
+          "minWidth": 30
+        },
+        "pluginVersion": "7.5.4",
+        "style": "",
+        "useBackground": false,
+        "useBasicAuth": false,
+        "valueName": "last"
+      },
+      "pluginVersion": "1.7.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "End-to-End Flow Topology",
+      "type": "jdbranham-diagram-panel"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "id": 201,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - es.net",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 38
+      },
+      "id": 340,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - NRM_CENIC:aristaeos_s0",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 39
+      },
+      "id": 350,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - es.net",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 40
+      },
+      "id": 362,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - NRM_CENIC:aristaeos_s0",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      },
+      "id": 373,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Host Flow Summary - T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "id": 202,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: es.net   Interface:\nname: + | vlan: 3601 | peer: name: None, interface: None, vlan: None\nname: + | vlan: 3601 | peer: name: None, interface: None, vlan: None\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "es.net - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 47
+      },
+      "id": 341,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: NRM_CENIC:aristaeos_s0   Interface:\nname: Port-Channel502 | vlan: 3873 | peer: name: sn3700_s0, interface: PortChannel501, vlan: not_used\nname: Port-Channel501 | vlan: 3873 | peer: name: dellos9_s0, interface: Port-channel_103, vlan: not_used\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "NRM_CENIC:aristaeos_s0 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 52
+      },
+      "id": 351,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: es.net   Interface:\nname: + | vlan: 3601 | peer: name: None, interface: None, vlan: None\nname: + | vlan: 3601 | peer: name: None, interface: None, vlan: None\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "es.net - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 57
+      },
+      "id": 363,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: NRM_CENIC:aristaeos_s0   Interface:\nname: Port-Channel502 | vlan: 3873 | peer: name: sn3700_s0, interface: PortChannel501, vlan: not_used\nname: Port-Channel501 | vlan: 3873 | peer: name: dellos9_s0, interface: Port-channel_103, vlan: not_used\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "NRM_CENIC:aristaeos_s0 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 62
+      },
+      "id": 374,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nHost: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org   Interface:\nname: mlx5p1s1 | vlan: not used | ip: 10.251.88.122\nname: T2_US_Caltech_Test:dellos9_s0 | vlan: 1799 | peer: name: None, interface: None, vlan: 1799\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 67
+      },
+      "hiddenSeries": false,
+      "id": 203,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv +",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"es.net\",ifDescr=\"+\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"es.net\",ifDescr=\"+\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "es.net - interface: + Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 74
+      },
+      "hiddenSeries": false,
+      "id": 342,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv Port-Channel502",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel502 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 81
+      },
+      "hiddenSeries": false,
+      "id": 352,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv +",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"es.net\",ifDescr=\"+\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"es.net\",ifDescr=\"+\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "es.net - interface: + Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 88
+      },
+      "hiddenSeries": false,
+      "id": 364,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv Port-Channel502",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel502 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 95
+      },
+      "hiddenSeries": false,
+      "id": 375,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv mlx5p1s1",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org\", device=\"mlx5p1s1\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{device}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org\",device=\"mlx5p1s1\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{device}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org - interface: mlx5p1s1 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 102
+      },
+      "hiddenSeries": false,
+      "id": 205,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv +",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"es.net\",ifDescr=\"+\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"es.net\",ifDescr=\"+\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "es.net - interface: + Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 109
+      },
+      "hiddenSeries": false,
+      "id": 343,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv Port-Channel501",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel501 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 116
+      },
+      "hiddenSeries": false,
+      "id": 353,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv +",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"es.net\",ifDescr=\"+\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"es.net\",ifDescr=\"+\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "es.net - interface: + Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 123
+      },
+      "hiddenSeries": false,
+      "id": 365,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv Port-Channel501",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel501 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 130
+      },
+      "id": 376,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Host Flow Summary - T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 131
+      },
+      "id": 206,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nHost: T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net   Interface:\nname: enp33s0f1 | vlan: not used | ip: 10.251.88.123\nname: T2_US_UCSD:s1 | vlan: 1799 | peer: name: None, interface: None, vlan: 1799\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 136
+      },
+      "id": 207,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - T1_US_FNAL:s0",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 137
+      },
+      "id": 344,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - T2_US_Caltech_Test:dellos9_s0",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 138
+      },
+      "id": 354,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - T1_US_FNAL:s0",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 139
+      },
+      "id": 366,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - T2_US_Caltech_Test:dellos9_s0",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 140
+      },
+      "hiddenSeries": false,
+      "id": 377,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv enp33s0f1",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net\", device=\"enp33s0f1\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{device}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net\",device=\"enp33s0f1\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{device}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net - interface: enp33s0f1 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 147
+      },
+      "id": 208,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: T1_US_FNAL:s0   Interface:\nname: 1_1 | vlan: 3601 | peer: name: lag-1, interface: +, vlan: not_used\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "T1_US_FNAL:s0 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 152
+      },
+      "id": 345,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: Port-channel_103 | vlan: 3873 | peer: name: aristaeos_s0, interface: Port-Channel501, vlan: not_used\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "T2_US_Caltech_Test:dellos9_s0 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 157
+      },
+      "id": 355,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: T1_US_FNAL:s0   Interface:\nname: 1_1 | vlan: 3601 | peer: name: lag-1, interface: +, vlan: not_used\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "T1_US_FNAL:s0 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 162
+      },
+      "id": 367,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: Port-channel_103 | vlan: 3873 | peer: name: aristaeos_s0, interface: Port-Channel501, vlan: not_used\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "T2_US_Caltech_Test:dellos9_s0 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 167
+      },
+      "hiddenSeries": false,
+      "id": 209,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv 1_1",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T1_US_FNAL:s0\",ifDescr=\"1_1\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T1_US_FNAL:s0\",ifDescr=\"1_1\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T1_US_FNAL:s0 - interface: 1_1 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 174
+      },
+      "hiddenSeries": false,
+      "id": 346,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv Port-channel_103",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_Caltech_Test:dellos9_s0 - interface: Port-channel_103 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 181
+      },
+      "hiddenSeries": false,
+      "id": 356,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv 1_1",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T1_US_FNAL:s0\",ifDescr=\"1_1\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T1_US_FNAL:s0\",ifDescr=\"1_1\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T1_US_FNAL:s0 - interface: 1_1 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 188
+      },
+      "hiddenSeries": false,
+      "id": 368,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv Port-channel_103",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_Caltech_Test:dellos9_s0 - interface: Port-channel_103 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 195
+      },
+      "id": 378,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - calit2.optiputer.net:2020:prism-core",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 196
+      },
+      "id": 210,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: calit2.optiputer.net:2020:prism-core   Interface:\nname: pwave | vlan: 1799 | peer: name: aristaeos_s0, interface: Port-Channel502-prismcore, vlan: not_used\nname: k8s-igrok-02 | vlan: 1799 | peer: name: None, interface: None, vlan: None\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "calit2.optiputer.net:2020:prism-core - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 201
+      },
+      "id": 211,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - T2_US_UMD:s0",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 202
+      },
+      "id": 347,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - T2_US_SDSC:sn3700_s0",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 203
+      },
+      "id": 357,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - T2_US_UMD:s0",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 204
+      },
+      "id": 369,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - T2_US_SDSC:sn3700_s0",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 205
+      },
+      "hiddenSeries": false,
+      "id": 379,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv pwave",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"pwave\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"pwave\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "calit2.optiputer.net:2020:prism-core - interface: pwave Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 212
+      },
+      "id": 212,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: T2_US_UMD:s0   Interface:\nname: 1_1 | vlan: 3601 | peer: name: 1_1_c6_1, interface: +, vlan: not_used\nname: 1_2 | vlan: 3601 | peer: name: None, interface: None, vlan: None\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "T2_US_UMD:s0 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 217
+      },
+      "id": 348,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: T2_US_SDSC:sn3700_s0   Interface:\nname: PortChannel501 | vlan: 3873 | peer: name: aristaeos_s0, interface: Port-Channel502, vlan: not_used\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "T2_US_SDSC:sn3700_s0 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 222
+      },
+      "id": 358,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: T2_US_UMD:s0   Interface:\nname: 1_1 | vlan: 3601 | peer: name: 1_1_c6_1, interface: +, vlan: not_used\nname: 1_2 | vlan: 3601 | peer: name: None, interface: None, vlan: None\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "T2_US_UMD:s0 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 227
+      },
+      "id": 370,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: T2_US_SDSC:sn3700_s0   Interface:\nname: PortChannel501 | vlan: 3873 | peer: name: aristaeos_s0, interface: Port-Channel502, vlan: not_used\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "T2_US_SDSC:sn3700_s0 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 232
+      },
+      "hiddenSeries": false,
+      "id": 213,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv 1_1",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_UMD:s0\",ifDescr=\"1_1\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_UMD:s0\",ifDescr=\"1_1\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_UMD:s0 - interface: 1_1 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 239
+      },
+      "hiddenSeries": false,
+      "id": 349,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv PortChannel501",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_SDSC:sn3700_s0 - interface: PortChannel501 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 246
+      },
+      "hiddenSeries": false,
+      "id": 359,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv 1_1",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_UMD:s0\",ifDescr=\"1_1\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_UMD:s0\",ifDescr=\"1_1\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_UMD:s0 - interface: 1_1 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 253
+      },
+      "hiddenSeries": false,
+      "id": 371,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv PortChannel501",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-899620b2-4009-49bf-8bbd-ee54776df622 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_SDSC:sn3700_s0 - interface: PortChannel501 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 260
+      },
+      "hiddenSeries": false,
+      "id": 380,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv k8s-igrok-02",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"k8s-igrok-02\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"k8s-igrok-02\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "calit2.optiputer.net:2020:prism-core - interface: k8s-igrok-02 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 267
+      },
+      "hiddenSeries": false,
+      "id": 215,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv 1_2",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_UMD:s0\",ifDescr=\"1_2\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_UMD:s0\",ifDescr=\"1_2\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_UMD:s0 - interface: 1_2 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 274
+      },
+      "hiddenSeries": false,
+      "id": 360,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv 1_2",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_UMD:s0\",ifDescr=\"1_2\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_UMD:s0\",ifDescr=\"1_2\",flow=\"rtmon-d7b72a34-eca6-402e-a646-827aa28cb717 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_UMD:s0 - interface: 1_2 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 281
+      },
+      "id": 381,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - NRM_CENIC:aristaeos_s0",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 282
+      },
+      "id": 216,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: NRM_CENIC:aristaeos_s0   Interface:\nname: Port-Channel501 | vlan: 1799 | peer: name: dellos9_s0, interface: Port-channel_103, vlan: not_used\nname: Port-Channel502-prismcore | vlan: 1799 | peer: name: prism-core, interface: pwave, vlan: not_used\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "NRM_CENIC:aristaeos_s0 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 287
+      },
+      "hiddenSeries": false,
+      "id": 217,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv Port-Channel501",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel501 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 294
+      },
+      "hiddenSeries": false,
+      "id": 219,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv Port-Channel502-prismcore",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502-prismcore\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502-prismcore\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel502-prismcore Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 301
+      },
+      "id": 221,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - T2_US_Caltech_Test:dellos9_s0",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 302
+      },
+      "id": 222,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: Port-channel_103 | vlan: 1799 | peer: name: aristaeos_s0, interface: Port-Channel501, vlan: not_used\nname: hundredGigE_1-27 | vlan: 1799 | peer: name: T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org, interface: mlx5p1s1, vlan: 1799\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "T2_US_Caltech_Test:dellos9_s0 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 307
+      },
+      "hiddenSeries": false,
+      "id": 223,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv Port-channel_103",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_Caltech_Test:dellos9_s0 - interface: Port-channel_103 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 314
+      },
+      "hiddenSeries": false,
+      "id": 225,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv hundredGigE_1-27",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-27\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE_1-27\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE_1-27 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 321
+      },
+      "id": 227,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Switch Flow Summary - T2_US_UCSD:s1",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 322
+      },
+      "id": 228,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "```\nSwitch: T2_US_UCSD:s1   Interface:\nname: 1_2 | vlan: 1799 | peer: name: T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net, interface: enp33s0f1, vlan: 1799\nname: 1_1 | vlan: 1799 | peer: name: prism-core, interface: k8s-igrok-02, vlan: not_used\n ```",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "T2_US_UCSD:s1 - Node Interface Information",
+      "type": "text"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 327
+      },
+      "hiddenSeries": false,
+      "id": 229,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv 1_2",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_UCSD:s1\",ifDescr=\"1_2\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_UCSD:s1\",ifDescr=\"1_2\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_UCSD:s1 - interface: 1_2 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 334
+      },
+      "hiddenSeries": false,
+      "id": 231,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "10.0.2",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:176",
+          "alias": "recv 1_1",
+          "transform": "negative-Y"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"T2_US_UCSD:s1\",ifDescr=\"1_1\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "recv {{ifDescr}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"T2_US_UCSD:s1\",ifDescr=\"1_1\",flow=\"rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 \"}[1m])*8",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "trans {{ifDescr}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "T2_US_UCSD:s1 - interface: 1_1 Flow Bandwidth",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:118",
+          "format": "Bps",
+          "label": "bw out(-) / in(+)",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:119",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 341
+      },
+      "id": 315,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "L2 Debugging",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 342
+      },
+      "id": 372,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "L2 Debugging",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 343
+      },
+      "id": 317,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "L2 Debugging",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 344
+      },
+      "id": 361,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "L2 Debugging",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 345
+      },
+      "id": 333,
+      "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "L2 Debugging",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "FAILURE"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "SUCCESS"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 346
+      },
+      "id": 334,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "always",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "t2_us_caltech_test:sdn_dtn_2_11_ultralight_org_script_exporter_task1_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "ARP Exporter Active",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "t2_us_caltech_test:sdn_dtn_2_11_ultralight_org_script_exporter_task2_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "ARP Table contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net IP Address",
+          "refId": "B"
+        }
+      ],
+      "title": "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org ARP/MAC Correlation",
+      "transparent": true,
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "FAILURE"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "SUCCESS"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 352
+      },
+      "id": 335,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "always",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "t2_us_ucsd:k8s_igrok_02_calit2_optiputer_net_script_exporter_task1_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "ARP Exporter Active",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "t2_us_ucsd:k8s_igrok_02_calit2_optiputer_net_script_exporter_task2_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "ARP Table contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org IP Address",
+          "refId": "B"
+        }
+      ],
+      "title": "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net ARP/MAC Correlation",
+      "transparent": true,
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "FAILURE"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "SUCCESS"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 358
+      },
+      "id": 336,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "always",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task1_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "SNMP Exporter Active",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task2_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org MAC Address",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task3_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net MAC Address",
+          "refId": "C"
+        }
+      ],
+      "title": "calit2.optiputer.net:2020:prism-core ARP/MAC Correlation",
+      "transparent": true,
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "FAILURE"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "SUCCESS"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 364
+      },
+      "id": 337,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "always",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "nrm_cenic:aristaeos_s0_script_exporter_task1_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "SNMP Exporter Active",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "nrm_cenic:aristaeos_s0_script_exporter_task2_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org MAC Address",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "nrm_cenic:aristaeos_s0_script_exporter_task3_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net MAC Address",
+          "refId": "C"
+        }
+      ],
+      "title": "NRM_CENIC:aristaeos_s0 ARP/MAC Correlation",
+      "transparent": true,
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "FAILURE"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "SUCCESS"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 370
+      },
+      "id": 338,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "always",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task1_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "SNMP Exporter Active",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task2_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org MAC Address",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task3_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net MAC Address",
+          "refId": "C"
+        }
+      ],
+      "title": "T2_US_Caltech_Test:dellos9_s0 ARP/MAC Correlation",
+      "transparent": true,
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "FAILURE"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "SUCCESS"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 376
+      },
+      "id": 339,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "always",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "t2_us_ucsd:s1_script_exporter_task1_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "SNMP Exporter Active",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "t2_us_ucsd:s1_script_exporter_task2_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "contains T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org MAC Address",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "exemplar": true,
+          "expr": "t2_us_ucsd:s1_script_exporter_task3_rtmon_5ea5084a_6757_4130_8021_7bf2bc38c231 ",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net MAC Address",
+          "refId": "C"
+        }
+      ],
+      "title": "T2_US_UCSD:s1 ARP/MAC Correlation",
+      "transparent": true,
+      "type": "state-timeline"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "XLK |Flow: rtmon-5ea5084a-6757-4130-8021-7bf2bc38c231 | 07/16_04:05 Copy",
+  "uid": "a9816aad-a20c-4591-8d79-816ec730268e",
+  "version": 1,
+  "weekStart": ""
+}

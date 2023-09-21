@@ -61,8 +61,9 @@ def generate_mermaid(data):
         host_template += f"{switch[len(switch) - 1]} --> {host[1][0]}\n"
     except:
         sys.exit()
-            
+    
     return host_template
+
 def api(data, dashboard, lp):
     url = f"{str(data['grafana_host'])}/api/dashboards/db"
     
@@ -155,8 +156,6 @@ def dynamic(data):
         # write node info to a json file
 
         rep,id_num = fill_rep({},id_num,node)
-        with open("data95.json", 'w') as f:
-            json.dump(rep, f, indent=2)
         info_panel = replace_file_to_string("./dashboard/templates/panel/info_panel.json",rep)
         concat_json(info_panel)
 

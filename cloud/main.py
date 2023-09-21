@@ -13,10 +13,14 @@ from sense.client.workflow_combined_api import WorkflowCombinedApi
 from sense.client.discover_api import DiscoverApi
 # from generate_s import *
 from dynamic import *
-from dispatch import *
+# from dispatch import *
 from converter import converter
+from nodePatch import *
 logging.basicConfig(filename='output.log', level=logging.DEBUG)
 
+config = {}
+with open("../config_cloud/config.yml", 'r') as f:
+    config = yaml.safe_load(f)
 
 def fetch_data():
     response = ""
@@ -35,8 +39,6 @@ def fetch_data():
        
     
     data = json.loads(response)
-    with open("response.json", 'w') as f:
-        json.dump(data, f, indent=3)
     
     return data
 
@@ -47,8 +49,6 @@ def filter_data(data):
     
     filtered_data = [instance for instance in data['instances'] if instance['state'] in ["CREATE - READY", "REINSTATE - READY"]]
 
-    with open("filtered.json", 'w') as f:
-        json.dump(filtered_data, f, indent=3)
 
     if not filtered_data:
         logging.warning("No instances are CREATE/REINSTATE-ready.")
@@ -93,7 +93,7 @@ def create_manifest(instance):
 
     return manifest
 
-def fill_API(data):
+def fill_API(data, admin, password):
     try:
         with open('api_key.txt', 'r') as file:
             api_key = file.read().strip()
@@ -101,17 +101,14 @@ def fill_API(data):
                 data['grafana_api_token'] = "Bearer " + api_key
     except:
         # get time for API keys
-        print("Runningwesfsd")
+      
         now = datetime.datetime.now()
-        print(now)
+      
         current_time = now.strftime("%m/%d_%H:%M")  
-        print(current_time)  
 
         # curl the API key to here
-        curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" + str(current_time) + "\", \"role\": \"Admin\"}' http://admin:ab=*83kl@" + str(data['grafana_host']).split("//")[1] + "/api/auth/keys"
-
+        curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" + str(current_time) + f'", "role": "Admin"}}\' http://{admin}:{password}@' + str('http://dev2.virnao.com:3000').split("//")[1] + "/api/auth/keys"
         token = os.popen(curlCMD).read()
-        print(token)
         result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
         api_key = str(result.group(1))
 
@@ -124,8 +121,6 @@ def fill_API(data):
 
         logging.info(f"\nAPI Key: Bearer {api_key}")
         logging.info("!!   API CURL COMPLETE")
-    with open("data.json", 'w') as f:
-        json.dump(data, f, indent=2)
 
     return data , api_key
 
@@ -150,11 +145,10 @@ def delete_dashboard(uid, api_token, grafana_url, name):
     # Check the status code of the response
     if response.status_code == 200:
         print("\033[91m" + f"Dashboard uid : {uid}, name: {name}, deleted successfully." + "\033[0m")
-        time.sleep(1)
+
         return response.json()
     else:
         print(f"Failed to delete dashboard {uid}. Status code: {response.status_code}")
-        time.sleep(1)
         return None
 
 def main():
@@ -174,8 +168,6 @@ def main():
             data = fetch_data()
             with open("data_fetch.json", 'w') as f:
                 json.dump(data, f, indent=2)
-            
-            time.sleep(1)
         except:
             logging.error("Failed to fetch data. API Error\nMaking another request in 3 mins.")
             print("Failed to fetch data. API Error\nMaking another request in 3 mins.")
@@ -187,8 +179,6 @@ def main():
             data = filter_data(data)
             with open("data_filtered.json", 'w') as f:
                 json.dump(data, f, indent=2)
-            
-            time.sleep(1)
         except:
             logging.error("Failed to filter data. \nMaking another attempt in 3 mins.")
             print("Failed to filter data. \nMaking another attempt in 3 mins.")
@@ -209,7 +199,6 @@ def main():
                 delete_dashboard(uid, api , url , name)
                 dashboard_recorder.pop(i, None)
                 live_dashboard.pop(i, None)
-                time.sleep(1)
         
         for instance in data:
             id = instance['intents'][0]['json']['service_instance_uuid']
@@ -218,7 +207,7 @@ def main():
             if id in list(live_dashboard):
                 if live_dashboard[id] == reference_data:
                     print(f"This dashboard is already created id :{id}, name: {name}")
-                    time.sleep(1)
+  
                 else:
                     uid = dashboard_recorder[id]['uid']
                     api = dashboard_recorder[id]['api']
@@ -227,31 +216,45 @@ def main():
                     delete_dashboard(uid, api, url ,name_new)
                     dashboard_recorder.pop(id, None)
                     live_dashboard.pop(id, None)
-                    time.sleep(1)
+
                     try:
                         manifest = create_manifest(instance)
                         print("Manifest Created Successfully")
                         with open("manifest.json", 'w') as f:
                             json.dump(manifest, f, indent=2)
-                        time.sleep(1)
+
                         try:
                             config_data = converter(manifest, id, name)
                             print("Config Created")
-                            time.sleep(1)
+
                             try:
-                                config_data, api_key = fill_API(config_data)
+                                config_data, api_key = fill_API(config_data, config['grafana_username'], config['grafana_password'])
                                 print("API Filled")
-                                time.sleep(1)
+
                                 try:
                                     for_api = dynamic(config_data)
                                     live_dashboard[id] = reference_data
                                     dashboard_recorder[id] = {
                                         'uid' : for_api['uid'],
                                         'api' : api_key,
-                                        'url' : "http://dev2.virnao.com:3000",
+                                        'url' : config['grafana_host'],
                                         'name' : name
                                     }
-                                    time.sleep(1)
+                                    print("Dashboard Generated")
+                                    
+                                    try: 
+                                        siteMap = node_data(manifest, id, config["pushgateway"])
+                                        with open("node_data.json", 'w') as f:
+                                            json.dump(siteMap, f, indent = 2)
+                                        for idMap in siteMap.keys():
+                                            baseURL = config['siterm_url_map'][f'{idMap}']
+                                            api = SiteRMAPI(baseURL, node_data=siteMap[idMap])
+                                            
+                                            api.test(siteMap[idMap])
+                                        print("Data Dispatched")
+                                    
+                                    except:
+                                        print("Dispatch Failed")
 
                                 except:
                                     print("Sorry the dashboard for this config data, couldn't be created because the current version is not compatible.")
@@ -268,29 +271,22 @@ def main():
                 try:
                     manifest = create_manifest(instance)
                     print("Manifest Created Successfully")
-        
     
-                    time.sleep(1)
                     with open("manifest.json", 'w') as f:
                         json.dump(manifest, f, indent=2)
-                    print(id)
-                    
-                    
-                    
+
                     try:
                    
                         config_data = converter(manifest, id, name)
                         print("Config Created")
-                        time.sleep(1)
+
                         try:
-                            config_data, api_key = fill_API(config_data)
+                            config_data, api_key = fill_API(config_data, config['grafana_username'], config['grafana_password'])
                             print("API Filled")
-                            print(id)
-                            print(name)
                             with open("converted.json", 'w') as f:
                                 json.dump(config_data, f, indent=2)
                             
-                            time.sleep(1)
+     
                             try:
                                 for_api = dynamic(config_data)
                               
@@ -299,12 +295,19 @@ def main():
                                 dashboard_recorder[id] = {
                                     'uid' : for_api['uid'],
                                     'api' : api_key,
-                                    'url' : "http://dev2.virnao.com:3000",
+                                    'url' : config['grafana_host'],
                                     'name' : name
                                 }
-                                time.sleep(1)
+                                print("Dashboard Generated")
                                 try: 
-                                    dispatch(config_data)
+                                    siteMap = node_data(manifest, id, config["pushgateway"])
+                                    with open("node_data.json", 'w') as f:
+                                        json.dump(siteMap, f, indent = 2)
+                                    for idMap in siteMap.keys():
+                                        baseURL = config['siterm_url_map'][f'{idMap}']
+                                        api = SiteRMAPI(baseURL, node_data=siteMap[idMap])
+                                        
+                                        api.test(siteMap[idMap])
                                     print("Data Dispatched")
                                    
                                 except:
@@ -319,7 +322,7 @@ def main():
 
                 except:
                     print("Manifest Creation Failed")
-            time.sleep(1)
+
 
             
             response_fetched[id] = instance
@@ -334,16 +337,14 @@ def main():
                 url = dashboard_recorder[id]['url']
                 name_new = dashboard_recorder[id]['name']
                 delete_dashboard(uid, api, url, name_new)
-                time.sleep(1)
                 live_dashboard.pop(id, None)
                 dashboard_recorder.pop(id, None)
 
 
         
         
-    
-        print("One iteration complete")
-        time.sleep(5)
+ 
+        time.sleep(180)
 
 main()
 

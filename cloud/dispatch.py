@@ -21,8 +21,12 @@ def makeRequest(cls, url, params):
  
     """Make HTTP Request"""
     url = f"{cls.hostname}{url}"
+    ver = params.get('verb')
+    print("\033[32m" + f'{ver} : {url}' + "\033[0m")
 
     cert=(os.environ["X509_USER_CERT"], os.environ["X509_USER_KEY"])
+    
+    
     if params.get('verb') == 'GET':
         out = requests.get(url, cert=cert, verify=False)
     elif params.get('verb') == 'POST':
@@ -31,6 +35,7 @@ def makeRequest(cls, url, params):
         out = requests.put(url, cert=cert, json=params.get('data', {}), verify=False)
     #pprint.pprint(json.loads(out.text))
     #print(json.loads(out.text))
+    # print(out)
     return json.loads(out.text), out.ok, out
 
 
@@ -38,14 +43,18 @@ def debugActions(cls, dataIn, dataUpd):
     """Test Debug Actions: submit, get update"""
     # SUBMIT
     urls = f"/{cls.sitename}/sitefe/json/frontend/submitdebug/NEW"
+    
     outs = makeRequest(cls, urls, {'verb': 'POST', 'data': dataIn})
     # GET
     urlg = f"/{cls.sitename}/sitefe/json/frontend/getdebug/{outs[0]['ID']}"
     makeRequest(cls, urlg, {'verb': 'GET', 'data': {}})
+    
     # UPDATE
     urlu = f"/{cls.sitename}/sitefe/json/frontend/updatedebug/{outs[0]['ID']}"
+    
     makeRequest(cls, urlu, {'verb': 'PUT', 'data': dataUpd})
 
+   
 
 class SiteRMAPI():
     def __init__(self, hostname, sitename, node_data):
@@ -60,7 +69,7 @@ class SiteRMAPI():
             outsuc = {"out": ["running"], "err": "", "exitCode": 0}
             dataupd = {'state': 'active', 'output': json.dumps(outsuc)}
             debugActions(self, data, dataupd)
-
+            print("Done")
             url = f"/{self.sitename}/sitefe/json/frontend/getalldebughostnameactive/dummyhostname"
             makeRequest(self, url, {'verb': 'GET', 'data': {}})
 
@@ -137,3 +146,7 @@ def dispatch(data):
 #             'type': 'prometheus-push', 'metadata': {'instance': 'dellos9_s0'},
 #             'gateway': 'dev2.virnao.com:9091', 'runtime': str(int(getUTCnow())+610),
 #             'resolution': '5'}]:
+
+# data = open("converted.json")
+# data = json.load(data)
+# dispatch(data)

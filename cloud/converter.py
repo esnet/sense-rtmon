@@ -27,8 +27,6 @@ def converter(data, id, name):
                 flows[port["Flow"]].append(port)
         else:
             flows["unknown"].append(port)
-    print(flows)
-    time.sleep(15)
 
     # Per-flow SENSE-RTMON config translation
     for flow in flows.keys():

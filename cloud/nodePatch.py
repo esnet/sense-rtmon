@@ -77,6 +77,8 @@ def makeRequest(cls, url, params):
     #pprint.pprint(json.loads(out.text))
     #print(json.loads(out.text))
     # print(out)
+    if out.ok == False:
+        print("\033[31m" + f'{ver} : {url}' + "\033[0m")
     return json.loads(out.text), out.ok, out
 
 def debugActions(cls, dataIn, dataUpd):
@@ -119,10 +121,13 @@ class SiteRMAPI():
 # with open("test_node.json", 'w') as f:
 #     json.dump(siteMap, f, indent=2)
 # for idMap in siteMap.keys():
-#     baseURL = config['siterm_url_map'][f'{idMap}']
-#     api = SiteRMAPI(baseURL, node_data=siteMap[idMap])
-    
-#     api.test(siteMap[idMap])
+#     if idMap in config['siterm_url_map']:
+#         baseURL = config['siterm_url_map'][f'{idMap}']
+#         api = SiteRMAPI(baseURL, node_data=siteMap[idMap])
+        
+#         api.test(siteMap[idMap])
+#     else:
+#         print(f'This Key: {idMap} does not exist in config.yml')
 # print("Data Dispatched")
 
 

@@ -247,10 +247,14 @@ def main():
                                         with open("node_data.json", 'w') as f:
                                             json.dump(siteMap, f, indent = 2)
                                         for idMap in siteMap.keys():
-                                            baseURL = config['siterm_url_map'][f'{idMap}']
-                                            api = SiteRMAPI(baseURL, node_data=siteMap[idMap])
-                                            
-                                            api.test(siteMap[idMap])
+                                            if idMap in config['siterm_url_map']:
+                                                baseURL = config['siterm_url_map'][f'{idMap}']
+                                                api = SiteRMAPI(baseURL, node_data=siteMap[idMap])
+                                                
+                                                api.test(siteMap[idMap])
+                                            else:
+                                                print("\033[32m" + f'This Key: {idMap} does not exist in config.yml'+ "\033[0m")
+                                        
                                         print("Data Dispatched")
                                     
                                     except:
@@ -304,10 +308,13 @@ def main():
                                     with open("node_data.json", 'w') as f:
                                         json.dump(siteMap, f, indent = 2)
                                     for idMap in siteMap.keys():
-                                        baseURL = config['siterm_url_map'][f'{idMap}']
-                                        api = SiteRMAPI(baseURL, node_data=siteMap[idMap])
-                                        
-                                        api.test(siteMap[idMap])
+                                        if idMap in config['siterm_url_map']:
+                                            baseURL = config['siterm_url_map'][f'{idMap}']
+                                            api = SiteRMAPI(baseURL, node_data=siteMap[idMap])
+                                                
+                                            api.test(siteMap[idMap])
+                                        else:
+                                            print("\033[31m" + f'This Key: {idMap} does not exist in config.yml'+ "\033[0m")
                                     print("Data Dispatched")
                                    
                                 except:

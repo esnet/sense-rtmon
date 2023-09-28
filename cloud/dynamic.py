@@ -236,6 +236,8 @@ def dynamic(data):
     
     
     res = api(data, dashboard_name, lp)
+    if os.path.exists(dashboard_name):
+        os.remove(dashboard_name)
 
     return res
             

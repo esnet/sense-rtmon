@@ -8,8 +8,8 @@ import copy
 import requests
 import pprint
 import simplejson as json
-os.environ["X509_USER_KEY"] = '/Users/sunami/privkey.pem'
-os.environ["X509_USER_CERT"] = '/Users/sunami/cert.pem'
+os.environ["X509_USER_KEY"] = '/etc/letsencrypt/live/dev2.virnao.com/privkey.pem'
+os.environ["X509_USER_CERT"] = '/etc/letsencrypt/live/dev2.virnao.com/cert.pem'
 
 def getUTCnow():
     """Get UTC Time."""
@@ -110,24 +110,24 @@ class SiteRMAPI():
             makeRequest(self, url, {'verb': 'GET', 'data': {}})
 
 
-# data = {}
-# with open("manifest.json", 'r') as f:
-#     data = json.load(f)
-# config = {}
-# with open("../config_cloud/config.yml", 'r') as f:
-#     config = yaml.safe_load(f)
-# siteMap = node_data(data, "4700d4e0-bb7d-4a30-9736-91fa5f2f1852", config["pushgateway"])
+#data = {}
+#with open("manifest.json", 'r') as f:
+#    data = json.load(f)
+#config = {}
+#with open("../config_cloud/config.yml", 'r') as f:
+#    config = yaml.safe_load(f)
+#siteMap = node_data(data, "4700d4e0-bb7d-4a30-9736-91fa5f2f1852", config["pushgateway"])
 
-# with open("test_node.json", 'w') as f:
-#     json.dump(siteMap, f, indent=2)
-# for idMap in siteMap.keys():
-#     if idMap in config['siterm_url_map']:
-#         baseURL = config['siterm_url_map'][f'{idMap}']
-#         api = SiteRMAPI(baseURL, node_data=siteMap[idMap])
-        
-#         api.test(siteMap[idMap])
-#     else:
-#         print(f'This Key: {idMap} does not exist in config.yml')
-# print("Data Dispatched")
+#with open("test_node.json", 'w') as f:
+#    json.dump(siteMap, f, indent=2)
+#for idMap in siteMap.keys():
+#    if idMap in config['siterm_url_map']:
+#        baseURL = config['siterm_url_map'][f'{idMap}']
+#        api = SiteRMAPI(baseURL, node_data=siteMap[idMap])
+       
+#        api.test(siteMap[idMap])
+#    else:
+#        print(f'This Key: {idMap} does not exist in config.yml')
+#print("Data Dispatched")
 
 

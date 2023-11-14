@@ -20,9 +20,9 @@ def check_arp_on(pushgateway, host_names,id_name,id):
         arp_str = arp_str + f'''
         # check_arp_on
         if curl {pushgateway} | grep '.*arp_state.*' | grep '.*{id_name}="{id}".*' | grep '.*instance="{name}".*'; then
-            echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 1'
+            echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 1' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
         else
-            echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 0'
+            echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 0' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
         fi
         '''
         
@@ -35,9 +35,9 @@ def check_arp_contain_ip(pushgateway, host_names,ips,id_name,id):
         arp_str = arp_str + f'''
         # check_arp_contain_ip
         if curl {pushgateway} | grep '.*arp_state.*' | grep '.*{id_name}="{id}".*' | grep '.*instance="{name}".*' | grep '.*IPaddress="{ip}".*'; then
-            echo '{formatted_name}_script_exporter_task2_{id.replace('-', '_')}{{host="{formatted_name}"}} 1'
+            echo '{formatted_name}_script_exporter_task2_{id.replace('-', '_')}{{host="{formatted_name}"}} 1' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
         else
-            echo '{formatted_name}_script_exporter_task2_{id.replace('-', '_')}{{host="{formatted_name}"}} 0'
+            echo '{formatted_name}_script_exporter_task2_{id.replace('-', '_')}{{host="{formatted_name}"}} 0' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
         fi
         '''
     return arp_str
@@ -70,9 +70,9 @@ def check_snmp_on(pushgateway,switch_name,id_name,id):
     snmp_str = snmp_str + f'''
     # check_snmp_on
     if curl {pushgateway} | grep '.*ifHCInOctets.*' | grep '.*instance="{switch_name}".*' | grep '.*{id_name}="{id}".*'; then
-        echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 1'
+        echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 1' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
     else
-        echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 0'
+        echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 0' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
     fi
     '''
     return snmp_str
@@ -86,9 +86,9 @@ def check_snmp_mac(pushgateway, switch_names,macs,id_name,id):
             snmp_mac = snmp_mac + f'''
             # check_snmp_mac
             if curl {pushgateway} | grep '.*mac_table_info.*' | grep '.*instance="{name}".*' | grep '.*macaddress={mac}.*' | grep '.*{id_name}="{id}".*'; then
-                echo '{formatted_name}_script_exporter_task{i}_{id.replace('-', '_')}{{host="{formatted_name}"}} 1'
+                echo '{formatted_name}_script_exporter_task{i}_{id.replace('-', '_')}{{host="{formatted_name}"}} 1' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
             else
-                echo '{formatted_name}_script_exporter_task{i}_{id.replace('-', '_')}{{host="{formatted_name}"}} 0'
+                echo '{formatted_name}_script_exporter_task{i}_{id.replace('-', '_')}{{host="{formatted_name}"}} 0' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
             fi
             '''
             
@@ -143,7 +143,7 @@ def main():
         switch_names = []
         ips = []
         id_name = "flow"
-        id = data['flow']
+        id = data['flow'].strip()
         for node in data["node"]:
             if node['type'] == 'host':
                 host_names.append(node['name'])

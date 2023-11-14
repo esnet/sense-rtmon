@@ -23,7 +23,7 @@ scrape_configs:
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
     static_configs:
-      - targets: ['198.124.151.8:9090']
+      - targets: ['52.20.53.21:9090']
   - job_name: pushgateway
     scrape_interval: 15s
     scrape_timeout: 10s
@@ -31,18 +31,18 @@ scrape_configs:
     scheme: http #s
     static_configs:
       - targets:
-        - 198.124.151.8:9091
+        - 52.20.53.21:9091
   - job_name: multi
     metrics_path: /probe
     params:
       script: [multi]
     static_configs:
       - targets:
-        - 198.124.151.8:9469
+        - 52.20.53.21:9469
   - job_name: single
     metrics_path: /probe
     params:
       script: [default]
     static_configs:
       - targets:
-        - 198.124.151.8:9469 
+        - 52.20.53.21:9469 

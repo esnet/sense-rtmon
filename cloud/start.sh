@@ -32,8 +32,8 @@ python3 prometheus.py ${config_file}
 sleep 1
 
 # echo "!!    Transporting Script Exporter configuration files"
-# yes | cp -rfa se_config/. script_exporter/examples
-# sleep 1
+yes | cp -rfa se_config/. script_exporter/examples
+sleep 1
 
 echo "!!    docker stack deployment"
 docker stack deploy -c docker-stack.yml cloud

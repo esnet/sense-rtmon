@@ -6,63 +6,83 @@ from datetime import datetime
 import sys
 import time
 import requests
-def generate_mermaid(data):
-    # Make Host 1
-    host_template = "graph TB\n"
-    host=[]
-    switch = []
-    tag = 65
-    delta = 1123
+def generate_mermaid(manifest):
+    with open('manifest.json') as f:
+        manifest = json.load(f)
+    graph_template = "graph TB\n"
+    connections = []
 
-    for node in data['node']:
-        if node['type'] == "host":
-            template = f"subgraph \"HOST {node['name']}\"\n"
-            number = 1
-            host1 = []
-            for inter in node['interface']:
-                text = ""
-                try:
-                    text = f"IP: {inter['ip']}"
-                except:
-                    text = f"VLAN: {inter['vlan']}"
-                t = f"subgraph \"Interface: {number}\"\n in{tag}({inter['name']}) \n in{delta}({text})\nend\n"
-                host1.append(f"in{delta}")
-                number += 1
-                delta += 1
-                tag += 1
-                template += t
-            template += "end\n"
-            host_template += template
-            host.append(host1)
-        if node['type'] == 'switch':
-            template = f"subgraph \"Switch {node['name']}\"\n"
-            number = 1
-            for inter in node['interface']:
-                t = f"subgraph \"Interface: {number}\"\n in{tag}({inter['name']}) \n in{delta}(Vlan: {inter['vlan']})\nend\n"
-                switch.append(f"in{delta}")
-                number += 1
-                delta += 1
-                tag += 1
-                template += t
-            template += "end\n"
-            host_template += template
+    # Helper function to format node names
+    def format_name(name):
+        return name.replace(" ", "_").replace(":", "_").replace("/", "_")
 
-    for i in range(0, len(switch) - 1):
-        if i % 2 == 0:
-            host_template += f"{switch[i]} -.-> {switch[i + 1]}\n"
+    # Identify unique hosts and switches
+    hosts = {}
+    switches = {}
+    for port in manifest["Ports"]:
+        node_name = format_name(port["Node"])
+        port_name = format_name(port["Name"])
+
+        if "Host" in port:
+            for host in port["Host"]:
+                host_node = port["Node"].replace(":", "_")
+                host_interface = host["Interface"]
+                host_ip = host["IPv4"]
+                host_name = format_name(host["Name"].split(":")[0])
+
+                # Store host information
+                hosts[host_name] = (host_interface, host_ip, host_node)
+                
         else:
-            host_template += f"{switch[i]} --> {switch[i + 1]}\n"
-    for i in range(0, len(host)):
-        for j in range(0, len(host[i]) - 1):
-            host_template += f"{host[i][j]} -.-> {host[i][j + 1]}\n"
+            # It's a switch
+            if node_name not in switches:
+                switches[node_name] = []
+            switches[node_name].append(port_name)
+            print(node_name, port_name)
+
+    # Create subgraphs for hosts
+    host_graphl = {}
+    for host_name, (interface, ip, node_name) in hosts.items():
+        host_graphl[f'{interface}_IP'] = node_name
+        graph_template += f'''
+    subgraph "HOST {host_name}"
+        {interface}("{interface}") 
+        {interface}_IP("IP: {ip}")
+    end
+    {interface} --> {interface}_IP
+        '''
+
+    # Create subgraphs for switches
+    for switch_name, ports in switches.items():
+        graph_template += f'\n    subgraph "{switch_name}"\n'
+        for port in ports:
+            graph_template += f'        {port}("{port}")\n'
+
+        graph_template += '    end\n'
+
+    # Determine switch-to-switch connections from the manifest
+    for port in manifest["Ports"]:
+        if "Peer" in port and port["Peer"] != "?peer?":
+            port_name = format_name(port["Name"])
+            peer_port = format_name(port["Peer"].split(":")[-1])
+            if (peer_port, port_name) not in connections: # Avoid duplicate connections
+                connections.append((port_name, peer_port))
+
+    # Add switch-to-switch connections to the graph
+    map_connection = {}
+
+    for port1, port2 in connections:
+        if port1 in map_connection or port2 in map_connection:
+            continue
+        graph_template += f'    {port1} --> {port2}\n'
+        map_connection[port1] = port2
+        map_connection[port2] = port1
     
-    try:
-        host_template += f"{host[0][1]} --> {switch[0]}\n"
-        host_template += f"{switch[len(switch) - 1]} --> {host[1][0]}\n"
-    except:
-        sys.exit()
-    
-    return host_template
+    for host_interface in host_graphl:
+        switch = switches[host_graphl[host_interface]][0]
+        graph_template += f'    {host_interface} --> {switch}\n'
+
+    return graph_template
 
 def api(data, dashboard, lp):
     url = f"{str(data['grafana_host'])}/api/dashboards/db"
@@ -93,7 +113,7 @@ def dynamic(data):
         
     def fill_rep(rep,id_num,node=None,iface=None):
         id_num += 1
-        rep["ID_UNIQUE"] = unqiue_id
+        rep["ID_UNIQUE"] = unqiue_id.strip()
         rep["UNIQUE_ID_FIELD"] = unique_id_field
         rep["YPOSITION"] = str(id_num)
         rep["PANELID"] = str(id_num)
@@ -101,7 +121,14 @@ def dynamic(data):
             rep["NODENAME"] = node['name']
             rep["NODETYPE"] = node["type"].capitalize()
         if iface!=None:
-            rep["IFNAME"] = iface['name']
+            # port hack
+            try:
+                if "Port" in iface['name']:
+                    rep["IFNAME"] = iface['name'].rstrip("-", 1)[0]
+                else: 
+                    rep["IFNAME"] = iface['name'].replace('_', ' ').replace('-', '/')
+            except:
+                rep["IFNAME"] = iface['name'].replace('-rucio','')
             rep["IFVLAN"] = iface['vlan']
         return rep,id_num
     
@@ -192,7 +219,7 @@ def dynamic(data):
    
     rep,id_num = fill_rep({},id_num)
     unqiue_id = data[unique_id_field].replace('-', '_') # flow id Grafana doesn't like - in raw metrics
-    rep["ID_UNIQUE"] = unqiue_id
+    rep["ID_UNIQUE"] = unqiue_id.strip()
     info_panel = replace_file_to_string("./dashboard/templates/l2_debugging_panel/info_panel.json",rep)
     concat_json(info_panel)
     
@@ -206,7 +233,7 @@ def dynamic(data):
         rep = get_hosts_names(data,{})
  
        
-        rep["ID_UNIQUE"] = unqiue_id
+        rep["ID_UNIQUE"] = unqiue_id.strip()
         if node['name'] == rep["HOST1NAME"]:
             rep["OPPOSITENAME"] = rep["HOST2NAME"]
         else :
@@ -243,4 +270,5 @@ def dynamic(data):
             
 
         
+
 

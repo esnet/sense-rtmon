@@ -145,16 +145,22 @@ def delete_dashboard(uid, api_token, grafana_url, name):
     # Check the status code of the response
     if response.status_code == 200:
         print("\033[91m" + f"Dashboard uid : {uid}, name: {name}, deleted successfully." + "\033[0m")
-
+        logging.info(f"Dashboard uid : {uid}, name: {name}, deleted successfully.")
         return response.json()
     else:
         print(f"Failed to delete dashboard {uid}. Status code: {response.status_code}")
+        logging.info(f"Failed to delete dashboard {uid}. Status code: {response.status_code}")
         return None
 
 def main():
     live_dashboard = {}
     dashboard_recorder = {}
     while True:
+
+
+        print("Scraping Script Exporter")
+        os.system("./se_config/l2debugging.sh")
+        
         if len(live_dashboard) != 0:
             lkj = 1
             print("This are the dashboard right now")

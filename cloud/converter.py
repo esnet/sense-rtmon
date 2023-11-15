@@ -39,7 +39,7 @@ def converter(data, id, name):
             
             # output filename
             
-            outFile = open("test.yaml", "w")
+            outFile = open("../config_flow/flow.yaml", "w")
 
             # User generated configs not available from SENSE Orchestrator
             outFile.write("## SECTION 1 GENERAL INFORMATION ##\n")
@@ -232,7 +232,7 @@ def converter(data, id, name):
 
     data = {}
     # Open and load YAML file
-    with open("test.yaml", 'r') as stream:
+    with open("../config_flow/flow.yaml", 'r') as stream:
         try:
             data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:

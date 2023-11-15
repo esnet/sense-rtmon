@@ -130,7 +130,7 @@ def read_yml_file(path, sys_argv, order, go_back_folder_num):
 def main():
     # parse through the config file
     print("\n\nParsing config file...")
-    data, config_file = read_yml_file("config_flow", sys.argv, 1, 2)
+    data, config_file = read_yml_file("config_flow", sys.argv, 1, 1)
     pushgateway = f"{data['pushgateway']}/metrics"  # pushgateway metrics page
     snmp_str = ""
     arp_str = ""

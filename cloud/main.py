@@ -158,8 +158,8 @@ def main():
     while True:
 
 
-        print("Scraping Script Exporter")
-        os.system("./se_config/l2debugging.sh")
+        # print("Scraping Script Exporter")
+        # os.system("./se_config/l2debugging.sh")
         
         if len(live_dashboard) != 0:
             lkj = 1
@@ -236,9 +236,12 @@ def main():
                             try:
                                 config_data, api_key = fill_API(config_data, config['grafana_username'], config['grafana_password'])
                                 print("API Filled")
+                                os.system("python3 ./se_config/generate_script.py flow.yaml")
+                                print("Scraping Script Exporter")
+                                os.system("./l2debugging.sh")
 
                                 try:
-                                    for_api = dynamic(config_data)
+                                    for_api = dynamic(config_data, manifest)
                                     live_dashboard[id] = reference_data
                                     dashboard_recorder[id] = {
                                         'uid' : for_api['uid'],
@@ -293,12 +296,15 @@ def main():
                         try:
                             config_data, api_key = fill_API(config_data, config['grafana_username'], config['grafana_password'])
                             print("API Filled")
+                            os.system("python3 ./se_config/generate_script.py flow.yaml")
+                            print("Scraping Script Exporter")
+                            os.system("./l2debugging.sh")
                             with open("converted.json", 'w') as f:
                                 json.dump(config_data, f, indent=2)
                             
      
                             try:
-                                for_api = dynamic(config_data)
+                                for_api = dynamic(config_data, manifest)
                               
                                 live_dashboard[id] = reference_data
                                 
@@ -366,6 +372,16 @@ main()
 
 
 
+
+
+        
+
+
+
+        
+
+
+        
 
 
         

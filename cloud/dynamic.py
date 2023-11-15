@@ -6,15 +6,45 @@ from datetime import datetime
 import sys
 import time
 import requests
+def clean_string(s):
+    # This regex looks for a pattern where there are three digits (\d{3})
+    # followed by a hyphen (-), and then an alphabetic character ([a-zA-Z])
+    pattern = r'\d{3}_[a-zA-Z]'
+    
+    # Find the position where this pattern occurs
+    match = re.search(pattern, s)
+    if match:
+        # Find the index of the hyphen
+        index = match.start() + 3
+        # Return the string up to the hyphen
+        return s[:index]
+    else:
+        # If the pattern is not found, return the original string
+        return s
+
+def clean_iface(s):
+    # This regex looks for a pattern where there are three digits (\d{3})
+    # followed by a hyphen (-), and then an alphabetic character ([a-zA-Z])
+    pattern = r'\d{3}-[a-zA-Z]'
+    
+    # Find the position where this pattern occurs
+    match = re.search(pattern, s)
+    if match:
+        # Find the index of the hyphen
+        index = match.start() + 3
+        # Return the string up to the hyphen
+        return s[:index]
+    else:
+        # If the pattern is not found, return the original string
+        return s
+    
 def generate_mermaid(manifest):
-    with open('manifest.json') as f:
-        manifest = json.load(f)
     graph_template = "graph TB\n"
     connections = []
 
     # Helper function to format node names
     def format_name(name):
-        return name.replace(" ", "_").replace(":", "_").replace("/", "_")
+        return name.replace(" ", "_").replace(":", "_").replace("/", "_").replace('-', '_')
 
     # Identify unique hosts and switches
     hosts = {}
@@ -22,6 +52,7 @@ def generate_mermaid(manifest):
     for port in manifest["Ports"]:
         node_name = format_name(port["Node"])
         port_name = format_name(port["Name"])
+
 
         if "Host" in port:
             for host in port["Host"]:
@@ -65,6 +96,9 @@ def generate_mermaid(manifest):
         if "Peer" in port and port["Peer"] != "?peer?":
             port_name = format_name(port["Name"])
             peer_port = format_name(port["Peer"].split(":")[-1])
+            peer_port = clean_string(peer_port)
+
+            print(port_name, peer_port)
             if (peer_port, port_name) not in connections: # Avoid duplicate connections
                 connections.append((port_name, peer_port))
 
@@ -84,7 +118,8 @@ def generate_mermaid(manifest):
 
     return graph_template
 
-def api(data, dashboard, lp):
+
+def api(data, dashboard, manifest):
     url = f"{str(data['grafana_host'])}/api/dashboards/db"
     
 
@@ -98,7 +133,7 @@ def api(data, dashboard, lp):
     f = open(dashboard)
     x = json.load(f)
     
-    x['dashboard']['panels'][1]['options']['content'] = generate_mermaid(lp)
+    x['dashboard']['panels'][1]['options']['content'] = generate_mermaid(manifest)
 
     # HTTP Post Request
     r = requests.post(url=url, headers=headers, data=json.dumps(x), verify=False)
@@ -106,7 +141,7 @@ def api(data, dashboard, lp):
     return r.json()
 
 
-def dynamic(data):
+def dynamic(data, manifest):
     lp = data
     if os.path.exists("./dashboard/templates/temp.json"):
         os.remove("./dashboard/templates/temp.json")
@@ -121,14 +156,10 @@ def dynamic(data):
             rep["NODENAME"] = node['name']
             rep["NODETYPE"] = node["type"].capitalize()
         if iface!=None:
-            # port hack
-            try:
-                if "Port" in iface['name']:
-                    rep["IFNAME"] = iface['name'].rstrip("-", 1)[0]
-                else: 
-                    rep["IFNAME"] = iface['name'].replace('_', ' ').replace('-', '/')
-            except:
-                rep["IFNAME"] = iface['name'].replace('-rucio','')
+            if 'Port' in iface['name']:
+                rep["IFNAME"] = clean_iface(iface['name'])
+            else:
+                rep["IFNAME"] = iface['name'].replace('_', ' ').replace('-', '/')
             rep["IFVLAN"] = iface['vlan']
         return rep,id_num
     
@@ -262,13 +293,8 @@ def dynamic(data):
     # remove temp file that's no longer needed
     
     
-    res = api(data, dashboard_name, lp)
+    res = api(data, dashboard_name, manifest)
     if os.path.exists(dashboard_name):
         os.remove(dashboard_name)
 
     return res
-            
-
-        
-
-

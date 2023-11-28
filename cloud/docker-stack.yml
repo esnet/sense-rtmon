@@ -10,8 +10,15 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention=6h'  # Set retention period to 6 hours
     networks:
       - monitor-net
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     deploy:
       placement:
         constraints:
@@ -27,6 +34,10 @@ services:
           - node.role==manager
     networks:
       - monitor-net 
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
   
   script_exporter:
     command:

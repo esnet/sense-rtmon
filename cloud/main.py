@@ -21,7 +21,10 @@ logging.basicConfig(filename='output.log', level=logging.DEBUG)
 config = {}
 with open("../config_cloud/config.yml", 'r') as f:
     config = yaml.safe_load(f)
-
+try:
+    os.system("rm -f api_key.txt")
+except:
+    print()
 def fetch_data():
     response = ""
     
@@ -236,10 +239,9 @@ def main():
                             try:
                                 config_data, api_key = fill_API(config_data, config['grafana_username'], config['grafana_password'])
                                 print("API Filled")
-                                os.system("python3 ./se_config/generate_script.py flow.yaml")
-                                print("Scraping Script Exporter")
-                                os.system("./l2debugging.sh")
-
+                                
+                                
+                                
                                 try:
                                     for_api = dynamic(config_data, manifest)
                                     live_dashboard[id] = reference_data
@@ -265,6 +267,10 @@ def main():
                                                 print("\033[32m" + f'This Key: {idMap} does not exist in config.yml'+ "\033[0m")
                                         
                                         print("Data Dispatched")
+                                        time.sleep(20)
+                                        os.system("python3 ./se_config/generate_script.py flow.yaml")
+                                        print("Scraping Script Exporter")
+                                        os.system("./l2debugging.sh")
                                     
                                     except:
                                         print("Dispatch Failed")
@@ -296,9 +302,7 @@ def main():
                         try:
                             config_data, api_key = fill_API(config_data, config['grafana_username'], config['grafana_password'])
                             print("API Filled")
-                            os.system("python3 ./se_config/generate_script.py flow.yaml")
-                            print("Scraping Script Exporter")
-                            os.system("./l2debugging.sh")
+                           
                             with open("converted.json", 'w') as f:
                                 json.dump(config_data, f, indent=2)
                             
@@ -328,6 +332,10 @@ def main():
                                         else:
                                             print("\033[31m" + f'This Key: {idMap} does not exist in config.yml'+ "\033[0m")
                                     print("Data Dispatched")
+                                    time.sleep(20)
+                                    os.system("python3 ./se_config/generate_script.py flow.yaml")
+                                    print("Scraping Script Exporter")
+                                    os.system("./l2debugging.sh")
                                    
                                 except:
                                     print("Dispatch Failed")

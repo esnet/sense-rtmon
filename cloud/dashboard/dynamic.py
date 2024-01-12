@@ -50,7 +50,7 @@ def remove_file(file_path="./templates/temp.json"):
 # fill in the replacement dictionary of necessary values
 def fill_rep(rep,id_num,node=None,iface=None):
     id_num += 1
-    rep["ID_UNIQUE"] = unqiue_id
+    rep["ID_UNIQUE"] = unqiue_id.strip()
     rep["UNIQUE_ID_FIELD"] = unique_id_field
     rep["YPOSITION"] = str(id_num)
     rep["PANELID"] = str(id_num)
@@ -58,7 +58,11 @@ def fill_rep(rep,id_num,node=None,iface=None):
         rep["NODENAME"] = node['name']
         rep["NODETYPE"] = node["type"].capitalize()
     if iface!=None:
-        rep["IFNAME"] = iface['name']
+        # HACK
+        if "Port" in iface['name']:
+            rep["IFNAME"] = iface['name'].rsplit('-',1)[0]
+        else:
+            rep["IFNAME"] = iface['name'].replace('_', ' ').replace('-', '/')
         rep["IFVLAN"] = iface['vlan']
     return rep,id_num
 
@@ -132,7 +136,7 @@ id_num = id_num + 100 # L2 tables start from 100 after flow panels in case of co
 print("Process L2 debugging")
 rep,id_num = fill_rep({},id_num)
 unqiue_id = data[unique_id_field].replace('-', '_') # flow id Grafana doesn't like - in raw metrics
-rep["ID_UNIQUE"] = unqiue_id
+rep["ID_UNIQUE"] = unqiue_id.strip()
 info_panel = replace_file_to_string("./templates/l2_debugging_panel/info_panel.json",rep)
 concat_json(info_panel)
 for i,node in enumerate(data["node"],i):
@@ -143,7 +147,7 @@ for i,node in enumerate(data["node"],i):
     # process filling info
     formatted_name = node['name'].replace("-", "_").replace(".", "_").lower()
     rep = get_hosts_names(data,{})
-    rep["ID_UNIQUE"] = unqiue_id
+    rep["ID_UNIQUE"] = unqiue_id.strip()
     if node['name'] == rep["HOST1NAME"]:
         rep["OPPOSITENAME"] = rep["HOST2NAME"]
     else :

@@ -20,9 +20,9 @@ def check_arp_on(pushgateway, host_names,id_name,id):
         arp_str = arp_str + f'''
         # check_arp_on
         if curl {pushgateway} | grep '.*arp_state.*' | grep '.*{id_name}="{id}".*' | grep '.*instance="{name}".*'; then
-            echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 1'
+            echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 1' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
         else
-            echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 0'
+            echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 0' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
         fi
         '''
         
@@ -35,9 +35,9 @@ def check_arp_contain_ip(pushgateway, host_names,ips,id_name,id):
         arp_str = arp_str + f'''
         # check_arp_contain_ip
         if curl {pushgateway} | grep '.*arp_state.*' | grep '.*{id_name}="{id}".*' | grep '.*instance="{name}".*' | grep '.*IPaddress="{ip}".*'; then
-            echo '{formatted_name}_script_exporter_task2_{id.replace('-', '_')}{{host="{formatted_name}"}} 1'
+            echo '{formatted_name}_script_exporter_task2_{id.replace('-', '_')}{{host="{formatted_name}"}} 1' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
         else
-            echo '{formatted_name}_script_exporter_task2_{id.replace('-', '_')}{{host="{formatted_name}"}} 0'
+            echo '{formatted_name}_script_exporter_task2_{id.replace('-', '_')}{{host="{formatted_name}"}} 0' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
         fi
         '''
     return arp_str
@@ -70,9 +70,9 @@ def check_snmp_on(pushgateway,switch_name,id_name,id):
     snmp_str = snmp_str + f'''
     # check_snmp_on
     if curl {pushgateway} | grep '.*ifHCInOctets.*' | grep '.*instance="{switch_name}".*' | grep '.*{id_name}="{id}".*'; then
-        echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 1'
+        echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 1' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
     else
-        echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 0'
+        echo '{formatted_name}_script_exporter_task1_{id.replace('-', '_')}{{host="{formatted_name}"}} 0' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
     fi
     '''
     return snmp_str
@@ -86,9 +86,9 @@ def check_snmp_mac(pushgateway, switch_names,macs,id_name,id):
             snmp_mac = snmp_mac + f'''
             # check_snmp_mac
             if curl {pushgateway} | grep '.*mac_table_info.*' | grep '.*instance="{name}".*' | grep '.*macaddress={mac}.*' | grep '.*{id_name}="{id}".*'; then
-                echo '{formatted_name}_script_exporter_task{i}_{id.replace('-', '_')}{{host="{formatted_name}"}} 1'
+                echo '{formatted_name}_script_exporter_task{i}_{id.replace('-', '_')}{{host="{formatted_name}"}} 1' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
             else
-                echo '{formatted_name}_script_exporter_task{i}_{id.replace('-', '_')}{{host="{formatted_name}"}} 0'
+                echo '{formatted_name}_script_exporter_task{i}_{id.replace('-', '_')}{{host="{formatted_name}"}} 0' | curl --data-binary @- http://dev2.virnao.com:9091/metrics/job/single
             fi
             '''
             
@@ -130,27 +130,29 @@ def read_yml_file(path, sys_argv, order, go_back_folder_num):
 def main():
     # parse through the config file
     print("\n\nParsing config file...")
-    data, config_file = read_yml_file("config_flow", sys.argv, 1, 2)
+    data, config_file = read_yml_file("config_flow", sys.argv, 1, 1)
     pushgateway = f"{data['pushgateway']}/metrics"  # pushgateway metrics page
     snmp_str = ""
     arp_str = ""
+    with open("check_data.json", 'w') as f:
+        json.dump(data, f, indent=2)
     # remove http:// or https://
     # before_sep, sep, after_sep = pushgateway.partition("//")
     # pushgateway = after_sep
-    with open('l2debugging.sh', 'w') as f:
+    with open(f"level2/{data['flow']}.sh", 'w') as f:
         f.write('#!/bin/bash \n')
         host_names = []
         switch_names = []
         ips = []
         id_name = "flow"
-        id = data['flow']
+        id = data['flow'].strip()
         for node in data["node"]:
             if node['type'] == 'host':
                 host_names.append(node['name'])
                 ips.append(node['interface'][0]['ip'])
             if node['type'] == 'switch':
                 switch_names.append(node['name'])
-                snmp_str = check_snmp_on(pushgateway, node['name'],id_name,id)
+                snmp_str += check_snmp_on(pushgateway, node['name'],id_name,id)
 
         arp_str = check_arp_on(pushgateway, host_names,id_name,id) 
         # host1 contains the ip of host2, vice versa, so we need to reverse the order of ip
@@ -158,11 +160,10 @@ def main():
 
         # host1 contains the ip and mac of host2, vice versa, so we need to reverse the order of ip
         macs = get_mac_from_arp(pushgateway, host_names,ips,id_name,id)
-        snmp_str = snmp_str + check_snmp_mac(pushgateway, switch_names,macs,id_name,id)
+        #snmp_str = snmp_str + check_snmp_mac(pushgateway, switch_names,macs,id_name,id)
+        
         f.write(arp_str)
         f.write(snmp_str)
-
-    os.system("chmod +x l2debugging.sh")
     # host1_mac = get_mac_from_pushgateway(pushgateway, host2, host1_ip)
     # host2_mac = get_mac_from_pushgateway(pushgateway, host1, host2_ip)
 

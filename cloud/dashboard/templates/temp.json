@@ -1,173 +1,4 @@
 {
-    "dashboard": {
-      "id": null,
-      "uid": null,
-      "title": "Multi Switch Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 08/17_03:29",
-      "tags": [
-        "templated"
-      ],
-      "timezone": "browser",
-      "schemaVersion": 16,
-      "annotations": {
-        "list": [
-          {
-            "builtIn": 1,
-            "datasource": "-- Grafana --",
-            "enable": true,
-            "hide": true,
-            "iconColor": "rgba(0, 211, 255, 1)",
-            "name": "Annotations & Alerts",
-            "type": "dashboard"
-          }
-        ]
-      },
-      "description": "Simple End-to-End Flow Monitoring Dashboard",
-      "editable": true,
-      "gnetId": null,
-      "graphTooltip": 0,
-      "id": 68,
-      "iteration": 1629915600744,
-      "links": [
-        {
-          "asDropdown": false,
-          "icon": "dashboard",
-          "includeVars": true,
-          "keepTime": true,
-          "tags": [],
-          "targetBlank": true,
-          "title": "Host Node Exporter",
-          "tooltip": "",
-          "type": "link",
-          "url": "http://dev2.virnao.com:3000/d/rYdddlPWj/node-exporter-full?orgId=1&refresh=1m"
-        },
-        {
-          "asDropdown": false,
-          "icon": "dashboard",
-          "includeVars": true,
-          "keepTime": true,
-          "tags": [],
-          "targetBlank": true,
-          "title": "Switch Diagnostics Dashboard",
-          "tooltip": "",
-          "type": "link",
-          "url": "http://dev2.virnao.com:3000/d/A3jB7x9Gz/sdn-testbed-dashboard?orgId=1"
-        }
-      ],
-      "panels": [
-        {
-          "collapsed": false,
-          "datasource": null,
-          "gridPos": {
-            "h": 1,
-            "w": 24,
-            "x": 0,
-            "y": 0
-          },
-          "id": 119,
-          "panels": [],
-          "title": "End-to-End Flow Topology",
-          "type": "row"
-        },
-        {
-          "datasource": null,
-          "fieldConfig": {
-            "defaults": {
-              "custom": {
-                "valueName": "last"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 36,
-            "w": 24,
-            "x": 0,
-            "y": 1
-          },
-          "id": 117,
-          "options": {
-            "authPassword": "",
-            "authUsername": "",
-            "composites": [],
-            "content": "graph TB\n    subgraph h1 [\"Host 1\"]\n        ip{{VLAN: 1000 - IP: 1.1.1.1}}\n        e(ens2f0np0.3911)\n    end\n\n    subgraph sw1 [\"Switch 1\"]\n        subgraph sw1s1 [\"interface 1\"]\n            sw1s1vlan{{VLAN: 1000}}\n            sw1s1if[\"interfaceX.1000\"]\n        end\n        subgraph sw1s2 [\"interface 2\"]\n            sw1s2vlan{{VLAN: 1000}}\n            sw1s2ifout[\"InterfaceX.1000\"]\n        end\n    end\n\n    subgraph sw2 [\"Switch 2\"]\n        subgraph sw2s1 [\"interface 1\"]\n            sw2s1vlan{{VLAN: 1000}}\n            sw2s1if[\"InterfaceX.1000\"]\n        end\n        subgraph sw2s2 [\"interface 2\"]\n            sw2s2vlan{{VLAN: 1000}}\n            sw2s2ifout[\"interfaceX.1000\"]\n        end\n    end\n\n    subgraph sw3 [\"Switch 3\"]\n        subgraph sw3s1 [\"interface 1\"]\n            sw3s1vlan{{VLAN: 1000}}\n            sw3s1if[\"InterfaceX.1000\"]\n        end\n        subgraph sw3s2 [\"interface 2\"]\n            sw3s2vlan{{VLAN: 1000}}\n            sw3s2ifout[\"interfaceX.1000\"]\n        end\n    end\n\n    subgraph h2 [\"Host 2\"]\n        ip2{{VLAN: 1000 - IP: 1.1.1.1}}\n        e2(interfaceX.1000)\n    end\n\n    e(interfaceX.1000) ---|connection| sw1s1if[\"hundredGigE 1/31\"]\n    sw1s1if -.- sw1s2ifout\n    sw1s2ifout ---|connection| sw2s1if\n    sw2s1if -.- sw2s2ifout\n    sw2s2ifout ---|connection| sw3s1if\n    sw3s1if -.- sw3s2ifout\n    sw3s2ifout ---|connection| e2(interfaceX.1000)\n",
-            "legend": {
-              "asTable": true,
-              "displayMode": "table",
-              "gradient": {
-                "enabled": true,
-                "show": true
-              },
-              "hideEmpty": false,
-              "hideZero": false,
-              "placement": "bottom",
-              "show": true,
-              "sortBy": "last",
-              "sortDesc": true,
-              "stats": [
-                "mean",
-                "last",
-                "min",
-                "max",
-                "sum"
-              ]
-            },
-            "maxWidth": true,
-            "mermaidServiceUrl": "",
-            "mermaidThemeVariablesDark": {
-              "classDiagram": {},
-              "common": {
-                "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
-              },
-              "flowChart": {},
-              "sequenceDiagram": {},
-              "stateDiagram": {},
-              "userJourneyDiagram": {}
-            },
-            "mermaidThemeVariablesLight": {
-              "classDiagram": {},
-              "common": {
-                "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
-              },
-              "flowChart": {},
-              "sequenceDiagram": {},
-              "stateDiagram": {},
-              "userJourneyDiagram": {}
-            },
-            "metricCharacterReplacements": [],
-            "moddedSeriesVal": 0,
-            "mode": "content",
-            "nodeSize": {
-              "minHeight": 40,
-              "minWidth": 30
-            },
-            "pluginVersion": "7.5.4",
-            "style": "",
-            "useBackground": false,
-            "useBasicAuth": false,
-            "valueName": "last"
-          },
-          "pluginVersion": "1.7.3",
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "End-to-End Flow Topology",
-          "type": "jdbranham-diagram-panel"
-        },
-        
-{
     "collapsed": false,
     "datasource": null,
     "gridPos": {
@@ -178,7 +9,7 @@
     },
     "id": 201,
     "panels": [],
-    "title": "Host Flow Summary - sdn-dtn-2-10.ultralight.org",
+    "title": "Host Flow Summary - T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net",
     "type": "row"
   },
 {
@@ -196,13 +27,13 @@
     },
     "id": 202,
     "options": {
-      "content": "```\nHost: sdn-dtn-2-10.ultralight.org   Interface:\nname: ens2f0np0.3911 | vlan: not used | ip: 10.251.86.10 | ping: 10.251.86.12\nname: hundredGigE 1/31 | vlan: not used | peer: name: Caltech LRT-SDN-R02-Dell-Z9100, interface: hundredGigE 1/31\n ```",
+      "content": "```\nHost: T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net   Interface:\nname: enp129s0f1np1 | vlan: not used | ip: 10.251.87.74\nname: T2_US_SDSC:sn3700_s0 | vlan: 3985 | peer: name: None, interface: None, vlan: 3985\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
     "timeFrom": null,
     "timeShift": null,
-    "title": "sdn-dtn-2-10.ultralight.org - Node Interface Information",
+    "title": "T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net - Node Interface Information",
     "type": "text"
   },
 {
@@ -248,7 +79,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv ens2f0np0.3911",
+        "alias": "recv enp129s0f1np1",
         "transform": "negative-Y"
       }
     ],
@@ -258,7 +89,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"sdn-dtn-2-10.ultralight.org\", device=\"ens2f0np0.3911\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net\", device=\"enp129s0f1np1\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
@@ -267,7 +98,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"sdn-dtn-2-10.ultralight.org\",device=\"ens2f0np0.3911\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net\",device=\"enp129s0f1np1\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -280,7 +111,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "sdn-dtn-2-10.ultralight.org - interface: ens2f0np0.3911 Flow Bandwidth",
+    "title": "T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net - interface: enp129s0f1np1 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -330,7 +161,7 @@
     },
     "id": 205,
     "panels": [],
-    "title": "Switch Flow Summary - Caltech LRT-SDN-R02-Dell-Z9100",
+    "title": "Switch Flow Summary - T2_US_Caltech_Test:dellos9_s0",
     "type": "row"
   },
 {
@@ -348,13 +179,13 @@
     },
     "id": 206,
     "options": {
-      "content": "```\nSwitch: Caltech LRT-SDN-R02-Dell-Z9100   Interface:\nname: hundredGigE 1/31 | vlan: not used | peer: name: sdn-dtn-2-10.ultralight.org, interface: hundredGigE 1/31\nname: Port-channel 103 | vlan: not used | peer: name: UCSD SN3700, interface: PortChannel501\n ```",
+      "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: hundredGigE_1-13 | vlan: 3985 | peer: name: aristaeos_s0, interface: Port-Channel501-rucio, vlan: not_used\nname: hundredGigE_1-10 | vlan: 3985 | peer: name: None, interface: None, vlan: None\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
     "timeFrom": null,
     "timeShift": null,
-    "title": "Caltech LRT-SDN-R02-Dell-Z9100 - Node Interface Information",
+    "title": "T2_US_Caltech_Test:dellos9_s0 - Node Interface Information",
     "type": "text"
   },
 {
@@ -400,7 +231,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv hundredGigE 1/31",
+        "alias": "recv hundredGigE 1/13",
         "transform": "negative-Y"
       }
     ],
@@ -410,7 +241,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"Caltech LRT-SDN-R02-Dell-Z9100\",ifDescr=\"hundredGigE 1/31\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/13\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -418,7 +249,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"Caltech LRT-SDN-R02-Dell-Z9100\",ifDescr=\"hundredGigE 1/31\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/13\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -426,12 +257,13 @@
     "legendFormat": "trans {{ifDescr}}",
     "refId": "B"
   }
+
     ],
     "thresholds": [],
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "Caltech LRT-SDN-R02-Dell-Z9100 - interface: hundredGigE 1/31 Flow Bandwidth",
+    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE 1/13 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -513,7 +345,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv Port-channel 103",
+        "alias": "recv hundredGigE 1/10",
         "transform": "negative-Y"
       }
     ],
@@ -523,7 +355,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"Caltech LRT-SDN-R02-Dell-Z9100\",ifDescr=\"Port-channel 103\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/10\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -531,7 +363,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"Caltech LRT-SDN-R02-Dell-Z9100\",ifDescr=\"Port-channel 103\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/10\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -539,12 +371,13 @@
     "legendFormat": "trans {{ifDescr}}",
     "refId": "B"
   }
+
     ],
     "thresholds": [],
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "Caltech LRT-SDN-R02-Dell-Z9100 - interface: Port-channel 103 Flow Bandwidth",
+    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE 1/10 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -594,7 +427,7 @@
     },
     "id": 211,
     "panels": [],
-    "title": "Switch Flow Summary - UCSD SN3700",
+    "title": "Switch Flow Summary - T2_US_SDSC:sn3700_s0",
     "type": "row"
   },
 {
@@ -612,13 +445,13 @@
     },
     "id": 212,
     "options": {
-      "content": "```\nSwitch: UCSD SN3700   Interface:\nname: PortChannel501 | vlan: not used | peer: name: Caltech LRT-SDN-R02-Dell-Z9100, interface: Port-channel 103\nname: etp28 | vlan: not used | peer: name: k8s-gen4-01.sdsc.optiputer.net, interface: etp28\n ```",
+      "content": "```\nSwitch: T2_US_SDSC:sn3700_s0   Interface:\nname: PortChannel501 | vlan: 3985 | peer: name: aristaeos_s0, interface: Port-Channel502, vlan: not_used\nname: Ethernet80 | vlan: 3985 | peer: name: T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net, interface: enp129s0f1np1, vlan: 3985\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
     "timeFrom": null,
     "timeShift": null,
-    "title": "UCSD SN3700 - Node Interface Information",
+    "title": "T2_US_SDSC:sn3700_s0 - Node Interface Information",
     "type": "text"
   },
 {
@@ -674,7 +507,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"UCSD SN3700\",ifDescr=\"PortChannel501\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -682,7 +515,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"UCSD SN3700\",ifDescr=\"PortChannel501\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -690,12 +523,13 @@
     "legendFormat": "trans {{ifDescr}}",
     "refId": "B"
   }
+
     ],
     "thresholds": [],
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "UCSD SN3700 - interface: PortChannel501 Flow Bandwidth",
+    "title": "T2_US_SDSC:sn3700_s0 - interface: PortChannel501 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -777,7 +611,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv etp28",
+        "alias": "recv Ethernet80",
         "transform": "negative-Y"
       }
     ],
@@ -787,7 +621,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",hostname=\"UCSD SN3700\",ifDescr=\"etp28\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"Ethernet80\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -795,7 +629,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",hostname=\"UCSD SN3700\",ifDescr=\"etp28\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"Ethernet80\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -803,12 +637,13 @@
     "legendFormat": "trans {{ifDescr}}",
     "refId": "B"
   }
+
     ],
     "thresholds": [],
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "UCSD SN3700 - interface: etp28 Flow Bandwidth",
+    "title": "T2_US_SDSC:sn3700_s0 - interface: Ethernet80 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -858,7 +693,7 @@
     },
     "id": 217,
     "panels": [],
-    "title": "Host Flow Summary - k8s-gen4-02.sdsc.optiputer.net",
+    "title": "Switch Flow Summary - NRM_CENIC:aristaeos_s0",
     "type": "row"
   },
 {
@@ -876,13 +711,13 @@
     },
     "id": 218,
     "options": {
-      "content": "```\nHost: k8s-gen4-02.sdsc.optiputer.net   Interface:\nname: vlan.3911 | vlan: not used | ip: 10.251.86.12 | ping: 10.251.86.10\nname: etp28 | vlan: not used | peer: name: SN3700, interface: etp28\n ```",
+      "content": "```\nSwitch: NRM_CENIC:aristaeos_s0   Interface:\nname: Port-Channel501-rucio | vlan: 3985 | peer: name: dellos9_s0, interface: hundredGigE_1-13, vlan: not_used\nname: Port-Channel502 | vlan: 3985 | peer: name: sn3700_s0, interface: PortChannel501, vlan: not_used\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
     "timeFrom": null,
     "timeShift": null,
-    "title": "k8s-gen4-02.sdsc.optiputer.net - Node Interface Information",
+    "title": "NRM_CENIC:aristaeos_s0 - Node Interface Information",
     "type": "text"
   },
 {
@@ -928,7 +763,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv vlan.3911",
+        "alias": "recv Port-Channel501",
         "transform": "negative-Y"
       }
     ],
@@ -938,29 +773,143 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"k8s-gen4-02.sdsc.optiputer.net\", device=\"vlan.3911\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
-    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
-    "legendFormat": "recv {{device}}",
+    "legendFormat": "recv {{ifDescr}}",
     "refId": "A"
   },
   {
     "exemplar": true,
-    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"k8s-gen4-02.sdsc.optiputer.net\",device=\"vlan.3911\",flow=\"UNIQUE_GLOBAL_ID\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
-    "legendFormat": "trans {{device}}",
+    "legendFormat": "trans {{ifDescr}}",
     "refId": "B"
   }
+
     ],
     "thresholds": [],
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "k8s-gen4-02.sdsc.optiputer.net - interface: vlan.3911 Flow Bandwidth",
+    "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel501 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 221
+    },
+    "hiddenSeries": false,
+    "id": 221,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv Port-Channel502",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel502 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -1006,203 +955,12 @@
       "h": 20,
       "w": 24,
       "x": 0,
-      "y": 321
-    },
-    "id": 321,
-    "panels": [],
-    "title": "L2 Debugging",
-    "type": "row"
-  },
-
-{
-    "datasource": null,
-    "description": "",
-    "fieldConfig": {
-      "defaults": {
-        "color": {
-          "mode": "palette-classic"
-        },
-        "custom": {
-          "fillOpacity": 70,
-          "lineWidth": 0
-        },
-        "mappings": [
-          {
-            "options": {
-              "0": {
-                "color": "red",
-                "index": 0,
-                "text": "FAILURE"
-              },
-              "1": {
-                "color": "green",
-                "index": 1,
-                "text": "SUCCESS"
-              }
-            },
-            "type": "value"
-          }
-        ],
-        "thresholds": {
-          "mode": "absolute",
-          "steps": [
-            {
-              "color": "green",
-              "value": null
-            },
-            {
-              "color": "red",
-              "value": 80
-            }
-          ]
-        }
-      },
-      "overrides": []
-    },
-    "gridPos": {
-      "h": 6,
-      "w": 24,
-      "x": 0,
-      "y": 322
-    },
-    "id": 322,
-    "options": {
-      "alignValue": "center",
-      "legend": {
-        "displayMode": "list",
-        "placement": "bottom"
-      },
-      "mergeValues": true,
-      "rowHeight": 0.9,
-      "showValue": "always",
-      "tooltip": {
-        "mode": "single"
-      }
-    },
-    "pluginVersion": "8.2.3",
-    "targets": [
-{
-    "exemplar": true,
-    "expr": "sdn_dtn_2_10_ultralight_org_script_exporter_task1_UNIQUE_GLOBAL_ID",
-    "hide": false,
-    "instant": false,
-    "interval": "",
-    "legendFormat": "ARP Exporter Active",
-    "refId": "A"
-  },
-  {
-    "exemplar": true,
-    "expr": "sdn_dtn_2_10_ultralight_org_script_exporter_task2_UNIQUE_GLOBAL_ID",
-    "format": "time_series",
-    "hide": false,
-    "instant": false,
-    "interval": "",
-    "legendFormat": "ARP Table contains k8s-gen4-02.sdsc.optiputer.net IP Address",
-    "refId": "B"
-  }
-    ],
-    "title": "sdn-dtn-2-10.ultralight.org ARP/MAC Correlation",
-    "transparent": true,
-    "type": "state-timeline"
-  },
-
-{
-    "datasource": null,
-    "description": "",
-    "fieldConfig": {
-      "defaults": {
-        "color": {
-          "mode": "palette-classic"
-        },
-        "custom": {
-          "fillOpacity": 70,
-          "lineWidth": 0
-        },
-        "mappings": [
-          {
-            "options": {
-              "0": {
-                "color": "red",
-                "index": 0,
-                "text": "FAILURE"
-              },
-              "1": {
-                "color": "green",
-                "index": 1,
-                "text": "SUCCESS"
-              }
-            },
-            "type": "value"
-          }
-        ],
-        "thresholds": {
-          "mode": "absolute",
-          "steps": [
-            {
-              "color": "green",
-              "value": null
-            },
-            {
-              "color": "red",
-              "value": 80
-            }
-          ]
-        }
-      },
-      "overrides": []
-    },
-    "gridPos": {
-      "h": 6,
-      "w": 24,
-      "x": 0,
       "y": 323
     },
     "id": 323,
-    "options": {
-      "alignValue": "center",
-      "legend": {
-        "displayMode": "list",
-        "placement": "bottom"
-      },
-      "mergeValues": true,
-      "rowHeight": 0.9,
-      "showValue": "always",
-      "tooltip": {
-        "mode": "single"
-      }
-    },
-    "pluginVersion": "8.2.3",
-    "targets": [
-  {
-    "exemplar": true,
-    "expr": "caltech lrt_sdn_r02_dell_z9100_script_exporter_task1_UNIQUE_GLOBAL_ID",
-    "hide": false,
-    "instant": false,
-    "interval": "",
-    "legendFormat": "SNMP Exporter Active",
-    "refId": "A"
-  },
-  {
-    "exemplar": true,
-    "expr": "caltech lrt_sdn_r02_dell_z9100_script_exporter_task2_UNIQUE_GLOBAL_ID",
-    "hide": false,
-    "instant": false,
-    "interval": "",
-    "legendFormat": "contains sdn-dtn-2-10.ultralight.org MAC Address",
-    "refId": "B"
-  },
-  {
-    "exemplar": true,
-    "expr": "caltech lrt_sdn_r02_dell_z9100_script_exporter_task3_UNIQUE_GLOBAL_ID",
-    "hide": false,
-    "interval": "",
-    "legendFormat": "contains k8s-gen4-02.sdsc.optiputer.net MAC Address",
-    "refId": "C"
-  }
-    ],
-    "title": "Caltech LRT-SDN-R02-Dell-Z9100 ARP/MAC Correlation",
-    "transparent": true,
-    "type": "state-timeline"
+    "panels": [],
+    "title": "L2 Debugging",
+    "type": "row"
   },
 
 {
@@ -1272,34 +1030,27 @@
     },
     "pluginVersion": "8.2.3",
     "targets": [
-  {
+{
     "exemplar": true,
-    "expr": "ucsd sn3700_script_exporter_task1_UNIQUE_GLOBAL_ID",
+    "expr": "t2_us_sdsc:k8s_gen4_01_sdsc_optiputer_net_script_exporter_task1_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "SNMP Exporter Active",
+    "legendFormat": "ARP Exporter Active",
     "refId": "A"
   },
   {
     "exemplar": true,
-    "expr": "ucsd sn3700_script_exporter_task2_UNIQUE_GLOBAL_ID",
+    "expr": "t2_us_sdsc:k8s_gen4_01_sdsc_optiputer_net_script_exporter_task2_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "format": "time_series",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "contains sdn-dtn-2-10.ultralight.org MAC Address",
+    "legendFormat": "ARP Table contains T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net IP Address",
     "refId": "B"
-  },
-  {
-    "exemplar": true,
-    "expr": "ucsd sn3700_script_exporter_task3_UNIQUE_GLOBAL_ID",
-    "hide": false,
-    "interval": "",
-    "legendFormat": "contains k8s-gen4-02.sdsc.optiputer.net MAC Address",
-    "refId": "C"
   }
     ],
-    "title": "UCSD SN3700 ARP/MAC Correlation",
+    "title": "T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net ARP/MAC Correlation",
     "transparent": true,
     "type": "state-timeline"
   },
@@ -1371,41 +1122,232 @@
     },
     "pluginVersion": "8.2.3",
     "targets": [
-{
+  {
     "exemplar": true,
-    "expr": "k8s_gen4_02_sdsc_optiputer_net_script_exporter_task1_UNIQUE_GLOBAL_ID",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task1_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "ARP Exporter Active",
+    "legendFormat": "SNMP Exporter Active",
     "refId": "A"
   },
   {
     "exemplar": true,
-    "expr": "k8s_gen4_02_sdsc_optiputer_net_script_exporter_task2_UNIQUE_GLOBAL_ID",
-    "format": "time_series",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task2_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "ARP Table contains sdn-dtn-2-10.ultralight.org IP Address",
+    "legendFormat": "contains T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net MAC Address",
     "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task3_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "hide": false,
+    "interval": "",
+    "legendFormat": "contains HOST2NAME MAC Address",
+    "refId": "C"
   }
     ],
-    "title": "k8s-gen4-02.sdsc.optiputer.net ARP/MAC Correlation",
+    "title": "T2_US_Caltech_Test:dellos9_s0 ARP/MAC Correlation",
     "transparent": true,
     "type": "state-timeline"
-  }
+  },
 
-],
-"time": {
-  "from": "now-15m",
-  "to": "now"
-},
-"timepicker": {},
-"timezone": "",
-"title": "Multi Switch Flow Dashboard |Flow: UNIQUE_GLOBAL_ID| 08/17_03:29",
-"uid": null,
-"id": null,
-"version": 2
-}
-}
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0
+        },
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 0,
+                "text": "FAILURE"
+              },
+              "1": {
+                "color": "green",
+                "index": 1,
+                "text": "SUCCESS"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 24,
+      "x": 0,
+      "y": 326
+    },
+    "id": 326,
+    "options": {
+      "alignValue": "center",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "always",
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.3",
+    "targets": [
+  {
+    "exemplar": true,
+    "expr": "t2_us_sdsc:sn3700_s0_script_exporter_task1_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "SNMP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "t2_us_sdsc:sn3700_s0_script_exporter_task2_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "contains T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net MAC Address",
+    "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "t2_us_sdsc:sn3700_s0_script_exporter_task3_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "hide": false,
+    "interval": "",
+    "legendFormat": "contains HOST2NAME MAC Address",
+    "refId": "C"
+  }
+    ],
+    "title": "T2_US_SDSC:sn3700_s0 ARP/MAC Correlation",
+    "transparent": true,
+    "type": "state-timeline"
+  },
+
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0
+        },
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 0,
+                "text": "FAILURE"
+              },
+              "1": {
+                "color": "green",
+                "index": 1,
+                "text": "SUCCESS"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 24,
+      "x": 0,
+      "y": 327
+    },
+    "id": 327,
+    "options": {
+      "alignValue": "center",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "always",
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.3",
+    "targets": [
+  {
+    "exemplar": true,
+    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task1_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "SNMP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task2_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "contains T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net MAC Address",
+    "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task3_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "hide": false,
+    "interval": "",
+    "legendFormat": "contains HOST2NAME MAC Address",
+    "refId": "C"
+  }
+    ],
+    "title": "NRM_CENIC:aristaeos_s0 ARP/MAC Correlation",
+    "transparent": true,
+    "type": "state-timeline"
+  },

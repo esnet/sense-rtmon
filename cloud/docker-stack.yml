@@ -12,6 +12,10 @@ services:
       - "9090:9090"
     networks:
       - monitor-net
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     deploy:
       placement:
         constraints:
@@ -27,12 +31,16 @@ services:
           - node.role==manager
     networks:
       - monitor-net 
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
   
   script_exporter:
     command:
       - '-config.file=/examples/config.yaml'
       - '-web.listen-address=:9469'
-    image: 'ricoberger/script_exporter:v2.5.2'
+    image: 'ricoberger/script_exporter:v2.16.0'
     ports:
       - '9469:9469'
     volumes:

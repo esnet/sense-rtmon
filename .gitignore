@@ -6,3 +6,13 @@ site/snmp/kubernetes/snmp-exporter-deployment.yaml
 site/node/kubernetes/node-exporter-deployment.yaml
 site/node/kubernetes/node-exporter-service.yaml
 cloud/__pycache__/cloud_functions.cpython-39.pyc
+cloud/apikey.txt
+cloud/output.log
+cloud/*.json
+cloud/tesy.yaml
+config_cloud/config.yml
+config_flow/*.yml
+config_flow/*.json
+cloud/config.yml
+
+

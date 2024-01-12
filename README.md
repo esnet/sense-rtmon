@@ -14,7 +14,7 @@ This package will provide everything needed to run `cloud` and `site` stack.
 ### Running
 - `Cloud` stack consists of Grafana, Prometheus, Pushgateway, and Script Exporter containers. 
 - Run `./start.sh` to deploy `Cloud` stack.
-- Run `./generate.sh` to generate a flow in Grafana.
+- Run `python3 main.py` to generate a flow in Grafana dynamically, calling the Sense-O api then creating dashboard.
 
 ### Cleaning
 - `clean.sh` script to removes running containers.

@@ -5,8 +5,28 @@ This package will provide everything needed to run `cloud` and `site` stack.
 
 ### Configuration
 - fill out `config.yml` under `config_cloud` to deploy `cloud stack`.
-- `config.yml` and `multiconfig.yml` files under `config_flow` are configuration examples to generate dashboard. 
 - `cloud` stack uses config_cloud config files to start docker stack. Dashboards use the config_flow config files.
+- Example (config.yml)
+- ```yml
+  ###### CONFIG YAML ######
+  hostIP: H.O.S.T.I.P.
+  
+  ssl_certificate_key: 'path/to/key'
+  ssl_certificate: 'path/to/certificate'
+  grafana_host: 'http://dev2.virnao.com:3000'
+  pushgateway: 'http://dev2.virnao.com:9091'
+  grafana_username: 'username'
+  grafana_password: 'password'
+  grafana_api_token: "API KEY"
+  siterm_url_map:
+    "urn:ogf:network:nrp-nautilus.io:2020": https://sense-prpdev-fe.sdn-lb.ultralight.org/T2_US_SDSC/sitefe/json/frontend
+    "urn:ogf:network:ultralight.org:2013": https://sense-caltech-fe.sdn-lb.ultralight.org/T2_US_Caltech_Test/sitefe/json/frontend
+    "urn:ogf:network:sc-test.cenic.net:2020": https://sense-ladowntown-fe.sdn-lb.ultralight.org/NRM_CENIC/sitefe/json/frontend
+  ```
+- It also needs auth files
+    - /root/.sense-o-auth.yaml
+    - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem
+    - /etc/letsencrypt/live/dev2.virnao.com/cert.pem
 
 ### Installation
 - Run `./install.sh` and follow the steps to install necessary dependencies. 
@@ -14,7 +34,7 @@ This package will provide everything needed to run `cloud` and `site` stack.
 ### Running
 - `Cloud` stack consists of Grafana, Prometheus, Pushgateway, and Script Exporter containers. 
 - Run `./start.sh` to deploy `Cloud` stack.
-- Run `python3 main.py` to generate a flow in Grafana dynamically, calling the Sense-O api then creating dashboard.
+- Run `./update.sh` to start generating dashboards.
 
 ### Cleaning
 - `clean.sh` script to removes running containers.

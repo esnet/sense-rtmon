@@ -18,6 +18,7 @@ from dynamic import *
 from converter import converter
 from nodePatch import *
 logging.basicConfig(filename='output.log', level=logging.DEBUG)
+response = DiscoverApi().discover_service_instances_get()
 config = {}
 with open("../config_cloud/config.yml", 'r') as f:
     config = yaml.safe_load(f)
@@ -33,7 +34,7 @@ except:
 
 def fetch_data():
     response = ""
-    response = DiscoverApi().discover_service_instances_get()
+    
     try:
         response = DiscoverApi().discover_service_instances_get()
         print("Response Sucessful")
@@ -409,5 +410,3 @@ main()
 
         
 
-
-        

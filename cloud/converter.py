@@ -46,9 +46,10 @@ def converter(data, id, name):
 
 
             # Flow information
-            uuidStr = "rtmon-" + id + '\n'
-            uuidConfig = "flow: \"" + uuidStr + "\"\n"
-            outFile.write(uuidConfig)
+            uuidStr = "\"rtmon-" + id + "\""
+            # uuidConfig = "flow: \"" + uuidStr + "\""
+            
+            outFile.write(f"flow: {uuidStr} \n")
 
 
             # title

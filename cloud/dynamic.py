@@ -265,10 +265,16 @@ def dynamic(data, manifest):
  
        
         rep["ID_UNIQUE"] = unqiue_id.strip()
-        if node['name'] == rep["HOST1NAME"]:
-            rep["OPPOSITENAME"] = rep["HOST2NAME"]
-        else :
-            rep["OPPOSITENAME"] = rep["HOST1NAME"]
+        try:
+            if node['name'] == rep["HOST1NAME"]:
+                rep["OPPOSITENAME"] = rep["HOST2NAME"]
+            else :
+                rep["OPPOSITENAME"] = rep["HOST1NAME"]
+        except:
+            try:
+                rep["OPPOSITENAME"] = rep["HOST1NAME"]
+            except:
+                print("This Has no Host Node")
         rep["NODENAME"] = formatted_name
         
         for i in range(1,4):
@@ -298,3 +304,13 @@ def dynamic(data, manifest):
         os.remove(dashboard_name)
 
     return res
+
+# data = {}
+# manifest = {}
+
+# with open("manifest.json", 'r') as f:
+#     manifest = json.load(f)
+# with open("converted.json", 'r') as f:
+#     data = json.load(f)
+
+# dynamic(data, manifest)

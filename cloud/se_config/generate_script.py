@@ -134,10 +134,12 @@ def main():
     pushgateway = f"{data['pushgateway']}/metrics"  # pushgateway metrics page
     snmp_str = ""
     arp_str = ""
+    with open("check_data.json", 'w') as f:
+        json.dump(data, f, indent=2)
     # remove http:// or https://
     # before_sep, sep, after_sep = pushgateway.partition("//")
     # pushgateway = after_sep
-    with open('l2debugging.sh', 'w') as f:
+    with open(f"level2/{data['flow']}.sh", 'w') as f:
         f.write('#!/bin/bash \n')
         host_names = []
         switch_names = []
@@ -150,7 +152,7 @@ def main():
                 ips.append(node['interface'][0]['ip'])
             if node['type'] == 'switch':
                 switch_names.append(node['name'])
-                snmp_str = check_snmp_on(pushgateway, node['name'],id_name,id)
+                snmp_str += check_snmp_on(pushgateway, node['name'],id_name,id)
 
         arp_str = check_arp_on(pushgateway, host_names,id_name,id) 
         # host1 contains the ip of host2, vice versa, so we need to reverse the order of ip
@@ -158,11 +160,10 @@ def main():
 
         # host1 contains the ip and mac of host2, vice versa, so we need to reverse the order of ip
         macs = get_mac_from_arp(pushgateway, host_names,ips,id_name,id)
-        snmp_str = snmp_str + check_snmp_mac(pushgateway, switch_names,macs,id_name,id)
+        #snmp_str = snmp_str + check_snmp_mac(pushgateway, switch_names,macs,id_name,id)
+        
         f.write(arp_str)
         f.write(snmp_str)
-
-    os.system("chmod +x l2debugging.sh")
     # host1_mac = get_mac_from_pushgateway(pushgateway, host2, host1_ip)
     # host2_mac = get_mac_from_pushgateway(pushgateway, host1, host2_ip)
 

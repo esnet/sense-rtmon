@@ -32,17 +32,17 @@ scrape_configs:
     static_configs:
       - targets:
         - 52.20.53.21:9091
-  - job_name: multi
-    metrics_path: /probe
-    params:
-      script: [multi]
-    static_configs:
-      - targets:
-        - 52.20.53.21:9469
   - job_name: single
     metrics_path: /probe
     params:
-      script: [default]
+      script: ["default"]
     static_configs:
       - targets:
-        - 52.20.53.21:9469 
+        - 52.20.53.21:9469
+  - job_name: debug
+    metrics_path: /probe
+    params:
+      script: [debug]
+    static_configs:
+      - targets:
+        - 52.20.53.21:9469

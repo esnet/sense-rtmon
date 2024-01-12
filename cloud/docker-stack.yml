@@ -10,9 +10,6 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.retention=6h'  # Set retention period to 6 hours
     networks:
       - monitor-net
     logging:
@@ -43,7 +40,7 @@ services:
     command:
       - '-config.file=/examples/config.yaml'
       - '-web.listen-address=:9469'
-    image: 'ricoberger/script_exporter:v2.5.2'
+    image: 'ricoberger/script_exporter:v2.16.0'
     ports:
       - '9469:9469'
     volumes:

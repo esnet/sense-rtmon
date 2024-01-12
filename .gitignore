@@ -13,5 +13,6 @@ cloud/tesy.yaml
 config_cloud/config.yml
 config_flow/*.yml
 config_flow/*.json
+cloud/config.yml
 
 

@@ -12,6 +12,7 @@ from time import gmtime, strftime
 #from converter import orchestratorConvert
 from sense.client.workflow_combined_api import WorkflowCombinedApi
 from sense.client.discover_api import DiscoverApi
+from concurrent.futures import ProcessPoolExecutor
 # from generate_s import *
 from dynamic import *
 # from dispatch import *
@@ -161,18 +162,23 @@ def delete_dashboard(uid, api_token, grafana_url, name):
         logging.info(f"Failed to delete dashboard {uid}. Status code: {response.status_code}")
         return None
 
+def run_script(script):
+    print(f"Executing {script}")
+    os.system(f'bash {script}')
+
 def main():
     live_dashboard = {}
     dashboard_recorder = {}
     while True:
        
         path_to_sh_files = './level2/'
-
         sh_files = glob.glob(os.path.join(path_to_sh_files, '*.sh'))
 
-        for sh_file in sh_files:
-            print(f"Executing {sh_file}")
-            os.system(f'bash {sh_file}')
+        # Use ProcessPoolExecutor to run scripts in parallel
+        with ProcessPoolExecutor() as executor:
+            futures = [executor.submit(run_script, sh_file) for sh_file in sh_files]
+            for future in concurrent.futures.as_completed(futures):
+                future.result()
 
 
         # print("Scraping Script Exporter")

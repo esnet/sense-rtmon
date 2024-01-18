@@ -27,7 +27,7 @@
     },
     "id": 202,
     "options": {
-      "content": "```\nHost: T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net   Interface:\nname: enp129s0f1np1 | vlan: not used | ip: 10.251.87.74\nname: T2_US_SDSC:sn3700_s0 | vlan: 3985 | peer: name: None, interface: None, vlan: 3985\n ```",
+      "content": "```\nHost: T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net   Interface:\nname: enp65s0np0 | vlan: not used | ip: 10.251.87.162\nname: T2_US_SDSC:sn3700_s0 | vlan: 3874 | peer: name: None, interface: None, vlan: 3874\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -79,7 +79,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv enp129s0f1np1",
+        "alias": "recv enp65s0np0",
         "transform": "negative-Y"
       }
     ],
@@ -89,7 +89,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net\", device=\"enp129s0f1np1\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net\", device=\"enp65s0np0\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
@@ -98,7 +98,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net\",device=\"enp129s0f1np1\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net\",device=\"enp65s0np0\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -111,7 +111,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net - interface: enp129s0f1np1 Flow Bandwidth",
+    "title": "T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net - interface: enp65s0np0 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -179,7 +179,7 @@
     },
     "id": 206,
     "options": {
-      "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: hundredGigE_1-13 | vlan: 3985 | peer: name: aristaeos_s0, interface: Port-Channel501-rucio, vlan: not_used\nname: hundredGigE_1-10 | vlan: 3985 | peer: name: None, interface: None, vlan: None\n ```",
+      "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: hundredGigE_1-10 | vlan: 3874 | peer: name: None, interface: None, vlan: None\nname: Port-channel_103 | vlan: 3874 | peer: name: aristaeos_s0, interface: Port-Channel501, vlan: not_used\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -231,7 +231,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv hundredGigE 1/13",
+        "alias": "recv hundredGigE 1/10",
         "transform": "negative-Y"
       }
     ],
@@ -241,7 +241,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/13\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/10\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -249,7 +249,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/13\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/10\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -263,7 +263,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE 1/13 Flow Bandwidth",
+    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE 1/10 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -345,7 +345,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv hundredGigE 1/10",
+        "alias": "recv Port-channel_103",
         "transform": "negative-Y"
       }
     ],
@@ -355,7 +355,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/10\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -363,7 +363,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/10\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"Port-channel_103\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -377,7 +377,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE 1/10 Flow Bandwidth",
+    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: Port-channel_103 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -445,7 +445,7 @@
     },
     "id": 212,
     "options": {
-      "content": "```\nSwitch: T2_US_SDSC:sn3700_s0   Interface:\nname: PortChannel501 | vlan: 3985 | peer: name: aristaeos_s0, interface: Port-Channel502, vlan: not_used\nname: Ethernet80 | vlan: 3985 | peer: name: T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net, interface: enp129s0f1np1, vlan: 3985\n ```",
+      "content": "```\nSwitch: T2_US_SDSC:sn3700_s0   Interface:\nname: PortChannel501 | vlan: 3874 | peer: name: aristaeos_s0, interface: Port-Channel502, vlan: not_used\nname: Ethernet104 | vlan: 3874 | peer: name: T2_US_SDSC:k8s-gen4-01.sdsc.optiputer.net, interface: enp65s0np0, vlan: 3874\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -507,7 +507,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -515,7 +515,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -611,7 +611,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv Ethernet80",
+        "alias": "recv Ethernet104",
         "transform": "negative-Y"
       }
     ],
@@ -621,7 +621,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"Ethernet80\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"Ethernet104\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -629,7 +629,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"Ethernet80\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"Ethernet104\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -643,7 +643,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_SDSC:sn3700_s0 - interface: Ethernet80 Flow Bandwidth",
+    "title": "T2_US_SDSC:sn3700_s0 - interface: Ethernet104 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -711,7 +711,7 @@
     },
     "id": 218,
     "options": {
-      "content": "```\nSwitch: NRM_CENIC:aristaeos_s0   Interface:\nname: Port-Channel501-rucio | vlan: 3985 | peer: name: dellos9_s0, interface: hundredGigE_1-13, vlan: not_used\nname: Port-Channel502 | vlan: 3985 | peer: name: sn3700_s0, interface: PortChannel501, vlan: not_used\n ```",
+      "content": "```\nSwitch: NRM_CENIC:aristaeos_s0   Interface:\nname: Port-Channel501 | vlan: 3874 | peer: name: dellos9_s0, interface: Port-channel_103, vlan: not_used\nname: Port-Channel502 | vlan: 3874 | peer: name: sn3700_s0, interface: PortChannel501, vlan: not_used\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -773,7 +773,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -781,7 +781,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -887,7 +887,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -895,7 +895,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-ebeadff6-83ef-4385-b79b-4259d271254e\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-724a382d-84df-4cce-918a-3b68c75ba613\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1032,7 +1032,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "t2_us_sdsc:k8s_gen4_01_sdsc_optiputer_net_script_exporter_task1_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "expr": "t2_us_sdsc:k8s_gen4_01_sdsc_optiputer_net_script_exporter_task1_rtmon_724a382d_84df_4cce_918a_3b68c75ba613",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1041,7 +1041,7 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_sdsc:k8s_gen4_01_sdsc_optiputer_net_script_exporter_task2_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "expr": "t2_us_sdsc:k8s_gen4_01_sdsc_optiputer_net_script_exporter_task2_rtmon_724a382d_84df_4cce_918a_3b68c75ba613",
     "format": "time_series",
     "hide": false,
     "instant": false,
@@ -1124,7 +1124,7 @@
     "targets": [
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task1_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task1_rtmon_724a382d_84df_4cce_918a_3b68c75ba613",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1133,7 +1133,7 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task2_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task2_rtmon_724a382d_84df_4cce_918a_3b68c75ba613",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1142,7 +1142,7 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task3_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task3_rtmon_724a382d_84df_4cce_918a_3b68c75ba613",
     "hide": false,
     "interval": "",
     "legendFormat": "contains HOST2NAME MAC Address",
@@ -1223,7 +1223,7 @@
     "targets": [
   {
     "exemplar": true,
-    "expr": "t2_us_sdsc:sn3700_s0_script_exporter_task1_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "expr": "t2_us_sdsc:sn3700_s0_script_exporter_task1_rtmon_724a382d_84df_4cce_918a_3b68c75ba613",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1232,7 +1232,7 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_sdsc:sn3700_s0_script_exporter_task2_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "expr": "t2_us_sdsc:sn3700_s0_script_exporter_task2_rtmon_724a382d_84df_4cce_918a_3b68c75ba613",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1241,7 +1241,7 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_sdsc:sn3700_s0_script_exporter_task3_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "expr": "t2_us_sdsc:sn3700_s0_script_exporter_task3_rtmon_724a382d_84df_4cce_918a_3b68c75ba613",
     "hide": false,
     "interval": "",
     "legendFormat": "contains HOST2NAME MAC Address",
@@ -1322,7 +1322,7 @@
     "targets": [
   {
     "exemplar": true,
-    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task1_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task1_rtmon_724a382d_84df_4cce_918a_3b68c75ba613",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1331,7 +1331,7 @@
   },
   {
     "exemplar": true,
-    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task2_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task2_rtmon_724a382d_84df_4cce_918a_3b68c75ba613",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -1340,7 +1340,7 @@
   },
   {
     "exemplar": true,
-    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task3_rtmon_ebeadff6_83ef_4385_b79b_4259d271254e",
+    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task3_rtmon_724a382d_84df_4cce_918a_3b68c75ba613",
     "hide": false,
     "interval": "",
     "legendFormat": "contains HOST2NAME MAC Address",

@@ -66,6 +66,38 @@ def filter_data(data):
     
     return filtered_data
 
+import subprocess
+
+def is_data_available(pushgateway_host, metric_or_label):
+    try:
+        response = subprocess.check_output(
+            ["curl", "-X", "GET", f"http://{config['pushgateway']}:9091/metrics"],
+            universal_newlines=True
+        )
+        return metric_or_label in response
+    except subprocess.CalledProcessError as e:
+        print(f"Error querying Prometheus Pushgateway: {e}")
+        return False
+
+if is_data_available(config['pushgateway']):
+    continue
+else:
+    library_panel = {
+        "type": "text",
+        "title": "Alert",
+        "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0},  # Adjust grid position as needed
+        "id": None,
+        "content": "# **No Metrics Exported**\n## Non-SENSE Monitoring Node Detected",
+        "mode": "markdown",
+        "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+        }
+    }
+    library_panel["id"] = generate_unique_panel_id()  # Ensure unique ID for each panel
+    dashboard["panels"].append(library_panel.copy())  # Add library panel to the dashboard
+
+
 def create_manifest(instance):
     template = {
         "Ports": [

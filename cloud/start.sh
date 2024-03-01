@@ -101,7 +101,7 @@ rm -r config_flow
 EOF
 
 # Make the script executable
-chmod +x update1.sh
+chmod +x update.sh
 ./update.sh
 # echo ""
 # echo "!!    What's next?"

@@ -79,7 +79,7 @@ CERT_PATH=$(grep 'certkey:' $CONFIG_YAML | cut -d ' ' -f 2 | tr -d '\n' | tr -d 
 
 
 # Create the update.sh file
-cat <<EOF > update1.sh
+cat <<EOF > update.sh
 #!/bin/bash
 
 # Copy files to current directory
@@ -102,7 +102,7 @@ EOF
 
 # Make the script executable
 chmod +x update1.sh
-./update1.sh
+./update.sh
 # echo ""
 # echo "!!    What's next?"
 # echo "!!    Generate flow dashboard: run python3 main.py  to generate a dashboard based on the configuration files under config_flow"

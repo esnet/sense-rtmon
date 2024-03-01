@@ -38,7 +38,7 @@ sleep 1
 echo "!!    docker stack deployment"
 docker stack deploy -c docker-stack.yml cloud
 
-sleep 2
+sleep 3
 
 echo "!!    IMPORTANT:"
 echo "!!    Before Generating Dashboard for the first time please setup Data Source and Grafana authorization API key"
@@ -53,24 +53,57 @@ echo "!!    Wait for 3-5 seconds for the containers to get started"
 echo "!!    Visit grafana through its port (default 3000)"
 echo "- navigate to http://<ip_address/domain_name>:3000 (or https://<ip_address/domain_name> if HTTPS enabled and port 443 enabled)"
 echo "- login to Grafana with the default authentication (username: admin, password: admin)"
-sleep 0.5
+sleep 2
 echo ""
 echo "!!    APT Key setup instruction (used for dynamic flow dashboard. ignore if API key already set up):"
-sleep 0.5
+sleep 2
 echo "- setting -> API keys -> add key with Admin permission"
 echo "- copy the API token value starting with 'Bearer ....'"
 echo "- edit any files under /config_flow that are used"
 echo "- replace 'CONFIG' in {grafanaAPIToken: 'CONFIG'} with the new API token"
-sleep 1
+sleep 2
 echo ""
 echo "!!    Data source setup instruction:"
-sleep 0.5
+sleep 2
 echo "- navigate to <ip_address/domain_name>:3000(or 443 if HTTPS enabled)"
 echo "- login to Grafana with the default authentication (username: admin, password: admin)"
 echo "- setting -> data source -> Prometheus -> URL -> Save & Test"
 echo "- enter the IP address NOT DNS"
-sleep 1
-echo ""
-echo "!!    What's next?"
-echo "!!    Generate flow dashboard: run python3 main.py  to generate a dashboard based on the configuration files under config_flow"
-echo "!!    Delete the deployment: run ./clean.sh to remove cloud stack"
+sleep 5
+CONFIG_YAML="../config_cloud/config.yml"
+
+# Extract paths using grep and cut
+PRIVATECERT_PATH=$(grep 'privatecert:' $CONFIG_YAML | cut -d ' ' -f 2 | tr -d '\n' | tr -d "'")
+CERT_PATH=$(grep 'certkey:' $CONFIG_YAML | cut -d ' ' -f 2 | tr -d '\n' | tr -d "'")
+
+
+
+# Create the update.sh file
+cat <<EOF > update1.sh
+#!/bin/bash
+
+# Copy files to current directory
+cp "${PRIVATECERT_PATH}" .
+cp "${CERT_PATH}" .
+cp /root/.sense-o-auth.yaml .
+cp ../config_cloud/config.yml .
+cp -r ../config_flow .
+
+# Build the Docker container with network host and interactive mode
+docker build --network host -t mainloop .
+
+# Run the Docker container in interactive mode
+docker run -itd mainloop
+
+# Remove the copied files
+rm privkey.pem cert.pem .sense-o-auth.yaml config.yml
+rm -r config_flow
+EOF
+
+# Make the script executable
+chmod +x update1.sh
+./update1.sh
+# echo ""
+# echo "!!    What's next?"
+# echo "!!    Generate flow dashboard: run python3 main.py  to generate a dashboard based on the configuration files under config_flow"
+# echo "!!    Delete the deployment: run ./clean.sh to remove cloud stack"

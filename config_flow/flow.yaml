@@ -2,26 +2,11 @@
 flow: "rtmon-6c1c4758-d804-4b70-8cf5-d6ef1d8a5292" 
 title: HELLO-WORLD 
 grafana_host: "http://dev2.virnao.com:3000"
-pushgateway: "http://dev2.virnao.com:9091"
+pushgateway: "http://172.31.72.189:9091"
 grafana_api_token: 
 
 ## Section 2 Hosts & Switches all under nodes ##
 node:
-  - name: "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org"
-    type: "host"
-    arp: 'on'
-    runtime: 610
-    interface:
-      - name: "mlx5p1s1"
-        vlan: 'not used'
-        ip: 10.251.86.129
-      - name: "T2_US_Caltech_Test:aristaeos_s0"
-        vlan: 1793
-        peer: 
-        - name: 
-          interface: 
-          vlan: 1793
-
   - name: "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net"
     type: "host"
     arp: 'on'
@@ -36,25 +21,6 @@ node:
         - name: 
           interface: 
           vlan: 1793
-
-  - name: "NRM_CENIC:aristaeos_s0"
-    type: "switch"
-    runtime: 610
-    interface:
-      - name: "Port-Channel501"
-        vlan: 1793
-        peer:
-        - name: "dellos9_s0"
-          interface: "Port-channel_103"
-          vlan: 'not_used'
-
-      - name: "Port-Channel502-prismcore"
-        vlan: 1793
-        peer:
-        - name: "prism-core"
-          interface: "pwave"
-          vlan: 'not_used'
-
 
   - name: "calit2.optiputer.net:2020:prism-core"
     type: "switch"
@@ -73,44 +39,6 @@ node:
         - name: "aristaeos_s0"
           interface: "Port-Channel502-prismcore"
           vlan: 'not_used'
-
-
-  - name: "T2_US_Caltech_Test:dellos9_s0"
-    type: "switch"
-    runtime: 610
-    interface:
-      - name: "Port-channel_103"
-        vlan: 1793
-        peer:
-        - name: "aristaeos_s0"
-          interface: "Port-Channel501"
-          vlan: 'not_used'
-
-      - name: "Port-channel_104"
-        vlan: 1793
-        peer:
-        - name: "aristaeos_s0"
-          interface: "Port-Channel104"
-          vlan: 'not_used'
-
-
-  - name: "T2_US_Caltech_Test:aristaeos_s0"
-    type: "switch"
-    runtime: 610
-    interface:
-      - name: "Port-Channel104"
-        vlan: 1793
-        peer:
-        - name: "dellos9_s0"
-          interface: "Port-channel_104"
-          vlan: 'not_used'
-
-      - name: "Ethernet4-1"
-        vlan: 1793
-        peer:
-        - name: "T2_US_Caltech_Test:sdn-dtn-2-11.ultralight.org"
-          interface: "mlx5p1s1"
-          vlan: 1793
 
 
   - name: "T2_US_UCSD:s1"

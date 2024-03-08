@@ -69,7 +69,7 @@ services:
       - 3000
     volumes:
       - $PWD/nginx/:/etc/nginx/conf.d/ # do not change this line if possible
-      - /etc/pki/tls/certs/sense-mon_es_net_fullchain.cer:/etc/pki/tls/certs/sense-mon_es_net_fullchain.cer
-      - /etc/pki/tls/private/sense-mon.key:/etc/pki/tls/private/sense-mon.key
+      - /etc/letsencrypt/live/dev2.virnao.com/cert.pem:/etc/letsencrypt/live/dev2.virnao.com/cert.pem
+      - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
     
   # nginx reverse proxy Grafana to https

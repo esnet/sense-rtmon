@@ -8,8 +8,11 @@ import copy
 import requests
 import pprint
 import simplejson as json
-os.environ["X509_USER_KEY"] = '/etc/letsencrypt/live/dev2.virnao.com/privkey.pem'
-os.environ["X509_USER_CERT"] = '/etc/letsencrypt/live/dev2.virnao.com/cert.pem'
+config = {}
+with open("../config_cloud/config.yml", 'r') as f:
+    config = yaml.safe_load(f)
+os.environ["X509_USER_KEY"] = config['ssl_certificate_key']
+os.environ["X509_USER_CERT"] = config['ssl_certificate']
 
 def getUTCnow():
     """Get UTC Time."""

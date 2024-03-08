@@ -73,8 +73,8 @@ sleep 5
 CONFIG_YAML="../config_cloud/config.yml"
 
 # Extract paths using grep and cut
-PRIVATECERT_PATH=$(grep 'privatecert:' $CONFIG_YAML | cut -d ' ' -f 2 | tr -d '\n' | tr -d "'")
-CERT_PATH=$(grep 'certkey:' $CONFIG_YAML | cut -d ' ' -f 2 | tr -d '\n' | tr -d "'")
+PRIVATECERT_PATH=$(grep 'ssl_certificate_key:' $CONFIG_YAML | cut -d ' ' -f 2 | tr -d '\n' | tr -d "'")
+CERT_PATH=$(grep 'ssl_certificate:' $CONFIG_YAML | cut -d ' ' -f 2 | tr -d '\n' | tr -d "'")
 
 
 

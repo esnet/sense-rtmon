@@ -78,31 +78,6 @@ CERT_PATH=$(grep 'ssl_certificate:' $CONFIG_YAML | cut -d ' ' -f 2 | tr -d '\n' 
 
 
 
-# Create the update.sh file
-cat <<EOF > update.sh
-#!/bin/bash
-
-# Copy files to current directory
-cp "${PRIVATECERT_PATH}" .
-cp "${CERT_PATH}" .
-cp /root/.sense-o-auth.yaml .
-cp ../config_cloud/config.yml .
-cp -r ../config_flow .
-
-# Build the Docker container with network host and interactive mode
-docker build --network host -t mainloop .
-
-# Run the Docker container in interactive mode
-docker run -itd mainloop
-
-# Remove the copied files
-rm privkey.pem cert.pem .sense-o-auth.yaml config.yml
-rm -r config_flow
-EOF
-
-# Make the script executable
-chmod +x update.sh
-./update.sh
 # echo ""
 # echo "!!    What's next?"
 # echo "!!    Generate flow dashboard: run python3 main.py  to generate a dashboard based on the configuration files under config_flow"

@@ -1,0 +1,74 @@
+## SECTION 1 GENERAL INFORMATION ##
+title: "Multi Switch Flow Dashboard"
+flow: " flow 2 "
+hostIP: 198.124.151.8 
+grafana_host: 'sense-mon.es.net:3000'
+pushgateway: 'sense-mon.es.net:9091'
+grafanaAPIToken: "CONFIG"
+
+## Section 2 Hosts & Switches all under nodes ##
+node:
+
+  - name: 'sdn-dtn-2-10.ultralight.org'
+    type: 'host'  
+    interface: 
+      - &'1'
+        name: 'ens2f0np0.3911'
+        ip: 10.251.86.10
+        vlan: 'not used'
+      - &'2'
+        name: 'hundredGigE 1/31'
+        ip: 10.251.86.10
+        vlan: 'not used'
+    peer: 
+      - from: *'2'
+        to: [*'3']
+      
+  - name: 'Caltech LRT-SDN-R02-Dell-Z9100' # SNMPHostIP: 10.251.86.10
+    type: 'switch'
+    interface: 
+      - &'3'
+        name: 'hundredGigE 1/31'
+        ip: 172.16.1.1
+        vlan: 'not used'
+      - &'4' 
+        name: 'Port-channel 103'
+        ip: 172.16.1.1
+        vlan: 'not used'
+    peer:
+      - from: *'3'
+        to: [*'2']
+      - from: *'4'
+        to: [*'5']
+
+  - name: 'UCSD SN3700'     # SNMPHostIP: 10.251.86.12
+    type: 'switch'
+    interface: 
+      - &'5'
+        name: 'PortChannel501'
+        ip: 132.249.2.46
+        vlan: 'not used'
+      - &'6'
+        name: 'etp28'
+        ip: 132.249.2.46
+        vlan: 'not used'
+    peer: 
+      - from: *'5'
+        to: [*'4']
+      - from: *'6'
+        to: [*'8']
+
+  - name: 'k8s-gen4-02.sdsc.optiputer.net'
+    type: 'host'
+    interface: 
+      - &'7'
+        name: 'vlan.3911'
+        ip: 10.251.86.12
+        vlan: 'not used'
+      - &'8'
+        name: 'etp28'
+        ip: 10.251.86.12
+        vlan: 'not used'
+    peer:
+      - from: *'8'
+        to: [*'6']

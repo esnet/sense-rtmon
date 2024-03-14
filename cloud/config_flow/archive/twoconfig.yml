@@ -1,0 +1,65 @@
+## SECTION 1 GENERAL INFORMATION ##
+title: "Multi Switch Flow Dashboard"
+flow: " flow 2 "
+hostIP: 198.124.151.8 
+grafana_host: 'https://sense-mon.es.net:443'
+pushgateway: 'http://sense-mon.es.net:9091'
+grafanaAPIToken: "CONFIG"
+
+host: # Host 1
+  num: 2 # Number of hosts
+  
+  host1:
+    institute: 'caltech'
+    node: 'sdn-dtn-2-10.ultralight.org'
+    ip: '10.251.86.10'
+    interface: 'ens2f0np0.3911'
+    interface_ip: '10.251.86.10/24'
+    vlan: 'not_used'
+    num_port: 1
+    port1: 
+      if_name: 'hundredGigE 1/31'
+      vlan: '3911'
+      connection: 'switch1'
+
+  host2: # Host 2
+    institute: 'ucsd_cluster'
+    node: 'k8s-gen4-01.sdsc.optiputer.net'
+    ip: '10.251.86.14'
+    interface: 'vlan.3911'
+    interface_ip: '10.251.86.14'
+    vlan: '3911'
+    num_port: 1
+    port1:
+      if_name: 'etp27'
+      vlan: '3911'
+      connection: 'switch2'
+
+## SECTION 2 SWITCH INFORMATION ##
+switch:
+  num: 2 # Number of switches
+
+  switch1:
+    institute: 'caltech'
+    running_from_ip: '10.251.86.10'
+    target: 172.16.1.1
+    num_port: 2
+    port1:
+      if_name: 'hundredGigE 1/31'
+      vlan: '3911'
+      connection: 'host1'
+    port2:
+      if_name: 'Port-channel 103'
+      vlan: '3911'
+
+  switch2:
+    institute: 'ucsd_cluster'
+    running_from_ip: '10.251.86.14'
+    target: 132.249.2.46
+    num_port: 2
+    port1:
+      if_name: 'PortChannel501'
+      vlan: '3911'
+    port2:
+      if_name: 'etp27'
+      vlan: '3911'   

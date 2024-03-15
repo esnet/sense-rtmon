@@ -131,6 +131,11 @@ if [ "$sslmode" == "2" ]; then # existing certificate
     if [[ -z "$pushgateway_port" ]]; then
         pushgateway_port=9091
     fi
+    read -r -p "Please enter sense-o-auth.yml path: " sense_path
+    if [[ -z "$sense_path" ]]; then
+        echo "Information incomplete: sense-o-auth.yml path is missing."
+        exit 1
+    fi
 
     cat > ../config_cloud/config.yml << EOF
 ssl_certificate: "$ssl_certificate"
@@ -143,11 +148,118 @@ grafana_username: "$grafana_user"
 grafana_password: "$grafana_pass"
 grafana_api_token: ""
 siterm_url_map:
+  "urn:ogf:network:nrp-nautilus-prod.io:2020": https://sense-fe.nrp-nautilus.io:8443/T2_US_UCSD/sitefe//sitefe/json/frontend
   "urn:ogf:network:nrp-nautilus.io:2020": https://sense-prpdev-fe.sdn-lb.ultralight.org/T2_US_SDSC/sitefe/json/frontend
   "urn:ogf:network:ultralight.org:2013": https://sense-caltech-fe.sdn-lb.ultralight.org/T2_US_Caltech_Test/sitefe/json/frontend
   "urn:ogf:network:sc-test.cenic.net:2020": https://sense-ladowntown-fe.sdn-lb.ultralight.org/NRM_CENIC/sitefe/json/frontend
 EOF
 
+cat > ./docker-stack.yml << EOF
+
+version: '3'
+
+networks:
+  monitor-net:
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.2.1
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - monitor-net
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - 9091:9091
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - monitor-net
+  
+  script_exporter:
+    command:
+      - '-config.file=/examples/config.yaml'
+      - '-web.listen-address=:9469'
+    image: 'ricoberger/script_exporter:v2.16.0'
+    ports:
+      - '9469:9469'
+    volumes:
+      - './script_exporter/examples:/examples'
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+      restart_policy:
+        condition: on-failure
+    networks:
+      - monitor-net
+
+  grafana:
+    image: grafana/grafana-enterprise:latest
+    ports:
+      - 3000:3000
+    environment:
+      GF_INSTALL_PLUGINS: jdbranham-diagram-panel
+    networks:
+      - monitor-net
+
+  nginx:
+    hostname: nginx
+    image: nginx:latest
+    ports:
+      - 443:443
+      - 3000
+    volumes:
+      - $PWD/nginx/:/etc/nginx/conf.d/ # do not change this line if possible
+      - $ssl_certificate:$ssl_certificate
+      - $ssl_certificate_key:$ssl_certificate_key
+    networks:
+      - monitor-net
+  
+  mainloop:
+    image: mainloop:latest
+    logging: 
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+    volumes:
+      - /root/.sense-o-auth.yaml:$sense_path
+      - $ssl_certificate:$ssl_certificate
+      - $ssl_certificate_key:$ssl_certificate_key
+    networks:
+      - monitor-net
+    
+  # nginx reverse proxy Grafana to https
+
+
+EOF
+    cp ../config_cloud/config.yml .
+    cp -r ../config_flow .
+    docker build --network host -t mainloop .
+    rm -r config_flow
     python3 certify.py ${domain} ${grafana_port} ${ssl_certificate} ${ssl_certificate_key}
     echo "!!    Success!"
     echo "!!    current ssl certificate updated in cloud/nginx/proxy_conf and cloud/nginx/server_conf"

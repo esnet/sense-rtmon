@@ -1,3 +1,4 @@
+
 version: '3'
 
 networks:
@@ -70,7 +71,7 @@ services:
       - 443:443
       - 3000
     volumes:
-      - $PWD/nginx/:/etc/nginx/conf.d/ # do not change this line if possible
+      - /home/centos/sense-rtmon/cloud/nginx/:/etc/nginx/conf.d/ # do not change this line if possible
       - /etc/letsencrypt/live/dev2.virnao.com/cert.pem:/etc/letsencrypt/live/dev2.virnao.com/cert.pem
       - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
     networks:
@@ -88,10 +89,12 @@ services:
         constraints:
           - node.role==manager
     volumes:
-      - /root/.sense-o-auth.yaml:/root/.sense-o-auth.yaml 
+      - /root/.sense-o-auth.yaml:/root/.sense-o-auth.yaml
       - /etc/letsencrypt/live/dev2.virnao.com/cert.pem:/etc/letsencrypt/live/dev2.virnao.com/cert.pem
       - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
     networks:
       - monitor-net
     
   # nginx reverse proxy Grafana to https
+
+

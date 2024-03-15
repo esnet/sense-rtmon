@@ -87,6 +87,10 @@ services:
       placement:
         constraints:
           - node.role==manager
+    volumes:
+      - /root/.sense-o-auth.yaml:/root/.sense-o-auth.yaml 
+      - /etc/letsencrypt/live/dev2.virnao.com/cert.pem:/etc/letsencrypt/live/dev2.virnao.com/cert.pem
+      - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
     networks:
       - monitor-net
     

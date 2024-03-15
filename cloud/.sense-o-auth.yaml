@@ -1,7 +1,0 @@
-AUTH_ENDPOINT: https://sense-o.es.net:8543/auth/realms/StackV/protocol/openid-connect/token
-API_ENDPOINT: https://sense-o-dev.es.net:8443/StackV-web/restapi
-CLIENT_ID: StackV
-USERNAME: sense-rtmon
-PASSWORD: Dynamic-2023
-SECRET: ae53fbea-8812-4c13-918f-0065a1550b7c
-verify: True

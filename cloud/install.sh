@@ -136,7 +136,7 @@ if [ "$sslmode" == "2" ]; then # existing certificate
 ssl_certificate: "$ssl_certificate"
 ssl_certificate_key: "$ssl_certificate_key"
 domain: "$domain"
-grafana_host: "http://$domain:$grafana_port"
+grafana_host: "http://grafana:$grafana_port"
 pushgateway: "http://pushgateway:$pushgateway_port"
 grafana_username: "$grafana_user"
 grafana_password: "$grafana_pass"

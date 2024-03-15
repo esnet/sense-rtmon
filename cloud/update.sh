@@ -14,5 +14,5 @@ docker build --network host -t mainloop .
 # docker run -itd mainloop
 
 # Remove the copied files
-rm privkey.pem cert.pem .sense-o-auth.yaml config.yml
+# rm privkey.pem cert.pem .sense-o-auth.yaml config.yml
 rm -r config_flow

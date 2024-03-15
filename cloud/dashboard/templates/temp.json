@@ -9,7 +9,7 @@
     },
     "id": 201,
     "panels": [],
-    "title": "Host Flow Summary - T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net",
+    "title": "Switch Flow Summary - T2_US_Caltech_Test:dellos9_s0",
     "type": "row"
   },
 {
@@ -27,13 +27,13 @@
     },
     "id": 202,
     "options": {
-      "content": "```\nHost: T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net   Interface:\nname: enp33s0f1 | vlan: not used | ip: 10.251.85.190\nname: T2_US_UCSD:s1 | vlan: 1796 | peer: name: None, interface: None, vlan: 1796\n ```",
+      "content": "```\nSwitch: T2_US_Caltech_Test:dellos9_s0   Interface:\nname: hundredGigE_1-13 | vlan: 3988 | peer: name: aristaeos_s0, interface: Port-Channel501-rucio, vlan: not_used\nname: hundredGigE_1-10 | vlan: 3988 | peer: name: None, interface: None, vlan: None\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
     "timeFrom": null,
     "timeShift": null,
-    "title": "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net - Node Interface Information",
+    "title": "T2_US_Caltech_Test:dellos9_s0 - Node Interface Information",
     "type": "text"
   },
 {
@@ -79,7 +79,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv enp33s0f1",
+        "alias": "recv hundredGigE 1/13",
         "transform": "negative-Y"
       }
     ],
@@ -89,29 +89,143 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net\", device=\"enp33s0f1\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",
-    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/13\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
-    "legendFormat": "recv {{device}}",
+    "legendFormat": "recv {{ifDescr}}",
     "refId": "A"
   },
   {
     "exemplar": true,
-    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net\",device=\"enp33s0f1\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/13\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
-    "legendFormat": "trans {{device}}",
+    "legendFormat": "trans {{ifDescr}}",
     "refId": "B"
   }
+
     ],
     "thresholds": [],
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net - interface: enp33s0f1 Flow Bandwidth",
+    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE 1/13 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 205
+    },
+    "hiddenSeries": false,
+    "id": 205,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv hundredGigE 1/10",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/10\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_Caltech_Test:dellos9_s0\",ifDescr=\"hundredGigE 1/10\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "T2_US_Caltech_Test:dellos9_s0 - interface: hundredGigE 1/10 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -157,11 +271,11 @@
       "h": 1,
       "w": 24,
       "x": 0,
-      "y": 205
+      "y": 207
     },
-    "id": 205,
+    "id": 207,
     "panels": [],
-    "title": "Switch Flow Summary - T2_US_UCSD:s1",
+    "title": "Switch Flow Summary - T2_US_SDSC:sn3700_s0",
     "type": "row"
   },
 {
@@ -175,132 +289,18 @@
       "h": 5,
       "w": 24,
       "x": 0,
-      "y": 206
+      "y": 208
     },
-    "id": 206,
+    "id": 208,
     "options": {
-      "content": "```\nSwitch: T2_US_UCSD:s1   Interface:\nname: 1_2 | vlan: 1796 | peer: name: T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net, interface: enp33s0f1, vlan: 1796\nname: 1_1 | vlan: 1796 | peer: name: prism-core, interface: k8s-igrok-02, vlan: not_used\n ```",
+      "content": "```\nSwitch: T2_US_SDSC:sn3700_s0   Interface:\nname: Ethernet100 | vlan: 3988 | peer: name: None, interface: None, vlan: None\nname: PortChannel501 | vlan: 3988 | peer: name: oasis, interface: Pc501, vlan: not_used\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
     "timeFrom": null,
     "timeShift": null,
-    "title": "T2_US_UCSD:s1 - Node Interface Information",
+    "title": "T2_US_SDSC:sn3700_s0 - Node Interface Information",
     "type": "text"
-  },
-{
-    "aliasColors": {},
-    "bars": false,
-    "dashLength": 10,
-    "dashes": false,
-    "datasource": null,
-    "fieldConfig": {
-      "defaults": {},
-      "overrides": []
-    },
-    "fill": 1,
-    "fillGradient": 0,
-    "gridPos": {
-      "h": 7,
-      "w": 24,
-      "x": 0,
-      "y": 207
-    },
-    "hiddenSeries": false,
-    "id": 207,
-    "legend": {
-      "avg": false,
-      "current": false,
-      "max": false,
-      "min": false,
-      "show": true,
-      "total": false,
-      "values": false
-    },
-    "lines": true,
-    "linewidth": 1,
-    "nullPointMode": "null",
-    "options": {
-      "alertThreshold": true
-    },
-    "percentage": false,
-    "pluginVersion": "7.5.4",
-    "pointradius": 2,
-    "points": false,
-    "renderer": "flot",
-    "seriesOverrides": [
-      {
-        "$$hashKey": "object:176",
-        "alias": "recv 1 2",
-        "transform": "negative-Y"
-      }
-    ],
-    "spaceLength": 10,
-    "stack": false,
-    "steppedLine": false,
-    "targets": [
-{
-    "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_UCSD:s1\",ifDescr=\"1 2\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",    "instant": false,
-    "interval": "",
-    "intervalFactor": 1,
-    "legendFormat": "recv {{ifDescr}}",
-    "refId": "A"
-  },
-  {
-    "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_UCSD:s1\",ifDescr=\"1 2\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",
-    "hide": false,
-    "instant": false,
-    "interval": "",
-    "intervalFactor": 1,
-    "legendFormat": "trans {{ifDescr}}",
-    "refId": "B"
-  }
-
-    ],
-    "thresholds": [],
-    "timeFrom": null,
-    "timeRegions": [],
-    "timeShift": null,
-    "title": "T2_US_UCSD:s1 - interface: 1 2 Flow Bandwidth",
-    "tooltip": {
-      "shared": true,
-      "sort": 0,
-      "value_type": "individual"
-    },
-    "type": "graph",
-    "xaxis": {
-      "buckets": null,
-      "mode": "time",
-      "name": null,
-      "show": true,
-      "values": []
-    },
-    "yaxes": [
-      {
-        "$$hashKey": "object:118",
-        "format": "Bps",
-        "label": "bw out(-) / in(+)",
-        "logBase": 1,
-        "max": null,
-        "min": null,
-        "show": true
-      },
-      {
-        "$$hashKey": "object:119",
-        "format": "short",
-        "label": null,
-        "logBase": 1,
-        "max": null,
-        "min": null,
-        "show": false
-      }
-    ],
-    "yaxis": {
-      "align": false,
-      "alignLevel": null
-    }
   },
 {
     "aliasColors": {},
@@ -345,7 +345,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv 1 1",
+        "alias": "recv Ethernet100",
         "transform": "negative-Y"
       }
     ],
@@ -355,7 +355,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_UCSD:s1\",ifDescr=\"1 1\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"Ethernet100\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -363,7 +363,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_UCSD:s1\",ifDescr=\"1 1\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"Ethernet100\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -377,7 +377,121 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_UCSD:s1 - interface: 1 1 Flow Bandwidth",
+    "title": "T2_US_SDSC:sn3700_s0 - interface: Ethernet100 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 211
+    },
+    "hiddenSeries": false,
+    "id": 211,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv PortChannel501",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_SDSC:sn3700_s0\",ifDescr=\"PortChannel501\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "T2_US_SDSC:sn3700_s0 - interface: PortChannel501 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -423,11 +537,11 @@
       "h": 1,
       "w": 24,
       "x": 0,
-      "y": 211
+      "y": 213
     },
-    "id": 211,
+    "id": 213,
     "panels": [],
-    "title": "Switch Flow Summary - calit2.optiputer.net:2020:prism-core",
+    "title": "Switch Flow Summary - NRM_CENIC:aristaeos_s0",
     "type": "row"
   },
 {
@@ -441,17 +555,17 @@
       "h": 5,
       "w": 24,
       "x": 0,
-      "y": 212
+      "y": 214
     },
-    "id": 212,
+    "id": 214,
     "options": {
-      "content": "```\nSwitch: calit2.optiputer.net:2020:prism-core   Interface:\nname: pwave | vlan: 1796 | peer: name: aristaeos_s0, interface: Port-Channel502-prismcore, vlan: not_used\nname: k8s-igrok-02 | vlan: 1796 | peer: name: None, interface: None, vlan: None\n ```",
+      "content": "```\nSwitch: NRM_CENIC:aristaeos_s0   Interface:\nname: Port-Channel501-rucio | vlan: 3988 | peer: name: dellos9_s0, interface: hundredGigE_1-13, vlan: not_used\nname: Port-Channel502 | vlan: 3988 | peer: name: oasis, interface: Pc502, vlan: not_used\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
     "timeFrom": null,
     "timeShift": null,
-    "title": "calit2.optiputer.net:2020:prism-core - Node Interface Information",
+    "title": "NRM_CENIC:aristaeos_s0 - Node Interface Information",
     "type": "text"
   },
 {
@@ -470,10 +584,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 213
+      "y": 215
     },
     "hiddenSeries": false,
-    "id": 213,
+    "id": 215,
     "legend": {
       "avg": false,
       "current": false,
@@ -497,7 +611,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv pwave",
+        "alias": "recv Port-Channel501",
         "transform": "negative-Y"
       }
     ],
@@ -507,7 +621,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"pwave\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -515,7 +629,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"pwave\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel501\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -529,7 +643,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "calit2.optiputer.net:2020:prism-core - interface: pwave Flow Bandwidth",
+    "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel501 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -584,10 +698,10 @@
       "h": 7,
       "w": 24,
       "x": 0,
-      "y": 215
+      "y": 217
     },
     "hiddenSeries": false,
-    "id": 215,
+    "id": 217,
     "legend": {
       "avg": false,
       "current": false,
@@ -611,7 +725,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv k8s/igrok/02",
+        "alias": "recv Port-Channel502",
         "transform": "negative-Y"
       }
     ],
@@ -621,7 +735,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"k8s/igrok/02\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -629,7 +743,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"k8s/igrok/02\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"NRM_CENIC:aristaeos_s0\",ifDescr=\"Port-Channel502\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -643,7 +757,273 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "calit2.optiputer.net:2020:prism-core - interface: k8s/igrok/02 Flow Bandwidth",
+    "title": "NRM_CENIC:aristaeos_s0 - interface: Port-Channel502 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "collapsed": false,
+    "datasource": null,
+    "gridPos": {
+      "h": 1,
+      "w": 24,
+      "x": 0,
+      "y": 219
+    },
+    "id": 219,
+    "panels": [],
+    "title": "Switch Flow Summary - T2_US_UCSD_OASIS:oasis",
+    "type": "row"
+  },
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 5,
+      "w": 24,
+      "x": 0,
+      "y": 220
+    },
+    "id": 220,
+    "options": {
+      "content": "```\nSwitch: T2_US_UCSD_OASIS:oasis   Interface:\nname: Pc502 | vlan: 3988 | peer: name: aristaeos_s0, interface: Port-Channel502, vlan: not_used\nname: Pc501 | vlan: 3988 | peer: name: sn3700_s0, interface: PortChannel501, vlan: not_used\n ```",
+      "mode": "markdown"
+    },
+    "pluginVersion": "7.5.4",
+    "timeFrom": null,
+    "timeShift": null,
+    "title": "T2_US_UCSD_OASIS:oasis - Node Interface Information",
+    "type": "text"
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 221
+    },
+    "hiddenSeries": false,
+    "id": 221,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv Pc502",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_UCSD_OASIS:oasis\",ifDescr=\"Pc502\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_UCSD_OASIS:oasis\",ifDescr=\"Pc502\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "T2_US_UCSD_OASIS:oasis - interface: Pc502 Flow Bandwidth",
+    "tooltip": {
+      "shared": true,
+      "sort": 0,
+      "value_type": "individual"
+    },
+    "type": "graph",
+    "xaxis": {
+      "buckets": null,
+      "mode": "time",
+      "name": null,
+      "show": true,
+      "values": []
+    },
+    "yaxes": [
+      {
+        "$$hashKey": "object:118",
+        "format": "Bps",
+        "label": "bw out(-) / in(+)",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true
+      },
+      {
+        "$$hashKey": "object:119",
+        "format": "short",
+        "label": null,
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": false
+      }
+    ],
+    "yaxis": {
+      "align": false,
+      "alignLevel": null
+    }
+  },
+{
+    "aliasColors": {},
+    "bars": false,
+    "dashLength": 10,
+    "dashes": false,
+    "datasource": null,
+    "fieldConfig": {
+      "defaults": {},
+      "overrides": []
+    },
+    "fill": 1,
+    "fillGradient": 0,
+    "gridPos": {
+      "h": 7,
+      "w": 24,
+      "x": 0,
+      "y": 223
+    },
+    "hiddenSeries": false,
+    "id": 223,
+    "legend": {
+      "avg": false,
+      "current": false,
+      "max": false,
+      "min": false,
+      "show": true,
+      "total": false,
+      "values": false
+    },
+    "lines": true,
+    "linewidth": 1,
+    "nullPointMode": "null",
+    "options": {
+      "alertThreshold": true
+    },
+    "percentage": false,
+    "pluginVersion": "7.5.4",
+    "pointradius": 2,
+    "points": false,
+    "renderer": "flot",
+    "seriesOverrides": [
+      {
+        "$$hashKey": "object:176",
+        "alias": "recv Pc501",
+        "transform": "negative-Y"
+      }
+    ],
+    "spaceLength": 10,
+    "stack": false,
+    "steppedLine": false,
+    "targets": [
+{
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_UCSD_OASIS:oasis\",ifDescr=\"Pc501\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "recv {{ifDescr}}",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_UCSD_OASIS:oasis\",ifDescr=\"Pc501\",flow=\"rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9\"}[1m])*8",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "intervalFactor": 1,
+    "legendFormat": "trans {{ifDescr}}",
+    "refId": "B"
+  }
+
+    ],
+    "thresholds": [],
+    "timeFrom": null,
+    "timeRegions": [],
+    "timeShift": null,
+    "title": "T2_US_UCSD_OASIS:oasis - interface: Pc501 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -689,9 +1069,9 @@
       "h": 20,
       "w": 24,
       "x": 0,
-      "y": 317
+      "y": 325
     },
-    "id": 317,
+    "id": 325,
     "panels": [],
     "title": "L2 Debugging",
     "type": "row"
@@ -746,9 +1126,9 @@
       "h": 6,
       "w": 24,
       "x": 0,
-      "y": 318
+      "y": 326
     },
-    "id": 318,
+    "id": 326,
     "options": {
       "alignValue": "center",
       "legend": {
@@ -764,27 +1144,34 @@
     },
     "pluginVersion": "8.2.3",
     "targets": [
-{
+  {
     "exemplar": true,
-    "expr": "t2_us_ucsd:k8s_igrok_02_calit2_optiputer_net_script_exporter_task1_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task1_rtmon_16616e7a_e109_4e20_a36a_ab09c05c22a9",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "ARP Exporter Active",
+    "legendFormat": "SNMP Exporter Active",
     "refId": "A"
   },
   {
     "exemplar": true,
-    "expr": "t2_us_ucsd:k8s_igrok_02_calit2_optiputer_net_script_exporter_task2_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
-    "format": "time_series",
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task2_rtmon_16616e7a_e109_4e20_a36a_ab09c05c22a9",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "ARP Table contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net IP Address",
+    "legendFormat": "contains HOST1NAME MAC Address",
     "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "t2_us_caltech_test:dellos9_s0_script_exporter_task3_rtmon_16616e7a_e109_4e20_a36a_ab09c05c22a9",
+    "hide": false,
+    "interval": "",
+    "legendFormat": "contains HOST2NAME MAC Address",
+    "refId": "C"
   }
     ],
-    "title": "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net ARP/MAC Correlation",
+    "title": "T2_US_Caltech_Test:dellos9_s0 ARP/MAC Correlation",
     "transparent": true,
     "type": "state-timeline"
   },
@@ -838,9 +1225,9 @@
       "h": 6,
       "w": 24,
       "x": 0,
-      "y": 319
+      "y": 327
     },
-    "id": 319,
+    "id": 327,
     "options": {
       "alignValue": "center",
       "legend": {
@@ -858,7 +1245,7 @@
     "targets": [
   {
     "exemplar": true,
-    "expr": "t2_us_ucsd:s1_script_exporter_task1_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
+    "expr": "t2_us_sdsc:sn3700_s0_script_exporter_task1_rtmon_16616e7a_e109_4e20_a36a_ab09c05c22a9",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -867,23 +1254,23 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_ucsd:s1_script_exporter_task2_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
+    "expr": "t2_us_sdsc:sn3700_s0_script_exporter_task2_rtmon_16616e7a_e109_4e20_a36a_ab09c05c22a9",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net MAC Address",
+    "legendFormat": "contains HOST1NAME MAC Address",
     "refId": "B"
   },
   {
     "exemplar": true,
-    "expr": "t2_us_ucsd:s1_script_exporter_task3_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
+    "expr": "t2_us_sdsc:sn3700_s0_script_exporter_task3_rtmon_16616e7a_e109_4e20_a36a_ab09c05c22a9",
     "hide": false,
     "interval": "",
     "legendFormat": "contains HOST2NAME MAC Address",
     "refId": "C"
   }
     ],
-    "title": "T2_US_UCSD:s1 ARP/MAC Correlation",
+    "title": "T2_US_SDSC:sn3700_s0 ARP/MAC Correlation",
     "transparent": true,
     "type": "state-timeline"
   },
@@ -937,9 +1324,9 @@
       "h": 6,
       "w": 24,
       "x": 0,
-      "y": 320
+      "y": 328
     },
-    "id": 320,
+    "id": 328,
     "options": {
       "alignValue": "center",
       "legend": {
@@ -957,7 +1344,7 @@
     "targets": [
   {
     "exemplar": true,
-    "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task1_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
+    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task1_rtmon_16616e7a_e109_4e20_a36a_ab09c05c22a9",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -966,23 +1353,122 @@
   },
   {
     "exemplar": true,
-    "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task2_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
+    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task2_rtmon_16616e7a_e109_4e20_a36a_ab09c05c22a9",
     "hide": false,
     "instant": false,
     "interval": "",
-    "legendFormat": "contains T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net MAC Address",
+    "legendFormat": "contains HOST1NAME MAC Address",
     "refId": "B"
   },
   {
     "exemplar": true,
-    "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task3_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
+    "expr": "nrm_cenic:aristaeos_s0_script_exporter_task3_rtmon_16616e7a_e109_4e20_a36a_ab09c05c22a9",
     "hide": false,
     "interval": "",
     "legendFormat": "contains HOST2NAME MAC Address",
     "refId": "C"
   }
     ],
-    "title": "calit2.optiputer.net:2020:prism-core ARP/MAC Correlation",
+    "title": "NRM_CENIC:aristaeos_s0 ARP/MAC Correlation",
+    "transparent": true,
+    "type": "state-timeline"
+  },
+
+{
+    "datasource": null,
+    "description": "",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0
+        },
+        "mappings": [
+          {
+            "options": {
+              "0": {
+                "color": "red",
+                "index": 0,
+                "text": "FAILURE"
+              },
+              "1": {
+                "color": "green",
+                "index": 1,
+                "text": "SUCCESS"
+              }
+            },
+            "type": "value"
+          }
+        ],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 24,
+      "x": 0,
+      "y": 329
+    },
+    "id": 329,
+    "options": {
+      "alignValue": "center",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom"
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "always",
+      "tooltip": {
+        "mode": "single"
+      }
+    },
+    "pluginVersion": "8.2.3",
+    "targets": [
+  {
+    "exemplar": true,
+    "expr": "t2_us_ucsd_oasis:oasis_script_exporter_task1_rtmon_16616e7a_e109_4e20_a36a_ab09c05c22a9",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "SNMP Exporter Active",
+    "refId": "A"
+  },
+  {
+    "exemplar": true,
+    "expr": "t2_us_ucsd_oasis:oasis_script_exporter_task2_rtmon_16616e7a_e109_4e20_a36a_ab09c05c22a9",
+    "hide": false,
+    "instant": false,
+    "interval": "",
+    "legendFormat": "contains HOST1NAME MAC Address",
+    "refId": "B"
+  },
+  {
+    "exemplar": true,
+    "expr": "t2_us_ucsd_oasis:oasis_script_exporter_task3_rtmon_16616e7a_e109_4e20_a36a_ab09c05c22a9",
+    "hide": false,
+    "interval": "",
+    "legendFormat": "contains HOST2NAME MAC Address",
+    "refId": "C"
+  }
+    ],
+    "title": "T2_US_UCSD_OASIS:oasis ARP/MAC Correlation",
     "transparent": true,
     "type": "state-timeline"
   },

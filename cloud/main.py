@@ -114,9 +114,9 @@ def fill_API(data, admin, password):
         now = datetime.datetime.now()
       
         current_time = now.strftime("%m/%d_%H:%M")  
-
+        grafana_url = config['grafana_public_domain']
         # curl the API key to here
-        curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" + str(current_time) + f'", "role": "Admin"}}\' http://{admin}:{password}@' + str('http://dev2.virnao.com:3000').split("//")[1] + "/api/auth/keys"
+        curlCMD = "curl -X POST -H \"Content-Type: application/json\" -d '{\"name\":\"" + str(current_time) + f'", "role": "Admin"}}\' http://{admin}:{password}@' + str(grafana_url).split("//")[1] + "/api/auth/keys"
         token = os.popen(curlCMD).read()
         result = re.search('"key":"(.*)"}', str(token)) # extract the API key from result
         api_key = str(result.group(1))

@@ -27,7 +27,7 @@
     },
     "id": 202,
     "options": {
-      "content": "```\nHost: T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net   Interface:\nname: enp33s0f1 | vlan: not used | ip: 10.251.86.130\nname: T2_US_UCSD:s1 | vlan: 1793 | peer: name: None, interface: None, vlan: 1793\n ```",
+      "content": "```\nHost: T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net   Interface:\nname: enp33s0f1 | vlan: not used | ip: 10.251.85.190\nname: T2_US_UCSD:s1 | vlan: 1796 | peer: name: None, interface: None, vlan: 1796\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
@@ -89,7 +89,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net\", device=\"enp33s0f1\",flow=\"rtmon-6c1c4758-d804-4b70-8cf5-d6ef1d8a5292\"}[1m])*8",
+    "expr": "irate(node_network_receive_bytes_total{exported_instance=\"T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net\", device=\"enp33s0f1\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",
     "instant": false,
     "interval": "",
     "intervalFactor": 1,
@@ -98,7 +98,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net\",device=\"enp33s0f1\",flow=\"rtmon-6c1c4758-d804-4b70-8cf5-d6ef1d8a5292\"}[1m])*8",
+    "expr": "irate(node_network_transmit_bytes_total{exported_instance=\"T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net\",device=\"enp33s0f1\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -161,7 +161,7 @@
     },
     "id": 205,
     "panels": [],
-    "title": "Switch Flow Summary - calit2.optiputer.net:2020:prism-core",
+    "title": "Switch Flow Summary - T2_US_UCSD:s1",
     "type": "row"
   },
 {
@@ -179,13 +179,13 @@
     },
     "id": 206,
     "options": {
-      "content": "```\nSwitch: calit2.optiputer.net:2020:prism-core   Interface:\nname: k8s-igrok-02 | vlan: 1793 | peer: name: None, interface: None, vlan: None\nname: pwave | vlan: 1793 | peer: name: aristaeos_s0, interface: Port-Channel502-prismcore, vlan: not_used\n ```",
+      "content": "```\nSwitch: T2_US_UCSD:s1   Interface:\nname: 1_2 | vlan: 1796 | peer: name: T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net, interface: enp33s0f1, vlan: 1796\nname: 1_1 | vlan: 1796 | peer: name: prism-core, interface: k8s-igrok-02, vlan: not_used\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
     "timeFrom": null,
     "timeShift": null,
-    "title": "calit2.optiputer.net:2020:prism-core - Node Interface Information",
+    "title": "T2_US_UCSD:s1 - Node Interface Information",
     "type": "text"
   },
 {
@@ -231,7 +231,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv k8s/igrok/02",
+        "alias": "recv 1 2",
         "transform": "negative-Y"
       }
     ],
@@ -241,7 +241,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"k8s/igrok/02\",flow=\"rtmon-6c1c4758-d804-4b70-8cf5-d6ef1d8a5292\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_UCSD:s1\",ifDescr=\"1 2\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -249,7 +249,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"k8s/igrok/02\",flow=\"rtmon-6c1c4758-d804-4b70-8cf5-d6ef1d8a5292\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_UCSD:s1\",ifDescr=\"1 2\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -263,7 +263,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "calit2.optiputer.net:2020:prism-core - interface: k8s/igrok/02 Flow Bandwidth",
+    "title": "T2_US_UCSD:s1 - interface: 1 2 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -345,7 +345,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv pwave",
+        "alias": "recv 1 1",
         "transform": "negative-Y"
       }
     ],
@@ -355,7 +355,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"pwave\",flow=\"rtmon-6c1c4758-d804-4b70-8cf5-d6ef1d8a5292\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_UCSD:s1\",ifDescr=\"1 1\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -363,7 +363,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"pwave\",flow=\"rtmon-6c1c4758-d804-4b70-8cf5-d6ef1d8a5292\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_UCSD:s1\",ifDescr=\"1 1\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -377,7 +377,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "calit2.optiputer.net:2020:prism-core - interface: pwave Flow Bandwidth",
+    "title": "T2_US_UCSD:s1 - interface: 1 1 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -427,7 +427,7 @@
     },
     "id": 211,
     "panels": [],
-    "title": "Switch Flow Summary - T2_US_UCSD:s1",
+    "title": "Switch Flow Summary - calit2.optiputer.net:2020:prism-core",
     "type": "row"
   },
 {
@@ -445,13 +445,13 @@
     },
     "id": 212,
     "options": {
-      "content": "```\nSwitch: T2_US_UCSD:s1   Interface:\nname: 1_1 | vlan: 1793 | peer: name: prism-core, interface: k8s-igrok-02, vlan: not_used\nname: 1_2 | vlan: 1793 | peer: name: T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net, interface: enp33s0f1, vlan: 1793\n ```",
+      "content": "```\nSwitch: calit2.optiputer.net:2020:prism-core   Interface:\nname: pwave | vlan: 1796 | peer: name: aristaeos_s0, interface: Port-Channel502-prismcore, vlan: not_used\nname: k8s-igrok-02 | vlan: 1796 | peer: name: None, interface: None, vlan: None\n ```",
       "mode": "markdown"
     },
     "pluginVersion": "7.5.4",
     "timeFrom": null,
     "timeShift": null,
-    "title": "T2_US_UCSD:s1 - Node Interface Information",
+    "title": "calit2.optiputer.net:2020:prism-core - Node Interface Information",
     "type": "text"
   },
 {
@@ -497,7 +497,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv 1 1",
+        "alias": "recv pwave",
         "transform": "negative-Y"
       }
     ],
@@ -507,7 +507,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_UCSD:s1\",ifDescr=\"1 1\",flow=\"rtmon-6c1c4758-d804-4b70-8cf5-d6ef1d8a5292\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"pwave\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -515,7 +515,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_UCSD:s1\",ifDescr=\"1 1\",flow=\"rtmon-6c1c4758-d804-4b70-8cf5-d6ef1d8a5292\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"pwave\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -529,7 +529,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_UCSD:s1 - interface: 1 1 Flow Bandwidth",
+    "title": "calit2.optiputer.net:2020:prism-core - interface: pwave Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -611,7 +611,7 @@
     "seriesOverrides": [
       {
         "$$hashKey": "object:176",
-        "alias": "recv 1 2",
+        "alias": "recv k8s/igrok/02",
         "transform": "negative-Y"
       }
     ],
@@ -621,7 +621,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"T2_US_UCSD:s1\",ifDescr=\"1 2\",flow=\"rtmon-6c1c4758-d804-4b70-8cf5-d6ef1d8a5292\"}[1m])*8",    "instant": false,
+    "expr": "irate(interface_statistics{Key=\"ifHCInOctets\",exported_instance=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"k8s/igrok/02\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",    "instant": false,
     "interval": "",
     "intervalFactor": 1,
     "legendFormat": "recv {{ifDescr}}",
@@ -629,7 +629,7 @@
   },
   {
     "exemplar": true,
-    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"T2_US_UCSD:s1\",ifDescr=\"1 2\",flow=\"rtmon-6c1c4758-d804-4b70-8cf5-d6ef1d8a5292\"}[1m])*8",
+    "expr": "irate(interface_statistics{Key=\"ifHCOutOctets\",exported_instance=\"calit2.optiputer.net:2020:prism-core\",ifDescr=\"k8s/igrok/02\",flow=\"rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332\"}[1m])*8",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -643,7 +643,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "T2_US_UCSD:s1 - interface: 1 2 Flow Bandwidth",
+    "title": "calit2.optiputer.net:2020:prism-core - interface: k8s/igrok/02 Flow Bandwidth",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -766,7 +766,7 @@
     "targets": [
 {
     "exemplar": true,
-    "expr": "t2_us_ucsd:k8s_igrok_02_calit2_optiputer_net_script_exporter_task1_rtmon_6c1c4758_d804_4b70_8cf5_d6ef1d8a5292",
+    "expr": "t2_us_ucsd:k8s_igrok_02_calit2_optiputer_net_script_exporter_task1_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -775,7 +775,7 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_ucsd:k8s_igrok_02_calit2_optiputer_net_script_exporter_task2_rtmon_6c1c4758_d804_4b70_8cf5_d6ef1d8a5292",
+    "expr": "t2_us_ucsd:k8s_igrok_02_calit2_optiputer_net_script_exporter_task2_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
     "format": "time_series",
     "hide": false,
     "instant": false,
@@ -858,7 +858,7 @@
     "targets": [
   {
     "exemplar": true,
-    "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task1_rtmon_6c1c4758_d804_4b70_8cf5_d6ef1d8a5292",
+    "expr": "t2_us_ucsd:s1_script_exporter_task1_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -867,7 +867,7 @@
   },
   {
     "exemplar": true,
-    "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task2_rtmon_6c1c4758_d804_4b70_8cf5_d6ef1d8a5292",
+    "expr": "t2_us_ucsd:s1_script_exporter_task2_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -876,14 +876,14 @@
   },
   {
     "exemplar": true,
-    "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task3_rtmon_6c1c4758_d804_4b70_8cf5_d6ef1d8a5292",
+    "expr": "t2_us_ucsd:s1_script_exporter_task3_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
     "hide": false,
     "interval": "",
     "legendFormat": "contains HOST2NAME MAC Address",
     "refId": "C"
   }
     ],
-    "title": "calit2.optiputer.net:2020:prism-core ARP/MAC Correlation",
+    "title": "T2_US_UCSD:s1 ARP/MAC Correlation",
     "transparent": true,
     "type": "state-timeline"
   },
@@ -957,7 +957,7 @@
     "targets": [
   {
     "exemplar": true,
-    "expr": "t2_us_ucsd:s1_script_exporter_task1_rtmon_6c1c4758_d804_4b70_8cf5_d6ef1d8a5292",
+    "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task1_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -966,7 +966,7 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_ucsd:s1_script_exporter_task2_rtmon_6c1c4758_d804_4b70_8cf5_d6ef1d8a5292",
+    "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task2_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
     "hide": false,
     "instant": false,
     "interval": "",
@@ -975,14 +975,14 @@
   },
   {
     "exemplar": true,
-    "expr": "t2_us_ucsd:s1_script_exporter_task3_rtmon_6c1c4758_d804_4b70_8cf5_d6ef1d8a5292",
+    "expr": "calit2_optiputer_net:2020:prism_core_script_exporter_task3_rtmon_d6a83a69_23d8_42aa_99b9_8c3bb31ad332",
     "hide": false,
     "interval": "",
     "legendFormat": "contains HOST2NAME MAC Address",
     "refId": "C"
   }
     ],
-    "title": "T2_US_UCSD:s1 ARP/MAC Correlation",
+    "title": "calit2.optiputer.net:2020:prism-core ARP/MAC Correlation",
     "transparent": true,
     "type": "state-timeline"
   },

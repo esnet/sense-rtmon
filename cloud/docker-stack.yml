@@ -29,12 +29,12 @@ services:
       placement:
         constraints:
           - node.role==manager
-    networks:
-      - monitor-net 
     logging:
       options:
         max-size: "10m"
         max-file: "3"
+    networks:
+      - monitor-net
   
   script_exporter:
     command:
@@ -52,7 +52,7 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - monitor-net 
+      - monitor-net
 
   grafana:
     image: grafana/grafana-enterprise:latest
@@ -60,6 +60,8 @@ services:
       - 3000:3000
     environment:
       GF_INSTALL_PLUGINS: jdbranham-diagram-panel
+    networks:
+      - monitor-net
 
   nginx:
     hostname: nginx
@@ -71,5 +73,25 @@ services:
       - $PWD/nginx/:/etc/nginx/conf.d/ # do not change this line if possible
       - /etc/letsencrypt/live/dev2.virnao.com/cert.pem:/etc/letsencrypt/live/dev2.virnao.com/cert.pem
       - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
+    networks:
+      - monitor-net
+  
+  mainloop:
+    image: mainloop:latest
+    logging: 
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+    volumes:
+      - /root/.sense-o-auth.yaml:/root/.sense-o-auth.yaml 
+      - /etc/letsencrypt/live/dev2.virnao.com/cert.pem:/etc/letsencrypt/live/dev2.virnao.com/cert.pem
+      - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
+    networks:
+      - monitor-net
     
   # nginx reverse proxy Grafana to https

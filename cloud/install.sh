@@ -246,7 +246,7 @@ services:
         constraints:
           - node.role==manager
     volumes:
-      - /root/.sense-o-auth.yaml:$sense_path
+      - $sense_path:/root/.sense-o-auth.yaml
       - $ssl_certificate:$ssl_certificate
       - $ssl_certificate_key:$ssl_certificate_key
     networks:

@@ -325,7 +325,7 @@ def main():
      
                             try:
                                 for_api = dynamic(config_data, manifest)
-                              
+
                                 live_dashboard[id] = reference_data
                                 
                                 dashboard_recorder[id] = {
@@ -358,7 +358,7 @@ def main():
                                 except:
                                     print("Dispatch Failed")
                                 
-                            except:
+                            except Exception as e:
                                 print("Sorry the dashboard for this config data, couldn't be created because the current version is not compatible.")
                         except:
                             print("API creation failed")

@@ -1,85 +1,62 @@
 ## SECTION 1 GENERAL INFORMATION ##
-flow: "rtmon-16616e7a-e109-4e20-a36a-ab09c05c22a9" 
-title: install-script-test 
+flow: "rtmon-d6a83a69-23d8-42aa-99b9-8c3bb31ad332" 
+title: RTMON 
 grafana_host: "http://grafana:3000"
 pushgateway: "http://pushgateway:9091"
 grafana_api_token: 
 
 ## Section 2 Hosts & Switches all under nodes ##
 node:
-  - name: "T2_US_Caltech_Test:dellos9_s0"
+  - name: "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net"
+    type: "host"
+    arp: 'on'
+    runtime: 610
+    interface:
+      - name: "enp33s0f1"
+        vlan: 'not used'
+        ip: 10.251.85.190
+      - name: "T2_US_UCSD:s1"
+        vlan: 1796
+        peer: 
+        - name: 
+          interface: 
+          vlan: 1796
+
+  - name: "T2_US_UCSD:s1"
     type: "switch"
     runtime: 610
     interface:
-      - name: "hundredGigE_1-13"
-        vlan: 3988
+      - name: "1_2"
+        vlan: 1796
         peer:
-        - name: "aristaeos_s0"
-          interface: "Port-Channel501-rucio"
+        - name: "T2_US_UCSD:k8s-igrok-02.calit2.optiputer.net"
+          interface: "enp33s0f1"
+          vlan: 1796
+
+      - name: "1_1"
+        vlan: 1796
+        peer:
+        - name: "prism-core"
+          interface: "k8s-igrok-02"
           vlan: 'not_used'
 
-      - name: "hundredGigE_1-10"
-        vlan: 3988
+
+  - name: "calit2.optiputer.net:2020:prism-core"
+    type: "switch"
+    runtime: 610
+    interface:
+      - name: "pwave"
+        vlan: 1796
+        peer:
+        - name: "aristaeos_s0"
+          interface: "Port-Channel502-prismcore"
+          vlan: 'not_used'
+
+      - name: "k8s-igrok-02"
+        vlan: 1796
         peer:
         - name: 
           interface: 
           vlan: 
-
-
-  - name: "T2_US_SDSC:sn3700_s0"
-    type: "switch"
-    runtime: 610
-    interface:
-      - name: "Ethernet100"
-        vlan: 3988
-        peer:
-        - name: 
-          interface: 
-          vlan: 
-
-      - name: "PortChannel501"
-        vlan: 3988
-        peer:
-        - name: "oasis"
-          interface: "Pc501"
-          vlan: 'not_used'
-
-
-  - name: "NRM_CENIC:aristaeos_s0"
-    type: "switch"
-    runtime: 610
-    interface:
-      - name: "Port-Channel501-rucio"
-        vlan: 3988
-        peer:
-        - name: "dellos9_s0"
-          interface: "hundredGigE_1-13"
-          vlan: 'not_used'
-
-      - name: "Port-Channel502"
-        vlan: 3988
-        peer:
-        - name: "oasis"
-          interface: "Pc502"
-          vlan: 'not_used'
-
-
-  - name: "T2_US_UCSD_OASIS:oasis"
-    type: "switch"
-    runtime: 610
-    interface:
-      - name: "Pc502"
-        vlan: 3988
-        peer:
-        - name: "aristaeos_s0"
-          interface: "Port-Channel502"
-          vlan: 'not_used'
-
-      - name: "Pc501"
-        vlan: 3988
-        peer:
-        - name: "sn3700_s0"
-          interface: "PortChannel501"
-          vlan: 'not_used'
 
 

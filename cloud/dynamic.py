@@ -69,7 +69,7 @@ def generate_mermaid(manifest):
             if node_name not in switches:
                 switches[node_name] = []
             switches[node_name].append(port_name)
-            print(node_name, port_name)
+            
 
     # Create subgraphs for hosts
     host_graphl = {}
@@ -98,7 +98,7 @@ def generate_mermaid(manifest):
             peer_port = format_name(port["Peer"].split(":")[-1])
             peer_port = clean_string(peer_port)
 
-            print(port_name, peer_port)
+            
             if (peer_port, port_name) not in connections: # Avoid duplicate connections
                 connections.append((port_name, peer_port))
 
@@ -142,10 +142,11 @@ def api(data, dashboard, manifest):
 
 
 def dynamic(data, manifest):
+    
     lp = data
     if os.path.exists("./dashboard/templates/temp.json"):
         os.remove("./dashboard/templates/temp.json")
-        
+    
     def fill_rep(rep,id_num,node=None,iface=None):
         id_num += 1
         rep["ID_UNIQUE"] = unqiue_id.strip()
@@ -198,18 +199,17 @@ def dynamic(data, manifest):
         result_str = "\\n".join(result)
         return result_str
 
-
+   
     title = f'{data["title"]} |Flow: {data["flow"]}| {datetime.now().strftime("%m/%d_%H:%M")}'
     push_metric = data['pushgateway']
     unique_id_field = "flow" # unique id feild in the template
     unqiue_id = data[unique_id_field] # flow id
     
-    
 
     id_num = 200 # start from 200 in case of conflict with previous panels
     with open("data.json", 'w') as f:
         json.dump(data, f, indent=2)
-    
+
     for node in data["node"]:
         # write node info to a json file
 
@@ -242,7 +242,6 @@ def dynamic(data, manifest):
             
             id_num += 1
 
-    
     # L2 debugging tables
     id_num = id_num + 100 # L2 tables start from 100 after flow panels in case of conflict with previous panels
     
@@ -254,6 +253,7 @@ def dynamic(data, manifest):
     info_panel = replace_file_to_string("./dashboard/templates/l2_debugging_panel/info_panel.json",rep)
     concat_json(info_panel)
     
+    time.sleep(2)
     for i,node in enumerate(data["node"],i):
         # write table to a temp file
         rep,id_num = fill_rep({},id_num,node)
@@ -283,7 +283,7 @@ def dynamic(data, manifest):
         
         l2table = l2table.replace("INSERTTARGET", node_target)
         concat_json(l2table)
-   
+    
     # read the temp file and write to the all general dashboard template
     dashboard_name = f"dash_{data['flow']}.json"
     with open("./dashboard/templates/temp.json") as file:

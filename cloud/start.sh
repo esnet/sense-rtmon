@@ -68,6 +68,9 @@ config_file=${config_file:-config.yml}
 # Using the variable 'config_file' in the echo statement.
 echo "!!    Parsing ${config_file}"
 
+# Extract API key from config file
+grafana_api_key=$(yq r "$config_file" grafana_api_key)
+
 # Running 'prometheus.py' with 'config_file' as an argument.
 python3 prometheus.py ${config_file}
 
@@ -83,16 +86,3 @@ sleep 1
 echo "!!    docker stack deployment"
 docker stack deploy -c docker-stack.yml cloud
 sleep 3
-
-# Set up Grafana data source automatically
-echo "Setting up Prometheus data source in Grafana..."
-api_url="http://<grafana_ip>:<grafana_port>"
-api_key="your_api_key"
-datasource_name="Prometheus"
-prometheus_url="http://<prometheus_ip>:9090"
-setup_data_source "$api_url" "$api_key" "$datasource_name" "$prometheus_url"
-
-# Extract paths using grep and cut
-CONFIG_YAML="../config_cloud/config.yml"
-PRIVATECERT_PATH=$(grep 'ssl_certificate_key:' $CONFIG_YAML | cut -d ' ' -f 2 | tr -d '\n' | tr -d "'")
-CERT_PATH=$(grep 'ssl_certificate:' $CONFIG_YAML | cut -d ' ' -f 2 | tr -d '\n' | tr -d "'")

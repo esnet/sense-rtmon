@@ -54,6 +54,7 @@ sudo yum install -y docker-compose-plugin
 sudo yum -y install firewalld
 sudo yum –y install python3
 sudo yum –y install python3-pip
+sudo yum -y install lsof
 sudo pip3 install pyyaml
 sudo pip3 install requests
 docker login

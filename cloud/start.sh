@@ -2,25 +2,28 @@
 
 # Function to set up Grafana data source using its API
 setup_data_source() {
-    local api_url="$1"
-    local api_key="$2"
+    local api_url=$1
+    local api_key=$2
     local datasource_name="$3"
-    local prometheus_url="$4"
+    local prometheus_url=$4
+
+    if [ -z "$api_key" ]; then
+        echo "!! Grafana API key is empty. Cannot proceed with data source setup !!"
+        exit 1
+    fi
 
     # Create JSON payload for data source
-    local payload=$(cat <<EOF
-{
-  "name": "$datasource_name",
-  "type": "prometheus",
-  "url": "$prometheus_url",
-  "access": "proxy",
-  "basicAuth": false
-}
-EOF
-)
+    local payload='{"name": "'"$datasource_name"'", "type": "prometheus", "url": "'"$prometheus_url"'", "access": "proxy", "basicAuth": false }'
+
+    echo "!! Executing curl command to setup datasource !!"
+    echo "curl -i -X POST \
+        -H \"Authorization: Bearer $api_key\" \
+        -H \"Content-Type: application/json\" \
+        -d '$payload' \
+        \"$api_url/api/datasources\""
 
     # Make POST request to Grafana API
-    local response=$(curl -s -X POST \
+    local response=$(curl -i -X POST \
         -H "Authorization: Bearer $api_key" \
         -H "Content-Type: application/json" \
         -d "$payload" \
@@ -33,7 +36,6 @@ EOF
         echo "Error setting up data source: $response"
     fi
 }
-
 # Function to check if a port is in use
 check_port() {
     local port=$1
@@ -69,13 +71,20 @@ config_file=${config_file:-config.yml}
 echo "!!    Parsing ${config_file}"
 
 # Extract API key from config file
-grafana_api_key=$(yq r "$config_file" grafana_api_key)
-
-# Running 'prometheus.py' with 'config_file' as an argument.
-python3 prometheus.py ${config_file}
+grafana_api_url=$(grep grafana_public_domain "$config_file" | awk '{print $2}' | tr -d '"')
+grafana_api_token=$(grep grafana_api_token "$config_file" | awk '{print $2}' | tr -d '"')
+prometheus_url=$(grep prometheus_url "$config_file" | awk '{print $2}' | tr -d '"')
 
 # Sleep command to allow for any necessary delays.
 sleep 1
+
+setup_data_source $grafana_api_url $grafana_api_token "Prometheus" $prometheus_url
+
+# Sleep command to allow for any necessary delays.
+sleep 1
+
+# Running 'prometheus.py' with 'config_file' as an argument.
+python3 prometheus.py ${config_file}
 
 # Transporting Script Exporter configuration files
 echo "!!    Transporting Script Exporter configuration files"

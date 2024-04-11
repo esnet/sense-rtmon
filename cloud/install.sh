@@ -214,7 +214,7 @@ services:
       - monitor-net
 
   grafana:
-    image: grafana/grafana-enterprise:latest
+    image: grafana/grafana-enterprise:7.5.10
     ports:
       - 3000:3000
     environment:
@@ -224,7 +224,7 @@ services:
 
   nginx:
     hostname: nginx
-    image: nginx:latest
+    image: nginx:1.21.6
     ports:
       - 443:443
       - 3000

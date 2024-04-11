@@ -214,7 +214,7 @@ services:
       - monitor-net
 
   grafana:
-    image: grafana/grafana-enterprise:7.5.10
+    image: grafana/grafana-enterprise:10.4.2
     ports:
       - 3000:3000
     environment:

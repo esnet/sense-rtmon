@@ -24,12 +24,16 @@ with open("../config_cloud/config.yml", 'r') as f:
 try:
     os.system("rm -f api_key.txt")
 except:
-    print()
+    pass
+try:
+    os.system("rm -f output.log")
+except:
+    pass
 
 try: 
     os.system("rm -f level2/*.sh")
 except:
-    print()
+    pass
 
 def fetch_data():
     response = ""
@@ -279,6 +283,7 @@ def main():
                                                 
                                                 api.test(siteMap[idMap])
                                             else:
+                                                logging.warning("\033[32m" + f'This Key: {idMap} does not exist in config.yml'+ "\033[0m")
                                                 print("\033[32m" + f'This Key: {idMap} does not exist in config.yml'+ "\033[0m")
                                         
                                         print("Data Dispatched")
@@ -346,6 +351,7 @@ def main():
                                                 
                                             api.test(siteMap[idMap])
                                         else:
+                                            logging.warning("\033[32m" + f'This Key: {idMap} does not exist in config.yml'+ "\033[0m")
                                             print("\033[31m" + f'This Key: {idMap} does not exist in config.yml'+ "\033[0m")
                                     print("Data Dispatched")
                                     time.sleep(20)

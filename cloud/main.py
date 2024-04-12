@@ -17,20 +17,20 @@ from dynamic import *
 # from dispatch import *
 from converter import converter
 from nodePatch import *
-logging.basicConfig(filename='output.log', level=logging.DEBUG)
+
 config = {}
 with open("../config_cloud/config.yml", 'r') as f:
     config = yaml.safe_load(f)
 try:
     os.system("rm -f api_key.txt")
 except:
-    print()
+    pass
 
 try: 
     os.system("rm -f level2/*.sh")
 except:
-    print()
-
+    pass
+logging.basicConfig(filename='output.log', level=logging.DEBUG)
 def fetch_data():
     response = ""
     response = DiscoverApi().discover_service_instances_get()
@@ -279,6 +279,7 @@ def main():
                                                 
                                                 api.test(siteMap[idMap])
                                             else:
+                                                logging.warning("\033[32m" + f'This Key: {idMap} does not exist in config.yml'+ "\033[0m")
                                                 print("\033[32m" + f'This Key: {idMap} does not exist in config.yml'+ "\033[0m")
                                         
                                         print("Data Dispatched")
@@ -346,6 +347,7 @@ def main():
                                                 
                                             api.test(siteMap[idMap])
                                         else:
+                                            logging.warning("\033[32m" + f'This Key: {idMap} does not exist in config.yml'+ "\033[0m")
                                             print("\033[31m" + f'This Key: {idMap} does not exist in config.yml'+ "\033[0m")
                                     print("Data Dispatched")
                                     time.sleep(20)

@@ -8,6 +8,9 @@ import copy
 import requests
 import pprint
 import simplejson as json
+import logging
+
+logging.basicConfig(filename='siterm.log', level=logging.DEBUG)
 config = {}
 with open("../config_cloud/config.yml", 'r') as f:
     config = yaml.safe_load(f)
@@ -66,6 +69,7 @@ def makeRequest(cls, url, params):
  
     """Make HTTP Request"""
     ver = params.get('verb')
+    logging.info("\033[32m" + f'{ver} : {url}' + "\033[0m")
     print("\033[32m" + f'{ver} : {url}' + "\033[0m")
 
     cert=(os.environ["X509_USER_CERT"], os.environ["X509_USER_KEY"])
@@ -81,6 +85,7 @@ def makeRequest(cls, url, params):
     #print(json.loads(out.text))
     # print(out)
     if out.ok == False:
+        logging.info("\033[31m" + f'{ver} : {url}' + "\033[0m")
         print("\033[31m" + f'{ver} : {url}' + "\033[0m")
     return json.loads(out.text), out.ok, out
 

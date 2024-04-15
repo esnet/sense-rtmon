@@ -230,8 +230,8 @@ services:
       - 3000
     volumes:
       - $PWD/nginx/:/etc/nginx/conf.d/ # do not change this line if possible
-      - $ssl_certificate:$ssl_certificate
-      - $ssl_certificate_key:$ssl_certificate_key
+      - $ssl_certificate:/etc/certificate/cert.pem
+      - $ssl_certificate_key:/etc/certificate/privkey.pem
     networks:
       - monitor-net
   
@@ -248,8 +248,8 @@ services:
           - node.role==manager
     volumes:
       - $sense_path:/root/.sense-o-auth.yaml
-      - $ssl_certificate:$ssl_certificate
-      - $ssl_certificate_key:$ssl_certificate_key
+      - $ssl_certificate:/etc/certificate/cert.pem
+      - $ssl_certificate_key:/etc/certificate/privkey.pem
     networks:
       - monitor-net
     

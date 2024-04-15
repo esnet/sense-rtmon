@@ -14,8 +14,8 @@ logging.basicConfig(filename='siterm.log', level=logging.DEBUG)
 config = {}
 with open("../config_cloud/config.yml", 'r') as f:
     config = yaml.safe_load(f)
-os.environ["X509_USER_KEY"] = config['ssl_certificate_key']
-os.environ["X509_USER_CERT"] = config['ssl_certificate']
+os.environ["X509_USER_KEY"] = '/etc/certificate/privkey.pem'
+os.environ["X509_USER_CERT"] = '/etc/certificate/cert.pem'
 
 def getUTCnow():
     """Get UTC Time."""

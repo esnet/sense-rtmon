@@ -72,8 +72,8 @@ services:
       - 3000
     volumes:
       - /home/centos/sense-rtmon/cloud/nginx/:/etc/nginx/conf.d/ # do not change this line if possible
-      - /etc/letsencrypt/live/dev2.virnao.com/cert.pem:/etc/letsencrypt/live/dev2.virnao.com/cert.pem
-      - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
+      - /etc/letsencrypt/live/dev2.virnao.com/cert.pem:/etc/certificate/cert.pem
+      - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/certificate/privkey.pem
     networks:
       - monitor-net
   
@@ -90,8 +90,8 @@ services:
           - node.role==manager
     volumes:
       - /home/centos/certificates/.sense-o-auth.yaml:/root/.sense-o-auth.yaml
-      - /etc/letsencrypt/live/dev2.virnao.com/cert.pem:/etc/letsencrypt/live/dev2.virnao.com/cert.pem
-      - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/letsencrypt/live/dev2.virnao.com/privkey.pem
+      - /etc/letsencrypt/live/dev2.virnao.com/cert.pem:/etc/certificate/cert.pem
+      - /etc/letsencrypt/live/dev2.virnao.com/privkey.pem:/etc/certificate/privkey.pem
     networks:
       - monitor-net
     

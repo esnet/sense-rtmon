@@ -269,7 +269,7 @@ def main():
                                     print("Dashboard Generated")
                                     
                                     try: 
-                                        siteMap = node_data(manifest, id, config["pushgateway"])
+                                        siteMap = node_data(manifest, id, config["pushgateway_public_domain"])
                                         with open("node_data.json", 'w') as f:
                                             json.dump(siteMap, f, indent = 2)
                                         for idMap in siteMap.keys():
@@ -337,7 +337,7 @@ def main():
                                 }
                                 print("Dashboard Generated")
                                 try: 
-                                    siteMap = node_data(manifest, id, config["pushgateway"])
+                                    siteMap = node_data(manifest, id, config["pushgateway_public_domain"])
                                     with open("node_data.json", 'w') as f:
                                         json.dump(siteMap, f, indent = 2)
                                     for idMap in siteMap.keys():

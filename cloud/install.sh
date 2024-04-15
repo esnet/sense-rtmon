@@ -1,5 +1,6 @@
 #! /bin/bash
 # START
+
 echo "|| Grafana-Prometheus-Pushgateway Installer ||"
 echo "||                                          ||"
 
@@ -145,6 +146,7 @@ domain: "$domain"
 grafana_host: "http://grafana:$grafana_port"
 grafana_public_domain: "http://$domain:$grafana_port"
 pushgateway: "http://pushgateway:$pushgateway_port"
+pushgateway_public_domain: "http://$domain:$pushgateway_port"
 grafana_username: "$grafana_user"
 grafana_password: "$grafana_pass"
 grafana_api_token: ""

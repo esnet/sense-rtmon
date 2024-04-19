@@ -6,36 +6,50 @@ setup_data_source() {
     local api_key=$2
     local datasource_name="$3"
     local prometheus_url=$4
+    local max_retries=5
+    local retry_count=0
 
-    if [ -z "$api_key" ]; then
-        echo "!! Grafana API key is empty. Cannot proceed with data source setup !!"
-        exit 1
-    fi
+    while [ $retry_count -lt $max_retries ]; do
+        if [ -z "$api_key" ]; then
+            echo "!! Grafana API key is empty. Cannot proceed with data source setup !!"
+            exit 1
+        fi
 
-    # Create JSON payload for data source
-    local payload='{"name": "'"$datasource_name"'", "type": "prometheus", "url": "'"$prometheus_url"'", "access": "proxy", "basicAuth": false }'
+        # Create JSON payload for data source
+        local payload='{"name": "'"$datasource_name"'", "type": "prometheus", "url": "'"$prometheus_url"'", "access": "proxy", "basicAuth": false }'
 
-    echo "!! Executing curl command to setup datasource !!"
-    echo "curl -i -X POST \
-        -H \"Authorization: Bearer $api_key\" \
-        -H \"Content-Type: application/json\" \
-        -d '$payload' \
-        \"$api_url/api/datasources\""
+        echo "!! Executing curl command to setup datasource !!"
+        echo "curl -i -X POST \
+            -H \"Authorization: Bearer $api_key\" \
+            -H \"Content-Type: application/json\" \
+            -H \"Accept: application/json\" \
+            -d '$payload' \
+            \"$api_url/api/datasources\""
 
-    # Make POST request to Grafana API
-    local response=$(curl -i -X POST \
-        -H "Authorization: Bearer $api_key" \
-        -H "Content-Type: application/json" \
-        -d "$payload" \
-        "$api_url/api/datasources")
+        # Make POST request to Grafana API
+        local response=$(curl -i -X POST \
+            -H "Authorization: Bearer $api_key" \
+            -H "Content-Type: application/json" \
+            -H \"Accept: application/json\" \
+            -d "$payload" \
+            "$api_url/api/datasources")
 
-    # Check response for success
-    if [[ "$response" =~ "datasource created" ]]; then
-        echo "Data source setup successful!"
-    else
-        echo "Error setting up data source: $response"
-    fi
+        # Check response for success
+        if [[ "$response" =~ "datasource created" ]]; then
+            echo "Data source setup successful!"
+            return 0
+        else
+            echo "Error setting up data source: $response"
+            ((retry_count++))
+            echo "Retrying ($retry_count/$max_retries)..."
+            sleep 5  # Wait for 5 seconds before retrying
+        fi
+    done
+
+    echo "Maximum retries reached. Unable to set up data source."
+    exit 1
 }
+
 # Function to check if a port is in use
 check_port() {
     local port=$1
@@ -78,11 +92,6 @@ prometheus_url=$(grep prometheus_url "$config_file" | awk '{print $2}' | tr -d '
 # Sleep command to allow for any necessary delays.
 sleep 1
 
-setup_data_source $grafana_api_url $grafana_api_token "Prometheus" $prometheus_url
-
-# Sleep command to allow for any necessary delays.
-sleep 1
-
 # Running 'prometheus.py' with 'config_file' as an argument.
 python3 prometheus.py ${config_file}
 
@@ -94,4 +103,14 @@ sleep 1
 # Docker stack deployment
 echo "!!    docker stack deployment"
 docker stack deploy -c docker-stack.yml cloud
-sleep 3
+sleep 20
+echo "!!    Setting up containers..."
+
+
+python sa.py ${config_file}
+sleep 5
+
+grafana_api_url=$(grep grafana_public_domain "$config_file" | awk '{print $2}' | tr -d '"')
+grafana_api_token=$(grep grafana_api_token "$config_file" | awk '{print $2}' | tr -d '"')
+prometheus_url=$(grep prometheus_url "$config_file" | awk '{print $2}' | tr -d '"')
+setup_data_source $grafana_api_url $grafana_api_token "Prometheus" $prometheus_url

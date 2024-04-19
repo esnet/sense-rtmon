@@ -107,7 +107,7 @@ sleep 20
 echo "!!    Setting up containers..."
 
 
-python sa.py ${config_file}
+python3 sa.py ${config_file}
 sleep 5
 
 grafana_api_url=$(grep grafana_public_domain "$config_file" | awk '{print $2}' | tr -d '"')

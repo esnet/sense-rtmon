@@ -98,7 +98,8 @@ def create_manifest(instance):
     json_response = json.loads(response)
     manifest = json.loads(json_response['jsonTemplate'])
     logging.info("Manifest Created")
-    with open(f'manifest-{instance['referenceUUID']}.json', 'w') as f:
+    refid = instance['referenceUUID']
+    with open(f'manifest-{refid}.json', 'w') as f:
         json.dump(manifest, f, indent=2)
     
 

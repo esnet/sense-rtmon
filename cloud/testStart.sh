@@ -1,41 +1,56 @@
 #!/bin/bash
-
+cp ../config_cloud/config.yml config.yml
 # Function to set up Grafana data source using its API
 setup_data_source() {
     local api_url=$1
     local api_key=$2
     local datasource_name="$3"
     local prometheus_url=$4
+    local max_retries=5
+    local retry_count=0
 
-    if [ -z "$api_key" ]; then
-        echo "!! Grafana API key is empty. Cannot proceed with data source setup !!"
-        exit 1
-    fi
+    while [ $retry_count -lt $max_retries ]; do
+        if [ -z "$api_key" ]; then
+            echo "!! Grafana API key is empty. Cannot proceed with data source setup !!"
+            exit 1
+        fi
 
-    # Create JSON payload for data source
-    local payload='{"name": "'"$datasource_name"'", "type": "prometheus", "url": "'"$prometheus_url"'", "access": "proxy", "basicAuth": false }'
+        # Create JSON payload for data source
+        local payload='{"name": "'"$datasource_name"'", "type": "prometheus", "url": "'"$prometheus_url"'", "access": "proxy", "basicAuth": false }'
 
-    echo "!! Executing curl command to setup datasource !!"
-    echo "curl -i -X POST \
-        -H \"Authorization: Bearer $api_key\" \
-        -H \"Content-Type: application/json\" \
-        -d '$payload' \
-        \"$api_url/api/datasources\""
+        echo "!! Executing curl command to setup datasource !!"
+        echo "curl -i -X POST \
+            -H \"Authorization: Bearer $api_key\" \
+            -H \"Content-Type: application/json\" \
+            -H \"Accept: application/json\" \
+            -d '$payload' \
+            \"$api_url/api/datasources\""
 
-    # Make POST request to Grafana API
-    local response=$(curl -i -X POST \
-        -H "Authorization: Bearer $api_key" \
-        -H "Content-Type: application/json" \
-        -d "$payload" \
-        "$api_url/api/datasources")
+        # Make POST request to Grafana API
+        local response=$(curl -i -X POST \
+            -H "Authorization: Bearer $api_key" \
+            -H "Content-Type: application/json" \
+            -H \"Accept: application/json\" \
+            -d "$payload" \
+            "$api_url/api/datasources")
 
-    # Check response for success
-    if [[ "$response" =~ "datasource created" ]]; then
-        echo "Data source setup successful!"
-    else
-        echo "Error setting up data source: $response"
-    fi
+        # Check response for success
+        if [[ "$response" =~ "409 Conflict" ]]; then
+            echo "Data source setup successful!"
+            sleep 5
+            return 0  # Break out of the loop on success
+        else
+            echo "Error setting up data source: $response"
+            ((retry_count++))
+            echo "Retrying ($retry_count/$max_retries)..."
+            sleep 5  # Wait for 5 seconds before retrying
+        fi
+    done
+
+    echo "Maximum retries reached. Unable to set up data source."
+    exit 1
 }
+
 # Function to check if a port is in use
 check_port() {
     local port=$1
@@ -46,25 +61,6 @@ check_port() {
     else
         echo "Port $port is in use"
     fi
-}
-# Function to create Grafana API key
-create_grafana_api_key() {
-    local grafana_domain=$(echo $1 | awk -F[/:] '{print $4}')
-    local grafana_port=$(echo $1 | awk -F[/:] '{print $5}')
-    local grafana_username=$2
-    local grafana_password=$3
-    local current_time=$(date +"%m/%d_%H:%M")
-    local payload="{\"name\":\"$current_time\", \"role\": \"Admin\"}"
-    echo "http://$grafana_username:$grafana_password@$grafana_domain:$grafana_port/api/auth/keys"
-    # Make API call to create an API key
-    local api_key_response=$(curl -s -X POST "http://$grafana_username:$grafana_password@$grafana_domain:$grafana_port/api/auth/keys" \
-        -H "Content-Type: application/json" \
-        -d "$payload")
-
-    # Extract API key from the response
-    local new_api_key=$(echo $api_key_response | grep -oP '"key":"\K[^"]+')
-    echo "This is API KEY"
-    echo $new_api_key
 }
 
 # Display port status
@@ -80,13 +76,22 @@ echo "!!    Check Port 9469"
 check_port 9469
 
 # Wait for user input for config file
-sleep 6
+sleep 2
 read -r -p "Config file [press enter for default choice config_cloud/config.yml]: " config_file
 
 # Setting 'config_file' to its own value if it's already set, else setting it to 'config.yml' as a default.
 config_file=${config_file:-config.yml}
+
 # Using the variable 'config_file' in the echo statement.
 echo "!!    Parsing ${config_file}"
+
+# Extract API key from config file
+grafana_api_url=$(grep grafana_public_domain "$config_file" | awk '{print $2}' | tr -d '"')
+grafana_api_token=$(grep grafana_api_token "$config_file" | awk '{print $2}' | tr -d '"')
+prometheus_url=$(grep prometheus_url "$config_file" | awk '{print $2}' | tr -d '"')
+
+# Sleep command to allow for any necessary delays.
+sleep 1
 
 # Running 'prometheus.py' with 'config_file' as an argument.
 python3 prometheus.py ${config_file}
@@ -94,31 +99,19 @@ python3 prometheus.py ${config_file}
 # Transporting Script Exporter configuration files
 echo "!!    Transporting Script Exporter configuration files"
 yes | cp -rfa se_config/. script_exporter/examples
-
-
-
+sleep 1
 
 # Docker stack deployment
 echo "!!    docker stack deployment"
 docker stack deploy -c docker-stack.yml cloud
-sleep 6
-echo "Wait 1 minute while we setup the Data Source"
-sleep 120
+sleep 20
+echo "!!    Setting up containers..."
 
-# Extract needed variables from config file
-grafana_domain=$(grep grafana_public_domain "$config_file" | awk '{print $2}' | tr -d '"')
-grafana_username=$(grep grafana_username "$config_file" | awk '{print $2}' | tr -d '"')
-grafana_password=$(grep grafana_password "$config_file" | awk '{print $2}' | tr -d '"')
+python3 sa.py ${config_file}
+sleep 5
 
-# Create Grafana API key
-grafana_api_token=$(create_grafana_api_key $grafana_domain $grafana_username $grafana_password)
-echo "!! Grafana API Key: $grafana_api_token"
-
-# Set up data source with new API key
-setup_data_source $grafana_domain $grafana_api_token "Prometheus" $prometheus_url
-
-# Sleep command to allow for any necessary delays.
-sleep 1
-
-
-
+grafana_api_url=$(grep grafana_public_domain "$config_file" | awk '{print $2}' | tr -d '"')
+grafana_api_token=$(grep grafana_api_token "$config_file" | awk '{print $2}' | tr -d '"')
+prometheus_url=$(grep prometheus_url "$config_file" | awk '{print $2}' | tr -d '"')
+echo "prometheus :$prometheus_url"
+setup_data_source $grafana_api_url $grafana_api_token "Prometheus" $prometheus_url

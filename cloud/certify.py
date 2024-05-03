@@ -13,8 +13,8 @@ with open("./nginx/proxy_conf", "w") as f:
     
 with open("./nginx/server_conf", "w") as f:
     f.write(f'''server_name {str(sys.argv[1])};
-ssl_certificate     "{str(sys.argv[3])}";
-ssl_certificate_key "{str(sys.argv[4])}";\n''')
+ssl_certificate     "/etc/certificate/cert.pem";
+ssl_certificate_key "/etc/certificate/privkey.pem";\n''')
 
 # read in args.sh file
 with open('docker-stack.yml', 'r') as file:

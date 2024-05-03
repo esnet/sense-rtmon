@@ -260,6 +260,8 @@ services:
 
 
 EOF
+
+
     cp ../config_cloud/config.yml .
     cp -r ../config_flow .
     docker build --network host -t mainloop .

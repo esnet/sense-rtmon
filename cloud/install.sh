@@ -102,10 +102,18 @@ if [ "$sslmode" == "2" ]; then # existing certificate
         echo "Information incomplete: ssl certificate is missing."
         exit 1
     fi
+    if [[ ! -f "$ssl_certificate" ]]; then
+        echo "Error: The file '$ssl_certificate' does not exist."
+        exit 1
+    fi
 
     read -r -p "ssl certificate key (privkey): " ssl_certificate_key
     if [[ -z "$ssl_certificate_key" ]]; then
         echo "Information incomplete: ssl certificate key is missing."
+        exit 1
+    fi
+    if [[ ! -f "$ssl_certificate_key" ]]; then
+        echo "Error: The file '$ssl_certificate_key' does not exist."
         exit 1
     fi
 
@@ -136,6 +144,10 @@ if [ "$sslmode" == "2" ]; then # existing certificate
     read -r -p "Please enter sense-o-auth.yml path: " sense_path
     if [[ -z "$sense_path" ]]; then
         echo "Information incomplete: sense-o-auth.yml path is missing."
+        exit 1
+    fi
+    if [[ ! -f "$sense_path" ]]; then
+        echo "Error: The file '$sense_path' does not exist."
         exit 1
     fi
 

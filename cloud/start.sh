@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cp ../config_cloud/config.yml config.yml
 # Function to set up Grafana data source using its API
 setup_data_source() {
     local api_url=$1
@@ -35,9 +35,10 @@ setup_data_source() {
             "$api_url/api/datasources")
 
         # Check response for success
-        if [[ "$response" =~ "datasource created" ]]; then
+        if [[ "$response" =~ "409 Conflict" ]]; then
             echo "Data source setup successful!"
-            return 0
+            sleep 5
+            return 0  # Break out of the loop on success
         else
             echo "Error setting up data source: $response"
             ((retry_count++))
@@ -106,11 +107,11 @@ docker stack deploy -c docker-stack.yml cloud
 sleep 20
 echo "!!    Setting up containers..."
 
-
 python3 sa.py ${config_file}
 sleep 5
 
 grafana_api_url=$(grep grafana_public_domain "$config_file" | awk '{print $2}' | tr -d '"')
 grafana_api_token=$(grep grafana_api_token "$config_file" | awk '{print $2}' | tr -d '"')
 prometheus_url=$(grep prometheus_url "$config_file" | awk '{print $2}' | tr -d '"')
+echo "prometheus :$prometheus_url"
 setup_data_source $grafana_api_url $grafana_api_token "Prometheus" $prometheus_url

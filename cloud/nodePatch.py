@@ -38,7 +38,7 @@ def node_data(data, id, gateway):
             node["metadata"]["instance"] = port["Host"][0]["Name"]
             node["metadata"]["flow"] = id
             node["gateway"] = gateway
-            node["runtime"] = str(int(time.time()) + 610)
+            node["runtime"] = str(int(time.time()) + 3600)
             node["resolution"] = "5"
             if port["Site"] not in siteMap:
                 siteMap[port["Site"]] = []

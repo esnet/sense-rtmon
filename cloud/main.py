@@ -92,6 +92,7 @@ def create_manifest(instance):
             }
         ]
     }
+    print("Done")
     workflowApi = WorkflowCombinedApi()
     workflowApi.si_uuid = instance['referenceUUID']
     response = workflowApi.manifest_create(json.dumps(template))
@@ -99,6 +100,7 @@ def create_manifest(instance):
     manifest = json.loads(json_response['jsonTemplate'])
     logging.info("Manifest Created")
     refid = instance['referenceUUID']
+    
     with open(f'manifest-{refid}.json', 'w') as f:
         json.dump(manifest, f, indent=2)
     
@@ -321,6 +323,7 @@ def main():
 
                         try:
                             config_data, api_key = fill_API(config_data, config['grafana_username'], config['grafana_password'])
+                            logging.info("API Filled")
                             print("API Filled")
                            
                             with open("converted.json", 'w') as f:
@@ -339,6 +342,7 @@ def main():
                                     'name' : name
                                 }
                                 print("Dashboard Generated")
+                                logging.info("Dashboard Generated")
                                 try: 
                                     siteMap = node_data(manifest, id, config["pushgateway_public_domain"])
                                     with open("node_data.json", 'w') as f:

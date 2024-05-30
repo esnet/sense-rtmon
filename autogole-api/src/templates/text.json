@@ -1,0 +1,11 @@
+{
+  "datasource": null,
+  "id": 308,
+  "options": {
+    "content": "REPLACEMEWITHCONTENT",
+    "mode": "html"
+  },
+  "pluginVersion": "8.5.27",
+  "title": "REPLACEMENTTITLE",
+  "type": "text"
+}

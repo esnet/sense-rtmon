@@ -1,0 +1,308 @@
+[
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "REPLACEME_DATASOURCE"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.5.27",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "deriv(interface_statistics{Key=\"ifHCInOctets\", sitename=\"REPLACEME_SITENAME\", hostname=\"REPLACEME_HOSTNAME\", ifDescr=~\"REPLACEME_INTERFACE\"}[2m])*8",
+          "interval": "",
+          "legendFormat": "IN {{ifDescr}} ({{ifAlias}})",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "editorMode": "code",
+          "expr": "deriv(interface_statistics{Key=\"ifHCOutOctets\", sitename=\"REPLACEME_SITENAME\", hostname=\"REPLACEME_HOSTNAME\", ifDescr=~\"REPLACEME_INTERFACE\"}[2m])*8*-1",
+          "hide": false,
+          "legendFormat": "Out {{ifDescr}} ({{ifAlias}})",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Interface Status (Octets In/Out)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "REPLACEME_DATASOURCE"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.5.27",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "deriv(interface_statistics{Key=\"ifInDiscards\", sitename=\"REPLACEME_SITENAME\", hostname=\"REPLACEME_HOSTNAME\", ifDescr=~\"REPLACEME_INTERFACE\"}[2m])*8",
+          "interval": "",
+          "legendFormat": "IN {{ifDescr}} ({{ifAlias}})",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "editorMode": "code",
+          "expr": "deriv(interface_statistics{Key=\"ifOutDiscards\", sitename=\"REPLACEME_SITENAME\", hostname=\"REPLACEME_HOSTNAME\", ifDescr=~\"REPLACEME_INTERFACE\"}[2m])*8*-1",
+          "hide": false,
+          "legendFormat": "Out {{ifDescr}} ({{ifAlias}})",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Interface Status (Discards In/Out)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "REPLACEME_DATASOURCE"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.5.27",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "deriv(interface_statistics{Key=\"ifInErrors\", sitename=\"REPLACEME_SITENAME\", hostname=\"REPLACEME_HOSTNAME\", ifDescr=~\"REPLACEME_INTERFACE\"}[2m])*8",
+          "interval": "",
+          "legendFormat": "IN {{ifDescr}} ({{ifAlias}})",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "editorMode": "code",
+          "expr": "deriv(interface_statistics{Key=\"ifOutErrors\", sitename=\"REPLACEME_SITENAME\", hostname=\"REPLACEME_HOSTNAME\", ifDescr=~\"REPLACEME_INTERFACE\"}[2m])*8*-1",
+          "hide": false,
+          "legendFormat": "Out {{ifDescr}} ({{ifAlias}})",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Interface Status (Errors In/Out)",
+      "type": "timeseries"
+    }
+  ]

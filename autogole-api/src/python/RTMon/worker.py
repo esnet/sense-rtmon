@@ -2,7 +2,7 @@
 """Main Worker for RTMon."""
 import os
 import time
-import pprint
+from pprint import pformat
 from RTMonLibs.GeneralLibs import loadFileJson, getConfig, dumpJson
 from RTMonLibs.LogLib import getLoggingObject
 from RTMonLibs.SenseAPI import SenseAPI
@@ -34,7 +34,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, Mermaid, SiteOverride):
         self.logger.info('Submit Execution: %s, %s', filename, fout)
         instance = self.s_getInstance(fout['referenceUUID'])
         self.logger.info(f"Here is instance for {fout['referenceUUID']}:")
-        self.logger.info(pprint.pprint(instance))
+        self.logger.info(pformat(instance))
         # 2. Get the manifest from SENSE-0
         if not instance:
             self.logger.error('Instance not found: %s', fout['referenceUUID'])
@@ -45,7 +45,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, Mermaid, SiteOverride):
             return
         manifest = self.s_getManifest(instance)
         self.logger.info("Here is manifest for the following instance:")
-        self.logger.info(pprint.pprint(manifest))
+        self.logger.info(pformat(manifest))
         if not manifest:
             self.logger.error('Manifest not found: %s', fout['referenceUUID'])
             return

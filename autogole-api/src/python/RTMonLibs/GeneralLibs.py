@@ -2,27 +2,8 @@
 """General Libraries for RTMon"""
 import os
 import json
-import logging
-from logging import StreamHandler
 from yaml import safe_load as yload
 from yaml import safe_dump as ydump
-
-def getStreamLogger(logLevel='DEBUG'):
-    """ Get Stream Logger """
-    levels = {'FATAL': logging.FATAL,
-              'ERROR': logging.ERROR,
-              'WARNING': logging.WARNING,
-              'INFO': logging.INFO,
-              'DEBUG': logging.DEBUG}
-    logger = logging.getLogger()
-    handler = StreamHandler()
-    formatter = logging.Formatter("%(asctime)s.%(msecs)03d - %(name)s - %(levelname)s - %(message)s",
-                                  datefmt="%a, %d %b %Y %H:%M:%S")
-    handler.setFormatter(formatter)
-    if not logger.handlers:
-        logger.addHandler(handler)
-    logger.setLevel(levels[logLevel])
-    return logger
 
 def loadFileJson(filename, logger):
     """Load File"""
@@ -68,10 +49,11 @@ def dumpYaml(data, logger):
         logger.error('Error in dumping yaml dict: %s', ex)
     return {}
 
-def getConfig(logger):
+def getConfig(logger=None):
     """Get Config"""
     if not os.path.isfile("/etc/rtmon.yaml"):
-        logger.error("Config file /etc/rtmon.yaml does not exist.")
+        if logger:
+            logger.error("Config file /etc/rtmon.yaml does not exist.")
         raise Exception("Config file /etc/rtmon.yaml does not exist.")
     with open("/etc/rtmon.yaml", "r", encoding="utf-8") as fd:
         return yload(fd.read())

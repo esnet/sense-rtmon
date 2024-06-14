@@ -86,5 +86,5 @@ setup(
     install_requires=[],
     data_files=[],
     py_modules=get_py_modules(['src/python/RTMonLibs']),
-    scripts=[]
+    scripts=["packaging/RTMon-Daemon"]
 )

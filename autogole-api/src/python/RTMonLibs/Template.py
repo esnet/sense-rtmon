@@ -20,21 +20,25 @@ class Mermaid():
         super().__init__()
         self.config = kwargs.get('config')
         self.logger = kwargs.get('logger')
-        self.mermaid = []
+        self.mermaid = ["graph LR"]
         self.links = []
         self.portnames = {}
         self.vlans = {}
         self.m_groups = {'Hosts': {}, 'Switches': {}}  # Group Hosts and Switches
         self.mac_addresses = {}
-        self.totalpoints = 0
+        self.orderlist = []
+        self.orderlistports = []
 
     def _m_cleanCache(self):
         """Clean Cache"""
         self.links = []
         self.portnames = {}
-        self.mermaid = ["graph TB"]
+        self.mermaid = ["graph LR"]
         self.m_groups = {'Hosts': {}, 'Switches': {}}
         self.mac_addresses = {}
+        self.vlans = {}
+        self.orderlist = []
+        self.orderlistports = []
 
     def _m_addLink(self, val1, val2):
         if [val1, val2] not in self.links and [val2, val1] not in self.links:
@@ -61,8 +65,12 @@ class Mermaid():
         uniqname = _processName(f'{item["Node"]}_{item["Name"]}')
         self.m_groups['Switches'].setdefault(item["Node"], {}).setdefault(item["Name"], {})
         self.m_groups['Switches'][item["Node"]][item["Name"]] = item
-        self.mermaid.append(f'    subgraph "{item["Node"]}"')
-        self.mermaid.append(f'        {uniqname}("{item["Name"]}")')
+        if item.get('JointSite', False):
+            self.mermaid.append(f'    subgraph "{item["JointSite"]}"')
+            self.mermaid.append(f'        {uniqname}("{item["JointNetwork"]}")')
+        else:
+            self.mermaid.append(f'    subgraph "{item["Node"]}"')
+            self.mermaid.append(f'        {uniqname}("{item["Name"]}")')
         self.mermaid.append('    end')
         if 'Peer' in item and item['Peer'] != "?peer?":
             self._m_addLink(uniqname, _processName(item['Peer']))
@@ -71,7 +79,7 @@ class Mermaid():
         self._m_addPorts(_processName(item['Port']), uniqname)
         return uniqname
 
-    def _m_addHost(self, host, vlan):
+    def _m_addHost(self, host):
         uniqname = _processName(f'{host["Name"]}_{host["Interface"]}')
         self.m_groups['Hosts'].setdefault(host["Name"], {}).setdefault(host["Interface"], {})
         self.m_groups['Hosts'][host["Name"]][host["Interface"]] = host
@@ -79,14 +87,19 @@ class Mermaid():
         self._m_recordMac(host)  # Record mac of host interface
         if 'Interface' in host:
             self.mermaid.append(f'        {uniqname}("{host["Interface"]}")')
-            if 'IPv4' in host:
-                self.mermaid.append(f'        {uniqname}_IPv4({host["IPv4"]})')
-                if vlan:
-                    self.mermaid.append(f'        {uniqname}_vlan{vlan}(vlan.{vlan})')
-                    self._m_addLink(uniqname, f'{uniqname}_vlan{vlan}')
-                    self._m_addLink(f'{uniqname}_vlan{vlan}', f'{uniqname}_IPv4')
-                    self.m_groups['Hosts'].setdefault(host["Name"], {}).setdefault(f'vlan.{vlan}', {})
+            for ipkey, ipdef in {'IPv4': '?ipv4?', 'IPv6': '?ipv6?'}.items():
+                if ipkey in host and host[ipkey] != ipdef:
+                    self.mermaid.append(f'        {uniqname}_{ipkey}({host[ipkey]})')
+                    if host.get('Vlan'):
+                        self.mermaid.append(f'        {uniqname}_vlan{host["Vlan"]}(vlan.{host["Vlan"]})')
+                        self._m_addLink(uniqname, f'{uniqname}_vlan{host["Vlan"]}')
+                        self._m_addLink(f'{uniqname}_vlan{host["Vlan"]}', f'{uniqname}_{ipkey}')
+                        self.m_groups['Hosts'].setdefault(host["Name"], {}).setdefault(f'vlan.{host["Vlan"]}', {})
         self.mermaid.append('    end\n')
+        if 'Link' in host:
+            self._m_addLink(uniqname, host['Link'])
+            if 'Vlan' in host and host['Vlan']:
+                self._m_addVlan(f'{uniqname}_{host["Link"]}', host['Vlan'])
         return uniqname
 
     def _m_getVlan(self, link):
@@ -114,21 +127,112 @@ class Mermaid():
             added.append([end1, end2, vlan])
             added.append([end2, end1, vlan])
 
+    def _m_addItem(self, item):
+        """Add Item to the list"""
+        if item['Type'] == 'Host':
+            self._m_addHost(item)
+        elif item['Type'] == 'Switch':
+            self._m_addSwitch(item)
+
+    def _findHost(self, manifest, _nexthop, lastitem):
+        for idx, item in enumerate(manifest["Ports"]):
+            for hostdata in item.get('Host', []):
+                tmphost = self.so_override(hostdata)
+                tmpitem = self.so_override(item)
+                tmphost['Type'] = 'Host'
+                tmphost['Vlan'] = None if not tmpitem.get('Vlan') else tmpitem['Vlan']
+                tmphost['Link'] = _processName(f'{tmpitem["Node"]}_{tmpitem["Name"]}')
+                if item.get('Peer', '?peer?') == "?peer?":
+                    item['PeerHost'] = tmphost['Name']
+                self.orderlist.append(tmphost)
+                del tmpitem['Host']
+                tmpitem['Type'] = 'Switch'
+                self.orderlist.append(tmpitem)
+                return idx, tmpitem['Node'], tmpitem
+        return None, None, lastitem
+
+    def _findNode(self, manifest, node, lastitem):
+        nextHop = ""
+        delitems = []
+        tmpitem = None
+        for idx, item in enumerate(manifest["Ports"]):
+            tmpitem = self.so_override(item)
+            if tmpitem["Node"] == node:
+                if 'Host' in tmpitem and tmpitem['Host']:
+                    hostid, _, _ = self._findHost(manifest, None, tmpitem)
+                    delitems.append(hostid)
+                    continue
+                tmpitem['Type'] = 'Switch'
+                self.orderlist.append(tmpitem)
+                if tmpitem['Peer'] != "?peer?" and item['Peer'] not in self.orderlistports:
+                    tmpitem['Type'] = 'Switch'
+                    self.orderlistports.append(tmpitem['Peer'])
+                    nextHop = tmpitem['Peer']
+                delitems.append(idx)
+        return delitems, nextHop, tmpitem if tmpitem else lastitem
+
+    def _findPeer(self, manifest, peer, lastitem):
+        for idx, item in enumerate(manifest["Ports"]):
+            tmpitem = self.so_override(item)
+            if tmpitem["Port"] == peer:
+                tmpitem['Type'] = 'Switch'
+                self.orderlist.append(tmpitem)
+                return idx, tmpitem['Node'], tmpitem
+        return None, None, lastitem
+
+    def findorder(self, manifest):
+        """Find all orders of the manifest"""
+        nexthop = None
+        nexthoptype = 'Host'
+        counter = 50
+        lastitem = None
+        loopcount = 5
+        while len(manifest["Ports"]) > 0:
+            if nexthoptype == 'Host':
+                hostid, nexthop, lastitem = self._findHost(manifest, nexthop, lastitem)
+                if hostid is not None:
+                    del manifest["Ports"][hostid]
+                    nexthoptype = 'Node'
+                    continue
+            if nexthoptype == 'Node':
+                hostid, nexthop, lastitem = self._findNode(manifest, nexthop, lastitem)
+                if hostid:
+                    hostid.sort(reverse=True) # Deletion should happen from the last item
+                    for idx in hostid:
+                        del manifest["Ports"][idx]
+                    nexthoptype = 'Peer'
+                else:
+                    nexthoptype = 'Host'
+                continue
+            if nexthoptype == 'Peer':
+                hostid, nexthop, lastitem = self._findPeer(manifest, nexthop, lastitem)
+                nexthoptype = 'Node'
+                if hostid is not None:
+                    del manifest["Ports"][hostid]
+                    nexthoptype = 'Node'
+                continue
+            if not nexthop and nexthoptype == 'Host' and lastitem:
+                nexthop = lastitem['Node']
+                nexthoptype = 'Node'
+            counter -= 1
+            if counter < 0:
+                self.logger.warning("Counter reached 0, restarting loop with findNode")
+                self.logger.warning(f"Remaining items: {manifest['Ports']}")
+                # Use findNode and take the first item from the list
+                loopcount -= 1
+                if loopcount < 0:
+                    self.logger.error("Loopcount reached 0, breaking")
+                    break
+                nexthoptype = 'Node'
+                nexthop = manifest["Ports"][0]["Node"]
+                counter = 50
+
     def m_getMermaidContent(self, manifest):
         """Create Mermaid Template"""
         self._m_cleanCache()
-        for item in manifest["Ports"]:
-            if 'Host' in item:
-                uniqname = ""
-                for hostdata in item['Host']:
-                    vlan = None if not item.get('Vlan') else item['Vlan']
-                    uniqname = self._m_addHost(hostdata, vlan)
-                    if uniqname:
-                        self._m_addLink(uniqname, _processName(f'{item["Node"]}_{item["Name"]}'))
-                    if vlan:
-                        self._m_addVlan(f'{uniqname}_{item["Node"]}_{item["Name"]}', item['Vlan'])
-                        self._m_addVlan(f'{uniqname}_IPv4_{item["Node"]}_{item["Name"]}', item['Vlan'])
-            self._m_addSwitch(item)
+        self.findorder(manifest)
+        for item in self.orderlist:
+            self._m_addItem(item)
         # Now we can create all links
         self._m_createMermaidLinks()
         for line in self.mermaid:
@@ -270,6 +374,15 @@ class Template():
         """Create Switch Flow Template"""
         out = []
         for sitehost, interfaces in self.m_groups['Switches'].items():
+            try:
+                sitename = sitehost.split(":")[0]
+                hostname = sitehost.split(":")[1]
+            except IndexError as ex:
+                self.logger.error(f"Got Exception: {ex}")
+                self.logger.error(f"Sitehost: {sitehost}")
+                self.logger.error(f"Interfaces: {interfaces}")
+                self.logger.error("This happens for Sites/Switches not exposing correct Sitename/Port. Are you missing an override?")
+                raise Exception("Sitehost not in correct format")
             sitename = sitehost.split(":")[0]
             hostname = sitehost.split(":")[1]
             intfline = "|".join(interfaces.keys())
@@ -285,6 +398,8 @@ class Template():
 
     def t_createMermaid(self, *args):
         """Create Mermaid Template"""
+        # Identify all peers
+        self.so_mappeers(args[1])
         row = self.t_addRow(*args, title="End-to-End Flow Monitoring")
         panel = self._t_loadTemplate("mermaid.json")
         mermaid = self.m_getMermaidContent(args[1])
@@ -417,10 +532,6 @@ class Template():
         for sitehost, interfaces in self.m_groups['Switches'].items():
             self.logger.debug(f"Adding L2 Debugging for Switch: {sitehost}, {interfaces}")
             out += self._t_addSwitchL2Debugging(sitehost, interfaces, refID)
-        # Add state and check if it receives information from snmp monitoring
-        #     count(interface_statistics{sitename = "NRM_CENIC", hostname = "$switch"})
-        # For each host mac address - do mac_table_info
-        #     sum(mac_table_info{hostname="aristaeos_s0", macaddress="ec:0d:9a:c1:ba:60", vlan="3608"}) OR on() vector(0)
         return self.addRowPanel(row, out)
 
     def t_createTemplate(self, *args, **kwargs):
@@ -429,9 +540,9 @@ class Template():
         self.nextid = 0
         self._t_getDataSourceUid(*args)
         self.generated = self.t_createDashboard(*args, **kwargs)
-        # Add Mermaid
-        #self.t_createMermaid(*args)
-        self.generated['panels'] += self.t_createMermaid(*args)
+        # Add Mermaid (Send copy of args, as t_createMermaid will modify it by del items)
+        orig_args = copy.deepcopy(args)
+        self.generated['panels'] += self.t_createMermaid(*orig_args)
         # Add Links on top of the page
         self.generated['links'] = self.t_addLinks(*args)
         # Add Debug Info (manifest, instance)

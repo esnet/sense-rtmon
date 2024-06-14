@@ -2,13 +2,16 @@
 """Main Worker for RTMon."""
 import os
 import time
-from RTMonLibs.GeneralLibs import getStreamLogger, loadFileJson, getConfig, dumpJson
+import pprint
+from RTMonLibs.GeneralLibs import loadFileJson, getConfig, dumpJson
+from RTMonLibs.LogLib import getLoggingObject
 from RTMonLibs.SenseAPI import SenseAPI
 from RTMonLibs.GrafanaAPI import GrafanaAPI
 from RTMonLibs.Template import Template
 from RTMonLibs.Template import Mermaid
+from RTMonLibs.SiteOverride import SiteOverride
 
-class RTMon(SenseAPI, GrafanaAPI, Template, Mermaid):
+class RTMonWorker(SenseAPI, GrafanaAPI, Template, Mermaid, SiteOverride):
     """ RTMon Worker """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -17,6 +20,7 @@ class RTMon(SenseAPI, GrafanaAPI, Template, Mermaid):
         self.templatePath = self.config['template_path']
         self.generated = {}
         self.auth_instances = {}
+        self.goodStates = ['CREATE - READY', 'REINSTATE - READY', 'MODIFY - READY']
 
     def _updateState(self, filename, fout):
         """Update the state of the file"""
@@ -29,20 +33,29 @@ class RTMon(SenseAPI, GrafanaAPI, Template, Mermaid):
         self.logger.info('='*80)
         self.logger.info('Submit Execution: %s, %s', filename, fout)
         instance = self.s_getInstance(fout['referenceUUID'])
+        self.logger.info(f"Here is instance for {fout['referenceUUID']}:")
+        self.logger.info(pprint.pprint(instance))
         # 2. Get the manifest from SENSE-0
         if not instance:
             self.logger.error('Instance not found: %s', fout['referenceUUID'])
             return
         # 2.a Check if the instance is already running
-        if instance['state'] not in ["CREATE - READY", "REINSTATE - READY"]:
+        if instance['state'] not in self.goodStates:
             self.logger.error('Instance not in correct state: %s, %s', fout['referenceUUID'], instance['state'])
             return
         manifest = self.s_getManifest(instance)
+        self.logger.info("Here is manifest for the following instance:")
+        self.logger.info(pprint.pprint(manifest))
         if not manifest:
             self.logger.error('Manifest not found: %s', fout['referenceUUID'])
             return
         # 3. Create the dashboard and template
-        template = self.t_createTemplate(instance, manifest, **fout)
+        try:
+            template = self.t_createTemplate(instance, manifest, **fout)
+        #except Exception as ex:
+        except IOError as ex:
+            self.logger.error('Failed to create template: %s', ex)
+            return
         # 4. Submit to Grafana (Check if folder exists, if not create it)
         folderName = self.config.get('grafana_folder', 'Real Time Mon')
         folderInfo = self.g_createFolder(folderName)
@@ -131,12 +144,14 @@ class RTMon(SenseAPI, GrafanaAPI, Template, Mermaid):
             return
         for item in out:
             filename = f'{self.config.get("workdir", "/srv")}/rtmon-debug-{os.environ["SENSE_AUTH_OVERRIDE_NAME"]}-{item["referenceUUID"]}'
-            if not os.path.exists(filename) and item['state'] in ['CREATE - READY', 'REINSTATE - READY']:
+            if not os.path.exists(filename) and item['state'] in self.goodStates:
                 fout = {'state': 'submitted', 'referenceUUID': item['referenceUUID'], 'orchestrator': os.environ['SENSE_AUTH_OVERRIDE_NAME'], 'submission': 'AUTH_KEY'}
                 with open(filename, 'w', encoding="utf-8") as fd:
                     fd.write(dumpJson(fout, self.logger))
-            if item['state'] in ['CREATE - READY', 'REINSTATE - READY']:
+            if item['state'] in self.goodStates:
                 self.auth_instances[os.environ["SENSE_AUTH_OVERRIDE_NAME"]].append(item['referenceUUID'])
+            else:
+                self.logger.info('Instance not in correct state: %s, %s', item['referenceUUID'], item['state'])
 
     def main(self):
         """ Main Method"""
@@ -145,7 +160,6 @@ class RTMon(SenseAPI, GrafanaAPI, Template, Mermaid):
         stateInfo = {}
         for root, _, files in os.walk(self.config.get('workdir', '/srv')):
             for filename in files:
-                print(filename)
                 if filename.startswith('rtmon-debug-'):
                     fout = loadFileJson(os.path.join(root, filename), self.logger)
                     if not fout:
@@ -176,7 +190,7 @@ class RTMon(SenseAPI, GrafanaAPI, Template, Mermaid):
                 self.logger.info('='*80)
             self.logger.info('-'*80)
 
-    def execute(self):
+    def startwork(self):
         """Execute Main Program."""
         # Loop via all sense-o instances and create files for each instance
         timings = {}
@@ -205,9 +219,12 @@ class RTMon(SenseAPI, GrafanaAPI, Template, Mermaid):
 
 
 if __name__ == "__main__":
-    LOGGER = getStreamLogger()
+    LOGGER = getLoggingObject()
     CONFIG = getConfig(LOGGER)
-    worker = RTMon(config=CONFIG, logger=LOGGER)
+    worker = RTMonWorker(config=CONFIG, logger=LOGGER)
     while True:
-        worker.execute()
+        try:
+            worker.startwork()
+        except Exception as exc:
+            LOGGER.error('Exception: %s', exc)
         time.sleep(CONFIG.get('sleep_timer', 30))

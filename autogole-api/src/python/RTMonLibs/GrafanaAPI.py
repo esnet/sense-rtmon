@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Grafana API for Autogole SENSE RTMon"""
-
+import time
 from grafana_client import GrafanaApi
 
 class GrafanaAPI():
@@ -11,7 +11,8 @@ class GrafanaAPI():
         self.logger = kwargs.get('logger')
         self.grafanaapi = GrafanaApi.from_url(
                                      url=self.config['grafana_host'],
-                                     credential=self.config['grafana_api_key'])
+                                     credential=self.config['grafana_api_key'],
+                                     timeout=30)
         self.datasources = {}
         self.dashboards = {}
         self.folders = {}
@@ -19,6 +20,10 @@ class GrafanaAPI():
 
     def g_loadAll(self):
         """Load all Dashboards, Alerts, Folders"""
+        self.grafanaapi = GrafanaApi.from_url(
+                                     url=self.config['grafana_host'],
+                                     credential=self.config['grafana_api_key'],
+                                     timeout=30)
         self.g_getDashboards()
         self.g_getFolders()
         self.g_getDataSources()
@@ -27,8 +32,17 @@ class GrafanaAPI():
     def g_getDashboards(self):
         """Get dashboards from Grafana"""
         self.dashboards = {}
-        for item in self.grafanaapi.search.search_dashboards():
-            self.dashboards[item['title']] = item
+        failures = 0
+        while failures < 3:
+            try:
+                for item in self.grafanaapi.search.search_dashboards():
+                    self.dashboards[item['title']] = item
+                return
+            except Exception as ex:
+                failures += 1
+                self.logger.error(f"Failed to get dashboards: {ex}")
+                time.sleep(1)
+        raise Exception("Failed to get dashboards after 3 retries")
 
     def g_getDashboardByTitle(self, title):
         """Get dashboard by Title"""
@@ -38,30 +52,76 @@ class GrafanaAPI():
 
     def g_getDataSources(self):
         """Get all data sources"""
-        for item in self.grafanaapi.datasource.list_datasources():
-            self.datasources[item['name']] = item
+        failures = 0
+        while failures < 3:
+            try:
+                self.datasources = {}
+                for item in self.grafanaapi.datasource.list_datasources():
+                    self.datasources[item['name']] = item
+                return
+            except Exception as ex:
+                failures += 1
+                self.logger.error(f"Failed to get datasources: {ex}")
+                time.sleep(1)
+        raise Exception("Failed to get datasources after 3 retries")
 
     def g_addNewDashboard(self, dashbJson):
         """Add new dashboard"""
-        return self.grafanaapi.dashboard.update_dashboard(dashbJson)
+        failures = 0
+        while failures < 3:
+            try:
+                return self.grafanaapi.dashboard.update_dashboard(dashbJson)
+            except Exception as ex:
+                failures += 1
+                self.logger.error(f"Failed to create dashboard {dashbJson}: {ex}")
+                time.sleep(1)
+        raise Exception(f"Failed to create dashboard {dashbJson} after 3 retries")
 
     def g_deleteDashboard(self, title):
         """Delete dashboard"""
         if title in self.dashboards:
-            return self.grafanaapi.dashboard.delete_dashboard(self.dashboards[title]['uid'])
-        return False
+            failures = 0
+            while failures < 3:
+                try:
+                    return self.grafanaapi.dashboard.delete_dashboard(self.dashboards[title]['uid'])
+                except Exception as ex:
+                    failures += 1
+                    self.logger.error(f"Failed to delete dashboard {title}: {ex}")
+                    time.sleep(1)
+        else:
+            return False
+        raise Exception(f"Failed to delete dashboard {title} after 3 retries")
 
     def g_createFolder(self, title):
         """Create Folder"""
         self.g_getFolders()
         if title in self.folders:
             return self.folders[title]
-        return self.grafanaapi.folder.create_folder(title)
+        failures = 0
+        while failures < 3:
+            try:
+                return self.grafanaapi.folder.create_folder(title)
+            except Exception as ex:
+                failures += 1
+                self.logger.error(f"Failed to create folder {title}: {ex}")
+                time.sleep(1)
+        raise Exception(f"Failed to create folder {title} after 3 retries")
 
     def g_getFolders(self):
         """Get all folders"""
-        for item in self.grafanaapi.folder.get_all_folders():
-            self.folders[item['title']] = item
+        failures = 0
+        while failures < 3:
+            try:
+                self.folders = {}
+                for item in self.grafanaapi.folder.get_all_folders():
+                    self.folders[item['title']] = item
+                return
+            except Exception as ex:
+                failures += 1
+                self.logger.error(f"Failed to get folders: {ex}")
+                time.sleep(1)
+        raise Exception("Failed to get folders after 3 retries")
+
 
     def g_getFolderID(self, name):
         """Get folder ID by Name. Default None"""

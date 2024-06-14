@@ -13,8 +13,8 @@ import argparse
 import traceback
 import atexit
 import psutil
-from SNMPMon.utilities import getConfig
-from SNMPMon.utilities import getTimeRotLogger
+from RTMonLibs.GeneralLibs import getConfig
+from RTMonLibs.LogLib import getLoggingObject
 
 def getParser(description):
     """Returns the argparse parser."""
@@ -29,8 +29,6 @@ def getParser(description):
                          help="Log to stdout and not to file. Default false")
     oparser.add_argument('--onetimerun', action='store_true',
                          help="Run once and exit from loop (Only for start). Default false")
-    oparser.add_argument('--devicename', dest='devicename', default='',
-                         help='Device name to start the process. Only for threading.')
     oparser.set_defaults(logtostdout=False)
     return oparser
 
@@ -49,11 +47,12 @@ class Daemon():
         self.component = component
         self.inargs = inargs
         self.runCount = 0
-        self.pidfile = f'/tmp/nsi-snmpmon-{component}.pid'
-        if self.inargs.devicename:
-            self.pidfile = f'/tmp/nsi-snmpmon-{component}-{self.inargs.devicename}.pid'
-        self.config = getConfig('/etc/snmp-mon.yaml')
-        self.logger = getTimeRotLogger(**self.config['logParams'])
+        self.pidfile = f'/tmp/rtmon-{component}.pid'
+        self.config = getConfig()
+        if not self.inargs.logtostdout:
+            self.config['logType'] = 'TimedRotatingFileHandler'
+            self.config['logFile'] = '/var/log/rtmon/api.log'
+        self.logger = getLoggingObject(**self.config)
 
     def daemonize(self):
         """do the UNIX double-fork magic, see Stevens' "Advanced Programming in
@@ -210,7 +209,7 @@ class Daemon():
             except:
                 exc = traceback.format_exc()
                 self.logger.critical("Exception!!! Error details:  %s", exc)
-                time.sleep(5)
+                time.sleep(30)
 
     def run(self):
         """Run main execution"""
@@ -228,14 +227,14 @@ class Daemon():
                         exc = traceback.format_exc()
                         self.logger.critical("Exception!!! Error details:  %s", exc)
                 if self.runLoop():
-                    time.sleep(5)
+                    time.sleep(30)
             except KeyboardInterrupt as ex:
                 self.logger.critical("Received KeyboardInterrupt: %s ", ex)
                 sys.exit(3)
             if hadFailure:
                 self.logger.info('Had Runtime Failure. Sleep for 30 seconds')
                 if self.runLoop():
-                    time.sleep(5)
+                    time.sleep(30)
                 else:
                     sys.exit(4)
 

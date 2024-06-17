@@ -1,0 +1,39 @@
+name: Docker Image Build for RTMon
+
+on:
+  workflow_dispatch:
+    inputs:
+      buildtag:
+        description: "Build Tag"
+        default: "dev"
+        type: "string"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout tools repo
+      uses: actions/checkout@v3
+      with:
+        repository: esnet/sense-rtmon
+        path: sense-rtmon
+
+    - name: docker login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+
+    - name: Build the RTMon Image
+      run: | 
+        cd sense-rtmon/autogole-api/packaging
+        docker build . --file Dockerfile --build-arg ARCH=amd64 --tag sdnsense/sense-rtmon:${{ github.event.inputs.buildtag }}-$(date +%Y%m%d)
+
+    - name: Docker Push RTMon Image with tag and date
+      run: docker push sdnsense/sense-rtmon:${{ github.event.inputs.buildtag }}-$(date +%Y%m%d)
+
+    - name: Docker Push RTMon Image with tag
+      run: |
+        docker tag sdnsense/sense-rtmon:${{ github.event.inputs.buildtag }}-$(date +%Y%m%d) sdnsense/sense-rtmon:${{ github.event.inputs.buildtag }}
+        docker push sdnsense/sense-rtmon:${{ github.event.inputs.buildtag }}

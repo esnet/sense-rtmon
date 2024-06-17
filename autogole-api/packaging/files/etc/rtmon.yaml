@@ -1,0 +1,25 @@
+# Sleep timer between runs
+sleep_timer: 30
+# Work dir for temp files (api directory). Default /srv
+workdir: '/srv/'
+
+grafana_host: 'https://autogole-grafana.nrp-nautilus.io'
+grafana_api_key: 'REPLACE_ME'
+
+template_path: '/etc/rtmon/templates'
+template_tag: 'V0.01'
+
+data_sources:
+  general: Prometheus
+  realtime: PrometheusRT
+
+
+sense_endpoints:
+  "sense-o.es.net": "/etc/sense-o-auth-prod.yaml"
+  "sense-o-dev.es.net": "/etc/sense-o-auth.yaml"
+
+template_links:
+    - title: 'All Node Monitoring'
+      url: 'https://autogole-grafana.nrp-nautilus.io/d/D7xOxim4z/full-dtn-monitoring-variable?orgId=1&refresh=1m'
+    - title: 'All Switches Monitoring'
+      url: 'https://autogole-grafana.nrp-nautilus.io/d/1J9Zz1mWz/full-switch-monitoring-variable?orgId=1&refresh=1m'

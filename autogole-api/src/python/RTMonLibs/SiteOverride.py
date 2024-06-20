@@ -2,6 +2,8 @@
 """
 Class for overriding site specific settings (e.g. OpenNSA/NSI/NRM Name, ports)
 """
+from RTMonLibs.GeneralLibs import loadYaml, getWebContentFromURL
+
 class SiteOverride:
     """Site Override"""
 
@@ -9,13 +11,20 @@ class SiteOverride:
         super().__init__(**kwargs)
         self.config = kwargs.get('config')
         self.logger = kwargs.get('logger')
-        # TODO: To load automatically config
-        self.override = {"urn:ogf:network:icair.org:2013": {"name": "NSI_STARLIGHT", "joint_net": False},
-                         "urn:ogf:network:es.net:2013": {"name": "ESNET", "joint_net": True},
-                         "urn:ogf:network:stack-fabric:2024": {"name": "NSI_FABRIC", "joint_net": True},
-                         "urn:ogf:network:lsanca.pacificwave.net:2016": {"name": "NSI_PACWAVE", "joint_net": False}}
-        self.peers = {} # Get all peers mapping from input config
+        self.override = {}
+        self._getOverrides()
+        self.peers = {}
 
+    def _getOverrides(self):
+        """Get all overrides from a config file"""
+        if not self.config.get('override_url'):
+            self.logger.error("No override URL set for parsing/mapping peers")
+            return
+        tmpoverrides = getWebContentFromURL(self.config['override_url'], self.logger)
+        if tmpoverrides:
+            self.override = loadYaml(tmpoverrides.text, self.logger)
+        else:
+            self.logger.error("Failed to get overrides from URL: %s", self.config['override_url'])
 
     def so_mappeers(self, indata):
         """Map all peers"""

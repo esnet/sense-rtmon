@@ -2,6 +2,8 @@
 """General Libraries for RTMon"""
 import os
 import json
+import time
+import requests
 from yaml import safe_load as yload
 from yaml import safe_dump as ydump
 
@@ -49,6 +51,23 @@ def dumpYaml(data, logger):
         logger.error('Error in dumping yaml dict: %s', ex)
     return {}
 
+def loadYaml(data, logger):
+    """Load YAML"""
+    if isinstance(data, (dict, list)):
+        return data
+    try:
+        return yload(data)
+    except Exception as ex:
+        if logger:
+            logger.error('Error in loading yaml dict: %s', ex)
+            logger.error('Data: %s', data)
+            logger.error('Data type: %s', type(data))
+        else:
+            print('Error in loading yaml dict: %s', ex)
+            print('Data: %s', data)
+            print('Data type: %s', type(data))
+    return {}
+
 def getConfig(logger=None):
     """Get Config"""
     if not os.path.isfile("/etc/rtmon.yaml"):
@@ -56,4 +75,23 @@ def getConfig(logger=None):
             logger.error("Config file /etc/rtmon.yaml does not exist.")
         raise Exception("Config file /etc/rtmon.yaml does not exist.")
     with open("/etc/rtmon.yaml", "r", encoding="utf-8") as fd:
-        return yload(fd.read())
+        return loadYaml(fd.read(), logger)
+
+def getWebContentFromURL(url, logger, raiseEx=True):
+    """GET from URL"""
+    retries = 3
+    out = {}
+    while retries > 0:
+        retries -= 1
+        try:
+            out = requests.get(url, timeout=60)
+            return out
+        except requests.exceptions.RequestException as ex:
+            logger.error(f"Got requests.exceptions.RequestException: {ex}. Retries left: {retries}")
+            if raiseEx and retries == 0:
+                raise
+            out = {}
+            out['error'] = str(ex)
+            out['status_code'] = -1
+            time.sleep(1)
+    return out

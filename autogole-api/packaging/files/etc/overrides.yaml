@@ -1,0 +1,19 @@
+---
+"urn:ogf:network:icair.org:2013":
+  name: "NSI_STARLIGHT"
+  joint_net: False
+"urn:ogf:network:es.net:2013":
+  name: "ESNET"
+  joint_net: True
+"urn:ogf:network:stack-fabric:2024":
+  name: "NSI_FABRIC"
+  joint_net: True
+"urn:ogf:network:lsanca.pacificwave.net:2016":
+  name: "NSI_PACWAVE"
+  joint_net: False
+"urn:ogf:network:uhnet.net:2021":
+  name: "NSI_HAWAII"
+  joint_net: False
+"urn:ogf:network:calit2.optiputer.net:2020":
+  name: "NSI_UCSD"
+  joint_net: False

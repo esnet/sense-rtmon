@@ -3,23 +3,37 @@ sleep_timer: 30
 # Work dir for temp files (api directory). Default /srv
 workdir: '/srv/'
 
+# Grafana settings (for the API)
 grafana_host: 'https://autogole-grafana.nrp-nautilus.io'
 grafana_api_key: 'REPLACE_ME'
 
+# Template path and tags. If tag updated - it will force update all templates
 template_path: '/etc/rtmon/templates'
 template_tag: 'V0.01'
 
+# Data sources for Prometheus (It will use grafana API to find data sources uid)
 data_sources:
   general: Prometheus
   realtime: PrometheusRT
 
-
+# Sense endpoints and their auth files.
 sense_endpoints:
   "sense-o.es.net": "/etc/sense-o-auth-prod.yaml"
   "sense-o-dev.es.net": "/etc/sense-o-auth.yaml"
 
+# Additional links for the templates
 template_links:
     - title: 'All Node Monitoring'
       url: 'https://autogole-grafana.nrp-nautilus.io/d/D7xOxim4z/full-dtn-monitoring-variable?orgId=1&refresh=1m'
     - title: 'All Switches Monitoring'
       url: 'https://autogole-grafana.nrp-nautilus.io/d/1J9Zz1mWz/full-switch-monitoring-variable?orgId=1&refresh=1m'
+
+# Override URL for the NSI,ESnet,Fabric mermaid diagrams. Most of those RMs report everything in a single SwitchingSubnet
+# and we need to override it to show the actual topology (joint, or not). Additionally - most of those have no site name or
+# realportname - so we need to override it as well. (That is the feature not yet implemented in other RMs)
+override_url: "https://raw.githubusercontent.com/esnet/sense-rtmon/main/autogole-api/packaging/files/etc/overrides.yaml"
+
+# HostCert and HostKey location (needed for SiteRM communications). Cert mush be authorized in all Frontends.
+hostcert: '/etc/grid-security/hostcert.pem'
+hostkey: '/etc/grid-security/hostkey.pem'
+

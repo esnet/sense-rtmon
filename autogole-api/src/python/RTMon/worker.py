@@ -10,8 +10,9 @@ from RTMonLibs.GrafanaAPI import GrafanaAPI
 from RTMonLibs.Template import Template
 from RTMonLibs.Template import Mermaid
 from RTMonLibs.SiteOverride import SiteOverride
+from RTMonLibs.SiteRMApi import SiteRMApi
 
-class RTMonWorker(SenseAPI, GrafanaAPI, Template, Mermaid, SiteOverride):
+class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Mermaid):
     """ RTMon Worker """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -33,6 +34,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, Mermaid, SiteOverride):
         self.logger.info('='*80)
         self.logger.info('Submit Execution: %s, %s', filename, fout)
         instance = self.s_getInstance(fout['referenceUUID'])
+        fout['instance'] = instance
         self.logger.info(f"Here is instance for {fout['referenceUUID']}:")
         self.logger.info(pformat(instance))
         # 2. Get the manifest from SENSE-0
@@ -44,6 +46,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, Mermaid, SiteOverride):
             self.logger.error('Instance not in correct state: %s, %s', fout['referenceUUID'], instance['state'])
             return
         manifest = self.s_getManifest(instance)
+        fout['manifest'] = manifest
         self.logger.info("Here is manifest for the following instance:")
         self.logger.info(pformat(manifest))
         if not manifest:
@@ -66,6 +69,8 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, Mermaid, SiteOverride):
         fout['state'] = 'running'
         fout.setdefault('retries', 0)
         self._updateState(filename, fout)
+        # 6. Submit SiteRM Action to issue a ping test both ways
+        self.sr_submit_ping(instance=instance, manifest=manifest)
 
     def delete_exe(self, filename, fout):
         """Delete Action Execution"""
@@ -97,6 +102,8 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, Mermaid, SiteOverride):
                 # we need to update the dashboard with new template_tag
                 if self.config['template_tag'] in dashbVals['tags']:
                     self.logger.info('Dashboard is present in Grafana: %s', dashbName)
+                    # Check if we need to re-issue ping test
+                    self.sr_submit_ping(instance=fout.get('instance', {}), manifest=fout.get('manifest', {}))
                     return
                 # Need to update the dashboard with new template_tag
                 self.logger.info('Dashboard is present in Grafana, but with old version: %s', dashbName)

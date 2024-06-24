@@ -6,6 +6,8 @@ from grafana_client import GrafanaApi
 class GrafanaAPI():
     """Autogole SENSE Grafana RTMon API"""
     def __init__(self, **kwargs):
+        # pylint: disable=E1123
+        # Grafana lib does support timeout, but pylint does not know it.
         super().__init__(**kwargs)
         self.config = kwargs.get('config')
         self.logger = kwargs.get('logger')
@@ -20,6 +22,8 @@ class GrafanaAPI():
 
     def g_loadAll(self):
         """Load all Dashboards, Alerts, Folders"""
+        # pylint: disable=E1123
+        # Grafana lib does support timeout, but pylint does not know it.
         self.grafanaapi = GrafanaApi.from_url(
                                      url=self.config['grafana_host'],
                                      credential=self.config['grafana_api_key'],

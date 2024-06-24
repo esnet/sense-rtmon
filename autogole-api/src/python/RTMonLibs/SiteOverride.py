@@ -66,7 +66,14 @@ class SiteOverride:
         """Get joint name"""
         sitename = self.override[override]["name"]
         tmpPort = indata["Port"].replace(override, '').strip(':').split(':')
-        return sitename, f"{tmpPort[0]}_{tmpPort[1]}"
+        nname = ""
+        for item in tmpPort:
+            if item != "+":
+                if nname:
+                    nname = f"{nname}|{item}"
+                else:
+                    nname = item
+        return sitename, nname
 
     def so_override(self, indata):
         """Override site specific settings"""

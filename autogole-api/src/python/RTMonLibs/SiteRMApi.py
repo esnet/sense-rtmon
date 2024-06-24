@@ -2,6 +2,7 @@
 """
 Class for interacting with SENSE SiteRMs
 """
+import time
 from RTMonLibs.GeneralLibs import loadJson
 from sense.client.siterm.debug_api import  DebugApi
 
@@ -55,6 +56,7 @@ class SiteRMApi:
         self.logger.info("Start check for ping test if needed")
         hosts, allIPs = self._sr_get_all_hosts(**kwargs)
         # based on our variables;
+        ping_out = []
         for host in hosts:
             # Check if IPv6 or IPv4 is defined
             for key, defval in [("IPv4", "?ipv4?"), ("IPv6", "?ipv6?")]:
@@ -82,4 +84,9 @@ class SiteRMApi:
                                 break
                         if not actionPresent:
                             self.logger.info(f"Submitting ping test for {newaction}")
-                            self.siterm_debug.submit_ping(**newaction)
+                            out = self.siterm_debug.submit_ping(**newaction)
+                            newaction['submit_time'] = int(time.time())
+                            newaction['submit_out'] = out[0]
+                            self.logger.info(f"Submitted ping test for {newaction}: {out}")
+                            ping_out.append(newaction)
+        return ping_out

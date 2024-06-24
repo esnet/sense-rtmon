@@ -65,12 +65,14 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Merma
         template['folderId'] = folderInfo['id']
         template['overwrite'] = True
         self.g_addNewDashboard(template)
-        # 5. Update State to Running
+        # 5. Submit SiteRM Action to issue a ping test both ways
+        tmpOut = self.sr_submit_ping(instance=instance, manifest=manifest)
+        if tmpOut:
+            fout['ping'] = tmpOut
+        # 6. Update State to Running
         fout['state'] = 'running'
         fout.setdefault('retries', 0)
         self._updateState(filename, fout)
-        # 6. Submit SiteRM Action to issue a ping test both ways
-        self.sr_submit_ping(instance=instance, manifest=manifest)
 
     def delete_exe(self, filename, fout):
         """Delete Action Execution"""
@@ -103,7 +105,10 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Merma
                 if self.config['template_tag'] in dashbVals['tags']:
                     self.logger.info('Dashboard is present in Grafana: %s', dashbName)
                     # Check if we need to re-issue ping test
-                    self.sr_submit_ping(instance=fout.get('instance', {}), manifest=fout.get('manifest', {}))
+                    tmpOut = self.sr_submit_ping(instance=fout.get('instance', {}), manifest=fout.get('manifest', {}))
+                    if tmpOut:
+                        fout['ping'] = tmpOut
+                    self._updateState(filename, fout)
                     return
                 # Need to update the dashboard with new template_tag
                 self.logger.info('Dashboard is present in Grafana, but with old version: %s', dashbName)

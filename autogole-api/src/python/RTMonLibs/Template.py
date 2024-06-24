@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pylint: disable=E1101
 """Grafana Template Generation"""
 import copy
 import os.path
@@ -251,6 +252,14 @@ class Template():
         self.nextid = 0
         self.gridPos = {"x": 0, "y": 0, "w": 24, "h": 8}
 
+    def __getTitlesUrls(self, site, link):
+        """Get Titles and URLs"""
+        title = link.get('title', "Link-Title-Not-Present-in-Config")
+        url = link.get('url', "https://link-not-present-in-config")
+        title = title.replace("$$REPLACEMESITENAME$$", site)
+        url = url.replace("$$REPLACEMESITENAME$$", site)
+        return title, url
+
     def _getNextID(self):
         """Get Next ID"""
         self.nextid += 1
@@ -279,7 +288,7 @@ class Template():
             out.append(row)
         return out
 
-    def _t_getDataSourceUid(self, *args):
+    def _t_getDataSourceUid(self, *_args):
         """Get Data Source UID"""
         # TODO: We need a way for Orchestrator to tell us if this is real time (5sec resolution)
         # or historical (1min resolution)
@@ -294,7 +303,7 @@ class Template():
             template = loadJson(fd.read(), self.logger)
         return template
 
-    def t_addRow(self, *args, **kwargs):
+    def t_addRow(self, *_args, **kwargs):
         """Add Row to the Dashboard"""
         out = self._t_loadTemplate("row.json")
         out["title"] = kwargs.get('title', "Row Title Not Present")
@@ -307,12 +316,6 @@ class Template():
             return []
         ret = []
         out = self._t_loadTemplate("links.json")
-        for link in self.config['template_links']:
-            tmpcopy = copy.deepcopy(out)
-            tmpcopy["title"] = link.get('title', "Link-Title-Not-Present-in-Config")
-            tmpcopy["url"] = link.get('url', "https://link-not-present-in-config")
-            ret.append(tmpcopy)
-        # Add all Monitoring links to SiteRM/NetworkRM
         sites = []
         # First need to identify all sites (only uniques, as it can repeat)
         for sitehost, _interfaces in self.m_groups['Hosts'].items():
@@ -323,12 +326,23 @@ class Template():
             sitename = sitehost.split(":")[0]
             if sitename in self.dashboards and sitename not in sites:
                 sites.append(sitename)
-        # For all sites - add the monitoring link
+
+        # Add dynamic urls from configuration and replace sitename with site
+        addedUrls = []
         for site in sites:
             tmpcopy = copy.deepcopy(out)
             tmpcopy["title"] = f"Site Monitoring: {site}"
             tmpcopy["url"] = f"{self.config['grafana_host']}/d/{self.dashboards[site]['uid']}"
             ret.append(tmpcopy)
+            for link in self.config['template_links']:
+                title, url = self.__getTitlesUrls(site, link)
+                if url not in addedUrls:
+                    tmpcopy = copy.deepcopy(out)
+                    tmpcopy["title"] = title
+                    tmpcopy["url"] = url
+                    print(tmpcopy)
+                    ret.append(tmpcopy)
+                addedUrls.append(url)
         return ret
 
 
@@ -382,7 +396,7 @@ class Template():
                 self.logger.error(f"Sitehost: {sitehost}")
                 self.logger.error(f"Interfaces: {interfaces}")
                 self.logger.error("This happens for Sites/Switches not exposing correct Sitename/Port. Are you missing an override?")
-                raise Exception("Sitehost not in correct format")
+                raise Exception("Sitehost not in correct format") from ex
             sitename = sitehost.split(":")[0]
             hostname = sitehost.split(":")[1]
             intfline = "|".join(interfaces.keys())
@@ -405,8 +419,8 @@ class Template():
         mermaid = self.m_getMermaidContent(args[1])
         panel["options"]["content"] = "\n".join(mermaid)
         # Need to add correct size for the panel
-        totalHeight = 18 + (len(self.m_groups['Hosts'])*2) + (len(self.m_groups['Switches'])*2)
-        panel["gridPos"]["h"] = clamp(totalHeight, 18, 48)
+        totalHeight = 12 + len(self.m_groups['Hosts']) + len(self.m_groups['Switches'])
+        panel["gridPos"]["h"] = clamp(totalHeight, 14, 24)
         return self.addRowPanel(row, [panel])
 
     def t_addDebug(self, *args):
@@ -465,15 +479,17 @@ class Template():
                     query['refId'] = f'A{refid}'
                     refid += 1
                     queries.append(query)
-        for mhost, macaddr in self.mac_addresses.items():
-            if mhost != hostname:
-                query = copy.deepcopy(origin_query)
-                query['datasource']['uid'] = str(self.t_dsourceuid)
-                query['expr'] = f'sum(arp_state{{HWaddress=~"{macaddr}.*"}}) OR on() vector(0)'
-                query['legendFormat'] = f'MAC address of {mhost} end visible in arptable'
-                query['refId'] = f'A{refid}'
-                refid += 1
-                queries.append(query)
+            if 'Vlan' in intfdata and intfdata['Vlan']:
+                vlan = intfdata['Vlan']
+                for mhost, macaddr in self.mac_addresses.items():
+                    if mhost != hostname:
+                        query = copy.deepcopy(origin_query)
+                        query['datasource']['uid'] = str(self.t_dsourceuid)
+                        query['expr'] = f'sum(arp_state{{HWaddress=~"{macaddr}.*",Hostname="{hostname}",sitename="{sitename}",Device="vlan.{vlan}"}}) OR on() vector(0)'
+                        query['legendFormat'] = f'MAC address of {mhost} end visible in arptable under vlan.{vlan}'
+                        query['refId'] = f'A{refid}'
+                        refid += 1
+                        queries.append(query)
         panel = self._t_loadTemplate("l2state.json")
         panel['id'] = self._getNextID()
         panel['title'] = f"L2 Debugging for Host: {sitehost}"
@@ -506,7 +522,7 @@ class Template():
             for mhost, macaddr in self.mac_addresses.items():
                 query = copy.deepcopy(origin_query)
                 query['datasource']['uid'] = str(self.t_dsourceuid)
-                query['expr'] = f'sum(mac_table_info{{hostname="{hostname}", macaddress="{macaddr}", vlan="{vlan}"}}) OR on() vector(0)'
+                query['expr'] = f'sum(mac_table_info{{sitename="{sitename}",hostname="{hostname}", macaddress="{macaddr}", vlan="{vlan}"}}) OR on() vector(0)'
                 query['legendFormat'] = f'MAC address of {mhost} visible in mac table ({vlan})'
                 query['refId'] = f'A{refid}'
                 refid += 1

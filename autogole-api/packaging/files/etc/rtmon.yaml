@@ -25,8 +25,8 @@ sense_endpoints:
 template_links:
     - title: 'All Node Monitoring'
       url: 'https://autogole-grafana.nrp-nautilus.io/d/D7xOxim4z/full-dtn-monitoring-variable?orgId=1&refresh=1m'
-    - title: 'All Switches Monitoring'
-      url: 'https://autogole-grafana.nrp-nautilus.io/d/1J9Zz1mWz/full-switch-monitoring-variable?orgId=1&refresh=1m'
+    - title: 'All Switches Monitoring $$REPLACEMESITENAME$$'
+      url: 'https://autogole-grafana.nrp-nautilus.io/d/efe9ac84-9df5-47a4-bea8-67a196771a0d/switch-monitoring?orgId=1&refresh=1m&var-Sitename=$$REPLACEMESITENAME$$&var-switch=All'
 
 # Override URL for the NSI,ESnet,Fabric mermaid diagrams. Most of those RMs report everything in a single SwitchingSubnet
 # and we need to override it to show the actual topology (joint, or not). Additionally - most of those have no site name or

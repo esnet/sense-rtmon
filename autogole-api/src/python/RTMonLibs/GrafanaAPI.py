@@ -142,7 +142,6 @@ class GrafanaAPI():
         if not all([kwargs.get('dashboard_uid'), kwargs.get('panelId'), kwargs.get('time_from'),
                     kwargs.get('time_to'), kwargs.get('tags'), kwargs.get('text')]):
             self.logger.error("Missing params for annotation")
-            import pdb; pdb.set_trace()
             return
         self.grafanaapi.annotations.add_annotation(
             dashboard_uid=kwargs['dashboard_uid'], panel_id=kwargs['panelId'],

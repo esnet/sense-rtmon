@@ -54,7 +54,8 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Merma
             return
         # 3. Create the dashboard and template
         try:
-            template = self.t_createTemplate(instance, manifest, **fout)
+            template, dashbInfo = self.t_createTemplate(instance, manifest, **fout)
+            fout["dashbInfo"] = dashbInfo
         #except Exception as ex:
         except IOError as ex:
             self.logger.error('Failed to create template: %s', ex)
@@ -69,6 +70,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Merma
         tmpOut = self.sr_submit_ping(instance=instance, manifest=manifest)
         if tmpOut:
             fout['ping'] = tmpOut
+            self.g_submitAnnotation(sitermOut=tmpOut, dashbInfo=fout["dashbInfo"])
         # 6. Update State to Running
         fout['state'] = 'running'
         fout.setdefault('retries', 0)
@@ -108,6 +110,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Merma
                     tmpOut = self.sr_submit_ping(instance=fout.get('instance', {}), manifest=fout.get('manifest', {}))
                     if tmpOut:
                         fout['ping'] = tmpOut
+                        self.g_submitAnnotation(sitermOut=tmpOut, dashbInfo=fout["dashbInfo"])
                     self._updateState(filename, fout)
                     return
                 # Need to update the dashboard with new template_tag

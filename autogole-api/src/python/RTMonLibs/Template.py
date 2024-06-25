@@ -251,6 +251,13 @@ class Template():
         self.t_dsourceuid = 0
         self.nextid = 0
         self.gridPos = {"x": 0, "y": 0, "w": 24, "h": 8}
+        self.annotationids = []
+
+    def _clean(self):
+        """Clean previous generated data"""
+        self.generated = {}
+        self.annotationids = []
+        self.nextid = 0
 
     def __getTitlesUrls(self, site, link):
         """Get Titles and URLs"""
@@ -260,9 +267,11 @@ class Template():
         url = url.replace("$$REPLACEMESITENAME$$", site)
         return title, url
 
-    def _getNextID(self):
+    def _getNextID(self, recordAnnotations=False):
         """Get Next ID"""
         self.nextid += 1
+        if recordAnnotations:
+            self.annotationids.append(self.nextid)
         return self.nextid
 
     def _getNextRowID(self):
@@ -270,14 +279,14 @@ class Template():
         self.nextid += 100
         return self.nextid
 
-    def addRowPanel(self, row, panels):
+    def addRowPanel(self, row, panels, recordAnnotations=False):
         """Add Panel to the Row (Depending on collapsed or not)"""
         # https://github.com/grafana/grafana/issues/50855
         out = []
         if not row['collapsed']:
             out.append(row)
         for pan in panels:
-            pan["id"] = self._getNextID()
+            pan["id"] = self._getNextID(recordAnnotations)
             if 'gridPos' not in pan:
                 pan["gridPos"] = self.gridPos
             if row['collapsed']:
@@ -381,7 +390,7 @@ class Template():
             panels = panels.replace("REPLACEME_HOSTNAME", hostname)
             panels = panels.replace("REPLACEME_INTERFACE", intfline)
             panels = loadJson(panels, self.logger)
-            out += self.addRowPanel(row, panels)
+            out += self.addRowPanel(row, panels, True)
         return out
 
     def t_createSwitchFlow(self, *args):
@@ -399,7 +408,10 @@ class Template():
                 raise Exception("Sitehost not in correct format") from ex
             sitename = sitehost.split(":")[0]
             hostname = sitehost.split(":")[1]
-            intfline = "|".join(interfaces.keys())
+            intfs = list(interfaces.keys())
+            if "?port_name?" in intfs:
+                intfs.remove("?port_name?")
+            intfline = "|".join(intfs)
             row = self.t_addRow(*args, title=f"Switch Flow Summary: {sitehost}")
             panels = dumpJson(self._t_loadTemplate("switchflow.json"), self.logger)
             panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
@@ -407,7 +419,7 @@ class Template():
             panels = panels.replace("REPLACEME_HOSTNAME", hostname)
             panels = panels.replace("REPLACEME_INTERFACE", intfline)
             panels = loadJson(panels, self.logger)
-            out += self.addRowPanel(row, panels)
+            out += self.addRowPanel(row, panels, True)
         return out
 
     def t_createMermaid(self, *args):
@@ -548,12 +560,11 @@ class Template():
         for sitehost, interfaces in self.m_groups['Switches'].items():
             self.logger.debug(f"Adding L2 Debugging for Switch: {sitehost}, {interfaces}")
             out += self._t_addSwitchL2Debugging(sitehost, interfaces, refID)
-        return self.addRowPanel(row, out)
+        return self.addRowPanel(row, out, True)
 
     def t_createTemplate(self, *args, **kwargs):
         """Create Grafana Template"""
-        self.generated = {}
-        self.nextid = 0
+        self._clean()
         self._t_getDataSourceUid(*args)
         self.generated = self.t_createDashboard(*args, **kwargs)
         # Add Mermaid (Send copy of args, as t_createMermaid will modify it by del items)
@@ -569,4 +580,4 @@ class Template():
         self.generated['panels'] += self.t_createSwitchFlow(*args)
         # Add L2 Debugging
         self.generated['panels'] += self.t_addL2Debugging(*args)
-        return {"dashboard": self.generated}
+        return {"dashboard": self.generated}, {"uid": self.generated['uid'], "annotation_panels": self.annotationids}

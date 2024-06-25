@@ -135,3 +135,29 @@ class GrafanaAPI():
             # General is default and not returned by Grafana API
             self.logger.warning(f"Folder {name} is not configured.")
         return None
+
+    def _g_addAnnotation(self, **kwargs):
+        """Add annotation for dashboard based on uid"""
+        # Check that all params present;
+        if not all([kwargs.get('dashboard_uid'), kwargs.get('panelId'), kwargs.get('time_from'),
+                    kwargs.get('time_to'), kwargs.get('tags'), kwargs.get('text')]):
+            self.logger.error("Missing params for annotation")
+            return
+        self.grafanaapi.annotations.add_annotation(
+            dashboard_uid=kwargs['dashboard_uid'], panel_id=kwargs['panelId'],
+            time_from=kwargs['time_from'], time_to=kwargs['time_to'],
+            tags=kwargs['tags'], text=kwargs['text'])
+
+    def g_submitAnnotation(self, **kwargs):
+        """Submit annotation"""
+        dashbuid = kwargs['dashbInfo']['uid']
+        for item in kwargs['sitermOut']:
+            for annid in kwargs['dashbInfo']['annotation_panels']:
+                # Now we have panelId and loop for each panel and add annotation
+                txt = f"Here is SiteRM Ping Request info for {item['sitename']} {item['hostname']}: {item['submit_out']}"
+                self._g_addAnnotation(dashboard_uid=dashbuid, panelId=annid,
+                                      time_from=item['submit_time']*1000,
+                                      time_to=item['submit_time']*1000,
+                                      tags=["SiteRM-Ping-Start"],
+                                      text=txt)
+        return True

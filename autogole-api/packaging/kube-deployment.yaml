@@ -49,6 +49,14 @@ spec:
                       name: secret-rtmon
                       readOnly: true
                       subPath: sense-o-auth-prod.yaml
+                    - mountPath: /etc/grid-security/hostcert.pem
+                      name: siterm-cert
+                      readOnly: true
+                      subPath: cert.pem
+                    - mountPath: /etc/grid-security/hostcert.pem
+                      name: siterm-key
+                      readOnly: true
+                      subPath: key.pem
             volumes:
                 - name: secret-rtmon
                   secret:
@@ -61,3 +69,17 @@ spec:
                         - key: sense-o-auth-prod-yaml
                           path: sense-o-auth-prod.yaml
                     secretName: secret-rtmon
+                - name: siterm-cert
+                  secret:
+                    secretName: autogole-monitoring
+                    items:
+                    - key: siterm-cert
+                      path: cert.pem
+                    defaultMode: 0644
+                - name: siterm-key
+                  secret:
+                    secretName: autogole-monitoring
+                    items:
+                    - key: siterm-key
+                      path: key.pem
+                    defaultMode: 0644

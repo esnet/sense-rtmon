@@ -1,8 +1,0 @@
-%% Positioning & Connections
-e ---|connection| sw1s1if
-sw1s1if -.- sw1s2ifout
-sw1s2ifout ---|connection| sw2s1if
-sw2s1if -.- sw2s2ifout
-sw2s2ifout ---|connection| sw3s1if
-sw3s1if -.- sw3s2ifout
-sw3s2ifout ---|connection| e2

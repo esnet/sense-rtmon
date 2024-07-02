@@ -11,8 +11,9 @@ from RTMonLibs.Template import Template
 from RTMonLibs.Template import Mermaid
 from RTMonLibs.SiteOverride import SiteOverride
 from RTMonLibs.SiteRMApi import SiteRMApi
+from RTMonLibs.ExternalAPI import ExternalAPI
 
-class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Mermaid):
+class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, ExternalAPI, Mermaid):
     """ RTMon Worker """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -71,7 +72,9 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Merma
         if tmpOut:
             fout['ping'] = tmpOut
             self.g_submitAnnotation(sitermOut=tmpOut, dashbInfo=fout["dashbInfo"])
-        # 6. Update State to Running
+        # 6. Submit to External API (if any configured)
+        self.e_submitExternalAPI(fout, 'submit')
+        # 7. Update State to Running
         fout['state'] = 'running'
         fout.setdefault('retries', 0)
         self._updateState(filename, fout)
@@ -92,10 +95,14 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Merma
                 if os.path.exists(filename):
                     os.remove(filename)
                 break
+        # Delete the action from External API
+        self.e_submitExternalAPI(fout, 'delete')
 
     def running_exe(self, filename, fout):
         """Running Action Execution"""
         self.logger.debug('Running Execution: %s, %s', filename, fout)
+        # Check external record to track info of device
+        self.e_submitExternalAPI(fout, 'running')
         for dashbName, dashbVals in self.dashboards.items():
             present = True
             for key in ['referenceUUID', 'orchestrator', 'submission']:
@@ -240,6 +247,6 @@ if __name__ == "__main__":
     while True:
         try:
             worker.startwork()
-        except Exception as exc:
+        except IOError as exc: # Exception as exc:
             LOGGER.error('Exception: %s', exc)
         time.sleep(CONFIG.get('sleep_timer', 30))

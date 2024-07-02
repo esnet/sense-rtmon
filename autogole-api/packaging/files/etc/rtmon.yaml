@@ -9,7 +9,7 @@ grafana_api_key: 'REPLACE_ME'
 
 # Template path and tags. If tag updated - it will force update all templates
 template_path: '/etc/rtmon/templates'
-template_tag: 'V0.01'
+template_tag: 'V0.1'
 
 # Data sources for Prometheus (It will use grafana API to find data sources uid)
 data_sources:
@@ -32,6 +32,9 @@ template_links:
 # and we need to override it to show the actual topology (joint, or not). Additionally - most of those have no site name or
 # realportname - so we need to override it as well. (That is the feature not yet implemented in other RMs)
 override_url: "https://raw.githubusercontent.com/esnet/sense-rtmon/main/autogole-api/packaging/files/etc/overrides.yaml"
+
+external_service:
+  ESnet: "https://nsi-snmpmon-esnet.nrp-nautilus.io/"
 
 # HostCert and HostKey location (needed for SiteRM communications). Cert mush be authorized in all Frontends.
 hostcert: '/etc/grid-security/hostcert.pem'

@@ -395,6 +395,27 @@ class Template():
 
     def t_createSwitchFlow(self, *args):
         """Create Switch Flow Template"""
+        def findIntf(interfaces):
+            """Find Interface"""
+            intfs = []
+            for intfname, intfdata in interfaces.items():
+
+                if "?port_name?" == intfname:
+                    continue
+                elif "JointNetwork" in intfdata:
+                    print(f"JointNetwork: {intfdata['JointNetwork']}")
+                    # ifDescr=~"newy32aoa-cr6::1/1/c13/1|newy32aoa-cr6::.*1/1/c13/1-2015"
+                    # 'JointNetwork': 'newy32aoa-cr6|1_1_c13_1|fabric'
+                    splitdata = intfdata['JointNetwork'].split("|")
+                    if len(splitdata) >= 2:
+                        intfs.append(f"{splitdata[0]}.*{splitdata[1].replace('_', '/')}")
+                        intfs.append(f"{splitdata[0]}.*{splitdata[1].replace('_', '/')}-{intfdata['Vlan']}")
+                    if len(splitdata) == 3:
+                        intfs.append(splitdata[2])
+                else:
+                    intfs.append(intfname)
+            intfline = "|".join(intfs)
+            return intfline
         out = []
         for sitehost, interfaces in self.m_groups['Switches'].items():
             try:
@@ -408,10 +429,7 @@ class Template():
                 raise Exception("Sitehost not in correct format") from ex
             sitename = sitehost.split(":")[0]
             hostname = sitehost.split(":")[1]
-            intfs = list(interfaces.keys())
-            if "?port_name?" in intfs:
-                intfs.remove("?port_name?")
-            intfline = "|".join(intfs)
+            intfline = findIntf(interfaces)
             row = self.t_addRow(*args, title=f"Switch Flow Summary: {sitehost}")
             panels = dumpJson(self._t_loadTemplate("switchflow.json"), self.logger)
             panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
@@ -518,7 +536,6 @@ class Template():
         origin_query = self._t_loadTemplate("l2state-query.json")
         query = copy.deepcopy(origin_query)
         # Add state and check if it receives information from snmp monitoring
-        #    count(interface_statistics{sitename = "NRM_CENIC", hostname = "$switch"})
         query['datasource']['uid'] = str(self.t_dsourceuid)
         query['expr'] = f'count(interface_statistics{{sitename="{sitename}", hostname="{hostname}"}}) OR on() vector(0)'
         query['legendFormat'] = f'SNMP Data available for {sitename} {hostname}'

@@ -3,7 +3,7 @@
   name: "NSI_STARLIGHT"
   joint_net: False
 "urn:ogf:network:es.net:2013":
-  name: "ESNET"
+  name: "ESnet"
   joint_net: True
 "urn:ogf:network:stack-fabric:2024":
   name: "NSI_FABRIC"

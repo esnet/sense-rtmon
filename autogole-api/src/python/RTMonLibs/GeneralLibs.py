@@ -95,3 +95,14 @@ def getWebContentFromURL(url, logger, raiseEx=True):
             out['status_code'] = -1
             time.sleep(1)
     return out
+
+
+class ExceptionTemplate(Exception):
+    """Exception template."""
+    def __call__(self, *args):
+        return self.__class__(*(self.args + args))
+    def __str__(self):
+        return ': '.join(self.args)
+
+class SENSEOFailure(ExceptionTemplate):
+    """Not Found error."""

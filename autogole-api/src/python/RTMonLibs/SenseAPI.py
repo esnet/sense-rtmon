@@ -8,6 +8,7 @@ import os
 from sense.client.workflow_combined_api import WorkflowCombinedApi
 from sense.client.discover_api import DiscoverApi
 from RTMonLibs.GeneralLibs import loadJson, dumpJson
+from RTMonLibs.GeneralLibs import SENSEOFailure
 
 
 class SenseAPI:
@@ -85,6 +86,7 @@ class SenseAPI:
             response = dApi.discover_service_instances_get()
         except Exception as ex:
             self.logger.critical(f'API Call Failed!. Exception {ex} Response: {response}')
+            raise SENSEOFailure(f'API Call Failed!. Exception {ex} Response: {response}') from ex
         if not response:
             self.logger.error("No Data received from SENSE-O")
             return {}

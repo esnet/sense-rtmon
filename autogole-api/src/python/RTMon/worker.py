@@ -3,7 +3,7 @@
 import os
 import time
 from pprint import pformat
-from RTMonLibs.GeneralLibs import loadFileJson, getConfig, dumpJson
+from RTMonLibs.GeneralLibs import loadFileJson, getConfig, dumpJson, SENSEOFailure
 from RTMonLibs.LogLib import getLoggingObject
 from RTMonLibs.SenseAPI import SenseAPI
 from RTMonLibs.GrafanaAPI import GrafanaAPI
@@ -12,6 +12,7 @@ from RTMonLibs.Template import Mermaid
 from RTMonLibs.SiteOverride import SiteOverride
 from RTMonLibs.SiteRMApi import SiteRMApi
 from RTMonLibs.ExternalAPI import ExternalAPI
+
 
 class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, ExternalAPI, Mermaid):
     """ RTMon Worker """
@@ -213,6 +214,13 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
             self.logger.info('-'*80)
 
     def startwork(self):
+        """Execute Main Program."""
+        try:
+            self._startwork()
+        except SENSEOFailure as ex:
+            self.logger.error('SENSEOFailure: %s', ex)
+
+    def _startwork(self):
         """Execute Main Program."""
         # Loop via all sense-o instances and create files for each instance
         timings = {}

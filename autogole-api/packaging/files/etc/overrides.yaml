@@ -19,4 +19,4 @@
   joint_net: False
 "urn:ogf:network:al2s.internet2.edu:2023":
   name: "Internet2"
-  joint_net: False
+  joint_net: True

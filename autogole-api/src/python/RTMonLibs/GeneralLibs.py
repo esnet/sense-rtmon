@@ -96,6 +96,9 @@ def getWebContentFromURL(url, logger, raiseEx=True):
             time.sleep(1)
     return out
 
+def escape(invalue):
+    """Escape special characters for regex matching"""
+    return invalue.replace("+", "\\+")
 
 class ExceptionTemplate(Exception):
     """Exception template."""

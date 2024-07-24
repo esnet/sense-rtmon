@@ -434,7 +434,7 @@ class Template():
             panels = dumpJson(self._t_loadTemplate("switchflow.json"), self.logger)
             panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
             panels = panels.replace("REPLACEME_SITENAME", sitename)
-            panels = panels.replace("REPLACEME_HOSTNAME", escape(hostname))
+            panels = panels.replace("REPLACEME_HOSTNAME", hostname)
             panels = panels.replace("REPLACEME_INTERFACE", escape(intfline))
             panels = loadJson(panels, self.logger)
             out += self.addRowPanel(row, panels, True)
@@ -537,7 +537,7 @@ class Template():
         query = copy.deepcopy(origin_query)
         # Add state and check if it receives information from snmp monitoring
         query['datasource']['uid'] = str(self.t_dsourceuid)
-        query['expr'] = f'count(interface_statistics{{sitename="{sitename}", hostname="{escape(hostname)}"}}) OR on() vector(0)'
+        query['expr'] = f'count(interface_statistics{{sitename="{sitename}", hostname="{hostname}"}}) OR on() vector(0)'
         query['legendFormat'] = f'SNMP Data available for {sitename} {hostname}'
         query['refId'] = f'A{refid}'
         refid += 1
@@ -551,7 +551,7 @@ class Template():
             for mhost, macaddr in self.mac_addresses.items():
                 query = copy.deepcopy(origin_query)
                 query['datasource']['uid'] = str(self.t_dsourceuid)
-                query['expr'] = f'sum(mac_table_info{{sitename="{sitename}",hostname="{escape(hostname)}", macaddress="{macaddr}", vlan="{vlan}"}}) OR on() vector(0)'
+                query['expr'] = f'sum(mac_table_info{{sitename="{sitename}",hostname="{hostname}", macaddress="{macaddr}", vlan="{vlan}"}}) OR on() vector(0)'
                 query['legendFormat'] = f'MAC address of {mhost} visible in mac table ({vlan})'
                 query['refId'] = f'A{refid}'
                 refid += 1

@@ -62,8 +62,13 @@ class SiteRMApi:
             for key, defval in [("IPv4", "?ipv4?"), ("IPv6", "?ipv6?")]:
                 if host.get(key) and host[key] != defval:
                     hostspl = host.get("Name").split(':')
-                    allDebugActions = self.sr_get_debug_actions(**{'sitename': hostspl[0],
-                                                                   'hostname': hostspl[1]})
+                    try:
+                        allDebugActions = self.sr_get_debug_actions(**{'sitename': hostspl[0],
+                                                                       'hostname': hostspl[1]})
+                    except Exception as e:
+                        self.logger.error(f"Failed to get debug actions for {hostspl[0]}:{hostspl[1]}: {e}")
+                        allDebugActions = []
+                        continue
                     for ip in allIPs.get(key, []):
                         hostip = host[key].split('/')[0]
                         if hostip == ip:

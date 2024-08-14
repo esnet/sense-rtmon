@@ -29,6 +29,7 @@ class Mermaid():
         self.mac_addresses = {}
         self.orderlist = []
         self.orderlistports = []
+        self.instance = None
 
     def _m_cleanCache(self):
         """Clean Cache"""
@@ -40,6 +41,7 @@ class Mermaid():
         self.vlans = {}
         self.orderlist = []
         self.orderlistports = []
+        self.instance = None
 
     def _m_addLink(self, val1, val2):
         if [val1, val2] not in self.links and [val2, val1] not in self.links:
@@ -62,6 +64,22 @@ class Mermaid():
         if 'MAC' in hostdict and hostdict['MAC'] not in self.mac_addresses and hostdict['MAC'] != "?mac?":
             self.mac_addresses.setdefault(hostname, hostdict['MAC'])
 
+    def _m_addBGP(self, item, ipkey, bgppeer):
+        """Add BGP into Mermaid graph"""
+        if not item.get('Site', None):
+            return
+        for intitem in self.instance.get('intents', []):
+            for connections in intitem.get('json', {}).get('data', {}).get('connections', []):
+                for terminal in connections.get('terminals', []):
+                    if 'uri' not in terminal:
+                        continue
+                    if item['Site'] == terminal['uri'] and terminal.get(f'{ipkey.lower()}_prefix_list', None):
+                        val = terminal[f'{ipkey.lower()}_prefix_list']
+                        self.mermaid.append(f'        {bgppeer}_bgp{ipkey}(BGP_{ipkey})')
+                        self._m_addLink(bgppeer, f'{bgppeer}_bgp{ipkey}')
+                        self.mermaid.append(f'        {bgppeer}_bgp{ipkey}_peer({val})')
+                        self._m_addLink(f'{bgppeer}_bgp{ipkey}', f'{bgppeer}_bgp{ipkey}_peer')
+
     def _m_addSwitch(self, item):
         uniqname = _processName(f'{item["Node"]}_{item["Name"]}')
         self.m_groups['Switches'].setdefault(item["Node"], {}).setdefault(item["Name"], {})
@@ -72,12 +90,23 @@ class Mermaid():
         else:
             self.mermaid.append(f'    subgraph "{item["Node"]}"')
             self.mermaid.append(f'        {uniqname}("{item["Name"]}")')
-        self.mermaid.append('    end')
         if 'Peer' in item and item['Peer'] != "?peer?":
             self._m_addLink(uniqname, _processName(item['Peer']))
             if 'Vlan' in item and item['Vlan']:
                 self._m_addVlan(f'{uniqname}_{item["Peer"]}', item['Vlan'])
         self._m_addPorts(_processName(item['Port']), uniqname)
+        # Add IPv4/IPv6 on the switch
+        for ipkey, ipdef in {'IPv4': '?port_ipv4?', 'IPv6': '?port_ipv6?'}.items():
+            if ipkey in item and item[ipkey] != ipdef:
+                self.mermaid.append(f'        {uniqname}_{ipkey}({item[ipkey]})')
+                if item.get('Vlan'):
+                    self.mermaid.append(f'        {uniqname}_vlan{item["Vlan"]}(vlan.{item["Vlan"]})')
+                    self._m_addLink(uniqname, f'{uniqname}_vlan{item["Vlan"]}')
+                    self._m_addLink(f'{uniqname}_vlan{item["Vlan"]}', f'{uniqname}_{ipkey}')
+                    # Add BGP Peering information
+                    self._m_addBGP(item, ipkey, f'{uniqname}_{ipkey}')
+                    # TODO: Here we should save IP for issuing ping between SiteRM endpoints (switches)
+        self.mermaid.append('    end')
         return uniqname
 
     def _m_addHost(self, host):
@@ -228,9 +257,10 @@ class Mermaid():
                 nexthop = manifest["Ports"][0]["Node"]
                 counter = 50
 
-    def m_getMermaidContent(self, manifest):
+    def m_getMermaidContent(self, instance, manifest):
         """Create Mermaid Template"""
         self._m_cleanCache()
+        self.instance = instance
         self.findorder(manifest)
         for item in self.orderlist:
             self._m_addItem(item)
@@ -414,6 +444,10 @@ class Template():
                         intfs.append(splitdata[2])
                 else:
                     intfs.append(intfname)
+                    # Add also lowercase and space removed intf names
+                    # https://github.com/esnet/sense-rtmon/issues/128
+                    intfs.append(intfname.lower())
+                    intfs.append(intfname.replace(" ", ""))
             intfline = "|".join(intfs)
             return intfline
         out = []
@@ -446,7 +480,7 @@ class Template():
         self.so_mappeers(args[1])
         row = self.t_addRow(*args, title="End-to-End Flow Monitoring")
         panel = self._t_loadTemplate("mermaid.json")
-        mermaid = self.m_getMermaidContent(args[1])
+        mermaid = self.m_getMermaidContent(*args)
         panel["options"]["content"] = "\n".join(mermaid)
         # Need to add correct size for the panel
         totalHeight = 12 + len(self.m_groups['Hosts']) + len(self.m_groups['Switches'])

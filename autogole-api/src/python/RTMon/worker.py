@@ -116,7 +116,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                     self.logger.info('Dashboard is present in Grafana: %s', dashbName)
                     # Check if we need to re-issue ping test
                     tmpOut = self.sr_submit_ping(instance=fout.get('instance', {}), manifest=fout.get('manifest', {}))
-                    if tmpOut:
+                    if tmpOut and fout.get('dashbInfo', {}):
                         fout['ping'] = tmpOut
                         self.g_submitAnnotation(sitermOut=tmpOut, dashbInfo=fout["dashbInfo"])
                     self._updateState(filename, fout)
@@ -227,13 +227,16 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         # Load all grafana dashboards
         self.g_loadAll()
         for key, val in self.config.get('sense_endpoints', {}).items():
-            startTime = int(time.time())
-            os.environ['SENSE_AUTH_OVERRIDE_NAME'] = key
-            os.environ['SENSE_AUTH_OVERRIDE'] = val
-            self.s_reloadClient()
-            self._getAllInstances()
-            endTime = int(time.time())
-            timings[key] = endTime - startTime
+            try:
+                startTime = int(time.time())
+                os.environ['SENSE_AUTH_OVERRIDE_NAME'] = key
+                os.environ['SENSE_AUTH_OVERRIDE'] = val
+                self.s_reloadClient()
+                self._getAllInstances()
+                endTime = int(time.time())
+                timings[key] = endTime - startTime
+            except SENSEOFailure as ex:
+                self.logger.error('SENSEOFailure: %s', ex)
         startTime = int(time.time())
         self.logger.info('Running Main')
         self.main()

@@ -448,6 +448,7 @@ class Template():
                     # https://github.com/esnet/sense-rtmon/issues/128
                     intfs.append(intfname.lower())
                     intfs.append(intfname.replace(" ", ""))
+                    intfs.append(intfname.lower().replace(" ", ""))
             intfline = "|".join(intfs)
             return intfline
         out = []

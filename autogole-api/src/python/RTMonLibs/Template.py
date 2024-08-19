@@ -60,9 +60,8 @@ class Mermaid():
         except IndexError as ex:
             hostname = hostdict['Name']
             self.logger.debug(f"Got Exception: {ex}")
-
-        if 'MAC' in hostdict and hostdict['MAC'] not in self.mac_addresses and hostdict['MAC'] != "?mac?":
-            self.mac_addresses.setdefault(hostname, hostdict['MAC'])
+        if 'Mac' in hostdict and hostdict['Mac'] not in self.mac_addresses and hostdict['Mac'] != "?mac?":
+            self.mac_addresses.setdefault(hostname, hostdict['Mac'])
 
     def _m_addBGP(self, item, ipkey, bgppeer):
         """Add BGP into Mermaid graph"""

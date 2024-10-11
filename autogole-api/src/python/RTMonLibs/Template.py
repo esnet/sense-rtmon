@@ -288,12 +288,17 @@ class Template():
         self.annotationids = []
         self.nextid = 0
 
-    def __getTitlesUrls(self, site, link):
+    def __getTitlesUrls(self, site, link, **kwargs):
         """Get Titles and URLs"""
         title = link.get('title', "Link-Title-Not-Present-in-Config")
         url = link.get('url', "https://link-not-present-in-config")
         title = title.replace("$$REPLACEMESITENAME$$", site)
         url = url.replace("$$REPLACEMESITENAME$$", site)
+        uuid = kwargs.get('referenceUUID', None)
+        senseodomain = kwargs.get('orchestrator', None)
+        if uuid and senseodomain:
+            url = url.replace("$$REPLACEMESENSEODOMAIN$$", senseodomain)
+            url = url.replace("$$REPLACEMEDELTAUUID$$", uuid)
         return title, url
 
     def _getNextID(self, recordAnnotations=False):
@@ -348,7 +353,7 @@ class Template():
         out["id"] = self._getNextRowID()
         return out
 
-    def t_addLinks(self, *_args):
+    def t_addLinks(self, *_args, **kwargs):
         """Add Links to the Dashboard"""
         if not self.config.get('template_links', []):
             return []
@@ -373,7 +378,7 @@ class Template():
             tmpcopy["url"] = f"{self.config['grafana_host']}/d/{self.dashboards[site]['uid']}"
             ret.append(tmpcopy)
             for link in self.config['template_links']:
-                title, url = self.__getTitlesUrls(site, link)
+                title, url = self.__getTitlesUrls(site, link, **kwargs)
                 if url not in addedUrls:
                     tmpcopy = copy.deepcopy(out)
                     tmpcopy["title"] = title
@@ -622,7 +627,7 @@ class Template():
         orig_args = copy.deepcopy(args)
         self.generated['panels'] += self.t_createMermaid(*orig_args)
         # Add Links on top of the page
-        self.generated['links'] = self.t_addLinks(*args)
+        self.generated['links'] = self.t_addLinks(*args, **kwargs)
         # Add Debug Info (manifest, instance)
         self.generated['panels'] += self.t_addDebug(*args)
         # Add Host Flow

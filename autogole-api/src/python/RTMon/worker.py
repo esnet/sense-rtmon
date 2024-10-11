@@ -64,6 +64,9 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
             return
         # 4. Submit to Grafana (Check if folder exists, if not create it)
         folderName = self.config.get('grafana_folder', 'Real Time Mon')
+        devname = self.config.get('grafana_dev', None)
+        if devname:
+            folderName = f'{folderName} - {devname}'
         folderInfo = self.g_createFolder(folderName)
         template['folderId'] = folderInfo['id']
         template['overwrite'] = True
@@ -84,48 +87,50 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         """Delete Action Execution"""
         self.logger.info('Delete Execution: %s, %s', filename, fout)
         # Delete the dashboard and template from Grafana
-        for dashbName, dashbVals in self.dashboards.items():
-            present = True
-            for key in ['referenceUUID', 'orchestrator', 'submission']:
-                if fout.get(key, '') not in dashbVals['tags']:
-                    present = False
-            if present:
-                self.logger.info('Deleting Dashboard: %s', dashbName)
-                self.g_deleteDashboard(dashbName)
-                filename = f'{self.config.get("workdir", "/srv")}/{filename}'
-                if os.path.exists(filename):
-                    os.remove(filename)
-                break
-        # Delete the action from External API
-        self.e_submitExternalAPI(fout, 'delete')
+        for grafDir, dirVals in self.dashboards.items():
+            for dashbName, dashbVals in dirVals.items():
+                present = True
+                for key in ['referenceUUID', 'orchestrator', 'submission']:
+                    if fout.get(key, '') not in dashbVals.get('tags', []):
+                        present = False
+                if present:
+                    self.logger.info('Deleting Dashboard: %s', dashbName)
+                    self.g_deleteDashboard(dashbName)
+                    filename = f'{self.config.get("workdir", "/srv")}/{filename}'
+                    if os.path.exists(filename):
+                        os.remove(filename)
+                    break
+            # Delete the action from External API
+            self.e_submitExternalAPI(fout, 'delete')
 
     def running_exe(self, filename, fout):
         """Running Action Execution"""
         self.logger.debug('Running Execution: %s, %s', filename, fout)
         # Check external record to track info of device
         self.e_submitExternalAPI(fout, 'running')
-        for dashbName, dashbVals in self.dashboards.items():
-            present = True
-            for key in ['referenceUUID', 'orchestrator', 'submission']:
-                if fout.get(key, '') not in dashbVals['tags']:
-                    present = False
-            if present:
-                # Check that version is the same, in case of new release,
-                # we need to update the dashboard with new template_tag
-                if self.config['template_tag'] in dashbVals['tags']:
-                    self.logger.info('Dashboard is present in Grafana: %s', dashbName)
-                    # Check if we need to re-issue ping test
-                    tmpOut = self.sr_submit_ping(instance=fout.get('instance', {}), manifest=fout.get('manifest', {}))
-                    if tmpOut and fout.get('dashbInfo', {}):
-                        fout['ping'] = tmpOut
-                        self.g_submitAnnotation(sitermOut=tmpOut, dashbInfo=fout["dashbInfo"])
+        for grafDir, dirVals in self.dashboards.items():
+            for dashbName, dashbVals in dirVals.items():
+                present = True
+                for key in ['referenceUUID', 'orchestrator', 'submission']:
+                    if fout.get(key, '') not in dashbVals.get('tags', []):
+                        present = False
+                if present:
+                    # Check that version is the same, in case of new release,
+                    # we need to update the dashboard with new template_tag
+                    if self.config['template_tag'] in dashbVals['tags']:
+                        self.logger.info('Dashboard is present in Grafana: %s', dashbName)
+                        # Check if we need to re-issue ping test
+                        tmpOut = self.sr_submit_ping(instance=fout.get('instance', {}), manifest=fout.get('manifest', {}))
+                        if tmpOut and fout.get('dashbInfo', {}):
+                            fout['ping'] = tmpOut
+                            self.g_submitAnnotation(sitermOut=tmpOut, dashbInfo=fout["dashbInfo"])
+                        self._updateState(filename, fout)
+                        return
+                    # Need to update the dashboard with new template_tag
+                    self.logger.info('Dashboard is present in Grafana, but with old version: %s', dashbName)
+                    fout['state'] = 'delete'
                     self._updateState(filename, fout)
                     return
-                # Need to update the dashboard with new template_tag
-                self.logger.info('Dashboard is present in Grafana, but with old version: %s', dashbName)
-                fout['state'] = 'delete'
-                self._updateState(filename, fout)
-                return
         # If we reach here - means the dashboard is not present in Grafana
         self.logger.info('Dashboard is not present in Grafana: %s', fout)
         fout.setdefault('retries', 0)

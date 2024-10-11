@@ -3,9 +3,20 @@
 import os
 import json
 import time
+import uuid
+import hashlib
 import requests
 from yaml import safe_load as yload
 from yaml import safe_dump as ydump
+
+def getUUID(inputstr):
+    """Generate UUID from Input Str"""
+    hashObject = hashlib.sha256(inputstr.encode('utf-8'))
+    hashHex = hashObject.hexdigest()
+    customUUID = str(uuid.UUID(hashHex[:32]))
+    # Grafana allows max 40 chars for UUID
+    return customUUID[:40]
+
 
 def loadFileJson(filename, logger):
     """Load File"""

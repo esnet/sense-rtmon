@@ -3,7 +3,7 @@
 """Grafana Template Generation"""
 import copy
 import os.path
-from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape
+from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, getUUID
 
 def _processName(name):
     """Process Name for Mermaid and replace all special chars with _"""
@@ -402,12 +402,14 @@ class Template():
         out = self._t_loadTemplate("dashboard.json")
         # Update title;
         title = f'{args[0]["alias"]}|Flow: {args[0]["intents"][0]["id"]}|{args[0]["timestamp"]}'
+        if self.config.get('grafana_dev', None):
+            title += f" ({self.config['grafana_dev']})"
         out["title"] = title
         for key in ['referenceUUID', 'orchestrator', 'submission']:
             if key in kwargs:
                 out['tags'].append(kwargs[key])
         out['tags'].append(self.config['template_tag'])
-        out["uid"] = args[0]["intents"][0]["id"]
+        out["uid"] = getUUID(title)
         return out
 
     def t_createHostFlow(self, *args):

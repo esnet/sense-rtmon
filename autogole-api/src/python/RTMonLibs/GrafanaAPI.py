@@ -40,7 +40,10 @@ class GrafanaAPI():
         while failures < 3:
             try:
                 for item in self.grafanaapi.search.search_dashboards():
-                    self.dashboards[item['title']] = item
+                    folderTitle = item.get('folderTitle', '')
+                    if folderTitle:
+                        self.dashboards.setdefault(folderTitle, {})
+                        self.dashboards[folderTitle][item['title']] = item
                 return
             except Exception as ex:
                 failures += 1
@@ -48,10 +51,10 @@ class GrafanaAPI():
                 time.sleep(1)
         raise Exception("Failed to get dashboards after 3 retries")
 
-    def g_getDashboardByTitle(self, title):
-        """Get dashboard by Title"""
-        if title in self.dashboards:
-            return self.dashboards[title]
+    def g_getDashboardByTitle(self, title, folderTitle):
+        """Get dashboard by Title inside folder"""
+        if folderTitle in self.dashboards and title in self.dashboards[folderTitle]:
+            return self.dashboards[folderTitle][title]
         return {}
 
     def g_getDataSources(self):
@@ -81,13 +84,13 @@ class GrafanaAPI():
                 time.sleep(1)
         raise Exception(f"Failed to create dashboard {dashbJson} after 3 retries")
 
-    def g_deleteDashboard(self, title):
+    def g_deleteDashboard(self, title, folderTitle):
         """Delete dashboard"""
-        if title in self.dashboards:
+        if folderTitle in self.dashboards and title in self.dashboards[folderTitle]:
             failures = 0
             while failures < 3:
                 try:
-                    return self.grafanaapi.dashboard.delete_dashboard(self.dashboards[title]['uid'])
+                    return self.grafanaapi.dashboard.delete_dashboard(self.dashboards[folderTitle][title]['uid'])
                 except Exception as ex:
                     failures += 1
                     self.logger.error(f"Failed to delete dashboard {title}: {ex}")

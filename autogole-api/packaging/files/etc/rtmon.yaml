@@ -7,6 +7,12 @@ workdir: '/srv/'
 grafana_host: 'https://autogole-grafana.nrp-nautilus.io'
 grafana_api_key: 'REPLACE_ME'
 grafana_folder: 'Real Time Mon'
+# FOR DEVELOPMEENT ONLY
+# Enable grafana_dev parameter (can be any string, and will be used as name to create directory inside Grafana)
+# Additionally - all dashboards will have this added to name.
+# Grafana itself update's/inserts dashboards based on uid (and if this is not used, it can easily update production dashboards)
+# grafana_dev: 'Justas-Dev'
+
 
 # Template path and tags. If tag updated - it will force update all templates
 template_path: '/etc/rtmon/templates'

@@ -6,6 +6,7 @@ workdir: '/srv/'
 # Grafana settings (for the API)
 grafana_host: 'https://autogole-grafana.nrp-nautilus.io'
 grafana_api_key: 'REPLACE_ME'
+grafana_folder: 'Real Time Mon'
 
 # Template path and tags. If tag updated - it will force update all templates
 template_path: '/etc/rtmon/templates'

@@ -27,7 +27,7 @@ RUN git clone https://github.com/esnet/sense-rtmon.git /opt/sense-rtmon && \
 RUN wget https://raw.githubusercontent.com/sdn-sense/rm-configs/master/CAs/SiteRM.pem -O /etc/grid-security/certificates/e52ac827.0
 
 ADD files/etc/supervisord.d/10-server.conf /etc/supervisord.d/10-server.conf
-COPY icons/host.png /srv/icons/host.png
-COPY icons/switch.png /srv/icons/switch.png
+ADD icons/host.png /srv/icons/host.png
+ADD icons/switch.png /srv/icons/switch.png
 # Get latest CA's
 RUN fetch-crl || echo "Supress warnings."

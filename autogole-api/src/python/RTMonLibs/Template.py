@@ -4,6 +4,7 @@
 import copy
 import os.path
 from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, getUUID
+from RTMonLibs.DiagramWorker import DiagramWorker
 
 def _processName(name):
     """Process Name for Mermaid and replace all special chars with _"""
@@ -628,6 +629,13 @@ class Template():
         # Add Mermaid (Send copy of args, as t_createMermaid will modify it by del items)
         orig_args = copy.deepcopy(args)
         self.generated['panels'] += self.t_createMermaid(*orig_args)
+        #Generate Diagrams
+        try: 
+            diagram_filename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{kwargs['referenceUUID']}"
+            DiagramWorker(self.orderlist).createGraph(diagram_filename)
+            self.logger.info(f"Diagram saved at {diagram_filename}.png")
+        except IOError as ex:
+            self.logger.error('Failed to create diagram: %s', ex)
         # Add Links on top of the page
         self.generated['links'] = self.t_addLinks(*args, **kwargs)
         # Add Debug Info (manifest, instance)

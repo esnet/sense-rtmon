@@ -84,8 +84,14 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         self._updateState(filename, fout)
 
     def delete_exe(self, filename, fout):
+        
         """Delete Action Execution"""
         self.logger.info('Delete Execution: %s, %s', filename, fout)
+        #Deleting the diagram image
+        diagram_filename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{fout['referenceUUID']}.png"
+        if os.path.exists(diagram_filename):
+            os.remove(diagram_filename)
+            self.logger.info(f"Removed diagram image {diagram_filename}")
         # Delete the dashboard and template from Grafana
         for grafDir, dirVals in self.dashboards.items():
             for dashbName, dashbVals in dirVals.items():

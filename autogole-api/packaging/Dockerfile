@@ -21,7 +21,7 @@ RUN git clone https://github.com/sdn-sense/sense-o-py-client.git /opt/sense-o-py
 
 # Install RTMON (TODO, replace to ESnet repo once merged)
 RUN git clone https://github.com/esnet/sense-rtmon.git /opt/sense-rtmon && \
-    cd /opt/sense-rtmon/autogole-api/ && pip3 install -r requirements.txt && pip3 install diagrams && pip3 install . && \
+    cd /opt/sense-rtmon/autogole-api/ && pip3 install -r requirements.txt && pip3 install . && \
     cp src/templates/* /etc/rtmon/templates/
 
 RUN wget https://raw.githubusercontent.com/sdn-sense/rm-configs/master/CAs/SiteRM.pem -O /etc/grid-security/certificates/e52ac827.0

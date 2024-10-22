@@ -1,19 +1,30 @@
+"""
+DiagramWorker Class for Network Topology Visualization
 
+This module contains the DiagramWorker class, which generates network topology diagrams 
+by processing input data that includes hosts and switches. It uses the 'diagrams' library 
+to visualize network components and their interconnections.
+"""
 import os
 from diagrams import Diagram, Cluster, Edge
 from diagrams.custom import Custom
-
-def _processName(name):
-    """Process Name for Diagram and replace all special chars with _"""
-    for repl in [[" ", "_"], [":", "_"], ["/", "_"], ["-", "_"], [".", "_"], ["?", "_"]]:
-        name = name.replace(repl[0], repl[1])
-    return name
+from RTMonLibs.GeneralLibs import _processName
 
 class DiagramWorker:
+    """
+    DiagramWorker class is responsible for generating network topology diagrams
+    using the input data that contains host and switch information. The class
+    identifies and visualizes links between network components.
+    """
     HOST_ICON_PATH = '/srv/icons/host.png'
     SWITCH_ICON_PATH = '/srv/icons/switch.png'
 
     def __init__(self, indata):
+        """
+        Initialize the DiagramWorker with input data.
+
+        :param indata: List of dictionaries containing host and switch details.
+        """
         self.indata = indata
         self.objects = {}
         self.added = {}
@@ -79,6 +90,12 @@ class DiagramWorker:
                         self.d_addLink(self.objects[key], fItem, key, fKey)
 
     def d_addHost(self, item):
+        """
+        Add a host to the network diagram.
+
+        :param item: Dictionary containing host details.
+        :return: Diagram object representing the host.
+        """
         name = f"Host: {item['Name'].split(':')[1]}"
         name += f"\nInterface: {item['Interface']}"
         name += f"\nVlan: {item['Vlan']}"
@@ -92,6 +109,12 @@ class DiagramWorker:
         return worker
 
     def d_addSwitch(self, item):
+        """
+        Add a switch to the network diagram.
+
+        :param item: Dictionary containing switch details.
+        :return: Diagram object representing the switch.
+        """
         if item['Node'] in self.added:
             self.objects[item['Port']] = {"obj": self.objects[self.added[item['Node']]]["obj"], "data": item}
             return
@@ -106,6 +129,12 @@ class DiagramWorker:
         return switch1
 
     def addItem(self, item):
+        """
+        Add an item (host or switch) to the diagram by identifying its type and location (cluster).
+
+        :param item: Dictionary containing item details.
+        :return: Diagram object representing the item.
+        """
         site = self.identifySite(item)
         if item['Type'] == 'Host':
             with Cluster(site):
@@ -115,6 +144,12 @@ class DiagramWorker:
                 return self.d_addSwitch(item)
 
     def identifySite(self, item):
+        """
+        Identify the site or cluster to which the item (host or switch) belongs.
+
+        :param item: Dictionary containing item details.
+        :return: The name of the site or cluster.
+        """
         site = None
         if item['Type'] == 'Host':
             site = item['Name'].split(':')[0]
@@ -123,6 +158,11 @@ class DiagramWorker:
         return site
 
     def setreverse(self, item):
+        """
+        Set the reverse flag for alternating between the first and last items in the input list.
+
+        :param item: Dictionary containing item details.
+        """
         if item['Type'] == 'Host' and self.popreverse == None:
             self.popreverse = False
         elif item['Type'] == 'Host' and self.popreverse == False:
@@ -131,6 +171,11 @@ class DiagramWorker:
             self.popreverse = False
 
     def createGraph(self, output_filename):
+        """
+        Create the network topology diagram and save it to a file.
+
+        :param output_filename: Path where the output diagram will be saved.
+        """
         output_dir = os.path.dirname(output_filename)
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)

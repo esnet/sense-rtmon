@@ -3,14 +3,8 @@
 """Grafana Template Generation"""
 import copy
 import os.path
-from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, getUUID
+from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, getUUID, _processName
 from RTMonLibs.DiagramWorker import DiagramWorker
-
-def _processName(name):
-    """Process Name for Mermaid and replace all special chars with _"""
-    for repl in [[" ", "_"], [":", "_"], ["/", "_"], ["-", "_"], [".", "_"], ["?", "_"]]:
-        name = name.replace(repl[0], repl[1])
-    return name
 
 def clamp(n, minn, maxn):
     """Clamp the value between min and max"""

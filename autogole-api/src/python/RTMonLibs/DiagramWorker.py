@@ -116,7 +116,10 @@ class DiagramWorker:
         :return: Diagram object representing the switch.
         """
         if item['Node'] in self.added:
-            self.objects[item['Port']] = {"obj": self.objects[self.added[item['Node']]]["obj"], "data": item}
+            self.objects[item['Port']] = {
+                                            "obj": self.objects[self.added[item['Node']]]["obj"],
+                                            "data": item
+                                         }
             return
         switch1 = Custom(item['Node'].split(":")[1], self.SWITCH_ICON_PATH)
         if 'Peer' in item and item['Peer'] != "?peer?":
@@ -163,11 +166,11 @@ class DiagramWorker:
 
         :param item: Dictionary containing item details.
         """
-        if item['Type'] == 'Host' and self.popreverse == None:
+        if item['Type'] == 'Host' and self.popreverse is None:
             self.popreverse = False
-        elif item['Type'] == 'Host' and self.popreverse == False:
+        elif item['Type'] == 'Host' and self.popreverse is False:
             self.popreverse = True
-        elif item['Type'] == 'Host' and self.popreverse == True:
+        elif item['Type'] == 'Host' and self.popreverse is True:
             self.popreverse = False
 
     def createGraph(self, output_filename):

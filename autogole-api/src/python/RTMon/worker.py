@@ -101,7 +101,8 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                         present = False
                 if present:
                     self.logger.info('Deleting Dashboard: %s', dashbName)
-                    self.g_deleteDashboard(dashbName)
+                    folderName = self.config.get('grafana_folder', 'Real Time Mon')
+                    self.g_deleteDashboard(dashbName, folderName)
                     filename = f'{self.config.get("workdir", "/srv")}/{filename}'
                     if os.path.exists(filename):
                         os.remove(filename)

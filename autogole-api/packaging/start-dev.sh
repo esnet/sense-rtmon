@@ -14,5 +14,5 @@ docker run \
   -v $(pwd)/files/etc/grid-security/hostcert.pem:/etc/grid-security/hostcert.pem:ro \
   -v $(pwd)/files/etc/grid-security/hostcert.pem:/etc/grid-security/hostkey.pem:ro \
   --restart always \
-  --net=host \
+  -p 8080:8080 \
   rtmon

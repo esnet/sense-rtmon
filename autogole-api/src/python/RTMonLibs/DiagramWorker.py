@@ -31,7 +31,7 @@ class DiagramWorker:
         self.linksadded = set()
         self.popreverse = None
 
-    def _d_findItem(self, fval, fkey):
+    def d_find_item(self, fval, fkey):
         """Find Item where fkey == fval"""
         for key, vals in self.objects.items():
             if vals.get('data', {}).get(fkey, '') == fval:
@@ -75,19 +75,19 @@ class DiagramWorker:
         for key, vals in self.objects.items():
             data_type = vals.get('data', {}).get('Type', '')
             if data_type == "Host":
-                fKey, fItem = self._d_findItem(key, 'PeerHost')
+                fKey, fItem = self.d_find_item(key, 'PeerHost')
                 if fKey and fItem:
-                    self.d_addLink(self.objects[key], fItem, key, fKey)
+                    self.d_addLink(vals, fItem, key, fKey)
             elif data_type == "Switch":
                 if 'Peer' in vals.get('data', {}) and vals['data']['Peer'] != "?peer?":
-                    fKey, fItem = self._d_findItem(vals['data']['Peer'], "Port")
+                    fKey, fItem = self.d_find_item(vals['data']['Peer'], "Port")
                     if fKey and fItem:
-                        self.d_addLink(self.objects[key], fItem, key, fKey)
+                        self.d_addLink(vals, fItem, key, fKey)
                 elif 'PeerHost' in vals.get('data', {}):
                     fKey = vals['data']['PeerHost']
                     fItem = self.objects.get(fKey)
                     if fItem:
-                        self.d_addLink(self.objects[key], fItem, key, fKey)
+                        self.d_addLink(vals, fItem, key, fKey)
 
     def d_addHost(self, item):
         """
@@ -185,7 +185,7 @@ class DiagramWorker:
 
         with Diagram("Network Topology", show=False, filename=output_filename):
             while len(self.indata) > 0:
-                if self.popreverse == None or self.popreverse == False:
+                if self.popreverse in (None, False):
                     item = self.indata.pop(0)
                 elif self.popreverse == True:
                     item = self.indata.pop()

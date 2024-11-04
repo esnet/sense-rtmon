@@ -25,7 +25,8 @@ RUN git clone https://github.com/esnet/sense-rtmon.git /opt/sense-rtmon && \
     cp src/templates/* /etc/rtmon/templates/
 
 RUN wget https://raw.githubusercontent.com/sdn-sense/rm-configs/master/CAs/SiteRM.pem -O /etc/grid-security/certificates/e52ac827.0
-
+RUN pip3 install Flask
+RUN pip3 install diagrams
 COPY files/etc/supervisord.d/10-server.conf /etc/supervisord.d/10-server.conf
 COPY icons/host.png /srv/icons/host.png
 COPY icons/switch.png /srv/icons/switch.png

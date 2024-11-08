@@ -179,9 +179,17 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                     fd.write(dumpJson(fout, self.logger))
             if item['state'] in self.goodStates:
                 self.auth_instances[os.environ["SENSE_AUTH_OVERRIDE_NAME"]].append(item['referenceUUID'])
+            elif item['state'].startswith('MODIFY') and item['state'].endswith('FAILED'):
+                # Means modify has failed, and we should not add in good instance list, so that dashboard is removed
+                self.logger.info('Instance not in correct state (will be removed next run if still present: %s, %s', item['referenceUUID'], item['state'])
+            elif item['state'].startswith('MODIFY') and not item['state'].endswith('FAILED'):
+                # Modification is ongoing, and we are not sure on changes yet. Keep it as is for now
+                self.auth_instances[os.environ["SENSE_AUTH_OVERRIDE_NAME"]].append(item['referenceUUID'])
+                self.logger.info('Instance in MODIFY not final state: %s, %s', item['referenceUUID'], item['state'])
             else:
-                self.logger.info('Instance not in correct state: %s, %s', item['referenceUUID'], item['state'])
+                self.logger.info('Instance in not correct state (will be removed next run if still present): %s, %s', item['referenceUUID'], item['state'])
 
+    
     def main(self):
         """ Main Method"""
         # 1. Identify all files and submitted items;

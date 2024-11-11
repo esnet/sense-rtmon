@@ -626,7 +626,7 @@ class Template():
         #Generate Diagrams
         try: 
             diagram_filename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{kwargs['referenceUUID']}"
-            DiagramWorker(self.orderlist).createGraph(diagram_filename)
+            DiagramWorker(self.orderlist, *orig_args).createGraph(diagram_filename)
             self.logger.info(f"Diagram saved at {diagram_filename}.png")
         except IOError as ex:
             self.logger.error('Failed to create diagram: %s', ex)

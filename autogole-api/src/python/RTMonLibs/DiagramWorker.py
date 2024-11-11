@@ -19,7 +19,7 @@ class DiagramWorker:
     HOST_ICON_PATH = '/srv/icons/host.png'
     SWITCH_ICON_PATH = '/srv/icons/switch.png'
 
-    def __init__(self, indata):
+    def __init__(self, indata, instance, manifest):
         """
         Initialize the DiagramWorker with input data.
 
@@ -30,6 +30,8 @@ class DiagramWorker:
         self.added = {}
         self.linksadded = set()
         self.popreverse = None
+        self.instance = instance
+
 
     def d_find_item(self, fval, fkey):
         """Find Item where fkey == fval"""

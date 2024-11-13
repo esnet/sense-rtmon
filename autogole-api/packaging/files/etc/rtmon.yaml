@@ -2,11 +2,13 @@
 sleep_timer: 30
 # Work dir for temp files (api directory). Default /srv
 workdir: '/srv/'
-
+image_dir: '/srv/images'
 # Grafana settings (for the API)
 grafana_host: 'https://autogole-grafana.nrp-nautilus.io'
-grafana_api_key: 'REPLACE_ME'
+grafana_api_key: ''
+baseImageURL: 'http://localhost:8080/images'
 grafana_folder: 'Real Time Mon'
+grafana_dev: 'Sunami-Image-Server'
 # FOR DEVELOPMEENT ONLY
 # Enable grafana_dev parameter (can be any string, and will be used as name to create directory inside Grafana)
 # Additionally - all dashboards will have this added to name.
@@ -25,7 +27,7 @@ data_sources:
 
 # Sense endpoints and their auth files.
 sense_endpoints:
-  "sense-o.es.net": "/etc/sense-o-auth-prod.yaml"
+  #"sense-o.es.net": "/etc/sense-o-auth-prod.yaml"
   "sense-o-dev.es.net": "/etc/sense-o-auth.yaml"
 
 # Additional links for the templates

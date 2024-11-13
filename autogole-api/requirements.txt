@@ -3,3 +3,4 @@ requests
 pyyaml
 grafana-client
 diagrams
+flask

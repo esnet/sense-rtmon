@@ -341,6 +341,19 @@ class Template():
             template = loadJson(fd.read(), self.logger)
         return template
 
+    def t_addImagePanel(self, image_url, title="Image Panel"):
+        """Add an Image Panel to the Dashboard"""
+        panel = {
+            "type": "text",
+            "title": title,
+            "options": {
+                "content": f"<div style='text-align:center;'><img src='{image_url}' style='max-width:100%; height:auto;'></div>",
+            },
+            "gridPos": {"x": 0, "y": 0, "w": 24, "h": 10},
+            "id": self._getNextID()
+        }
+        return panel
+
     def t_addRow(self, *_args, **kwargs):
         """Add Row to the Dashboard"""
         out = self._t_loadTemplate("row.json")
@@ -640,4 +653,7 @@ class Template():
         self.generated['panels'] += self.t_createSwitchFlow(*args)
         # Add L2 Debugging
         self.generated['panels'] += self.t_addL2Debugging(*args)
+        base_image_url = self.config.get('baseImageURL', 'http://localhost:8080/images')
+        image_url = f"{base_image_url}/diagram_{kwargs['referenceUUID']}.png"
+        self.generated['panels'].append(self.t_addImagePanel(image_url, title="Network Topology Image"))
         return {"dashboard": self.generated}, {"uid": self.generated['uid'], "annotation_panels": self.annotationids}

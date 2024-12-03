@@ -5,7 +5,7 @@ import copy
 import os.path
 from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, getUUID, _processName
 from RTMonLibs.DiagramWorker import DiagramWorker
-
+#import json
 def clamp(n, minn, maxn):
     """Clamp the value between min and max"""
     return max(min(maxn, n), minn)
@@ -639,6 +639,11 @@ class Template():
         #Generate Diagrams
         try: 
             diagram_filename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{kwargs['referenceUUID']}"
+            # diagram_json = f"diagram_{kwargs['referenceUUID']}.json"
+            # with open("selfOrder" + diagram_json, 'w') as file:
+            #     json.dump(self.orderlist, file, indent=2)
+            # with open("original_args" + diagram_json, 'w') as file:
+            #     json.dump(orig_args, file, indent=2)
             DiagramWorker(self.orderlist, *orig_args).createGraph(diagram_filename)
             self.logger.info(f"Diagram saved at {diagram_filename}.png")
         except IOError as ex:

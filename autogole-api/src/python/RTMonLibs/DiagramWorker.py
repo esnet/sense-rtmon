@@ -9,6 +9,13 @@ import os
 from diagrams import Diagram, Cluster, Edge
 from diagrams.custom import Custom
 from RTMonLibs.GeneralLibs import _processName
+# # change later:
+# def _processName(name):
+#     """Process Name for Mermaid and replace all special chars with _"""
+#     for repl in [[" ", "_"], [":", "_"], ["/", "_"], ["-", "_"], [".", "_"], ["?", "_"]]:
+#         name = name.replace(repl[0], repl[1])
+#     return name
+# #########
 
 class DiagramWorker:
     """
@@ -18,6 +25,9 @@ class DiagramWorker:
     """
     HOST_ICON_PATH = '/srv/icons/host.png'
     SWITCH_ICON_PATH = '/srv/icons/switch.png'
+    # # TEmp
+    # HOST_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/host.png'
+    # SWITCH_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/switch.png'
 
     def __init__(self, indata, instance, manifest):
         """
@@ -136,45 +146,23 @@ class DiagramWorker:
             if ipkey in item and item[ipkey] != ipdef:
                 ip_node_name = f"{item['Node']}_{ipkey}"
                 ip_label = item[ipkey]
-                ip_node = Custom(ip_label, self.HOST_ICON_PATH)
-                self.objects[ip_node_name] = {"obj": ip_node, "data": {}}
-                # Add edge between switch and IP node
-                self.d_addLink(self.objects[item['Port']], self.objects[ip_node_name], item['Port'], ip_node_name)
-                if item.get('Vlan'):
-                    vlan_node_name = f"{item['Node']}_vlan{item['Vlan']}"
-                    vlan_label = f"vlan.{item['Vlan']}"
-                    vlan_node = Custom(vlan_label, self.SWITCH_ICON_PATH)
-                    self.objects[vlan_node_name] = {"obj": vlan_node, "data": {}}
-                    self.d_addLink(self.objects[item['Port']], self.objects[vlan_node_name], item['Port'], vlan_node_name)
-                    self.d_addLink(self.objects[vlan_node_name], self.objects[ip_node_name], vlan_node_name, ip_node_name)
-                    # Add BGP Peering information
-                    bgppeer = ip_node_name
-                    self.d_addBGP(item, ipkey, bgppeer)
+                ip_label2 = ""
+                sitename = item["Site"]
+                
+                if self.instance != None:
+                    tempData = self.instance["intents"]
+                    for flow in tempData:
+                        terminals = flow["json"]["data"]["connections"][0]["terminals"]
+                        for connection in terminals:
+                            if connection["uri"] == sitename:
+                                ip_label2 = connection["ipv6_prefix_list"]
+                                break
+                ip_node = Custom(ip_label + "\n" + ip_label2, self.HOST_ICON_PATH)
+                switch1 >> Edge() << ip_node
+                
         return switch1
         
-    def d_addBGP(self, item, ipkey, bgppeer):
-        """Add BGP into the network diagram"""
-        if not item.get('Site', None):
-            return
-        if not self.instance:
-            return
-        for intitem in self.instance.get('intents', []):
-            for connections in intitem.get('json', {}).get('data', {}).get('connections', []):
-                for terminal in connections.get('terminals', []):
-                    if 'uri' not in terminal:
-                        continue
-                    if item['Site'] == terminal['uri'] and terminal.get(f'{ipkey.lower()}_prefix_list', None):
-                        val = terminal[f'{ipkey.lower()}_prefix_list']
-                        bgp_node_name = f"{bgppeer}_bgp{ipkey}"
-                        bgp_node_label = f"BGP_{ipkey}"
-                        bgp_node = Custom(bgp_node_label, self.SWITCH_ICON_PATH)
-                        self.objects[bgp_node_name] = {"obj": bgp_node, "data": {}}
-                        self.d_addLink(self.objects[bgppeer], self.objects[bgp_node_name], bgppeer, bgp_node_name)
-                        peer_node_name = f"{bgppeer}_bgp{ipkey}_peer"
-                        peer_node_label = val
-                        peer_node = Custom(peer_node_label, self.SWITCH_ICON_PATH)
-                        self.objects[peer_node_name] = {"obj": peer_node, "data": {}}
-                        self.d_addLink(self.objects[bgp_node_name], self.objects[peer_node_name], bgp_node_name, peer_node_name)
+
 
 
     def addItem(self, item):

@@ -5,7 +5,10 @@ import copy
 import os.path
 from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, getUUID, _processName
 from RTMonLibs.DiagramWorker import DiagramWorker
-#import json
+
+#change later
+import json
+import sys
 def clamp(n, minn, maxn):
     """Clamp the value between min and max"""
     return max(min(maxn, n), minn)
@@ -630,6 +633,9 @@ class Template():
 
     def t_createTemplate(self, *args, **kwargs):
         """Create Grafana Template"""
+        print("This is kwargs:\n")
+        print(kwargs)
+        # sys.exit()
         self._clean()
         self._t_getDataSourceUid(*args)
         self.generated = self.t_createDashboard(*args, **kwargs)
@@ -639,12 +645,12 @@ class Template():
         #Generate Diagrams
         try: 
             diagram_filename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{kwargs['referenceUUID']}"
-            # diagram_json = f"diagram_{kwargs['referenceUUID']}.json"
-            # with open("selfOrder" + diagram_json, 'w') as file:
-            #     json.dump(self.orderlist, file, indent=2)
-            # with open("original_args" + diagram_json, 'w') as file:
-            #     json.dump(orig_args, file, indent=2)
-            DiagramWorker(self.orderlist, *orig_args).createGraph(diagram_filename)
+            diagram_json = f"diagram_{kwargs['referenceUUID']}.json"
+            with open("selfOrder" + diagram_json, 'w') as file:
+                json.dump(self.orderlist, file, indent=2)
+            with open("original_args" + diagram_json, 'w') as file:
+                json.dump(orig_args, file, indent=2)
+            self.createDiagramGraph(diagram_filename, self.orderlist)
             self.logger.info(f"Diagram saved at {diagram_filename}.png")
         except IOError as ex:
             self.logger.error('Failed to create diagram: %s', ex)

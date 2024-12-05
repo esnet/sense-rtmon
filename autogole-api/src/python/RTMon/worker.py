@@ -12,9 +12,9 @@ from RTMonLibs.Template import Mermaid
 from RTMonLibs.SiteOverride import SiteOverride
 from RTMonLibs.SiteRMApi import SiteRMApi
 from RTMonLibs.ExternalAPI import ExternalAPI
+from RTMonLibs.DiagramWorker import DiagramWorker
 
-
-class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, ExternalAPI, Mermaid):
+class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, ExternalAPI, Mermaid, DiagramWorker):
     """ RTMon Worker """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

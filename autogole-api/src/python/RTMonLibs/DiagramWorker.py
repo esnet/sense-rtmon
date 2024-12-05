@@ -5,11 +5,13 @@ This module contains the DiagramWorker class, which generates network topology d
 by processing input data that includes hosts and switches. It uses the 'diagrams' library 
 to visualize network components and their interconnections.
 """
-import os
+import os, json
 from diagrams import Diagram, Cluster, Edge
 from diagrams.custom import Custom
+from RTMonLibs.SiteOverride import SiteOverride
 from RTMonLibs.GeneralLibs import _processName
 # # change later:
+# from SiteOverride import SiteOverride
 # def _processName(name):
 #     """Process Name for Mermaid and replace all special chars with _"""
 #     for repl in [[" ", "_"], [":", "_"], ["/", "_"], ["-", "_"], [".", "_"], ["?", "_"]]:
@@ -17,7 +19,7 @@ from RTMonLibs.GeneralLibs import _processName
 #     return name
 # #########
 
-class DiagramWorker:
+class DiagramWorker():
     """
     DiagramWorker class is responsible for generating network topology diagrams
     using the input data that contains host and switch information. The class
@@ -29,20 +31,20 @@ class DiagramWorker:
     # HOST_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/host.png'
     # SWITCH_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/switch.png'
 
-    def __init__(self, indata, instance, manifest):
+    def __init__(self, **kwargs):
         """
         Initialize the DiagramWorker with input data.
 
         :param indata: List of dictionaries containing host and switch details.
         """
-        self.indata = indata
+        super().__init__(**kwargs)
         self.objects = {}
         self.added = {}
         self.linksadded = set()
         self.popreverse = None
-        self.instance = instance
+        self.instance = kwargs.get('instance', {}) 
 
-
+                          #peer port
     def d_find_item(self, fval, fkey):
         """Find Item where fkey == fval"""
         for key, vals in self.objects.items():
@@ -95,6 +97,7 @@ class DiagramWorker:
                     fKey, fItem = self.d_find_item(vals['data']['Peer'], "Port")
                     if fKey and fItem:
                         self.d_addLink(vals, fItem, key, fKey)
+                    #Here Logic Needed for peer :: How is esnet getting?
                 elif 'PeerHost' in vals.get('data', {}):
                     fKey = vals['data']['PeerHost']
                     fItem = self.objects.get(fKey)
@@ -207,7 +210,7 @@ class DiagramWorker:
         elif item['Type'] == 'Host' and self.popreverse is True:
             self.popreverse = False
 
-    def createGraph(self, output_filename):
+    def createDiagramGraph(self, output_filename, indata):
         """
         Create the network topology diagram and save it to a file.
 
@@ -218,11 +221,13 @@ class DiagramWorker:
             os.makedirs(output_dir)
 
         with Diagram("Network Topology", show=False, filename=output_filename):
-            while len(self.indata) > 0:
+            with open("indata" + output_filename.split('/')[-1]+".json", 'w') as file:
+                json.dump(indata, file, indent=2)
+            while len(indata) > 0:
                 if self.popreverse in (None, False):
-                    item = self.indata.pop(0)
+                    item = indata.pop(0)
                 elif self.popreverse == True:
-                    item = self.indata.pop()
+                    item = indata.pop()
                 self.addItem(item)
                 self.setreverse(item)
             self.d_addLinks()

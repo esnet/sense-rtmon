@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """External API. Inform external systems about the status and submit request to record data"""
+import ast
 import requests
 
 class ExternalAPI():
@@ -11,6 +12,7 @@ class ExternalAPI():
         self.config = kwargs.get('config')
         self.logger = kwargs.get('logger')
         self.cert = (self.config['hostcert'], self.config['hostkey'])
+        self.external = {}
 
     def makeRequest(self, url, **kwargs):
         """Make HTTP Request"""
@@ -21,16 +23,23 @@ class ExternalAPI():
             out = requests.post(url, cert=self.cert, json=kwargs.get('data', {}),
                                 params=kwargs.get('urlparams', None),
                                 verify=False, timeout=60)
-        outval = ""
         try:
-            if out.headers.get("content-type") == "application/json":
-                outval = out.json()
+            outval = out.json()
+            return outval, out.ok, out
         except:
+            outval = ""
+        try:
+            outval = ast.literal_eval(out.text)
+        except (ValueError, SyntaxError):
             outval = out.text
         return outval, out.ok, out
 
     def _e_submitcheck(self, url, item):
         tmpurl = f"{url.rstrip('/')}/submitcheck"
+        return self.makeRequest(tmpurl, verb='POST', data=item)
+
+    def _e_submitget(self, url, item):
+        tmpurl = f"{url.rstrip('/')}/submitget"
         return self.makeRequest(tmpurl, verb='POST', data=item)
 
     def _e_submit(self, url, item):
@@ -91,19 +100,29 @@ class ExternalAPI():
 
     def e_submitExternalAPI(self, data, action):
         """Submit data to external API"""
-        external = {}
+        self.external = {}
         for _idx, item in enumerate(data.get('manifest', {}).get('Ports', [])):
             tmpitem = self.so_override(item)
             if tmpitem.get('JointSite') in self.config['external_service']:
                 url = self.config['external_service'][tmpitem.get('JointSite')]
-                external.setdefault(url, {'uuid': data['referenceUUID'], 'orchestrator': data['orchestrator'], 'devices': []})
+                self.external.setdefault(url, {'uuid': data['referenceUUID'], 'orchestrator': data['orchestrator'], 'devices': []})
                 if len(tmpitem['JointNetwork'].split('|')) < 2:
                     continue
                 tmpdict = {'device': tmpitem['JointNetwork'].split('|')[0],
                            'port': tmpitem['JointNetwork'].split('|')[1].replace('_', '/'),
                            'vlan': tmpitem['Vlan']}
-                external[url]['devices'].append(tmpdict)
-        for url, extdata in external.items():
+                self.external[url]['devices'].append(tmpdict)
+        for url, extdata in self.external.items():
             out = self._e_submitAction(url, extdata, action)
             self.logger.info(f"External API {url} {action} {extdata} {out}")
-        return True
+        if self.external:
+            return True
+        return False
+
+    def e_getExternalAPI(self, data, action):
+        extinfo = []
+        for url, extdata in self.external.items():
+            out = self._e_submitget(url, extdata)
+            self.logger.info(f"External API {url} {action} {extdata} {out}")
+            extinfo.append(out)
+        return extinfo

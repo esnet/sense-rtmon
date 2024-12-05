@@ -25,10 +25,40 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         self.auth_instances = {}
         self.goodStates = ['CREATE - READY', 'REINSTATE - READY', 'MODIFY - READY']
 
+    def _forceRenewDashboard(self, fout, out):
+        """Force renew dashboard if oscars id not present and not same in instance"""
+        for item in out:
+            oscarsid = item[0].get('runinfo', {}).get('oscarsid', '')
+            if oscarsid and oscarsid != fout.get('oscarsid', ''):
+                return oscarsid
+        return None
+
     def _updateState(self, filename, fout):
         """Update the state of the file"""
         with open(f'{self.config.get("workdir", "/srv")}/{filename}', 'w', encoding="utf-8") as fd:
             fd.write(dumpJson(fout, self.logger))
+
+    def renew_exe(self, filename, fout):
+        """Renew instance mainly if new information received, like oscarsid"""
+        instance = fout['instance']
+        manifest = fout['manifest']
+        # Create dashboard
+        try:
+            template, dashbInfo = self.t_createTemplate(instance, manifest, **fout)
+            fout["dashbInfo"] = dashbInfo
+        except IOError as ex:
+            self.logger.error('Failed to create template: %s', ex)
+            return
+        # Submit to Grafana (Check if folder exists, if not create it)
+        folderName = self.config.get('grafana_folder', 'Real Time Mon')
+        folderInfo = self.g_createFolder(folderName)
+        template['folderId'] = folderInfo['id']
+        template['overwrite'] = True
+        self.g_addNewDashboard(template)
+        # Update State
+        fout['state'] = 'running'
+        fout.setdefault('retries', 0)
+        self._updateState(filename, fout)
 
     def submit_exe(self, filename, fout):
         """Submit Action Execution"""
@@ -58,15 +88,11 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         try:
             template, dashbInfo = self.t_createTemplate(instance, manifest, **fout)
             fout["dashbInfo"] = dashbInfo
-        #except Exception as ex:
         except IOError as ex:
             self.logger.error('Failed to create template: %s', ex)
             return
         # 4. Submit to Grafana (Check if folder exists, if not create it)
         folderName = self.config.get('grafana_folder', 'Real Time Mon')
-        devname = self.config.get('grafana_dev', None)
-        if devname:
-            folderName = f'{folderName} - {devname}'
         folderInfo = self.g_createFolder(folderName)
         template['folderId'] = folderInfo['id']
         template['overwrite'] = True
@@ -87,51 +113,56 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         """Delete Action Execution"""
         self.logger.info('Delete Execution: %s, %s', filename, fout)
         # Delete the dashboard and template from Grafana
-        for grafDir, dirVals in self.dashboards.items():
-            for dashbName, dashbVals in dirVals.items():
-                present = True
-                for key in ['referenceUUID', 'orchestrator', 'submission']:
-                    if fout.get(key, '') not in dashbVals.get('tags', []):
-                        present = False
-                if present:
-                    self.logger.info('Deleting Dashboard: %s', dashbName)
-                    folderName = self.config.get('grafana_folder', 'Real Time Mon')
-                    self.g_deleteDashboard(dashbName, folderName)
-                    filename = f'{self.config.get("workdir", "/srv")}/{filename}'
-                    if os.path.exists(filename):
-                        os.remove(filename)
-                    break
-            # Delete the action from External API
-            self.e_submitExternalAPI(fout, 'delete')
+        for dashbName, dashbVals in self.dashboards.items():
+            present = True
+            for key in ['referenceUUID', 'orchestrator', 'submission']:
+                if fout.get(key, '') not in dashbVals['tags']:
+                    present = False
+            if present:
+                self.logger.info('Deleting Dashboard: %s', dashbName)
+                self.g_deleteDashboard(dashbName)
+                filename = f'{self.config.get("workdir", "/srv")}/{filename}'
+                if os.path.exists(filename):
+                    os.remove(filename)
+                break
+        # Delete the action from External API
+        self.e_submitExternalAPI(fout, 'delete')
 
     def running_exe(self, filename, fout):
         """Running Action Execution"""
         self.logger.debug('Running Execution: %s, %s', filename, fout)
         # Check external record to track info of device
-        self.e_submitExternalAPI(fout, 'running')
-        for grafDir, dirVals in self.dashboards.items():
-            for dashbName, dashbVals in dirVals.items():
-                present = True
-                for key in ['referenceUUID', 'orchestrator', 'submission']:
-                    if fout.get(key, '') not in dashbVals.get('tags', []):
-                        present = False
-                if present:
-                    # Check that version is the same, in case of new release,
-                    # we need to update the dashboard with new template_tag
-                    if self.config['template_tag'] in dashbVals['tags']:
-                        self.logger.info('Dashboard is present in Grafana: %s', dashbName)
-                        # Check if we need to re-issue ping test
-                        tmpOut = self.sr_submit_ping(instance=fout.get('instance', {}), manifest=fout.get('manifest', {}))
-                        if tmpOut and fout.get('dashbInfo', {}):
-                            fout['ping'] = tmpOut
-                            self.g_submitAnnotation(sitermOut=tmpOut, dashbInfo=fout["dashbInfo"])
-                        self._updateState(filename, fout)
-                        return
-                    # Need to update the dashboard with new template_tag
-                    self.logger.info('Dashboard is present in Grafana, but with old version: %s', dashbName)
-                    fout['state'] = 'delete'
+        if self.e_submitExternalAPI(fout, 'running'):
+            out = self.e_getExternalAPI(fout, 'running')
+            oscarsid = self._forceRenewDashboard(fout, out)
+            if oscarsid:
+                self.logger.info(f'Got a new oscars id {oscarsid}. Will force renew dashboard')
+                fout['oscarsid'] = oscarsid
+                fout['state'] = 'renew'
+                self._updateState(filename, fout)
+                return
+        for dashbName, dashbVals in self.dashboards.items():
+            present = True
+            for key in ['referenceUUID', 'orchestrator', 'submission']:
+                if fout.get(key, '') not in dashbVals['tags']:
+                    present = False
+            if present:
+                # Check that version is the same, in case of new release,
+                # we need to update the dashboard with new template_tag
+                if self.config['template_tag'] in dashbVals['tags']:
+                    self.logger.info('Dashboard is present in Grafana: %s', dashbName)
+                    # Check if we need to re-issue ping test
+                    tmpOut = self.sr_submit_ping(instance=fout.get('instance', {}), manifest=fout.get('manifest', {}))
+                    if tmpOut and fout.get('dashbInfo', {}):
+                        fout['ping'] = tmpOut
+                        self.g_submitAnnotation(sitermOut=tmpOut, dashbInfo=fout["dashbInfo"])
                     self._updateState(filename, fout)
                     return
+                # Need to update the dashboard with new template_tag
+                self.logger.info('Dashboard is present in Grafana, but with old version: %s', dashbName)
+                fout['state'] = 'delete'
+                self._updateState(filename, fout)
+                return
         # If we reach here - means the dashboard is not present in Grafana
         self.logger.info('Dashboard is not present in Grafana: %s', fout)
         fout.setdefault('retries', 0)
@@ -179,17 +210,9 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                     fd.write(dumpJson(fout, self.logger))
             if item['state'] in self.goodStates:
                 self.auth_instances[os.environ["SENSE_AUTH_OVERRIDE_NAME"]].append(item['referenceUUID'])
-            elif item['state'].startswith('MODIFY') and item['state'].endswith('FAILED'):
-                # Means modify has failed, and we should not add in good instance list, so that dashboard is removed
-                self.logger.info('Instance not in correct state (will be removed next run if still present: %s, %s', item['referenceUUID'], item['state'])
-            elif item['state'].startswith('MODIFY') and not item['state'].endswith('FAILED'):
-                # Modification is ongoing, and we are not sure on changes yet. Keep it as is for now
-                self.auth_instances[os.environ["SENSE_AUTH_OVERRIDE_NAME"]].append(item['referenceUUID'])
-                self.logger.info('Instance in MODIFY not final state: %s, %s', item['referenceUUID'], item['state'])
             else:
-                self.logger.info('Instance in not correct state (will be removed next run if still present): %s, %s', item['referenceUUID'], item['state'])
+                self.logger.info('Instance not in correct state: %s, %s', item['referenceUUID'], item['state'])
 
-    
     def main(self):
         """ Main Method"""
         # 1. Identify all files and submitted items;
@@ -202,7 +225,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                     if not fout:
                         continue
                     keepentry = self._keepAlive(fout)
-                    if fout.get('state', '') in ['delete', 'submitted', 'running', 'failed']:
+                    if fout.get('state', '') in ['delete', 'submitted', 'running', 'failed', 'renew']:
                         if not keepentry:
                             # Means it is not anymore present in SENSE-O, need to delete
                             fout['state'] = 'delete'
@@ -210,7 +233,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                         stateInfo[fout['state']][filename] = fout
         if not stateInfo:
             return
-        for state in ['submitted', 'delete', 'running', 'failed']:
+        for state in ['submitted', 'delete', 'running', 'failed', 'renew']:
             self.logger.info('State: %s, Files: %s', state, len(stateInfo.get(state, {})))
             for filename, fout in stateInfo.get(state, {}).items():
                 self.logger.debug('Filename: %s, Content: %s', filename, fout)
@@ -224,6 +247,8 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                     self.running_exe(filename, fout)
                 elif state == 'failed':
                     self.failed_exe(filename, fout)
+                elif state == 'renew':
+                    self.renew_exe(filename, fout)
                 self.logger.info('='*80)
             self.logger.info('-'*80)
 

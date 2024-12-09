@@ -341,6 +341,13 @@ class Template():
             template = loadJson(fd.read(), self.logger)
         return template
 
+    def t_addImageCollapsibleRow(self, image_url, title="Network Topology Image"):
+        """Add an Image Panel to a Collapsible Row"""
+        row = self.t_addRow(title=f"{title} Row", collapsed=True)
+        panel = self.t_addImagePanel(image_url, title=title)
+        return self.addRowPanel(row, [panel], recordAnnotations=False)
+
+
     def t_addImagePanel(self, image_url, title="Image Panel"):
         """Add an Image Panel to the Dashboard"""
         panel = {
@@ -660,5 +667,5 @@ class Template():
         self.generated['panels'] += self.t_addL2Debugging(*args)
         base_image_url = self.config.get('baseImageURL', 'http://localhost:8080/images')
         image_url = f"{base_image_url}/diagram_{kwargs['referenceUUID']}.png"
-        self.generated['panels'].append(self.t_addImagePanel(image_url, title="Network Topology Image"))
+        self.generated['panels'] += self.t_addImageCollapsibleRow(image_url, title="Network Topology Image")
         return {"dashboard": self.generated}, {"uid": self.generated['uid'], "annotation_panels": self.annotationids}

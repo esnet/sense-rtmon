@@ -356,7 +356,7 @@ class Template():
             "options": {
                 "content": f"<div style='text-align:center;'><img src='{image_url}' style='max-width:100%; height:auto;'></div>",
             },
-            "gridPos": {"x": 0, "y": 0, "w": 24, "h": 10},
+            "gridPos": {"x": 0, "y": 0, "w": 24, "h": 30},
             "id": self._getNextID()
         }
         return panel

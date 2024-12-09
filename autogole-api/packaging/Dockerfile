@@ -29,5 +29,6 @@ RUN wget https://raw.githubusercontent.com/sdn-sense/rm-configs/master/CAs/SiteR
 COPY files/etc/supervisord.d/10-server.conf /etc/supervisord.d/10-server.conf
 COPY icons/host.png /srv/icons/host.png
 COPY icons/switch.png /srv/icons/switch.png
+COPY imageserver.py /srv/imageserver.py
 # Get latest CA's
 RUN fetch-crl || echo "Supress warnings."

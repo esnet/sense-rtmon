@@ -644,7 +644,7 @@ class Template():
             #     json.dump(self.orderlist, file, indent=2)
             # with open("original_args" + diagram_json, 'w') as file:
             #     json.dump(orig_args, file, indent=2)
-            DiagramWorker(self.orderlist, *orig_args).createGraph(diagram_filename)
+            DiagramWorker(**kwargs).createGraph(diagram_filename, self.orderlist)
             self.logger.info(f"Diagram saved at {diagram_filename}.png")
         except IOError as ex:
             self.logger.error('Failed to create diagram: %s', ex)

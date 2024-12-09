@@ -9,6 +9,12 @@ import requests
 from yaml import safe_load as yload
 from yaml import safe_dump as ydump
 
+def _processName(name):
+    """Process Name for Mermaid and replace all special chars with _"""
+    for repl in [[" ", "_"], [":", "_"], ["/", "_"], ["-", "_"], [".", "_"], ["?", "_"]]:
+        name = name.replace(repl[0], repl[1])
+    return name
+    
 def getUUID(inputstr):
     """Generate UUID from Input Str"""
     hashObject = hashlib.sha256(inputstr.encode('utf-8'))

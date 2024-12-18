@@ -113,7 +113,8 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         """Delete Action Execution"""
         self.logger.info('Delete Execution: %s, %s', filename, fout)
         # Delete the dashboard and template from Grafana
-        for dashbName, dashbVals in self.dashboards.items():
+        foldername = self.config.get('grafana_folder', 'Real Time Mon')
+        for dashbName, dashbVals in self.dashboards.get(foldername, {}).items():
             present = True
             for key in ['referenceUUID', 'orchestrator', 'submission']:
                 if fout.get(key, '') not in dashbVals['tags']:
@@ -141,7 +142,8 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                 fout['state'] = 'renew'
                 self._updateState(filename, fout)
                 return
-        for dashbName, dashbVals in self.dashboards.items():
+        foldername = self.config.get('grafana_folder', 'Real Time Mon')
+        for dashbName, dashbVals in self.dashboards.get(foldername, {}).items():
             present = True
             for key in ['referenceUUID', 'orchestrator', 'submission']:
                 if fout.get(key, '') not in dashbVals['tags']:

@@ -3,7 +3,7 @@
 """Grafana Template Generation"""
 import copy
 import os.path
-from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, getUUID
+from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape
 
 def _processName(name):
     """Process Name for Mermaid and replace all special chars with _"""
@@ -288,17 +288,12 @@ class Template():
         self.annotationids = []
         self.nextid = 0
 
-    def __getTitlesUrls(self, site, link, **kwargs):
+    def __getTitlesUrls(self, site, link):
         """Get Titles and URLs"""
         title = link.get('title', "Link-Title-Not-Present-in-Config")
         url = link.get('url', "https://link-not-present-in-config")
         title = title.replace("$$REPLACEMESITENAME$$", site)
         url = url.replace("$$REPLACEMESITENAME$$", site)
-        uuid = kwargs.get('referenceUUID', None)
-        senseodomain = kwargs.get('orchestrator', None)
-        if uuid and senseodomain:
-            url = url.replace("$$REPLACEMESENSEODOMAIN$$", senseodomain)
-            url = url.replace("$$REPLACEMEDELTAUUID$$", uuid)
         return title, url
 
     def _getNextID(self, recordAnnotations=False):
@@ -378,7 +373,7 @@ class Template():
             tmpcopy["url"] = f"{self.config['grafana_host']}/d/{self.dashboards[site]['uid']}"
             ret.append(tmpcopy)
             for link in self.config['template_links']:
-                title, url = self.__getTitlesUrls(site, link, **kwargs)
+                title, url = self.__getTitlesUrls(site, link)
                 if url not in addedUrls:
                     tmpcopy = copy.deepcopy(out)
                     tmpcopy["title"] = title
@@ -386,6 +381,12 @@ class Template():
                     print(tmpcopy)
                     ret.append(tmpcopy)
                 addedUrls.append(url)
+        if kwargs.get('oscarsid', '') and self.config.get('oscars_base_url', ''):
+            oscarsid = kwargs['oscarsid']
+            tmpcopy = copy.deepcopy(out)
+            tmpcopy["title"] = f"Oscars monitoring: {oscarsid}"
+            tmpcopy["url"] = f"{self.config['oscars_base_url']}{oscarsid}"
+            ret.append(tmpcopy)
         return ret
 
 
@@ -402,14 +403,12 @@ class Template():
         out = self._t_loadTemplate("dashboard.json")
         # Update title;
         title = f'{args[0]["alias"]}|Flow: {args[0]["intents"][0]["id"]}|{args[0]["timestamp"]}'
-        if self.config.get('grafana_dev', None):
-            title += f" ({self.config['grafana_dev']})"
         out["title"] = title
         for key in ['referenceUUID', 'orchestrator', 'submission']:
             if key in kwargs:
                 out['tags'].append(kwargs[key])
         out['tags'].append(self.config['template_tag'])
-        out["uid"] = getUUID(title)
+        out["uid"] = args[0]["intents"][0]["id"]
         return out
 
     def t_createHostFlow(self, *args):

@@ -350,8 +350,13 @@ class Template():
 
     def t_addLinks(self, *_args, **kwargs):
         """Add Links to the Dashboard"""
-        if not self.config.get('template_links', []):
-            return []
+        def _getSiteDashbUID(site):
+            for key in ['NSI', 'SiteRM']:
+                uid = self.dashboards.get(key, {}).get(site, {}).get('uid', None)
+                if uid:
+                    return uid
+            return None
+
         ret = []
         out = self._t_loadTemplate("links.json")
         sites = []
@@ -362,7 +367,8 @@ class Template():
                 sites.append(sitename)
         for sitehost, _interfaces in self.m_groups['Switches'].items():
             sitename = sitehost.split(":")[0]
-            if sitename in self.dashboards and sitename not in sites:
+            if (sitename in self.dashboards.get('SiteRM', {}) or sitename in self.dashboards.get('NSI', {})) \
+                    and sitename not in sites:
                 sites.append(sitename)
 
         # Add dynamic urls from configuration and replace sitename with site
@@ -370,7 +376,11 @@ class Template():
         for site in sites:
             tmpcopy = copy.deepcopy(out)
             tmpcopy["title"] = f"Site Monitoring: {site}"
-            tmpcopy["url"] = f"{self.config['grafana_host']}/d/{self.dashboards[site]['uid']}"
+            uid = _getSiteDashbUID(site)
+            if not uid:
+                self.logger.debug(f'Site {site} dashboard does not exist in Grafana. Will not add link back.')
+                continue
+            tmpcopy["url"] = f"{self.config['grafana_host']}/d/{uid}"
             ret.append(tmpcopy)
             for link in self.config['template_links']:
                 title, url = self.__getTitlesUrls(site, link)

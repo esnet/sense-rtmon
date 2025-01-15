@@ -6,8 +6,13 @@ import time
 import uuid
 import hashlib
 import requests
+from datetime import datetime, timezone
 from yaml import safe_load as yload
 from yaml import safe_dump as ydump
+
+def getUTCnow():
+    """Get UTC Time."""
+    return int(datetime.now(timezone.utc).timestamp())
 
 def getUUID(inputstr):
     """Generate UUID from Input Str"""
@@ -16,7 +21,6 @@ def getUUID(inputstr):
     customUUID = str(uuid.UUID(hashHex[:32]))
     # Grafana allows max 40 chars for UUID
     return customUUID[:40]
-
 
 def loadFileJson(filename, logger):
     """Load File"""

@@ -25,6 +25,13 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         self.auth_instances = {}
         self.goodStates = ['CREATE - READY', 'REINSTATE - READY', 'MODIFY - READY']
 
+    def _getFolderName(self):
+        folderName = self.config.get('grafana_folder', 'Real Time Mon')
+        devname = self.config.get('grafana_dev', None)
+        if devname:
+            folderName = f'{folderName} - {devname}'
+        return folderName
+
     def _forceRenewDashboard(self, fout, out):
         """Force renew dashboard if oscars id not present and not same in instance"""
         for item in out:
@@ -40,6 +47,10 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
 
     def renew_exe(self, filename, fout):
         """Renew instance mainly if new information received, like oscarsid"""
+        if 'instance' not in fout or 'manifest' not in fout:
+            self.logger.error('Instance or Manifest not found in renew. Call back submit: %s', fout)
+            self.submit_exe(filename, fout)
+            return
         instance = fout['instance']
         manifest = fout['manifest']
         # Create dashboard
@@ -47,18 +58,22 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
             template, dashbInfo = self.t_createTemplate(instance, manifest, **fout)
             fout["dashbInfo"] = dashbInfo
         except IOError as ex:
-            self.logger.error('Failed to create template: %s', ex)
+            msg = f'Failed to create template: {ex}'
+            self.logger.error(msg)
+            self.s_setTaskState(fout['taskinfo']['uuid'], 'REJECTED', {'error': msg})
             return
         # Submit to Grafana (Check if folder exists, if not create it)
-        folderName = self.config.get('grafana_folder', 'Real Time Mon')
-        folderInfo = self.g_createFolder(folderName)
+        folderInfo = self.g_createFolder(self._getFolderName())
         template['folderId'] = folderInfo['id']
         template['overwrite'] = True
         self.g_addNewDashboard(template)
         # Update State
         fout['state'] = 'running'
+        fout['taskinfo']['status'] = 'FINISHED'
         fout.setdefault('retries', 0)
         self._updateState(filename, fout)
+        # Update dashboard url to sense-o
+        self.s_finishTask(fout['taskinfo']['uuid'], {'callbackURL': self.g_getDashboardURL(template['dashboard']['title'], self._getFolderName())})
 
     def submit_exe(self, filename, fout):
         """Submit Action Execution"""
@@ -71,18 +86,24 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         self.logger.info(pformat(instance))
         # 2. Get the manifest from SENSE-0
         if not instance:
-            self.logger.error('Instance not found: %s', fout['referenceUUID'])
+            msg = f'Instance not found: {fout["referenceUUID"]}'
+            self.logger.error(msg)
+            self.s_setTaskState(fout['taskinfo']['uuid'], 'REJECTED', {'error': msg})
             return
         # 2.a Check if the instance is already running
         if instance['state'] not in self.goodStates:
-            self.logger.error('Instance not in correct state: %s, %s', fout['referenceUUID'], instance['state'])
+            msg = f'Instance not in correct state: {fout["referenceUUID"]}, {instance["state"]}'
+            self.logger.error(msg)
+            self.s_setTaskState(fout['taskinfo']['uuid'], 'REJECTED', {'error': msg})
             return
         manifest = self.s_getManifest(instance)
         fout['manifest'] = manifest
         self.logger.info("Here is manifest for the following instance:")
         self.logger.info(pformat(manifest))
         if not manifest:
-            self.logger.error('Manifest not found: %s', fout['referenceUUID'])
+            msg = f'Manifest not found: {fout["referenceUUID"]}'
+            self.logger.error(msg)
+            self.s_setTaskState(fout['taskinfo']['uuid'], 'REJECTED', {'error': msg})
             return
         # 3. Create the dashboard and template
         try:
@@ -92,11 +113,13 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
             self.logger.error('Failed to create template: %s', ex)
             return
         # 4. Submit to Grafana (Check if folder exists, if not create it)
-        folderName = self.config.get('grafana_folder', 'Real Time Mon')
-        folderInfo = self.g_createFolder(folderName)
+        folderInfo = self.g_createFolder(self._getFolderName())
         template['folderId'] = folderInfo['id']
         template['overwrite'] = True
         self.g_addNewDashboard(template)
+        # Get dashboard URL and report back to SENSE-O
+        self.g_loadAll()  # Reload all dashboards (need to get URL)
+        self.s_finishTask(fout['taskinfo']['uuid'], {'callbackURL': self.g_getDashboardURL(template['dashboard']['title'], self._getFolderName())})
         # 5. Submit SiteRM Action to issue a ping test both ways
         tmpOut = self.sr_submit_ping(instance=instance, manifest=manifest)
         if tmpOut:
@@ -111,21 +134,25 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
 
     def delete_exe(self, filename, fout):
         """Delete Action Execution"""
+        def _deletefile(filename):
+            filename = f'{self.config.get("workdir", "/srv")}/{filename}'
+            if os.path.exists(filename):
+                os.remove(filename)
         self.logger.info('Delete Execution: %s, %s', filename, fout)
         # Delete the dashboard and template from Grafana
-        foldername = self.config.get('grafana_folder', 'Real Time Mon')
-        for dashbName, dashbVals in self.dashboards.get(foldername, {}).items():
+        for dashbName, dashbVals in self.dashboards.get(self._getFolderName(), {}).items():
             present = True
             for key in ['referenceUUID', 'orchestrator', 'submission']:
                 if fout.get(key, '') not in dashbVals['tags']:
                     present = False
             if present:
                 self.logger.info('Deleting Dashboard: %s', dashbName)
-                self.g_deleteDashboard(dashbName, foldername)
-                filename = f'{self.config.get("workdir", "/srv")}/{filename}'
-                if os.path.exists(filename):
-                    os.remove(filename)
+                self.g_deleteDashboard(dashbName, self._getFolderName())
+                _deletefile(filename)
+                # Set task action as finished
+                self.s_finishTask(fout['taskinfo']['uuid'], {'callbackURL': '', 'msg': "Deleted dashboard from Grafana"})
                 break
+        _deletefile(filename)
         # Delete the action from External API
         self.e_submitExternalAPI(fout, 'delete')
 
@@ -142,8 +169,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                 fout['state'] = 'renew'
                 self._updateState(filename, fout)
                 return
-        foldername = self.config.get('grafana_folder', 'Real Time Mon')
-        for dashbName, dashbVals in self.dashboards.get(foldername, {}).items():
+        for dashbName, dashbVals in self.dashboards.get(self._getFolderName(), {}).items():
             present = True
             for key in ['referenceUUID', 'orchestrator', 'submission']:
                 if fout.get(key, '') not in dashbVals['tags']:
@@ -151,6 +177,10 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
             if present:
                 # Check that version is the same, in case of new release,
                 # we need to update the dashboard with new template_tag
+                if fout['taskinfo']['status'] != 'FINISHED':
+                    self.s_finishTask(fout['taskinfo']['uuid'], {'callbackURL': self.g_getDashboardURL(dashbVals['title'], self._getFolderName())})
+                    fout['taskinfo']['status'] = 'FINISHED'
+                    self._updateState(filename, fout)
                 if self.config['template_tag'] in dashbVals['tags']:
                     self.logger.info('Dashboard is present in Grafana: %s', dashbName)
                     # Check if we need to re-issue ping test
@@ -193,27 +223,83 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         # If it is not from AUTH_KEY - we just keep it alive
         return True
 
-    def _getAllInstances(self):
-        """Get all instances from sense-o and ensure we have file present for each instance"""
-        # 1. Get all instances
-        # 2. Check if we have file for each instance
-        # 3. If not - create file with state 'submitted'
-        out = self.s_getInstances()
+    def _taskCancel(self, task, filename):
+        """Cancel task"""
+        fullpathfilename = f'{self.config.get("workdir", "/srv")}/{filename}'
+        self.s_setTaskState(task['uuid'], 'ACCEPTED')
+        if not os.path.exists(fullpathfilename):
+            self.s_setTaskState(task['uuid'], 'REJECTED', {'error': 'File not found on the server. RTMon has no knowledge about this monitoring instance'})
+            return
+        fout = loadFileJson(fullpathfilename, self.logger)
+        if not fout:
+            self.s_setTaskState(task['uuid'], 'REJECTED', {
+                'error': 'File not found on the server. RTMon has no knowledge about this monitoring instance'})
+            return
+        fout['state'] = 'delete'
+        self._updateState(filename, fout)
+        return
+
+    def _taskAccept(self, task, filename):
+        """Accept task"""
+        fullpathfilename = f'{self.config.get("workdir", "/srv")}/{filename}'
+        instanceuuid = task.get('config', {}).get('uuid', '')
+        out = self.s_getInstance(instanceuuid)
         if os.environ["SENSE_AUTH_OVERRIDE_NAME"] in self.auth_instances:
             del self.auth_instances[os.environ["SENSE_AUTH_OVERRIDE_NAME"]]
         self.auth_instances.setdefault(os.environ["SENSE_AUTH_OVERRIDE_NAME"], [])
         if not out:
+            msg = f'Instance {instanceuuid} not found in Orchestrator. Task UUID {task["uuid"]}. Reporting task as failed'
+            self.logger.error(msg)
+            self.s_setTaskState(task['uuid'], 'REJECTED', {'error': msg})
             return
-        for item in out:
-            filename = f'{self.config.get("workdir", "/srv")}/rtmon-debug-{os.environ["SENSE_AUTH_OVERRIDE_NAME"]}-{item["referenceUUID"]}'
-            if not os.path.exists(filename) and item['state'] in self.goodStates:
-                fout = {'state': 'submitted', 'referenceUUID': item['referenceUUID'], 'orchestrator': os.environ['SENSE_AUTH_OVERRIDE_NAME'], 'submission': 'AUTH_KEY'}
-                with open(filename, 'w', encoding="utf-8") as fd:
-                    fd.write(dumpJson(fout, self.logger))
-            if item['state'] in self.goodStates:
-                self.auth_instances[os.environ["SENSE_AUTH_OVERRIDE_NAME"]].append(item['referenceUUID'])
+        if not os.path.exists(fullpathfilename) and out['state'] in self.goodStates:
+            fout = {'state': 'submitted', 'referenceUUID': out['referenceUUID'],
+                    'orchestrator': os.environ['SENSE_AUTH_OVERRIDE_NAME'], 'submission': 'AUTH_KEY',
+                    'taskinfo': task}
+            with open(fullpathfilename, 'w', encoding="utf-8") as fd:
+                fd.write(dumpJson(fout, self.logger))
+        if out['state'] in self.goodStates:
+            self.auth_instances[os.environ["SENSE_AUTH_OVERRIDE_NAME"]].append(out['referenceUUID'])
+            self.s_setTaskState(task['uuid'], 'ACCEPTED')
+            # In this case task remained in ACCEPTED state (or means dashboard already present).
+            # We push it to renew
+            fout = loadFileJson(fullpathfilename, self.logger)
+            fout['state'] = 'renew'
+            fout['taskinfo'] = task
+            self._updateState(filename, fout)
+        else:
+            msg = f'Instance not in correct state: {out["referenceUUID"]}, {out["state"]}'
+            self.logger.info(msg)
+            self.s_setTaskState(task['uuid'], 'REJECTED', {'error': msg})
+
+    def _getAllTasks(self):
+        """Get all instances from sense-o and ensure we have file present for each instance"""
+        # 1. Get all instances
+        # 2. Check if we have file for each instance
+        # 3. If not - create file with state 'submitted'
+        # Get tasks here, and for each write new entry
+        newtasks = self.s_getassignedTasks()
+        for task in newtasks:
+            # Ignore ACCEPTED and REJECTED tasks
+            #if task['status'] in ['ACCEPTED', 'REJECTED']:
+            #    continue
+            instanceuuid = task.get('config', {}).get('uuid', '')
+            if not instanceuuid:
+                msg = f'Instance UUID not found in task provided by SENSE-O. Task: {task}'
+                self.logger.error(msg)
+                self.s_setTaskState(task['uuid'], 'REJECTED', {'error': msg})
+                continue
+            filename = f'rtmon-debug-{os.environ["SENSE_AUTH_OVERRIDE_NAME"]}-{instanceuuid}'
+            # In case "register": false, we need to update the task to delete and task status to accepted;
+            if task.get('config', {}).get('register', None) is False:
+                self._taskCancel(task, filename)
+                continue
+            if task.get('config', {}).get('register', None) is True:
+                self._taskAccept(task, filename)
             else:
-                self.logger.info('Instance not in correct state: %s, %s', item['referenceUUID'], item['state'])
+                msg = f'Register flag not found in task provided by SENSE-O. Task: {task}'
+                self.logger.error(msg)
+                self.s_setTaskState(task['uuid'], 'REJECTED', {'error': msg})
 
     def main(self):
         """ Main Method"""
@@ -273,7 +359,8 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                 os.environ['SENSE_AUTH_OVERRIDE_NAME'] = key
                 os.environ['SENSE_AUTH_OVERRIDE'] = val
                 self.s_reloadClient()
-                self._getAllInstances()
+                self.s_updateMetadata()
+                self._getAllTasks()
                 endTime = int(time.time())
                 timings[key] = endTime - startTime
             except SENSEOFailure as ex:

@@ -44,6 +44,7 @@ class GrafanaAPI():
                     if folderTitle:
                         self.dashboards.setdefault(folderTitle, {})
                         self.dashboards[folderTitle][item['title']] = item
+                        self.dashboards[folderTitle][item['title']]['url'] = f"{self.config['grafana_host']}/d/{item['uid']}/{item['slug']}"
                 return
             except Exception as ex:
                 failures += 1
@@ -83,6 +84,11 @@ class GrafanaAPI():
                 self.logger.error(f"Failed to create dashboard {dashbJson}: {ex}")
                 time.sleep(1)
         raise Exception(f"Failed to create dashboard {dashbJson} after 3 retries")
+
+    def g_getDashboardURL(self, title, folderTitle):
+        """Get dashboard URL"""
+        if folderTitle in self.dashboards and title in self.dashboards[folderTitle]:
+            return self.dashboards[folderTitle][title]['url']
 
     def g_deleteDashboard(self, title, folderTitle):
         """Delete dashboard"""

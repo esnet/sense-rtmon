@@ -4,12 +4,16 @@ Class for interacting with SENSE-0 API
 """
 import copy
 import os
+import uuid
+import json
 
 from sense.client.workflow_combined_api import WorkflowCombinedApi
 from sense.client.discover_api import DiscoverApi
+from sense.client.task_api import TaskApi
+from sense.client.metadata_api import MetadataApi
 from RTMonLibs.GeneralLibs import loadJson, dumpJson
 from RTMonLibs.GeneralLibs import SENSEOFailure
-
+from RTMonLibs.GeneralLibs import getUTCnow
 
 class SenseAPI:
     """Class for interacting with SENSE-0 API"""
@@ -20,14 +24,30 @@ class SenseAPI:
         # Clients will be loaded by reloadClient
         self.workflow_apis = {}
         self.discover_apis = {}
+        self.task_apis = {}
+        self.meta_apis = {}
+        self.uuids = {}
+
+    def _s_getworkeruuid(self):
+        """Generate UUID"""
+        orchestrator = os.environ.get('SENSE_AUTH_OVERRIDE_NAME')
+        if orchestrator in self.uuids:
+            return self.uuids[orchestrator]
+        return str(uuid.uuid4())
 
     def s_reloadClient(self):
         """Load SENSE-0 client"""
-        if os.environ.get('SENSE_AUTH_OVERRIDE_NAME') and \
-                (os.environ.get('SENSE_AUTH_OVERRIDE_NAME') not in self.workflow_apis or \
-                 os.environ.get('SENSE_AUTH_OVERRIDE_NAME') not in self.discover_apis):
-            self.workflow_apis[os.environ['SENSE_AUTH_OVERRIDE_NAME']] = WorkflowCombinedApi()
-            self.discover_apis[os.environ['SENSE_AUTH_OVERRIDE_NAME']] = DiscoverApi()
+        senseoname = os.environ.get('SENSE_AUTH_OVERRIDE_NAME')
+        if senseoname not in self.workflow_apis:
+            self.workflow_apis[senseoname] = WorkflowCombinedApi()
+        if senseoname not in self.discover_apis:
+            self.discover_apis[senseoname] = DiscoverApi()
+        if senseoname not in self.task_apis:
+            self.task_apis[senseoname] = TaskApi()
+        if senseoname not in self.meta_apis:
+            self.meta_apis[senseoname] = MetadataApi()
+        if senseoname not in self.uuids:
+            self.uuids[senseoname] = self._s_getworkeruuid()
 
     def s_getWorkflowApi(self):
         """Get Workflow API"""
@@ -43,6 +63,97 @@ class SenseAPI:
             return self.discover_apis[orchestrator]
         raise Exception(f"Orchestrator {orchestrator} not found in the list of clients")
 
+    def s_getTaskApi(self):
+        """Get Task API"""
+        orchestrator = os.environ.get('SENSE_AUTH_OVERRIDE_NAME')
+        if orchestrator in self.task_apis:
+            return self.task_apis[orchestrator]
+        raise Exception(f"Orchestrator {orchestrator} not found in the list of clients")
+
+    def s_getMetaApi(self):
+        """Get Metadata API"""
+        orchestrator = os.environ.get('SENSE_AUTH_OVERRIDE_NAME')
+        if orchestrator in self.meta_apis:
+            return self.meta_apis[orchestrator]
+        raise Exception(f"Orchestrator {orchestrator} not found in the list of clients")
+
+    def s_getMetadata(self):
+        """Get Metadata Information from SENSE-O"""
+        dApi = self.s_getMetaApi()
+        folderName = self._getFolderName()
+        try:
+            response = dApi.get_metadata(domain="RTMon", name=folderName)
+        except ValueError as ex:
+            raise ex
+        return response
+    def s_registerMetadata(self):
+        """Register Metadata Information"""
+        dApi = self.s_getMetaApi()
+        folderName = self._getFolderName()
+        try:
+            response = dApi.post_metadata(data=dumpJson({'name': folderName, 'uuid': self._s_getworkeruuid(), 'last_update': getUTCnow()}, self.logger), domain="RTMon", name=folderName)
+            print(response)
+        except ValueError as ex:
+            self.logger.error(f"Metadata raised ValueError for post - {ex}.")
+            response = self.s_getMetadata()
+        return response
+
+    def s_updateMetadata(self):
+        """Check if my instance is the active one."""
+        folderName = self._getFolderName()
+        myuuid = self._s_getworkeruuid()
+        try:
+            response = self.s_getMetadata()
+        except ValueError as ex:
+            self.logger.error(f"Metadata raised ValueError - {ex}. No metadata found for {folderName}. Register new one")
+            response = self.s_registerMetadata()
+        if 'uuid' not in response:
+            self.logger.error(f"Metadata does not have UUID. My UUID is {myuuid}. Failing to run. Response from SENSE-O: {response}")
+            raise SENSEOFailure(f"Metadata does not have UUID. My UUID is {myuuid}. Failing to run. Response from SENSE-O: {response}")
+        if response['uuid'] == myuuid:
+            self.s_registerMetadata()
+        else:
+            # Check if timestamp older than 2 mins (if no entry - force update);
+            if getUTCnow() - response.get('last_update', 0) > 1: # TODO replace to 120
+                self.logger.error(f"Metadata is older than 2 minutes. Metadata information: UUID: {response}. My UUID is {myuuid}. Last update: {response['last_update']}. Taking over.")
+                self.s_registerMetadata()
+            else:
+                raise SENSEOFailure(f"UUID does not match - {response['uuid']} in database. My UUID is {myuuid}. Last update: {response['last_update']}")
+
+    def s_getassignedTasks(self):
+        """Get all assigned tasks"""
+        tApi = self.s_getTaskApi()
+        ret = tApi.get_tasks(assigned='rtmon.instance-manager')
+        folderName = self._getFolderName()
+        ret = [task for task in ret if task.get('config', {}).get('deployment', '') == folderName]
+        print(ret)
+        return ret
+
+    def _s_gettaskbyuuid(self, taskuuid):
+        """Get task by UUID"""
+        tApi = self.s_getTaskApi()
+        tasks = self.s_getassignedTasks()
+        for task in tasks:
+            if task.get('uuid', '') == taskuuid:
+                return task
+
+    def s_setTaskState(self, taskuuid, state, data=None):
+        """Set task state"""
+        # Get the task from SENSE-O and check if state is different
+        task = self._s_gettaskbyuuid(taskuuid)
+        if task.get('status', '') == state:
+            return task
+        # Check if there are any other changes in reported data;
+        tApi = self.s_getTaskApi()
+        return tApi.update_task(json.dumps(data), uuid=taskuuid, state=state)
+
+    def s_finishTask(self, taskuuid, data=None):
+        """Accept task"""
+        task = self._s_gettaskbyuuid(taskuuid)
+        if task:
+            return self.s_setTaskState(taskuuid, 'FINISHED', data)
+        return None
+        #return tApi.accept_task(uuid=taskuuid, state=state, data=json.dumps(data))
 
     def s_getManifest(self, instance):
         """Create a manifest in SENSE-0"""

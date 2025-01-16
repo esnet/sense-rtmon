@@ -150,6 +150,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                 self.g_deleteDashboard(dashbName, self._getFolderName())
                 _deletefile(filename)
                 # Set task action as finished
+
                 self.s_finishTask(fout['taskinfo']['uuid'], {'callbackURL': '', 'msg': "Deleted dashboard from Grafana"})
                 break
         _deletefile(filename)
@@ -235,6 +236,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
             self.s_setTaskState(task['uuid'], 'REJECTED', {
                 'error': 'File not found on the server. RTMon has no knowledge about this monitoring instance'})
             return
+        fout['taskinfo'] = task
         fout['state'] = 'delete'
         self._updateState(filename, fout)
         return

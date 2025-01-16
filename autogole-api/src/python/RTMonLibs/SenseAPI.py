@@ -92,7 +92,6 @@ class SenseAPI:
         folderName = self._getFolderName()
         try:
             response = dApi.post_metadata(data=dumpJson({'name': folderName, 'uuid': self._s_getworkeruuid(), 'last_update': getUTCnow()}, self.logger), domain="RTMon", name=folderName)
-            print(response)
         except ValueError as ex:
             self.logger.error(f"Metadata raised ValueError for post - {ex}.")
             response = self.s_getMetadata()
@@ -114,7 +113,7 @@ class SenseAPI:
             self.s_registerMetadata()
         else:
             # Check if timestamp older than 2 mins (if no entry - force update);
-            if getUTCnow() - response.get('last_update', 0) > 1: # TODO replace to 120
+            if getUTCnow() - response.get('last_update', 0) > 120:
                 self.logger.error(f"Metadata is older than 2 minutes. Metadata information: UUID: {response}. My UUID is {myuuid}. Last update: {response['last_update']}. Taking over.")
                 self.s_registerMetadata()
             else:
@@ -126,7 +125,6 @@ class SenseAPI:
         ret = tApi.get_tasks(assigned='rtmon.instance-manager')
         folderName = self._getFolderName()
         ret = [task for task in ret if task.get('config', {}).get('deployment', '') == folderName]
-        print(ret)
         return ret
 
     def _s_gettaskbyuuid(self, taskuuid):
@@ -153,7 +151,6 @@ class SenseAPI:
         if task:
             return self.s_setTaskState(taskuuid, 'FINISHED', data)
         return None
-        #return tApi.accept_task(uuid=taskuuid, state=state, data=json.dumps(data))
 
     def s_getManifest(self, instance):
         """Create a manifest in SENSE-0"""

@@ -134,10 +134,14 @@ class SenseAPI:
         for task in tasks:
             if task.get('uuid', '') == taskuuid:
                 return task
+        return None
 
     def s_setTaskState(self, taskuuid, state, data=None):
         """Set task state"""
         # Get the task from SENSE-O and check if state is different
+        if not taskuuid:
+            self.logger.error(f"No task UUID provided. Ignore to set task state. Data: {data}")
+            return None
         task = self._s_gettaskbyuuid(taskuuid)
         if task.get('status', '') == state:
             return task
@@ -147,6 +151,9 @@ class SenseAPI:
 
     def s_finishTask(self, taskuuid, data=None):
         """Accept task"""
+        if not taskuuid:
+            self.logger.error(f"No task UUID provided. Ignore to finish task. Data: {data}")
+            return None
         task = self._s_gettaskbyuuid(taskuuid)
         if task:
             return self.s_setTaskState(taskuuid, 'FINISHED', data)

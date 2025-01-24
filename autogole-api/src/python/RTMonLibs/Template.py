@@ -100,14 +100,14 @@ class Mermaid():
         # Add IPv4/IPv6 on the switch
         for ipkey, ipdef in {'IPv4': '?port_ipv4?', 'IPv6': '?port_ipv6?'}.items():
             if ipkey in item and item[ipkey] != ipdef:
+                uniqname = _processName(f'{item["Node"]}')
                 self.mermaid.append(f'        {uniqname}_{ipkey}({item[ipkey]})')
                 if item.get('Vlan'):
                     self.mermaid.append(f'        {uniqname}_vlan{item["Vlan"]}(vlan.{item["Vlan"]})')
-                    self._m_addLink(uniqname, f'{uniqname}_vlan{item["Vlan"]}')
+                    self._m_addLink(_processName(item['Port']), f'{uniqname}_vlan{item["Vlan"]}')
                     self._m_addLink(f'{uniqname}_vlan{item["Vlan"]}', f'{uniqname}_{ipkey}')
                     # Add BGP Peering information
                     self._m_addBGP(item, ipkey, f'{uniqname}_{ipkey}')
-                    # TODO: Here we should save IP for issuing ping between SiteRM endpoints (switches)
         self.mermaid.append('    end')
         return uniqname
 

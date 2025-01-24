@@ -24,14 +24,19 @@ class SiteRMApi:
         """Get all hosts from manifest"""
         allHosts, allIPs = [], {}
         for _idx, item in enumerate(kwargs.get("manifest", {}).get("Ports", [])):
+            # Switch IPs
+            for key, defval in [("IPv4", ["?ipv4?", "?port_ipv4?"]), ("IPv6", ["?ipv6?", "?port_ipv6?"])]:
+                if item.get(key) and item[key] not in defval:
+                    allIPs.setdefault(key, [])
+                    allIPs[key].append(item[key].split('/')[0])
+            # Host IPs and all Hosts
             for hostdata in item.get('Host', []):
                 if item.get('Vlan'):
                     hostdata['vlan'] = f"vlan.{item['Vlan']}"
                 allHosts.append(hostdata)
                 # Check if IPv6 or IPv4 is defined
                 for key, defval in [("IPv4", "?ipv4?"), ("IPv6", "?ipv6?")]:
-                    # TODO: Remove split of ip once this is solved: https://github.com/sdn-sense/siterm/issues/576
-                    if hostdata.get(key) and hostdata[key] != defval:
+                    if hostdata.get(key) and hostdata[key] not in defval:
                         allIPs.setdefault(key, [])
                         allIPs[key].append(hostdata[key].split('/')[0])
         return allHosts, allIPs
@@ -75,13 +80,12 @@ class SiteRMApi:
                             # We ignore ourself. No need to ping ourself
                             continue
                         # Loop all debug actions and check if the action is already in the list of actions
-                        # # TODO: Change time to 1hr once this is solved: https://github.com/sdn-sense/siterm/issues/574
                         newaction = {"hostname": hostspl[1], "type": "rapid-ping",
                                      "sitename": hostspl[0], "ip": ip,
                                      "packetsize": kwargs.get("packetsize", 56),
                                      "interval": kwargs.get("interval", 5),
                                      "interface": host['Interface'] if not host.get('vlan') else host['vlan'],
-                                     "time": kwargs.get("time", 300)}
+                                     "time": kwargs.get("time", 1800)}
                         actionPresent = False
                         for action in allDebugActions:
                             if self._sr_all_keys_match(action.get('requestdict'), newaction):

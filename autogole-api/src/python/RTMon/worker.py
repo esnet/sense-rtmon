@@ -60,7 +60,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         except IOError as ex:
             msg = f'Failed to create template: {ex}'
             self.logger.error(msg)
-            self.s_setTaskState(fout['taskinfo']['uuid'], 'REJECTED', {'error': msg})
+            self.s_setTaskState(fout.get('taskinfo', {}).get('uuid', ""), 'REJECTED', {'error': msg})
             return
         # Submit to Grafana (Check if folder exists, if not create it)
         folderInfo = self.g_createFolder(self._getFolderName())
@@ -69,11 +69,12 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         self.g_addNewDashboard(template)
         # Update State
         fout['state'] = 'running'
+        fout.setdefault('taskinfo', {})
         fout['taskinfo']['status'] = 'FINISHED'
         fout.setdefault('retries', 0)
         self._updateState(filename, fout)
         # Update dashboard url to sense-o
-        self.s_finishTask(fout['taskinfo']['uuid'], {'callbackURL': self.g_getDashboardURL(template['dashboard']['title'], self._getFolderName())})
+        self.s_finishTask(fout.get('taskinfo', {}).get('uuid', ""), {'callbackURL': self.g_getDashboardURL(template['dashboard']['title'], self._getFolderName())})
 
     def submit_exe(self, filename, fout):
         """Submit Action Execution"""
@@ -88,13 +89,13 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         if not instance:
             msg = f'Instance not found: {fout["referenceUUID"]}'
             self.logger.error(msg)
-            self.s_setTaskState(fout['taskinfo']['uuid'], 'REJECTED', {'error': msg})
+            self.s_setTaskState(fout.get('taskinfo', {}).get('uuid', ""), 'REJECTED', {'error': msg})
             return
         # 2.a Check if the instance is already running
         if instance['state'] not in self.goodStates:
             msg = f'Instance not in correct state: {fout["referenceUUID"]}, {instance["state"]}'
             self.logger.error(msg)
-            self.s_setTaskState(fout['taskinfo']['uuid'], 'REJECTED', {'error': msg})
+            self.s_setTaskState(fout.get('taskinfo', {}).get('uuid', ""), 'REJECTED', {'error': msg})
             return
         manifest = self.s_getManifest(instance)
         fout['manifest'] = manifest
@@ -103,7 +104,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         if not manifest:
             msg = f'Manifest not found: {fout["referenceUUID"]}'
             self.logger.error(msg)
-            self.s_setTaskState(fout['taskinfo']['uuid'], 'REJECTED', {'error': msg})
+            self.s_setTaskState(fout.get('taskinfo', {}).get('uuid', ""), 'REJECTED', {'error': msg})
             return
         # 3. Create the dashboard and template
         try:
@@ -119,7 +120,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         self.g_addNewDashboard(template)
         # Get dashboard URL and report back to SENSE-O
         self.g_loadAll()  # Reload all dashboards (need to get URL)
-        self.s_finishTask(fout['taskinfo']['uuid'], {'callbackURL': self.g_getDashboardURL(template['dashboard']['title'], self._getFolderName())})
+        self.s_finishTask(fout.get('taskinfo', {}).get('uuid', ""), {'callbackURL': self.g_getDashboardURL(template['dashboard']['title'], self._getFolderName())})
         # 5. Submit SiteRM Action to issue a ping test both ways
         tmpOut = self.sr_submit_ping(instance=instance, manifest=manifest)
         if tmpOut:
@@ -151,7 +152,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                 _deletefile(filename)
                 # Set task action as finished
 
-                self.s_finishTask(fout['taskinfo']['uuid'], {'callbackURL': '', 'msg': "Deleted dashboard from Grafana"})
+                self.s_finishTask(fout.get('taskinfo', {}).get('uuid', ""), {'callbackURL': '', 'msg': "Deleted dashboard from Grafana"})
                 break
         _deletefile(filename)
         # Delete the action from External API
@@ -178,6 +179,8 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
             if present:
                 # Check that version is the same, in case of new release,
                 # we need to update the dashboard with new template_tag
+                # Set default task info
+                fout.setdefault('taskinfo', {}).setdefault('status', 'UNKNOWN')
                 if fout['taskinfo']['status'] != 'FINISHED':
                     self.s_finishTask(fout['taskinfo']['uuid'], {'callbackURL': self.g_getDashboardURL(dashbVals['title'], self._getFolderName())})
                     fout['taskinfo']['status'] = 'FINISHED'
@@ -210,19 +213,6 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
     def failed_exe(self, filename, fout):
         """Failed Action Execution"""
         self.logger.info('Failed Execution: %s, %s', filename, fout)
-
-
-    def _keepAlive(self, fout):
-        """Checks if this item is from auth_key and should be kept alive"""
-        # In case it is received dynamically from Orchestrator (not via API)
-        # We check if it is still enabled in the orchestrator and state is good.
-        if fout.get('submission', '') == 'AUTH_KEY':
-            if fout['orchestrator'] in self.auth_instances:
-                if fout['referenceUUID'] in self.auth_instances[fout['orchestrator']]:
-                    return True
-            return False
-        # If it is not from AUTH_KEY - we just keep it alive
-        return True
 
     def _taskCancel(self, task, filename):
         """Cancel task"""
@@ -314,11 +304,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                     fout = loadFileJson(os.path.join(root, filename), self.logger)
                     if not fout:
                         continue
-                    keepentry = self._keepAlive(fout)
                     if fout.get('state', '') in ['delete', 'submitted', 'running', 'failed', 'renew']:
-                        if not keepentry:
-                            # Means it is not anymore present in SENSE-O, need to delete
-                            fout['state'] = 'delete'
                         stateInfo.setdefault(fout['state'], {})
                         stateInfo[fout['state']][filename] = fout
         if not stateInfo:
@@ -367,6 +353,8 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                 timings[key] = endTime - startTime
             except SENSEOFailure as ex:
                 self.logger.error('SENSEOFailure: %s', ex)
+                self.logger.error('Failed to load SENSE-O data. Will not check any local files')
+                raise ex
         startTime = int(time.time())
         self.logger.info('Running Main')
         self.main()

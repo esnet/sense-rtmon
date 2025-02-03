@@ -165,22 +165,26 @@ class DiagramWorker:
         ## This is for BGP
         for ipkey, ipdef in {'IPv4': '?port_ipv4?', 'IPv6': '?port_ipv6?'}.items():
             if ipkey in item and item[ipkey] != ipdef:
-                ip_node_name = f"{item['Node']}_{ipkey}"
-                ip_label = item[ipkey]
-                ip_label2 = ""
-                sitename = item["Site"]
+                ipLabel = item[ipkey]
+                ipLabel2 = None
+                sitename = item.get("Site")
                 
                 if self.instance != None:
-                    tempData = self.instance["intents"]
-                    for flow in tempData:
-                        terminals = flow["json"]["data"]["connections"][0]["terminals"]
-                        for connection in terminals:
-                            if connection["uri"] == sitename:
-                                ip_label2 = connection["ipv6_prefix_list"]
+                    
+                    for flow in self.instance.get("intents", []):
+                        for connections in flow.get('json', {}).get('data', {}).get('connections', []):
+                            for terminal in connections.get('terminals', []):
+                                if "uri" not in terminal:
+                                    continue
+                                elif terminal["uri"] == sitename and terminal.get(f'{ipkey.lower()}_prefix_list'):
+                                    ipLabel2 = terminal[f'{ipkey.lower()}_prefix_list']
+                                    break
+                            if ipLabel2:
                                 break
-                ip_node = Custom(ip_label + "\n" + ip_label2, self.BGP_ICON_PATH)
+                        if ipLabel2:
+                            break
+                ip_node = Custom(ipLabel + "\n" + ipLabel2, self.BGP_ICON_PATH)
                 switch1 >> Edge() << ip_node
-                
         return switch1
         
 
@@ -234,9 +238,9 @@ class DiagramWorker:
 
         :param output_filename: Path where the output diagram will be saved.
         """
-        output_dir = os.path.dirname(output_filename)
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
+        outputDir = os.path.dirname(output_filename)
+        if not os.path.exists(outputDir):
+            os.makedirs(outputDir)
 
         with Diagram("Network Topology", show=False, filename=output_filename):
             while len(indata) > 0:

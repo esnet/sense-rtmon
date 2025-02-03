@@ -2,11 +2,18 @@
 sleep_timer: 30
 # Work dir for temp files (api directory). Default /srv
 workdir: '/srv/'
-
+image_dir: '/srv/images'
 # Grafana settings (for the API)
 grafana_host: 'https://autogole-grafana.nrp-nautilus.io'
-grafana_api_key: 'REPLACE_ME'
+grafana_api_key: 
+baseImageURL: 'http://localhost:8000/images'
 grafana_folder: 'Real Time Mon'
+grafana_dev: 
+image_dir:
+image_host:
+image_flask_port:
+image_debug:
+
 # FOR DEVELOPMEENT ONLY
 # Enable grafana_dev parameter (can be any string, and will be used as name to create directory inside Grafana)
 # Additionally - all dashboards will have this added to name.

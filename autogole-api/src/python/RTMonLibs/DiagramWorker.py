@@ -183,8 +183,10 @@ class DiagramWorker:
                                 break
                         if ipLabel2:
                             break
-                ip_node = Custom(ipLabel + "\n" + ipLabel2, self.BGP_ICON_PATH)
-                switch1 >> Edge() << ip_node
+                ipNode = Custom(ipLabel, self.BGP_ICON_PATH)
+                switch1 >> Edge() << ipNode
+                ipNode2 = Custom(ipLabel2, self.BGP_ICON_PATH)
+                ipNode >> Edge() << ipNode2
         return switch1
         
 

@@ -1,11 +1,12 @@
 FROM opensciencegrid/software-base:23-al8-release
 
 RUN yum -y install wget epel-release && \
-    yum -y install git python3 python3-pyyaml python3-devel python3-pip gcc openssl-devel cronie python3-pyOpenSSL fetch-crl && \
+    yum -y install git python3 python3-pyyaml python3-devel python3-pip gcc openssl-devel cronie python3-pyOpenSSL fetch-crl graphviz && \
     yum clean all
 
 RUN mkdir -p /opt/ && \
     mkdir -p /srv/ && \
+    mkdir -p /srv/icons/ && \
     mkdir -p /etc/rtmon/templates/ && \
     mkdir -p /var/log/rtmon/ && \
     mkdir -p /etc/grid-security/certificates/
@@ -25,7 +26,11 @@ RUN git clone https://github.com/esnet/sense-rtmon.git /opt/sense-rtmon && \
 
 RUN wget https://raw.githubusercontent.com/sdn-sense/rm-configs/master/CAs/SiteRM.pem -O /etc/grid-security/certificates/e52ac827.0
 
-ADD files/etc/supervisord.d/10-server.conf /etc/supervisord.d/10-server.conf
+COPY files/etc/supervisord.d/10-server.conf /etc/supervisord.d/10-server.conf
+COPY icons/host.png /srv/icons/host.png
+COPY icons/switch.png /srv/icons/switch.png
+COPY icons/BGP.png /srv/icons/BGP.png
+COPY imageserver.py /srv/imageserver.py
 
 # Get latest CA's
 RUN fetch-crl || echo "Supress warnings."

@@ -10,6 +10,13 @@ from datetime import datetime, timezone
 from yaml import safe_load as yload
 from yaml import safe_dump as ydump
 
+def _processName(name):
+    """Process Name for Mermaid and replace all special chars with _"""
+    for repl in [[" ", "_"], [":", "_"], ["/", "_"], ["-", "_"], [".", "_"], ["?", "_"]]:
+        name = name.replace(repl[0], repl[1])
+    return name
+    
+
 def getUTCnow():
     """Get UTC Time."""
     return int(datetime.now(timezone.utc).timestamp())

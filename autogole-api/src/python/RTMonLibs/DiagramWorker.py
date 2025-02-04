@@ -29,6 +29,7 @@ class DiagramWorker:
 
         :param indata: List of dictionaries containing host and switch details.
         """
+        super().__init__()
         self.objects = {}
         self.added = {}
         self.linksadded = set()
@@ -190,16 +191,14 @@ class DiagramWorker:
         return switch1
         
 
-
-
-    def addItem(self, item):
+    def d_addItem(self, item):
         """
         Add an item (host or switch) to the diagram by identifying its type and location (cluster).
 
         :param item: Dictionary containing item details.
         :return: Diagram object representing the item.
         """
-        site = self.identifySite(item)
+        site = self.d_identifySite(item)
         if item['Type'] == 'Host':
             with Cluster(site):
                 return self.d_addHost(item)
@@ -207,7 +206,7 @@ class DiagramWorker:
             with Cluster(site):
                 return self.d_addSwitch(item)
 
-    def identifySite(self, item):
+    def d_identifySite(self, item):
         """
         Identify the site or cluster to which the item (host or switch) belongs.
 
@@ -221,7 +220,7 @@ class DiagramWorker:
             site = item['Node'].split(':')[0]
         return site
 
-    def setreverse(self, item):
+    def d_setreverse(self, item):
         """
         Set the reverse flag for alternating between the first and last items in the input list.
 
@@ -234,7 +233,7 @@ class DiagramWorker:
         elif item['Type'] == 'Host' and self.popreverse is True:
             self.popreverse = False
 
-    def createGraph(self, output_filename, indata):
+    def d_createGraph(self, output_filename, indata):
         """
         Create the network topology diagram and save it to a file.
 
@@ -250,6 +249,6 @@ class DiagramWorker:
                     item =indata.pop(0)
                 elif self.popreverse == True:
                     item = indata.pop()
-                self.addItem(item)
-                self.setreverse(item)
+                self.d_addItem(item)
+                self.d_setreverse(item)
             self.d_addLinks()

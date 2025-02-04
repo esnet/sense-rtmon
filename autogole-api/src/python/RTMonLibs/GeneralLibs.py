@@ -15,7 +15,6 @@ def _processName(name):
     for repl in [[" ", "_"], [":", "_"], ["/", "_"], ["-", "_"], [".", "_"], ["?", "_"]]:
         name = name.replace(repl[0], repl[1])
     return name
-    
 
 def getUTCnow():
     """Get UTC Time."""

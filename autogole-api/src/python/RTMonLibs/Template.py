@@ -13,7 +13,7 @@ def clamp(n, minn, maxn):
 class Mermaid():
     """Mermaid Template Class"""
     def __init__(self, **kwargs):
-        super().__init__()
+        super().__init__(**kwargs)
         self.config = kwargs.get('config')
         self.logger = kwargs.get('logger')
         self.mermaid = ["graph LR"]
@@ -659,7 +659,7 @@ class Template():
 
         try: 
             diagram_filename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{kwargs['referenceUUID']}"
-            DiagramWorker(**kwargs).createGraph(diagram_filename, self.orderlist)
+            self.d_createGraph(diagram_filename, self.orderlist)
             self.logger.info(f"Diagram saved at {diagram_filename}.png")
         except IOError as ex:
             self.logger.error('Failed to create diagram: %s', ex)

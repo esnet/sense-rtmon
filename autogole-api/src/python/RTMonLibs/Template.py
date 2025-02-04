@@ -439,24 +439,27 @@ class Template():
         out["uid"] = args[0]["intents"][0]["id"]
         return out
 
-    def t_createHostFlow(self, *args):
+    def t_createHostFlow(self, sitehost, *args):
         """Create Host Flow Template"""
         out = []
-        for sitehost, interfaces in self.m_groups['Hosts'].items():
-            sitename = sitehost.split(":")[0]
-            hostname = sitehost.split(":")[1]
-            intfline = "|".join(interfaces.keys())
-            row = self.t_addRow(*args, title=f"Host Flow Summary: {sitehost}")
-            panels = dumpJson(self._t_loadTemplate("hostflow.json"), self.logger)
-            panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
-            panels = panels.replace("REPLACEME_SITENAME", sitename)
-            panels = panels.replace("REPLACEME_HOSTNAME", hostname)
-            panels = panels.replace("REPLACEME_INTERFACE", intfline)
-            panels = loadJson(panels, self.logger)
-            out += self.addRowPanel(row, panels, True)
+        interfaces = self.m_groups['Hosts'].get(sitehost, "")
+        if not interfaces:
+            self.logger.error(f"Host {sitehost} not found in the groups")
+            return out
+        sitename = sitehost.split(":")[0]
+        hostname = sitehost.split(":")[1]
+        intfline = "|".join(interfaces.keys())
+        row = self.t_addRow(*args, title=f"Host Flow Summary: {sitehost}")
+        panels = dumpJson(self._t_loadTemplate("hostflow.json"), self.logger)
+        panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
+        panels = panels.replace("REPLACEME_SITENAME", sitename)
+        panels = panels.replace("REPLACEME_HOSTNAME", hostname)
+        panels = panels.replace("REPLACEME_INTERFACE", intfline)
+        panels = loadJson(panels, self.logger)
+        out += self.addRowPanel(row, panels, True)
         return out
 
-    def t_createSwitchFlow(self, *args):
+    def t_createSwitchFlow(self, sitehost, *args):
         """Create Switch Flow Template"""
         def findIntf(interfaces):
             """Find Interface"""
@@ -485,27 +488,30 @@ class Template():
             intfline = "|".join(intfs)
             return intfline
         out = []
-        for sitehost, interfaces in self.m_groups['Switches'].items():
-            try:
-                sitename = sitehost.split(":")[0]
-                hostname = sitehost.split(":")[1]
-            except IndexError as ex:
-                self.logger.error(f"Got Exception: {ex}")
-                self.logger.error(f"Sitehost: {sitehost}")
-                self.logger.error(f"Interfaces: {interfaces}")
-                self.logger.error("This happens for Sites/Switches not exposing correct Sitename/Port. Are you missing an override?")
-                raise Exception("Sitehost not in correct format") from ex
+        interfaces = self.m_groups['Switches'].get(sitehost, "")
+        if not interfaces:
+            self.logger.error(f"Switch {sitehost} not found in the groups")
+            return out
+        try:
             sitename = sitehost.split(":")[0]
             hostname = sitehost.split(":")[1]
-            intfline = findIntf(interfaces)
-            row = self.t_addRow(*args, title=f"Switch Flow Summary: {sitehost}")
-            panels = dumpJson(self._t_loadTemplate("switchflow.json"), self.logger)
-            panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
-            panels = panels.replace("REPLACEME_SITENAME", sitename)
-            panels = panels.replace("REPLACEME_HOSTNAME", hostname)
-            panels = panels.replace("REPLACEME_INTERFACE", escape(intfline))
-            panels = loadJson(panels, self.logger)
-            out += self.addRowPanel(row, panels, True)
+        except IndexError as ex:
+            self.logger.error(f"Got Exception: {ex}")
+            self.logger.error(f"Sitehost: {sitehost}")
+            self.logger.error(f"Interfaces: {interfaces}")
+            self.logger.error("This happens for Sites/Switches not exposing correct Sitename/Port. Are you missing an override?")
+            raise Exception(f"Sitehost not in correct format. Exception {ex}") from ex
+        sitename = sitehost.split(":")[0]
+        hostname = sitehost.split(":")[1]
+        intfline = findIntf(interfaces)
+        row = self.t_addRow(*args, title=f"Switch Flow Summary: {sitehost}")
+        panels = dumpJson(self._t_loadTemplate("switchflow.json"), self.logger)
+        panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
+        panels = panels.replace("REPLACEME_SITENAME", sitename)
+        panels = panels.replace("REPLACEME_HOSTNAME", hostname)
+        panels = panels.replace("REPLACEME_INTERFACE", escape(intfline))
+        panels = loadJson(panels, self.logger)
+        out += self.addRowPanel(row, panels, True)
         return out
 
     def t_createMermaid(self, *args):
@@ -668,10 +674,16 @@ class Template():
         self.generated['links'] = self.t_addLinks(*args, **kwargs)
         # Add Debug Info (manifest, instance)
         self.generated['panels'] += self.t_addDebug(*args)
-        # Add Host Flow
-        self.generated['panels'] += self.t_createHostFlow(*args)
-        # Add Switch Flow
-        self.generated['panels'] += self.t_createSwitchFlow(*args)
+        added = []
+        for item in self.orderlist:
+            if item['Type'] == 'Host' and item['Name'] not in added:
+                self.generated['panels'] += self.t_createHostFlow(item["Name"], *args)
+                added.append(item['Name'])
+            elif item['Type'] == 'Switch' and item['Node'] not in added:
+                self.generated['panels'] += self.t_createSwitchFlow(item["Node"], *args)
+                added.append(item['Node'])
+            else:
+                self.logger.error(f"Unknown Type: {item['Type']}. Skipping... {item}")
         # Add L2 Debugging
         self.generated['panels'] += self.t_addL2Debugging(*args)
         #Image Panel

@@ -52,13 +52,17 @@ class Mermaid():
         """Record mac into var"""
         try:
             hostname = hostdict['Name'].split(':')[1]
+            sitehost = hostdict['Name'].split(':')[0]
         except IndexError as ex:
             hostname = hostdict['Name']
+            sitehost = hostdict['Node']
             self.logger.debug(f"Got Exception: {ex}")
-        if 'Mac' in hostdict and hostdict['Mac'] not in self.mac_addresses \
+        self.mac_addresses.setdefault(sitehost, {})
+        self.mac_addresses[sitehost].setdefault(hostname, {})
+        if 'Mac' in hostdict and hostdict['Mac'] not in self.mac_addresses[sitehost][hostname] \
                 and hostdict['Mac'] != "?mac?" \
                 and hostdict['Mac'] != "?port_mac?":
-            self.mac_addresses.setdefault(hostname, hostdict['Mac'])
+            self.mac_addresses[sitehost][hostname] = hostdict['Mac']
 
     def _m_addBGP(self, item, ipkey, bgppeer):
         """Add BGP into Mermaid graph"""
@@ -585,15 +589,16 @@ class Template():
                     queries.append(query)
             if 'Vlan' in intfdata and intfdata['Vlan']:
                 vlan = intfdata['Vlan']
-                for mhost, macaddr in self.mac_addresses.items():
-                    if mhost != hostname:
-                        query = copy.deepcopy(origin_query)
-                        query['datasource']['uid'] = str(self.t_dsourceuid)
-                        query['expr'] = f'sum(arp_state{{HWaddress=~"{macaddr}.*",Hostname="{hostname}",sitename="{sitename}",Device="vlan.{vlan}"}}) OR on() vector(0)'
-                        query['legendFormat'] = f'MAC address of {mhost} end visible in arptable under vlan.{vlan}'
-                        query['refId'] = f'A{refid}'
-                        refid += 1
-                        queries.append(query)
+                for ssite, sdata in self.mac_addresses.items():
+                    for mhost, macaddr in sdata.items():
+                        if mhost != hostname and macaddr:
+                            query = copy.deepcopy(origin_query)
+                            query['datasource']['uid'] = str(self.t_dsourceuid)
+                            query['expr'] = f'sum(arp_state{{HWaddress=~"{macaddr}.*",Hostname="{hostname}",sitename="{sitename}",Device="vlan.{vlan}"}}) OR on() vector(0)'
+                            query['legendFormat'] = f'MAC address of {ssite} {mhost} end visible in arptable under vlan.{vlan}'
+                            query['refId'] = f'A{refid}'
+                            refid += 1
+                            queries.append(query)
         panel = self._t_loadTemplate("l2state.json")
         panel['id'] = self._getNextID()
         panel['title'] = f"L2 Debugging for Host: {sitehost}"
@@ -622,14 +627,17 @@ class Template():
             if 'Vlan' in intfdata and intfdata['Vlan'] not in vlans:
                 vlans.append(intfdata['Vlan'])
         for vlan in vlans:
-            for mhost, macaddr in self.mac_addresses.items():
-                query = copy.deepcopy(origin_query)
-                query['datasource']['uid'] = str(self.t_dsourceuid)
-                query['expr'] = f'sum(mac_table_info{{sitename="{sitename}",hostname="{hostname}", macaddress="{macaddr}", vlan="{vlan}"}}) OR on() vector(0)'
-                query['legendFormat'] = f'MAC address of {mhost} visible in mac table ({vlan})'
-                query['refId'] = f'A{refid}'
-                refid += 1
-                queries.append(query)
+            for ssite, sdata in self.mac_addresses.items():
+                for mhost, macaddr in sdata.items():
+                    if not macaddr:
+                        continue
+                    query = copy.deepcopy(origin_query)
+                    query['datasource']['uid'] = str(self.t_dsourceuid)
+                    query['expr'] = f'sum(mac_table_info{{sitename="{sitename}",hostname="{hostname}", macaddress="{macaddr}", vlan="{vlan}"}}) OR on() vector(0)'
+                    query['legendFormat'] = f'MAC address of {ssite} {mhost} visible in mac table ({vlan})'
+                    query['refId'] = f'A{refid}'
+                    refid += 1
+                    queries.append(query)
         panel = self._t_loadTemplate("l2state.json")
         panel['id'] = self._getNextID()
         panel['title'] = f"L2 Debugging for Switch: {sitehost}"

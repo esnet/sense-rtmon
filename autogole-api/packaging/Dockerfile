@@ -19,7 +19,7 @@ RUN pip3 install wheel
 RUN git clone https://github.com/sdn-sense/sense-o-py-client.git /opt/sense-o-py-client && \
     cd /opt/sense-o-py-client && pip3 install -r requirements.txt && pip3 install .
 
-# Install RTMON (TODO, replace to ESnet repo once merged)
+# Install RTMON
 RUN git clone https://github.com/esnet/sense-rtmon.git /opt/sense-rtmon && \
     cd /opt/sense-rtmon/autogole-api/ && pip3 install -r requirements.txt && pip3 install . && \
     cp src/templates/* /etc/rtmon/templates/
@@ -27,10 +27,10 @@ RUN git clone https://github.com/esnet/sense-rtmon.git /opt/sense-rtmon && \
 RUN wget https://raw.githubusercontent.com/sdn-sense/rm-configs/master/CAs/SiteRM.pem -O /etc/grid-security/certificates/e52ac827.0
 
 COPY files/etc/supervisord.d/10-server.conf /etc/supervisord.d/10-server.conf
+COPY files/etc/supervisord.d/11-httpserver.conf /etc/supervisord.d/11-httpserver.conf
 COPY icons/host.png /srv/icons/host.png
 COPY icons/switch.png /srv/icons/switch.png
 COPY icons/BGP.png /srv/icons/BGP.png
-COPY imageserver.py /srv/imageserver.py
 
 # Get latest CA's
 RUN fetch-crl || echo "Supress warnings."

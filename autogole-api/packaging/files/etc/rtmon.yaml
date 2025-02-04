@@ -2,24 +2,30 @@
 sleep_timer: 30
 # Work dir for temp files (api directory). Default /srv
 workdir: '/srv/'
-image_dir: '/srv/images'
 # Grafana settings (for the API)
 grafana_host: 'https://autogole-grafana.nrp-nautilus.io'
 grafana_api_key: 
 baseImageURL: 'http://localhost:8000/images'
 grafana_folder: 'Real Time Mon'
-grafana_dev: 
-image_dir:
-image_host:
-image_flask_port:
-image_debug:
+grafana_dev:
+
+# Image Server settings
+# Default image dir is /srv/images
+#image_dir:
+
 
 # FOR DEVELOPMEENT ONLY
 # Enable grafana_dev parameter (can be any string, and will be used as name to create directory inside Grafana)
 # Additionally - all dashboards will have this added to name.
 # Grafana itself update's/inserts dashboards based on uid (and if this is not used, it can easily update production dashboards)
 # grafana_dev: 'Justas-Dev'
-
+# This is only used for development and running manually (gunicorn controls this via supervisor conf
+#image_host:
+# Default image port is 8000 - mainly used for development (gunicorn controls this via supervisor conf)
+# image_flask_port:
+# Default image debug is False (mainly used for development)
+#image_debug:
+# ==================================
 
 # Template path and tags. If tag updated - it will force update all templates
 template_path: '/etc/rtmon/templates'

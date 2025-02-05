@@ -20,3 +20,6 @@
 "urn:ogf:network:al2s.internet2.edu:2023":
   name: "Internet2"
   joint_net: True
+"urn:ogf:network:ampath.net:2013":
+  name: "AMPATH"
+  joint_net: True

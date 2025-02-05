@@ -631,6 +631,8 @@ class Template():
                 for mhost, macaddr in sdata.items():
                     if not macaddr:
                         continue
+                    if sitehost == ssite:
+                        continue
                     query = copy.deepcopy(origin_query)
                     query['datasource']['uid'] = str(self.t_dsourceuid)
                     query['expr'] = f'sum(mac_table_info{{sitename="{sitename}",hostname="{hostname}", macaddress="{macaddr}", vlan="{vlan}"}}) OR on() vector(0)'

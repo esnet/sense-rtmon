@@ -90,12 +90,16 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
             msg = f'Instance not found: {fout["referenceUUID"]}'
             self.logger.error(msg)
             self.s_setTaskState(fout.get('taskinfo', {}).get('uuid', ""), 'REJECTED', {'error': msg})
+            fout['state'] = 'failed'
+            self._updateState(filename, fout)
             return
         # 2.a Check if the instance is already running
         if instance['state'] not in self.goodStates:
             msg = f'Instance not in correct state: {fout["referenceUUID"]}, {instance["state"]}'
             self.logger.error(msg)
             self.s_setTaskState(fout.get('taskinfo', {}).get('uuid', ""), 'REJECTED', {'error': msg})
+            fout['state'] = 'failed'
+            self._updateState(filename, fout)
             return
         manifest = self.s_getManifest(instance)
         fout['manifest'] = manifest
@@ -105,6 +109,8 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
             msg = f'Manifest not found: {fout["referenceUUID"]}'
             self.logger.error(msg)
             self.s_setTaskState(fout.get('taskinfo', {}).get('uuid', ""), 'REJECTED', {'error': msg})
+            fout['state'] = 'failed'
+            self._updateState(filename, fout)
             return
         # 3. Create the dashboard and template
         try:
@@ -218,6 +224,13 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
     def failed_exe(self, filename, fout):
         """Failed Action Execution"""
         self.logger.info('Failed Execution: %s, %s', filename, fout)
+        fout.setdefault('retries', 0)
+        self.logger.info(f'Will mark it as delete after 10 cycles. Current: {fout["retries"]}')
+        fout['retries'] += 1
+        # If retries are more than 10 - we need to mark it as delete
+        if fout['retries'] > 10:
+            fout['state'] = 'delete'
+        self._updateState(filename, fout)
 
     def _taskCancel(self, task, filename):
         """Cancel task"""

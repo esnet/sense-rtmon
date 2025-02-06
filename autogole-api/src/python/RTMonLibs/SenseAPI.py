@@ -143,6 +143,8 @@ class SenseAPI:
             self.logger.error(f"No task UUID provided. Ignore to set task state. Data: {data}")
             return None
         task = self._s_gettaskbyuuid(taskuuid)
+        if not task:
+            return None
         if task.get('status', '') == state:
             return task
         # Check if there are any other changes in reported data;

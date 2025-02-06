@@ -9,22 +9,22 @@ RUN yum -y install wget epel-release && \
 WORKDIR /opt
 RUN mkdir -p /srv/icons/ /etc/rtmon/templates/ /var/log/rtmon/ /etc/grid-security/certificates/
 
-# Install pip packages
-RUN pip3 install --no-cache-dir --upgrade setuptools==58.2.0 wheel==0.37.0
-
-# Install SENSE Py Client
+# Upgrade PIP SetupTools and wheek and Install SENSE Py Client
 WORKDIR /opt/sense-o-py-client
-RUN git clone https://github.com/sdn-sense/sense-o-py-client.git . && \
+RUN pip3 install --no-cache-dir --upgrade setuptools==58.2.0 wheel==0.37.0 && \
+    git clone https://github.com/sdn-sense/sense-o-py-client.git . && \
     pip3 install --no-cache-dir -r requirements.txt && pip3 install --no-cache-dir .
 
 # Install RTMON
 WORKDIR /opt/sense-rtmon
-RUN git clone https://github.com/esnet/sense-rtmon.git . && \
-    cd autogole-api && pip3 install --no-cache-dir -r requirements.txt && pip3 install --no-cache-dir . && \
+RUN git clone https://github.com/esnet/sense-rtmon.git . \
+WORKDIR /opt/sense-rtmon/autogole-api
+RUN pip3 install --no-cache-dir -r requirements.txt && pip3 install --no-cache-dir . && \
     cp src/templates/* /etc/rtmon/templates/
 
 # Download CA certificates with a progress bar
-RUN wget --progress=dot:giga https://raw.githubusercontent.com/sdn-sense/rm-configs/master/CAs/SiteRM.pem -O /etc/grid-security/certificates/e52ac827.0
+WORKDIR /etc/grid-security/certificates/
+RUN wget --progress=dot:giga https://raw.githubusercontent.com/sdn-sense/rm-configs/master/CAs/SiteRM.pem -O e52ac827.0
 
 # Copy necessary files
 COPY files/etc/supervisord.d/10-server.conf /etc/supervisord.d/10-server.conf

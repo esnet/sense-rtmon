@@ -34,3 +34,4 @@ jobs:
           VALIDATE_JSCPD: false
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PYTHON_PYLINT_CONFIG_FILE: autogole-api/standarts/pylintrc

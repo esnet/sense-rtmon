@@ -1,4 +1,4 @@
-
+#!/bin/sh
 echo "Dont forget to update the rtmon.yaml file with the correct parameters"
 echo "Dont forget to update the sense-o-auth.yaml file with the correct parameters"
 echo "Dont forget to update the sense-o-auth-prod.yaml file with the correct parameters"

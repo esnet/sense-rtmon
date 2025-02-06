@@ -1,8 +1,8 @@
 """
 DiagramWorker Class for Network Topology Visualization
 
-This module contains the DiagramWorker class, which generates network topology diagrams 
-by processing input data that includes hosts and switches. It uses the 'diagrams' library 
+This module contains the DiagramWorker class, which generates network topology diagrams
+by processing input data that includes hosts and switches. It uses the 'diagrams' library
 to visualize network components and their interconnections.
 """
 import os
@@ -74,7 +74,7 @@ class DiagramWorker:
                 return
             self.linksadded.add(link_keys)
 
-            val1["obj"] >> Edge(label=self.d_LinkLabel(val1, val2)) << val2["obj"]
+            val1["obj"] >> Edge(label=self.d_LinkLabel(val1, val2)) << val2["obj"]  # pylint: disable=expression-not-assigned
 
     def d_addLinks(self):
         """Identify Links between items"""
@@ -114,7 +114,7 @@ class DiagramWorker:
                                 portname = subparts[1] if len(subparts) > 1 else None
                         with Cluster(siteName):
                             newSwitch = Custom(switchName, self.SWITCH_ICON_PATH)
-                        newSwitch >> Edge(label="Port 1: " + portname + '\n' + "Port 2: "+ vals['data']["Name"] + '\n' + "Vlan: " +  vals['data']["Vlan"]) << vals["obj"]
+                        newSwitch >> Edge(label="Port 1: " + portname + '\n' + "Port 2: "+ vals['data']["Name"] + '\n' + "Vlan: " +  vals['data']["Vlan"]) << vals["obj"]  # pylint: disable=expression-not-assigned
                 elif 'PeerHost' in vals.get('data', {}):
                     fKey = vals['data']['PeerHost']
                     fItem = self.objects.get(fKey)
@@ -152,7 +152,7 @@ class DiagramWorker:
                                             "obj": self.objects[self.added[item['Node']]]["obj"],
                                             "data": item
                                          }
-            return
+            return None
         switch1 = Custom(item['Node'].split(":")[1], self.SWITCH_ICON_PATH)
         if 'Peer' in item and item['Peer'] != "?peer?":
             self.added[item['Node']] = item['Port']
@@ -175,7 +175,7 @@ class DiagramWorker:
                                 for terminal in connections.get('terminals', []):
                                     if "uri" not in terminal:
                                         continue
-                                    elif terminal["uri"] == sitename and terminal.get(f'{ipkey.lower()}_prefix_list'):
+                                    if terminal["uri"] == sitename and terminal.get(f'{ipkey.lower()}_prefix_list'):
                                         ipLabel2 = terminal[f'{ipkey.lower()}_prefix_list']
                                         break
                                 if ipLabel2:
@@ -183,10 +183,8 @@ class DiagramWorker:
                             if ipLabel2:
                                 break
                     ipNode = Custom("NeighIP: " + ipLabel + '\n' + "RouteMap: " + ipLabel2, self.BGP_ICON_PATH)
-                    switch1 >> Edge(minlen="1") << ipNode
+                    switch1 >> Edge(minlen="1") << ipNode  # pylint: disable=expression-not-assigned
                     break
-
-
         return switch1
 
     def d_addItem(self, item):
@@ -199,10 +197,10 @@ class DiagramWorker:
         site = self.d_identifySite(item)
         if item['Type'] == 'Host':
             with Cluster(site):
-                return self.d_addHost(item)
+                self.d_addHost(item)
         elif item['Type'] == 'Switch':
             with Cluster(site):
-                return self.d_addSwitch(item)
+                self.d_addSwitch(item)
 
     def d_identifySite(self, item):
         """

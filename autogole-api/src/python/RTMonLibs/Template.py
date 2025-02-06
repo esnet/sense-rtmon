@@ -6,6 +6,7 @@ import os.path
 from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, _processName
 from RTMonLibs.DiagramWorker import DiagramWorker
 
+
 def clamp(n, minn, maxn):
     """Clamp the value between min and max"""
     return max(min(maxn, n), minn)

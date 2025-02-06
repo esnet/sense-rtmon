@@ -17,7 +17,7 @@ RUN pip3 install --no-cache-dir --upgrade setuptools==58.2.0 wheel==0.37.0 && \
 
 # Install RTMON
 WORKDIR /opt/sense-rtmon
-RUN git clone https://github.com/esnet/sense-rtmon.git . \
+RUN git clone https://github.com/esnet/sense-rtmon.git .
 WORKDIR /opt/sense-rtmon/autogole-api
 RUN pip3 install --no-cache-dir -r requirements.txt && pip3 install --no-cache-dir . && \
     cp src/templates/* /etc/rtmon/templates/

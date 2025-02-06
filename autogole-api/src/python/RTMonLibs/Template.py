@@ -3,13 +3,8 @@
 """Grafana Template Generation"""
 import copy
 import os.path
-from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape
-
-def _processName(name):
-    """Process Name for Mermaid and replace all special chars with _"""
-    for repl in [[" ", "_"], [":", "_"], ["/", "_"], ["-", "_"], [".", "_"], ["?", "_"]]:
-        name = name.replace(repl[0], repl[1])
-    return name
+from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, _processName
+from RTMonLibs.DiagramWorker import DiagramWorker
 
 def clamp(n, minn, maxn):
     """Clamp the value between min and max"""
@@ -18,7 +13,7 @@ def clamp(n, minn, maxn):
 class Mermaid():
     """Mermaid Template Class"""
     def __init__(self, **kwargs):
-        super().__init__()
+        super().__init__(**kwargs)
         self.config = kwargs.get('config')
         self.logger = kwargs.get('logger')
         self.mermaid = ["graph LR"]
@@ -344,6 +339,26 @@ class Template():
             template = loadJson(fd.read(), self.logger)
         return template
 
+    def t_addImageCollapsibleRow(self, image_url, title="Network Topology Image"):
+        """Add an Image Panel to a Collapsible Row"""
+        row = self.t_addRow(title=f"{title} Row", collapsed=True)
+        panel = self.t_addImagePanel(image_url, title=title)
+        return self.addRowPanel(row, [panel], recordAnnotations=False)
+
+
+    def t_addImagePanel(self, image_url, title="Image Panel"):
+        """Add an Image Panel to the Dashboard"""
+        panel = {
+            "type": "text",
+            "title": title,
+            "options": {
+                "content": f"<div style='text-align:center;'><img src='{image_url}' style='max-width:100%; height:auto;'></div>",
+            },
+            "gridPos": {"x": 0, "y": 0, "w": 24, "h": 30},
+            "id": self._getNextID()
+        }
+        return panel
+
     def t_addRow(self, *_args, **kwargs):
         """Add Row to the Dashboard"""
         out = self._t_loadTemplate("row.json")
@@ -640,6 +655,15 @@ class Template():
         # Add Mermaid (Send copy of args, as t_createMermaid will modify it by del items)
         orig_args = copy.deepcopy(args)
         self.generated['panels'] += self.t_createMermaid(*orig_args)
+        ##GENERATE DIAGRAMS
+
+        try: 
+            diagram_filename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{kwargs['referenceUUID']}"
+            self.d_createGraph(diagram_filename, self.orderlist)
+            self.logger.info(f"Diagram saved at {diagram_filename}.png")
+        except IOError as ex:
+            self.logger.error('Failed to create diagram: %s', ex)
+
         # Add Links on top of the page
         self.generated['links'] = self.t_addLinks(*args, **kwargs)
         # Add Debug Info (manifest, instance)
@@ -650,4 +674,11 @@ class Template():
         self.generated['panels'] += self.t_createSwitchFlow(*args)
         # Add L2 Debugging
         self.generated['panels'] += self.t_addL2Debugging(*args)
+        #Image Panel
+        image_host = self.config.get('image_host', "http://localhost")
+        image_port = self.config.get('image_port', "8000")
+        base_image_url = image_host + ":" + image_port + "/images"
+        image_url = f"{base_image_url}/diagram_{kwargs['referenceUUID']}.png"
+        self.generated['panels'] += self.t_addImageCollapsibleRow(image_url, title="Network Topology Image")
+
         return {"dashboard": self.generated}, {"uid": self.generated['uid'], "annotation_panels": self.annotationids}

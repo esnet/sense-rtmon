@@ -12,9 +12,9 @@ from RTMonLibs.Template import Mermaid
 from RTMonLibs.SiteOverride import SiteOverride
 from RTMonLibs.SiteRMApi import SiteRMApi
 from RTMonLibs.ExternalAPI import ExternalAPI
+from RTMonLibs.DiagramWorker import DiagramWorker
 
-
-class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, ExternalAPI, Mermaid):
+class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, ExternalAPI, Mermaid, DiagramWorker):
     """ RTMon Worker """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -140,6 +140,11 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
             if os.path.exists(filename):
                 os.remove(filename)
         self.logger.info('Delete Execution: %s, %s', filename, fout)
+        #Deleting the diagram image
+        diagram_filename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{fout['referenceUUID']}.png"
+        if os.path.exists(diagram_filename):
+            os.remove(diagram_filename)
+            self.logger.info(f"Removed diagram image {diagram_filename}")
         # Delete the dashboard and template from Grafana
         for dashbName, dashbVals in self.dashboards.get(self._getFolderName(), {}).items():
             present = True

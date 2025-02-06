@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # pylint: disable=E1101
 """Grafana Template Generation"""
+
 import copy
 import os.path
 from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, _processName

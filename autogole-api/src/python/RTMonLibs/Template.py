@@ -675,7 +675,9 @@ class Template():
         # Add L2 Debugging
         self.generated['panels'] += self.t_addL2Debugging(*args)
         #Image Panel
-        base_image_url = self.config.get('baseImageURL', 'http://localhost:8000/images')
+        image_host = self.config.get('image_host', "http://localhost")
+        image_port = self.config.get('image_port', "8000")
+        base_image_url = image_host + ":" + image_port + "/images"
         image_url = f"{base_image_url}/diagram_{kwargs['referenceUUID']}.png"
         self.generated['panels'] += self.t_addImageCollapsibleRow(image_url, title="Network Topology Image")
 

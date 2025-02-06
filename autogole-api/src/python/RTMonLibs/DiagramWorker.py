@@ -95,11 +95,12 @@ class DiagramWorker:
                             siteName = vals['data']['Peer'].split("::")[0]
                             switchName = vals['data']['Peer'].split("::")[1].split(":")[0]
                             portname = vals['data']['Peer'].split("::")[1].split(":")[1]
-                        except:
+                        except KeyError as e:
+                            print(e)
                             parts = vals['data']['Peer'].split(":")
                             for i, part in enumerate(parts):
-                                if part.isdigit() and len(part) == 4:  
-                                    siteName = ":".join(parts[:i+1])  
+                                if part.isdigit() and len(part) == 4:
+                                    siteName = ":".join(parts[:i+1])
                                     remaining = ":".join(parts[i+1:])
                                     break
                             if "::" in remaining:
@@ -114,8 +115,6 @@ class DiagramWorker:
                         with Cluster(siteName):
                             newSwitch = Custom(switchName, self.SWITCH_ICON_PATH)
                         newSwitch >> Edge(label="Port 1: " + portname + '\n' + "Port 2: "+ vals['data']["Name"] + '\n' + "Vlan: " +  vals['data']["Vlan"]) << vals["obj"]
-                        
-
                 elif 'PeerHost' in vals.get('data', {}):
                     fKey = vals['data']['PeerHost']
                     fItem = self.objects.get(fKey)
@@ -162,34 +161,33 @@ class DiagramWorker:
             uniqname = _processName(f'{item["Node"]}_{item["Name"]}')
             self.added[item['Node']] = uniqname
             self.objects[uniqname] = {"obj": switch1, "data": item}
-         # Add IPv4/IPv6 on the switch
-        ## This is for BGP
-        for ipkey, ipdef in {'IPv4': '?port_ipv4?', 'IPv6': '?port_ipv6?'}.items():
-            if ipkey in item and item[ipkey] != ipdef:
-                ipLabel = item[ipkey]
-                ipLabel2 = None
-                sitename = item.get("Site")
-                
-                if self.instance != None:
-                    
-                    for flow in self.instance.get("intents", []):
-                        for connections in flow.get('json', {}).get('data', {}).get('connections', []):
-                            for terminal in connections.get('terminals', []):
-                                if "uri" not in terminal:
-                                    continue
-                                elif terminal["uri"] == sitename and terminal.get(f'{ipkey.lower()}_prefix_list'):
-                                    ipLabel2 = terminal[f'{ipkey.lower()}_prefix_list']
+        # Add IPv4/IPv6 on the switch
+        #BGP
+        with Cluster("BGP Peering", graph_attr={"label": "BGP Peering", "style": "dotted", "color": "black", "rankdir": "TB", "nodesep": "0.5", "ranksep": "0.4"}):
+            for ipkey, ipdef in {'IPv4': '?port_ipv4?', 'IPv6': '?port_ipv6?'}.items():
+                if ipkey in item and item[ipkey] != ipdef:
+                    ipLabel = item[ipkey]
+                    ipLabel2 = None
+                    sitename = item.get("Site")
+                    if self.instance is not None:
+                        for flow in self.instance.get("intents", []):
+                            for connections in flow.get('json', {}).get('data', {}).get('connections', []):
+                                for terminal in connections.get('terminals', []):
+                                    if "uri" not in terminal:
+                                        continue
+                                    elif terminal["uri"] == sitename and terminal.get(f'{ipkey.lower()}_prefix_list'):
+                                        ipLabel2 = terminal[f'{ipkey.lower()}_prefix_list']
+                                        break
+                                if ipLabel2:
                                     break
                             if ipLabel2:
                                 break
-                        if ipLabel2:
-                            break
-                ipNode = Custom(ipLabel, self.BGP_ICON_PATH)
-                switch1 >> Edge() << ipNode
-                ipNode2 = Custom(ipLabel2, self.BGP_ICON_PATH)
-                ipNode >> Edge() << ipNode2
+                    ipNode = Custom("NeighIP: " + ipLabel + '\n' + "RouteMap: " + ipLabel2, self.BGP_ICON_PATH)
+                    switch1 >> Edge(minlen="1") << ipNode
+                    break
+
+
         return switch1
-        
 
     def d_addItem(self, item):
         """
@@ -243,11 +241,12 @@ class DiagramWorker:
         if not os.path.exists(outputDir):
             os.makedirs(outputDir)
 
-        with Diagram("Network Topology", show=False, filename=output_filename):
+        with Diagram("Network Topology", show=True, filename=output_filename):
+            item = None
             while len(indata) > 0:
                 if self.popreverse in (None, False):
                     item =indata.pop(0)
-                elif self.popreverse == True:
+                elif self.popreverse is True:
                     item = indata.pop()
                 self.d_addItem(item)
                 self.d_setreverse(item)

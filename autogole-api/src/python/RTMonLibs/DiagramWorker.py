@@ -182,9 +182,10 @@ class DiagramWorker:
                                     break
                             if ipLabel2:
                                 break
-                    ipNode = Custom("NeighIP: " + ipLabel + '\n' + "RouteMap: " + ipLabel2, self.BGP_ICON_PATH)
-                    switch1 >> Edge(minlen="1") << ipNode  # pylint: disable=expression-not-assigned
-                    break
+                    if ipLabel2:
+                        ipNode = Custom("NeighIP: " + ipLabel + '\n' + "RouteMap: " + ipLabel2, self.BGP_ICON_PATH)
+                        switch1 >> Edge(minlen="1") << ipNode  # pylint: disable=expression-not-assigned
+                        break
         return switch1
 
     def d_addItem(self, item):

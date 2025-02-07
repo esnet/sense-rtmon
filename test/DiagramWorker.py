@@ -30,7 +30,7 @@ class DiagramWorker:
     HOST_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/host.png'
     SWITCH_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/switch.png'
     BGP_ICON_PATH  = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/BGP.png'
-    def __init__(self, **kwargs):
+    def __init__(self, instance):
         """
         Initialize the DiagramWorker with input data.
 
@@ -40,7 +40,7 @@ class DiagramWorker:
         self.added = {}
         self.linksadded = set()
         self.popreverse = None
-        self.instance = kwargs.get("instance")
+        self.instance = instance
 
 
     def d_find_item(self, fval, fkey):
@@ -80,7 +80,7 @@ class DiagramWorker:
                 return
             self.linksadded.add(link_keys)
 
-            val1["obj"] >> Edge(label=self.d_LinkLabel(val1, val2)) << val2["obj"]
+            val1["obj"] >> Edge(label=self.d_LinkLabel(val1, val2)) << val2["obj"]  # pylint: disable=expression-not-assigned
 
     def d_addLinks(self):
         """Identify Links between items"""
@@ -101,11 +101,12 @@ class DiagramWorker:
                             siteName = vals['data']['Peer'].split("::")[0]
                             switchName = vals['data']['Peer'].split("::")[1].split(":")[0]
                             portname = vals['data']['Peer'].split("::")[1].split(":")[1]
-                        except:
+                        except KeyError as e:
+                            print(e)
                             parts = vals['data']['Peer'].split(":")
                             for i, part in enumerate(parts):
-                                if part.isdigit() and len(part) == 4:  
-                                    siteName = ":".join(parts[:i+1])  
+                                if part.isdigit() and len(part) == 4:
+                                    siteName = ":".join(parts[:i+1])
                                     remaining = ":".join(parts[i+1:])
                                     break
                             if "::" in remaining:
@@ -119,9 +120,7 @@ class DiagramWorker:
                                 portname = subparts[1] if len(subparts) > 1 else None
                         with Cluster(siteName):
                             newSwitch = Custom(switchName, self.SWITCH_ICON_PATH)
-                        newSwitch >> Edge(label="Port 1: " + portname + '\n' + "Port 2: "+ vals['data']["Name"] + '\n' + "Vlan: " +  vals['data']["Vlan"]) << vals["obj"]
-                        
-
+                        newSwitch >> Edge(label="Port 1: " + portname + '\n' + "Port 2: "+ vals['data']["Name"] + '\n' + "Vlan: " +  vals['data']["Vlan"]) << vals["obj"]  # pylint: disable=expression-not-assigned
                 elif 'PeerHost' in vals.get('data', {}):
                     fKey = vals['data']['PeerHost']
                     fItem = self.objects.get(fKey)
@@ -159,7 +158,7 @@ class DiagramWorker:
                                             "obj": self.objects[self.added[item['Node']]]["obj"],
                                             "data": item
                                          }
-            return
+            return None
         switch1 = Custom(item['Node'].split(":")[1], self.SWITCH_ICON_PATH)
         if 'Peer' in item and item['Peer'] != "?peer?":
             self.added[item['Node']] = item['Port']
@@ -168,47 +167,49 @@ class DiagramWorker:
             uniqname = _processName(f'{item["Node"]}_{item["Name"]}')
             self.added[item['Node']] = uniqname
             self.objects[uniqname] = {"obj": switch1, "data": item}
-         # Add IPv4/IPv6 on the switch
-        ## This is for BGP
-        for ipkey, ipdef in {'IPv4': '?port_ipv4?', 'IPv6': '?port_ipv6?'}.items():
-            if ipkey in item and item[ipkey] != ipdef:
-                ip_node_name = f"{item['Node']}_{ipkey}"
-                ip_label = item[ipkey]
-                ip_label2 = ""
-                sitename = item["Site"]
-                
-                if self.instance != None:
-                    tempData = self.instance["intents"]
-                    for flow in tempData:
-                        terminals = flow["json"]["data"]["connections"][0]["terminals"]
-                        for connection in terminals:
-                            if connection["uri"] == sitename:
-                                ip_label2 = connection["ipv6_prefix_list"]
+        # Add IPv4/IPv6 on the switch
+        #BGP
+        with Cluster("BGP Peering", graph_attr={"label": "BGP Peering", "style": "dotted", "color": "black", "rankdir": "TB", "nodesep": "0.5", "ranksep": "0.4"}):
+            for ipkey, ipdef in {'IPv4': '?port_ipv4?', 'IPv6': '?port_ipv6?'}.items():
+                if ipkey in item and item[ipkey] != ipdef:
+                    ipLabel = item[ipkey]
+                    ipLabel2 = None
+                    sitename = item.get("Site")
+                    if self.instance is not None:
+                        for flow in self.instance.get("intents", []):
+                            for connections in flow.get('json', {}).get('data', {}).get('connections', []):
+                                for terminal in connections.get('terminals', []):
+                                    if "uri" not in terminal:
+                                        continue
+                                    if terminal["uri"] == sitename and terminal.get(f'{ipkey.lower()}_prefix_list'):
+                                        ipLabel2 = terminal[f'{ipkey.lower()}_prefix_list']
+                                        break
+                                if ipLabel2:
+                                    break
+                            if ipLabel2:
                                 break
-                ip_node = Custom(ip_label + "\n" + ip_label2, self.BGP_ICON_PATH)
-                switch1 >> Edge() << ip_node
-                
+                    if ipLabel and ipLabel2:
+                        ipNode = Custom("NeighIP: " + ipLabel + '\n' + "RouteMap: " + ipLabel2, self.BGP_ICON_PATH)
+                        switch1 >> Edge(minlen="1") << ipNode  # pylint: disable=expression-not-assigned
+                        break
         return switch1
-        
 
-
-
-    def addItem(self, item):
+    def d_addItem(self, item):
         """
         Add an item (host or switch) to the diagram by identifying its type and location (cluster).
 
         :param item: Dictionary containing item details.
         :return: Diagram object representing the item.
         """
-        site = self.identifySite(item)
+        site = self.d_identifySite(item)
         if item['Type'] == 'Host':
             with Cluster(site):
-                return self.d_addHost(item)
+                self.d_addHost(item)
         elif item['Type'] == 'Switch':
             with Cluster(site):
-                return self.d_addSwitch(item)
+                self.d_addSwitch(item)
 
-    def identifySite(self, item):
+    def d_identifySite(self, item):
         """
         Identify the site or cluster to which the item (host or switch) belongs.
 
@@ -222,7 +223,7 @@ class DiagramWorker:
             site = item['Node'].split(':')[0]
         return site
 
-    def setreverse(self, item):
+    def d_setreverse(self, item):
         """
         Set the reverse flag for alternating between the first and last items in the input list.
 
@@ -241,16 +242,16 @@ class DiagramWorker:
 
         :param output_filename: Path where the output diagram will be saved.
         """
-        output_dir = os.path.dirname(output_filename)
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-
-        with Diagram("Network Topology", show=False, filename=output_filename):
+        outputDir = os.path.dirname(output_filename)
+        if not os.path.exists(outputDir):
+            os.makedirs(outputDir)
+        with Diagram("Network Topology", show=True, filename=output_filename):
+            item = None
             while len(indata) > 0:
                 if self.popreverse in (None, False):
                     item =indata.pop(0)
-                elif self.popreverse == True:
+                elif self.popreverse is True:
                     item = indata.pop()
-                self.addItem(item)
-                self.setreverse(item)
+                self.d_addItem(item)
+                self.d_setreverse(item)
             self.d_addLinks()

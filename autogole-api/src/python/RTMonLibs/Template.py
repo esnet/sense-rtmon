@@ -4,7 +4,6 @@
 import copy
 import os.path
 from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, _processName
-from RTMonLibs.DiagramWorker import DiagramWorker
 
 def clamp(n, minn, maxn):
     """Clamp the value between min and max"""
@@ -179,8 +178,11 @@ class Mermaid():
                 del tmpitem['Host']
                 tmpitem['Type'] = 'Switch'
                 self.orderlist.append(tmpitem)
-                return idx, tmpitem['Node'], tmpitem
-        return None, None, lastitem
+                nexthoptype = 'Node'
+                if not tmpitem['Node'].startswith(tmphost['Name'].split(':')[0]):
+                    nexthoptype = 'Peer'
+                return idx, tmpitem['Node'], tmpitem, nexthoptype
+        return None, None, lastitem, None
 
     def _findNode(self, manifest, node, lastitem):
         nextHop = ""
@@ -190,7 +192,7 @@ class Mermaid():
             tmpitem = self.so_override(item)
             if tmpitem["Node"] == node:
                 if 'Host' in tmpitem and tmpitem['Host']:
-                    hostid, _, _ = self._findHost(manifest, None, tmpitem)
+                    hostid, _, _, _ = self._findHost(manifest, None, tmpitem)
                     delitems.append(hostid)
                     continue
                 tmpitem['Type'] = 'Switch'
@@ -220,10 +222,9 @@ class Mermaid():
         loopcount = 5
         while len(manifest["Ports"]) > 0:
             if nexthoptype == 'Host':
-                hostid, nexthop, lastitem = self._findHost(manifest, nexthop, lastitem)
+                hostid, nexthop, lastitem, nexthoptype = self._findHost(manifest, nexthop, lastitem)
                 if hostid is not None:
                     del manifest["Ports"][hostid]
-                    nexthoptype = 'Node'
                     continue
             if nexthoptype == 'Node':
                 hostid, nexthop, lastitem = self._findNode(manifest, nexthop, lastitem)
@@ -675,7 +676,7 @@ class Template():
 
         try: 
             diagram_filename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{kwargs['referenceUUID']}"
-            self.d_createGraph(diagram_filename, self.orderlist)
+            self.d_createGraph(diagram_filename)
             self.logger.info(f"Diagram saved at {diagram_filename}.png")
         except Exception as ex:
             self.logger.error('Failed to create diagram: %s', ex)

@@ -6,6 +6,7 @@ by processing input data that includes hosts and switches. It uses the 'diagrams
 to visualize network components and their interconnections.
 """
 import os
+import copy
 from diagrams import Diagram, Cluster, Edge
 from diagrams.custom import Custom
 from RTMonLibs.GeneralLibs import _processName
@@ -231,7 +232,7 @@ class DiagramWorker:
         elif item['Type'] == 'Host' and self.popreverse is True:
             self.popreverse = False
 
-    def d_createGraph(self, output_filename, indata):
+    def d_createGraph(self, output_filename):
         """
         Create the network topology diagram and save it to a file.
 
@@ -240,7 +241,7 @@ class DiagramWorker:
         outputDir = os.path.dirname(output_filename)
         if not os.path.exists(outputDir):
             os.makedirs(outputDir)
-
+        indata = copy.deepcopy(self.orderlist)
         with Diagram("Network Topology", show=False, filename=output_filename):
             item = None
             while len(indata) > 0:

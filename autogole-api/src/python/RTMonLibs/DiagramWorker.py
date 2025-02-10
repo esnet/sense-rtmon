@@ -240,7 +240,7 @@ class DiagramWorker:
         if not os.path.exists(outputDir):
             os.makedirs(outputDir)
 
-        with Diagram("Network Topology", show=True, filename=output_filename):
+        with Diagram("Network Topology", show=False, filename=output_filename):
             item = None
             while len(indata) > 0:
                 if self.popreverse in (None, False):

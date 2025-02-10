@@ -677,7 +677,7 @@ class Template():
             diagram_filename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{kwargs['referenceUUID']}"
             self.d_createGraph(diagram_filename, self.orderlist)
             self.logger.info(f"Diagram saved at {diagram_filename}.png")
-        except IOError as ex:
+        except Exception as ex:
             self.logger.error('Failed to create diagram: %s', ex)
 
         # Add Links on top of the page

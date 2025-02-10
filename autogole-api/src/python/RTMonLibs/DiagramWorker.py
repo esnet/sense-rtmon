@@ -95,9 +95,10 @@ class DiagramWorker:
                             siteName = vals['data']['Peer'].split("::")[0]
                             switchName = vals['data']['Peer'].split("::")[1].split(":")[0]
                             portname = vals['data']['Peer'].split("::")[1].split(":")[1]
-                        except KeyError as e:
-                            print(e)
+                        except (KeyError, IndexError) as e:
+                            self.logger.error(f"Error in parsing Peer: {e}. Values: {key}, {vals}")
                             parts = vals['data']['Peer'].split(":")
+                            remaining = ""
                             for i, part in enumerate(parts):
                                 if part.isdigit() and len(part) == 4:
                                     siteName = ":".join(parts[:i+1])
@@ -106,12 +107,12 @@ class DiagramWorker:
                             if "::" in remaining:
                                 subparts = remaining.split("::")
                                 switchName = subparts[0]
-                                portname = subparts[1].split(":")[0] if len(subparts) > 1 else None
+                                portname = subparts[1].split(":")[0] if len(subparts) > 1 else "None"
                             else:
                                 # If no '::', fallback to splitting by ':'
                                 subparts = remaining.split(":")
                                 switchName = subparts[0]
-                                portname = subparts[1] if len(subparts) > 1 else None
+                                portname = subparts[1] if len(subparts) > 1 else "None"
                         with Cluster(siteName):
                             newSwitch = Custom(switchName, self.SWITCH_ICON_PATH)
                         newSwitch >> Edge(label="Port 1: " + portname + '\n' + "Port 2: "+ vals['data']["Name"] + '\n' + "Vlan: " +  vals['data']["Vlan"]) << vals["obj"]  # pylint: disable=expression-not-assigned

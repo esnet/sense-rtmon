@@ -172,14 +172,17 @@ class Mermaid():
                 tmphost['Type'] = 'Host'
                 tmphost['Vlan'] = None if not tmpitem.get('Vlan') else tmpitem['Vlan']
                 tmphost['Link'] = _processName(f'{tmpitem["Node"]}_{tmpitem["Name"]}')
-                if item.get('Peer', '?peer?') == "?peer?":
+                samedomain = tmpitem['Node'].startswith(tmphost['Name'].split(':')[0])
+                if item.get('Peer', '?peer?') == "?peer?" and samedomain:
                     item['PeerHost'] = tmphost['Name']
+                elif not samedomain:
+                    item['Peer'] = '?peer?'
                 self.orderlist.append(tmphost)
                 del tmpitem['Host']
                 tmpitem['Type'] = 'Switch'
                 self.orderlist.append(tmpitem)
                 nexthoptype = 'Node'
-                if not tmpitem['Node'].startswith(tmphost['Name'].split(':')[0]):
+                if not samedomain:
                     nexthoptype = 'Peer'
                 return idx, tmpitem['Node'], tmpitem, nexthoptype
         return None, None, lastitem, None

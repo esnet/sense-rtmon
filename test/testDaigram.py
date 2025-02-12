@@ -23,13 +23,13 @@ class DiagramWorker:
     using the input data that contains host and switch information. The class
     identifies and visualizes links between network components.
     """
-    # HOST_ICON_PATH = '/srv/icons/host.png'
-    # SWITCH_ICON_PATH = '/srv/icons/switch.png'
-    # BGP_ICON_PATH = '/srv/icons/BGP.png'
+    HOST_ICON_PATH = '/srv/icons/host.png'
+    SWITCH_ICON_PATH = '/srv/icons/switch.png'
+    BGP_ICON_PATH = '/srv/icons/BGP.png'
     # TEmp
-    HOST_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/host.png'
-    SWITCH_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/switch.png'
-    BGP_ICON_PATH  = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/BGP.png'
+    # HOST_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/host.png'
+    # SWITCH_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/switch.png'
+    # BGP_ICON_PATH  = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/BGP.png'
     def __init__(self, instance):
         """
         Initialize the DiagramWorker with input data.

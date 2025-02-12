@@ -23,13 +23,13 @@ class DiagramWorker:
     using the input data that contains host and switch information. The class
     identifies and visualizes links between network components.
     """
-    # HOST_ICON_PATH = '/srv/icons/host.png'
-    # SWITCH_ICON_PATH = '/srv/icons/switch.png'
-    # BGP_ICON_PATH = '/srv/icons/BGP.png'
+    HOST_ICON_PATH = '/srv/icons/host.png'
+    SWITCH_ICON_PATH = '/srv/icons/switch.png'
+    BGP_ICON_PATH = '/srv/icons/BGP.png'
     # TEmp
-    HOST_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/host.png'
-    SWITCH_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/switch.png'
-    BGP_ICON_PATH  = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/BGP.png'
+    # HOST_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/host.png'
+    # SWITCH_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/switch.png'
+    # BGP_ICON_PATH  = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/BGP.png'
     def __init__(self, instance):
         """
         Initialize the DiagramWorker with input data.
@@ -153,13 +153,29 @@ class DiagramWorker:
         :param item: Dictionary containing switch details.
         :return: Diagram object representing the switch.
         """
+        intents = self.instance.get('intents', [])
+        assign_debug_ip = False
+        #for debug IP
+        for intent in intents:
+            json_data = intent.get('json', {})
+            data = json_data.get('data', {})
+            connections = data.get('connections', [])
+            for connection in connections:
+                assign_debug_ip = connection.get('assign_debug_ip', False)
+                if assign_debug_ip:
+                    break
+            if assign_debug_ip:
+                break
         if item['Node'] in self.added:
             self.objects[item['Port']] = {
                                             "obj": self.objects[self.added[item['Node']]]["obj"],
                                             "data": item
                                          }
             return None
-        switch1 = Custom(item['Node'].split(":")[1], self.SWITCH_ICON_PATH)
+        switchLabel = item['Node'].split(":")[1]
+        if assign_debug_ip:
+            switchLabel += f'\n{item["IPv6"]}'
+        switch1 = Custom(switchLabel, self.SWITCH_ICON_PATH)
         if 'Peer' in item and item['Peer'] != "?peer?":
             self.added[item['Node']] = item['Port']
             self.objects[item['Port']] = {"obj": switch1, "data": item}
@@ -245,7 +261,7 @@ class DiagramWorker:
         outputDir = os.path.dirname(output_filename)
         if not os.path.exists(outputDir):
             os.makedirs(outputDir)
-        with Diagram("Network Topology", show=True, filename=output_filename):
+        with Diagram("Network Topology", show=False, filename=output_filename):
             item = None
             while len(indata) > 0:
                 if self.popreverse in (None, False):

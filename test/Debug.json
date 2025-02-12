@@ -1,0 +1,48 @@
+[
+  {
+    "IPv6": "fc00:0:200:83:0:0:0:2/64",
+    "IPv4": "?ipv4?",
+    "Interface": "enp65s0f1np1",
+    "Mac": "94:6d:ae:a6:66:4d",
+    "Name": "T2_US_SDSC:node-2-6.sdsc.optiputer.net",
+    "Type": "Host",
+    "Vlan": "3989",
+    "Link": "T2_US_SDSC_edgecore_s0_Ethernet128"
+  },
+  {
+    "Site": "urn:ogf:network:nrp-nautilus.io:2020",
+    "IPv6": "fc00:0:200:83:0:0:0:3/64",
+    "Port": "urn:ogf:network:nrp-nautilus.io:2020:edgecore_s0:Ethernet128",
+    "IPv4": "?port_ipv4?",
+    "Node": "T2_US_SDSC:edgecore_s0",
+    "Peer": "?peer?",
+    "Vlan": "3989",
+    "Mac": "00:90:fb:76:e4:7b",
+    "Name": "Ethernet128",
+    "PeerHost": "T2_US_SDSC:node-2-6.sdsc.optiputer.net",
+    "Type": "Switch"
+  },
+  {
+    "IPv6": "fc00:0:200:83:0:0:0:1/64",
+    "IPv4": "?ipv4?",
+    "Interface": "enp168s0np0",
+    "Mac": "a0:88:c2:86:ee:7c",
+    "Name": "T2_US_SDSC:k8s-gen5-01.sdsc.optiputer.net",
+    "Type": "Host",
+    "Vlan": "3989",
+    "Link": "T2_US_SDSC_edgecore_s0_Ethernet32"
+  },
+  {
+    "Site": "urn:ogf:network:nrp-nautilus.io:2020",
+    "IPv6": "fc00:0:200:83:0:0:0:3/64",
+    "Port": "urn:ogf:network:nrp-nautilus.io:2020:edgecore_s0:Ethernet32",
+    "IPv4": "?port_ipv4?",
+    "Node": "T2_US_SDSC:edgecore_s0",
+    "Peer": "?peer?",
+    "Vlan": "3989",
+    "Mac": "00:90:fb:76:e4:7b",
+    "Name": "Ethernet32",
+    "PeerHost": "T2_US_SDSC:k8s-gen5-01.sdsc.optiputer.net",
+    "Type": "Switch"
+  }
+]

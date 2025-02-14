@@ -155,7 +155,11 @@ class DiagramWorker:
                                             "data": item
                                          }
             return None
-        switch1 = Custom(item['Node'].split(":")[1], self.SWITCH_ICON_PATH)
+        switchLabel = item['Node'].split(":")[1]
+        switchLabel += ("\nIPv4" + item["IPv4"]) if item["IPv4"] != '?port_ipv4?' else ""
+        switchLabel += ("\nIPv6" + item["IPv6"]) if item["IPv6"] != '?port_ipv6?' else ""
+
+        switch1 = Custom(switchLabel, self.SWITCH_ICON_PATH)
         if 'Peer' in item and item['Peer'] != "?peer?":
             self.added[item['Node']] = item['Port']
             self.objects[item['Port']] = {"obj": switch1, "data": item}
@@ -238,6 +242,10 @@ class DiagramWorker:
 
         :param output_filename: Path where the output diagram will be saved.
         """
+        self.objects = {}
+        self.added = {}
+        self.linksadded = set()
+        self.popreverse = None
         outputDir = os.path.dirname(output_filename)
         if not os.path.exists(outputDir):
             os.makedirs(outputDir)

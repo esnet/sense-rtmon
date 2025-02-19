@@ -4,6 +4,7 @@ echo "Dont forget to update the sense-o-auth.yaml file with the correct paramete
 echo "Dont forget to update the sense-o-auth-prod.yaml file with the correct parameters"
 echo "Dont forget to update the hostcert and hostkey file with certificates"
 mkdir -p "$(pwd)/srv"
+mv "$(pwd)/icons" "$(pwd)/srv"
 docker run \
   -dit --name rtmon \
   -v "$(pwd)/../:/opt/devrtmon/:rw" \

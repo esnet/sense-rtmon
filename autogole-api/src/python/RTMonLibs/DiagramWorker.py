@@ -19,9 +19,9 @@ class DiagramWorker:
     using the input data that contains host and switch information. The class
     identifies and visualizes links between network components.
     """
-    HOST_ICON_PATH = '/srv/icons/host.png'
-    SWITCH_ICON_PATH = '/srv/icons/switch.png'
-    BGP_ICON_PATH = '/srv/icons/BGP.png'
+    HOST_ICON_PATH = '/opt/icons/host.png'
+    SWITCH_ICON_PATH = '/opt/icons/switch.png'
+    BGP_ICON_PATH = '/opt/icons/BGP.png'
 
 
     def __init__(self, **kwargs):

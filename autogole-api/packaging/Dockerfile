@@ -1,4 +1,4 @@
-FROM opensciencegrid/software-base:23-al8-release
+FROM opensciencegrid/software-base:24-el9-release
 
 # hadolint ignore=DL3033
 RUN yum -y install wget epel-release && \
@@ -7,7 +7,7 @@ RUN yum -y install wget epel-release && \
 
 # Create necessary directories
 WORKDIR /opt
-RUN mkdir -p /srv/icons/ /etc/rtmon/templates/ /var/log/rtmon/ /etc/grid-security/certificates/
+RUN mkdir -p /opt/icons/ /etc/rtmon/templates/ /var/log/rtmon/ /etc/grid-security/certificates/
 
 # Upgrade PIP SetupTools and wheek and Install SENSE Py Client
 WORKDIR /opt/sense-o-py-client
@@ -29,9 +29,10 @@ RUN wget --progress=dot:giga https://raw.githubusercontent.com/sdn-sense/rm-conf
 # Copy necessary files
 COPY files/etc/supervisord.d/10-server.conf /etc/supervisord.d/10-server.conf
 COPY files/etc/supervisord.d/11-httpserver.conf /etc/supervisord.d/11-httpserver.conf
-COPY icons/host.png /srv/icons/host.png
-COPY icons/switch.png /srv/icons/switch.png
-COPY icons/BGP.png /srv/icons/BGP.png
+COPY icons/host.png /opt/icons/host.png
+COPY icons/switch.png /opt/icons/switch.png
+COPY icons/BGP.png /opt/icons/BGP.png
 
+WORKDIR /opt
 # Get latest CA's while suppressing warnings
 RUN fetch-crl || echo "Suppress warnings."

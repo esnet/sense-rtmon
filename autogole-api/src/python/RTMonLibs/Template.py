@@ -347,9 +347,9 @@ class Template():
             template = loadJson(fd.read(), self.logger)
         return template
 
-    def t_addImageCollapsibleRow(self, image_url, title="Network Topology Image"):
+    def t_addImageRow(self, image_url, title="Network Topology Image", collapsed=False):
         """Add an Image Panel to a Collapsible Row"""
-        row = self.t_addRow(title=f"{title} Row", collapsed=True)
+        row = self.t_addRow(title=f"{title} Row", collapsed=collapsed)
         panel = self.t_addImagePanel(image_url, title=title)
         return self.addRowPanel(row, [panel], recordAnnotations=False)
 
@@ -372,6 +372,8 @@ class Template():
         out = self._t_loadTemplate("row.json")
         out["title"] = kwargs.get('title', "Row Title Not Present")
         out["id"] = self._getNextRowID()
+        if 'collapsed' in kwargs:
+            out["collapsed"] = kwargs['collapsed']
         return out
 
     def t_addLinks(self, *_args, **kwargs):
@@ -522,11 +524,11 @@ class Template():
         out += self.addRowPanel(row, panels, True)
         return out
 
-    def t_createMermaid(self, *args):
+    def t_createMermaid(self, *args, **kwargs):
         """Create Mermaid Template"""
         # Identify all peers
         self.so_mappeers(args[1])
-        row = self.t_addRow(*args, title="End-to-End Flow Monitoring")
+        row = self.t_addRow(*args, title="End-to-End Flow Monitoring", collapsed=kwargs.get('collapsed', False))
         panel = self._t_loadTemplate("mermaid.json")
         mermaid = self.m_getMermaidContent(*args)
         panel["options"]["content"] = "\n".join(mermaid)
@@ -667,22 +669,50 @@ class Template():
             out += self._t_addSwitchL2Debugging(sitehost, interfaces, refID)
         return self.addRowPanel(row, out, True)
 
+    def __createDiagrams(self, *args, **kwargs):
+        """Create diagrams from the mermaid code"""
+        self.logger.info("Creating diagrams")
+        # Generate Mermaid (Send copy of args, as t_createMermaid will modify it by del items)
+        orig_args = copy.deepcopy(args)
+        collapsed = self.config.get('topdiagrams', "Diagrams") == "Diagrams"
+        mermaid = self.t_createMermaid(*orig_args, **{'collapsed': collapsed})
+        # Generate Diagrams diagram.
+        ddiagram = None
+        try:
+            diagramFilename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{kwargs['referenceUUID']}"
+            self.d_createGraph(diagramFilename)
+            self.logger.info(f"Diagram saved at {diagramFilename}.png")
+            #Image Panel
+            imageHost = self.config.get('image_host', "http://localhost")
+            imagePort = self.config.get('image_port', "8000")
+            baseImageUrl = imageHost + ":" + imagePort + "/images"
+            imageUrl = f"{baseImageUrl}/diagram_{kwargs['referenceUUID']}.png"
+            collapsed = self.config.get('topdiagrams', "Diagrams") != "Diagrams"
+            ddiagram = self.t_addImageRow(imageUrl, title="Network Topology Image", collapsed=collapsed)
+        except Exception as ex:
+            self.logger.error('Failed to create diagram: %s', ex)
+        # If we have two diagrams, first we identify order and based on config, first one will be on top
+        # while second will be at the bottom of the page
+        # This means that second one should change row to collapsed
+        if mermaid and ddiagram:
+            if self.config.get('topdiagrams', "Diagrams") == "Diagrams":
+                return [ddiagram, mermaid]
+            else:
+                return [mermaid, ddiagram]
+        # If we have only one and diagrams failed for any reason, we would need to modify
+        # many panels inside mermaid not to be collapsed. We regenerate mermaid
+        if mermaid and not ddiagram:
+            return [self.t_createMermaid(*orig_args, **{'collapsed': False})]
+        return []
+
     def t_createTemplate(self, *args, **kwargs):
         """Create Grafana Template"""
         self._clean()
         self._t_getDataSourceUid(*args)
         self.generated = self.t_createDashboard(*args, **kwargs)
-        # Add Mermaid (Send copy of args, as t_createMermaid will modify it by del items)
-        orig_args = copy.deepcopy(args)
-        self.generated['panels'] += self.t_createMermaid(*orig_args)
-        ##GENERATE DIAGRAMS
-
-        try: 
-            diagram_filename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{kwargs['referenceUUID']}"
-            self.d_createGraph(diagram_filename)
-            self.logger.info(f"Diagram saved at {diagram_filename}.png")
-        except Exception as ex:
-            self.logger.error('Failed to create diagram: %s', ex)
+        diagrams = self.__createDiagrams(*args, **kwargs)
+        if diagrams:
+            self.generated['panels'] += diagrams[0]
 
         # Add Links on top of the page
         self.generated['links'] = self.t_addLinks(*args, **kwargs)
@@ -700,11 +730,7 @@ class Template():
                 self.logger.error(f"Unknown Type: {item['Type']}. Skipping... {item}")
         # Add L2 Debugging
         self.generated['panels'] += self.t_addL2Debugging(*args)
-        #Image Panel
-        image_host = self.config.get('image_host', "http://localhost")
-        image_port = self.config.get('image_port', "8000")
-        base_image_url = image_host + ":" + image_port + "/images"
-        image_url = f"{base_image_url}/diagram_{kwargs['referenceUUID']}.png"
-        self.generated['panels'] += self.t_addImageCollapsibleRow(image_url, title="Network Topology Image")
 
+        if len(diagrams) > 1:
+            self.generated['panels'] += diagrams[1]
         return {"dashboard": self.generated}, {"uid": self.generated['uid'], "annotation_panels": self.annotationids}

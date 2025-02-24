@@ -21,6 +21,7 @@ RUN git clone https://github.com/esnet/sense-rtmon.git .
 WORKDIR /opt/sense-rtmon/autogole-api
 RUN pip3 install --no-cache-dir -r requirements.txt && pip3 install --no-cache-dir . && \
     cp src/templates/* /etc/rtmon/templates/
+RUN pip3 install --no-cache-dir --upgrade urllib3 requests chardet
 
 # Download CA certificates with a progress bar
 WORKDIR /etc/grid-security/certificates/

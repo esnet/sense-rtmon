@@ -163,7 +163,7 @@ class DiagramWorker:
 
         if switchLabel in self.unique:
             ds = Custom("PORT", self.MUL_ICON_PATH)
-            ds  >> Edge(minlen="1") << self.unique[switchLabel]
+            ds  >> Edge(label="Portname: ?",minlen="1") << self.unique[switchLabel]
             switch1 = self.unique[switchLabel]
         else:
             switch1 = Custom(switchLabel, self.SWITCH_ICON_PATH)

@@ -1,0 +1,84 @@
+[
+  {
+    "IPv6": "fc00:0:200:4001:0:0:0:2/64",
+    "IPv4": "?ipv4?",
+    "Interface": "enp65s0f0np0",
+    "Mac": "94:6d:ae:a6:66:34",
+    "Name": "T2_US_SDSC:node-2-10.sdsc.optiputer.net",
+    "Type": "Host",
+    "Vlan": "3603",
+    "Link": "T2_US_SDSC_edgecore_s0_Ethernet252"
+  },
+  {
+    "Site": "urn:ogf:network:nrp-nautilus.io:2020",
+    "IPv6": "fc00:0:200:4001:0:0:0:4/64",
+    "Port": "urn:ogf:network:nrp-nautilus.io:2020:edgecore_s0:Ethernet252",
+    "IPv4": "?port_ipv4?",
+    "Node": "T2_US_SDSC:edgecore_s0",
+    "Peer": "?peer?",
+    "Vlan": "3603",
+    "Mac": "00:90:fb:76:e4:7b",
+    "Name": "Ethernet252",
+    "PeerHost": "T2_US_SDSC:node-2-10.sdsc.optiputer.net",
+    "Type": "Switch"
+  },
+  {
+    "IPv6": "fc00:0:200:4001:0:0:0:1/64",
+    "IPv4": "?ipv4?",
+    "Interface": "enp65s0f1np1",
+    "Mac": "94:6d:ae:a6:66:2f",
+    "Name": "T2_US_SDSC:node-2-9.sdsc.optiputer.net",
+    "Type": "Host",
+    "Vlan": "3603",
+    "Link": "T2_US_SDSC_edgecore_s0_Ethernet134"
+  },
+  {
+    "Site": "urn:ogf:network:nrp-nautilus.io:2020",
+    "IPv6": "fc00:0:200:4001:0:0:0:4/64",
+    "Port": "urn:ogf:network:nrp-nautilus.io:2020:edgecore_s0:Ethernet134",
+    "IPv4": "?port_ipv4?",
+    "Node": "T2_US_SDSC:edgecore_s0",
+    "Peer": "?peer?",
+    "Vlan": "3603",
+    "Mac": "00:90:fb:76:e4:7b",
+    "Name": "Ethernet134",
+    "PeerHost": "T2_US_SDSC:node-2-9.sdsc.optiputer.net",
+    "Type": "Switch"
+  },
+  {
+    "Site": "urn:ogf:network:nrp-nautilus.io:2020",
+    "IPv6": "fc00:0:200:4001:0:0:0:4/64",
+    "Port": "urn:ogf:network:nrp-nautilus.io:2020:edgecore_s0:PortChannel502",
+    "IPv4": "?port_ipv4?",
+    "Node": "T2_US_SDSC:edgecore_s0",
+    "Peer": "urn:ogf:network:nrp-nautilus.io:2020:sn3700_s0:PortChannel502",
+    "Vlan": "3603",
+    "Mac": "00:90:fb:76:e4:7b",
+    "Name": "PortChannel502",
+    "Type": "Switch"
+  },
+  {
+    "Site": "urn:ogf:network:nrp-nautilus.io:2020",
+    "IPv6": "fc00:0:200:4001:0:0:0:5/64",
+    "Port": "urn:ogf:network:nrp-nautilus.io:2020:sn3700_s0:PortChannel502",
+    "IPv4": "?port_ipv4?",
+    "Node": "T2_US_SDSC:sn3700_s0",
+    "Peer": "urn:ogf:network:nrp-nautilus.io:2020:edgecore_s0:PortChannel502",
+    "Vlan": "3603",
+    "Mac": "b8:59:9f:a9:d1:00",
+    "Name": "PortChannel502",
+    "Type": "Switch"
+  },
+  {
+    "Site": "urn:ogf:network:nrp-nautilus.io:2020",
+    "IPv6": "fc00:0:200:4001:0:0:0:5/64",
+    "Port": "urn:ogf:network:nrp-nautilus.io:2020:sn3700_s0:Ethernet72",
+    "IPv4": "?port_ipv4?",
+    "Node": "T2_US_SDSC:sn3700_s0",
+    "Peer": "?peer?",
+    "Vlan": "3603",
+    "Mac": "b8:59:9f:a9:d1:00",
+    "Name": "Ethernet72",
+    "Type": "Switch"
+  }
+]

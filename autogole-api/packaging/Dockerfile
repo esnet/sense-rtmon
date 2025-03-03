@@ -34,6 +34,7 @@ COPY files/etc/supervisord.d/11-httpserver.conf /etc/supervisord.d/11-httpserver
 COPY icons/host.png /opt/icons/host.png
 COPY icons/switch.png /opt/icons/switch.png
 COPY icons/BGP.png /opt/icons/BGP.png
+COPY icons/multipoint.png /opt/icons/multipoint.png
 
 WORKDIR /opt
 # Get latest CA's while suppressing warnings

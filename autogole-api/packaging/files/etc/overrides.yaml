@@ -6,7 +6,7 @@
   name: "ESnet"
   joint_net: True
 "urn:ogf:network:stack-fabric:2024":
-  name: "NSI_FABRIC"
+  name: "FABRIC"
   joint_net: True
 "urn:ogf:network:lsanca.pacificwave.net:2016":
   name: "NSI_PACWAVE"

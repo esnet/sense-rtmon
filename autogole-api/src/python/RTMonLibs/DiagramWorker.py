@@ -162,12 +162,20 @@ class DiagramWorker:
         switchLabel += ("\nIPv6: " + item["IPv6"]) if item["IPv6"] != '?port_ipv6?' else ""
 
         if switchLabel in self.unique:
+            edge=""
+            if item["Peer"] == "?peer?":
+                edge = "Port1: " + item['Name']
+                edge += "\nVlan: " + item["Vlan"]
+            else:
+                edge = "Port1: " + self.unique[switchLabel][1]['Name']
+                edge += "\nVlan: " + self.unique[switchLabel][1]["Vlan"]
+
             ds = Custom("PORT", self.MUL_ICON_PATH)
-            ds  >> Edge(label="Portname: ?",minlen="1") << self.unique[switchLabel]
-            switch1 = self.unique[switchLabel]
+            ds  >> Edge(label= edge, minlen="1") << self.unique[switchLabel][0]
+            switch1 = self.unique[switchLabel][0]
         else:
             switch1 = Custom(switchLabel, self.SWITCH_ICON_PATH)
-            self.unique[switchLabel] = switch1
+            self.unique[switchLabel] = [switch1, item]
         if 'Peer' in item and item['Peer'] != "?peer?":
             self.added[item['Node']] = item['Port']
             self.objects[item['Port']] = {"obj": switch1, "data": item}

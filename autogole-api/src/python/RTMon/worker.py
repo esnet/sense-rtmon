@@ -78,48 +78,57 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
 
     def submit_exe(self, filename, fout):
         """Submit Action Execution"""
-        # 1. Get the instance from SENSE-0
         self.logger.info('='*80)
         self.logger.info('Submit Execution: %s, %s', filename, fout)
-        instance = self.s_getInstance(fout['referenceUUID'])
-        fout['instance'] = instance
-        self.logger.info(f"Here is instance for {fout['referenceUUID']}:")
-        self.logger.info(pformat(instance))
-        # 2. Get the manifest from SENSE-0
-        if not instance:
-            msg = f'Instance not found: {fout["referenceUUID"]}'
-            self.logger.error(msg)
-            self.s_setTaskState(fout.get('taskinfo', {}).get('uuid', ""), 'REJECTED', {'error': msg})
-            fout['state'] = 'failed'
+        try:
+            # 1. Get the instance from SENSE-0
+            instance = self.s_getInstance(fout['referenceUUID'])
+            fout['instance'] = instance
+            self.logger.info(f"Here is instance for {fout['referenceUUID']}:")
+            self.logger.info(pformat(instance))
+            # 1.a Check if instance is found
+            if not instance:
+                msg = f'Instance not found in SENSE-0: {fout["referenceUUID"]}'
+                self.logger.error(msg)
+                raise Exception(msg)
+            # 2.a Check if the instance is already running and in good state
+            if instance['state'] not in self.goodStates:
+                msg = f'Instance not in correct state: {fout["referenceUUID"]}, {instance["state"]}'
+                self.logger.error(msg)
+            # 3. Get the manifest from SENSE-0
+            manifest = self.s_getManifest(instance)
+            fout['manifest'] = manifest
+            # 4. Check if manifest is found
+            if not manifest:
+                msg = f'Manifest not found. Got empty manifest from SENSE-0: {fout["referenceUUID"]}'
+                self.logger.error(msg)
+                raise Exception(msg)
+        except Exception as ex:
+            errmsg = f'Got exceptions while receiving data from SENSE-0: {ex}'
+            self.logger.error(errmsg)
+            fout.setdefault('warnings', [])
+            fout['warnings'].append(errmsg)
             self._updateState(filename, fout)
+            if len(fout['warnings']) > 3:
+                errormsg = f"Got exceptions while receiving data from SENSE-0 for 3 times. Will mark it as failed. Errors: {fout['warnings']}"
+                self.logger.error(errormsg)
+                self.s_setTaskState(fout.get('taskinfo', {}).get('uuid', ""), 'REJECTED', {'error': 'Failed to get manifest'})
+                fout['state'] = 'failed'
+                self._updateState(filename, fout)
             return
-        # 2.a Check if the instance is already running
-        if instance['state'] not in self.goodStates:
-            msg = f'Instance not in correct state: {fout["referenceUUID"]}, {instance["state"]}'
-            self.logger.error(msg)
-            self.s_setTaskState(fout.get('taskinfo', {}).get('uuid', ""), 'REJECTED', {'error': msg})
-            fout['state'] = 'failed'
-            self._updateState(filename, fout)
-            return
-        manifest = self.s_getManifest(instance)
-        fout['manifest'] = manifest
+
+        # If we reach here - we set task as accepted
+        self.s_setTaskState(fout.get('taskinfo', {}).get('uuid', ""), 'ACCEPTED')
         self.logger.info("Here is manifest for the following instance:")
         self.logger.info(pformat(manifest))
-        if not manifest:
-            msg = f'Manifest not found: {fout["referenceUUID"]}'
-            self.logger.error(msg)
-            self.s_setTaskState(fout.get('taskinfo', {}).get('uuid', ""), 'REJECTED', {'error': msg})
-            fout['state'] = 'failed'
-            self._updateState(filename, fout)
-            return
-        # 3. Create the dashboard and template
+        # 5. Create the dashboard and template
         try:
             template, dashbInfo = self.t_createTemplate(instance, manifest, **fout)
             fout["dashbInfo"] = dashbInfo
         except IOError as ex:
             self.logger.error('Failed to create template: %s', ex)
             return
-        # 4. Submit to Grafana (Check if folder exists, if not create it)
+        # 6. Submit to Grafana (Check if folder exists, if not create it)
         folderInfo = self.g_createFolder(self._getFolderName())
         template['folderId'] = folderInfo['id']
         template['overwrite'] = True
@@ -127,14 +136,14 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         # Get dashboard URL and report back to SENSE-O
         self.g_loadAll()  # Reload all dashboards (need to get URL)
         self.s_finishTask(fout.get('taskinfo', {}).get('uuid', ""), {'callbackURL': self.g_getDashboardURL(template['dashboard']['title'], self._getFolderName())})
-        # 5. Submit SiteRM Action to issue a ping test both ways
+        # 7. Submit SiteRM Action to issue a ping test both ways
         tmpOut = self.sr_submit_ping(instance=instance, manifest=manifest)
         if tmpOut:
             fout['ping'] = tmpOut
             self.g_submitAnnotation(sitermOut=tmpOut, dashbInfo=fout["dashbInfo"])
-        # 6. Submit to External API (if any configured)
+        # 8. Submit to External API (if any configured)
         self.e_submitExternalAPI(fout, 'submit')
-        # 7. Update State to Running
+        # 9. Update State to Running
         fout['state'] = 'running'
         fout.setdefault('retries', 0)
         self._updateState(filename, fout)
@@ -270,7 +279,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                 fd.write(dumpJson(fout, self.logger))
         if out['state'] in self.goodStates:
             self.auth_instances[os.environ["SENSE_AUTH_OVERRIDE_NAME"]].append(out['referenceUUID'])
-            self.s_setTaskState(task['uuid'], 'ACCEPTED')
+            self.s_setTaskState(task['uuid'], 'WAITING')
             # In this case task remained in ACCEPTED state (or means dashboard already present).
             # We push it to renew
             fout = loadFileJson(fullpathfilename, self.logger)
@@ -290,9 +299,6 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         # Get tasks here, and for each write new entry
         newtasks = self.s_getassignedTasks()
         for task in newtasks:
-            # Ignore ACCEPTED and REJECTED tasks
-            #if task['status'] in ['ACCEPTED', 'REJECTED']:
-            #    continue
             instanceuuid = task.get('config', {}).get('uuid', '')
             if not instanceuuid:
                 msg = f'Instance UUID not found in task provided by SENSE-O. Task: {task}'

@@ -22,6 +22,7 @@ class DiagramWorker:
     HOST_ICON_PATH = '/opt/icons/host.png'
     SWITCH_ICON_PATH = '/opt/icons/switch.png'
     BGP_ICON_PATH = '/opt/icons/BGP.png'
+    MUL_ICON_PATH = '/opt/icons/multipoint.png'
 
 
     def __init__(self, **kwargs):
@@ -36,6 +37,7 @@ class DiagramWorker:
         self.linksadded = set()
         self.popreverse = None
         self.instance = kwargs.get("instance")
+        self.unique = {}
 
 
     def d_find_item(self, fval, fkey):
@@ -159,7 +161,21 @@ class DiagramWorker:
         switchLabel += ("\nIPv4: " + item["IPv4"]) if item["IPv4"] != '?port_ipv4?' else ""
         switchLabel += ("\nIPv6: " + item["IPv6"]) if item["IPv6"] != '?port_ipv6?' else ""
 
-        switch1 = Custom(switchLabel, self.SWITCH_ICON_PATH)
+        if switchLabel in self.unique:
+            edge=""
+            if item["Peer"] == "?peer?":
+                edge = "Port1: " + item['Name']
+                edge += "\nVlan: " + item["Vlan"]
+            else:
+                edge = "Port1: " + self.unique[switchLabel][1]['Name']
+                edge += "\nVlan: " + self.unique[switchLabel][1]["Vlan"]
+
+            ds = Custom("PORT", self.MUL_ICON_PATH)
+            ds  >> Edge(label= edge, minlen="1") << self.unique[switchLabel][0]
+            switch1 = self.unique[switchLabel][0]
+        else:
+            switch1 = Custom(switchLabel, self.SWITCH_ICON_PATH)
+            self.unique[switchLabel] = [switch1, item]
         if 'Peer' in item and item['Peer'] != "?peer?":
             self.added[item['Node']] = item['Port']
             self.objects[item['Port']] = {"obj": switch1, "data": item}
@@ -245,6 +261,7 @@ class DiagramWorker:
         self.objects = {}
         self.added = {}
         self.linksadded = set()
+        self.unique = {}
         self.popreverse = None
         outputDir = os.path.dirname(output_filename)
         if not os.path.exists(outputDir):

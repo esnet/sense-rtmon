@@ -1,17 +1,23 @@
 """
 DiagramWorker Class for Network Topology Visualization
 
-This module contains the DiagramWorker class, which generates network topology diagrams
-by processing input data that includes hosts and switches. It uses the 'diagrams' library
+This module contains the DiagramWorker class, which generates network topology diagrams 
+by processing input data that includes hosts and switches. It uses the 'diagrams' library 
 to visualize network components and their interconnections.
 """
 import os
-import copy
 from diagrams import Diagram, Cluster, Edge
 from diagrams.custom import Custom
-from RTMonLibs.GeneralLibs import _processName
-
-
+from diagrams.generic.compute import Rack
+from diagrams.aws.compute import Batch as dSwitch
+#from RTMonLibs.GeneralLibs import _processName
+# change later:
+def _processName(name):
+    """Process Name for Mermaid and replace all special chars with _"""
+    for repl in [[" ", "_"], [":", "_"], ["/", "_"], ["-", "_"], [".", "_"], ["?", "_"]]:
+        name = name.replace(repl[0], repl[1])
+    return name
+#########
 
 class DiagramWorker:
     """
@@ -23,22 +29,22 @@ class DiagramWorker:
     SWITCH_ICON_PATH = '/opt/icons/switch.png'
     BGP_ICON_PATH = '/opt/icons/BGP.png'
     MUL_ICON_PATH = '/opt/icons/multipoint.png'
-
-
-    def __init__(self, **kwargs):
+    # TEmp
+    # HOST_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/host.png'
+    # SWITCH_ICON_PATH = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/switch.png'
+    # BGP_ICON_PATH  = '/Users/sunami/Desktop/publish/sense-rtmon/autogole-api/packaging/icons/BGP.png'
+    def __init__(self, instance):
         """
         Initialize the DiagramWorker with input data.
 
         :param indata: List of dictionaries containing host and switch details.
         """
-        super().__init__()
         self.objects = {}
         self.added = {}
         self.linksadded = set()
         self.popreverse = None
-        self.instance = kwargs.get("instance")
+        self.instance = instance
         self.unique = {}
-
 
     def d_find_item(self, fval, fkey):
         """Find Item where fkey == fval"""
@@ -95,27 +101,10 @@ class DiagramWorker:
                     ## if Peer to host pair not found for overide
                     else:
                         try:
-                            siteName = vals['data']['Peer'].split("::")[0]
-                            switchName = vals['data']['Peer'].split("::")[1].split(":")[0]
-                            portname = vals['data']['Peer'].split("::")[1].split(":")[1]
-                        except (KeyError, IndexError) as e:
-                            self.logger.error(f"Error in parsing Peer: {e}. Values: {key}, {vals}")
-                            parts = vals['data']['Peer'].split(":")
-                            remaining = ""
-                            for i, part in enumerate(parts):
-                                if part.isdigit() and len(part) == 4:
-                                    siteName = ":".join(parts[:i+1])
-                                    remaining = ":".join(parts[i+1:])
-                                    break
-                            if "::" in remaining:
-                                subparts = remaining.split("::")
-                                switchName = subparts[0]
-                                portname = subparts[1].split(":")[0] if len(subparts) > 1 else "None"
-                            else:
-                                # If no '::', fallback to splitting by ':'
-                                subparts = remaining.split(":")
-                                switchName = subparts[0]
-                                portname = subparts[1] if len(subparts) > 1 else "None"
+                            siteName, switchName = self.objects[vals['data']['Peer']]['data']["Node"].split(":")
+                            portname = self.objects[vals['data']['Peer']]['data']["Name"]
+                        except:
+                            siteName, switchName, portname = vals['data']['Peer'], vals['data']['Peer'], "Unknown"
                         with Cluster(siteName):
                             newSwitch = Custom(switchName, self.SWITCH_ICON_PATH)
                         newSwitch >> Edge(label="Port 1: " + portname + '\n' + "Port 2: "+ vals['data']["Name"] + '\n' + "Vlan: " +  vals['data']["Vlan"]) << vals["obj"]  # pylint: disable=expression-not-assigned
@@ -160,7 +149,6 @@ class DiagramWorker:
         switchLabel = item['Node'].split(":")[1]
         switchLabel += ("\nIPv4: " + item["IPv4"]) if item["IPv4"] != '?port_ipv4?' else ""
         switchLabel += ("\nIPv6: " + item["IPv6"]) if item["IPv6"] != '?port_ipv6?' else ""
-
         if switchLabel in self.unique:
             edge=""
             if item["Peer"] == "?peer?":
@@ -252,21 +240,16 @@ class DiagramWorker:
         elif item['Type'] == 'Host' and self.popreverse is True:
             self.popreverse = False
 
-    def d_createGraph(self, output_filename):
+
+    def createGraph(self, output_filename, indata):
         """
         Create the network topology diagram and save it to a file.
 
         :param output_filename: Path where the output diagram will be saved.
         """
-        self.objects = {}
-        self.added = {}
-        self.linksadded = set()
-        self.unique = {}
-        self.popreverse = None
         outputDir = os.path.dirname(output_filename)
         if not os.path.exists(outputDir):
             os.makedirs(outputDir)
-        indata = copy.deepcopy(self.orderlist)
         with Diagram("Network Topology", show=False, filename=output_filename):
             item = None
             while len(indata) > 0:

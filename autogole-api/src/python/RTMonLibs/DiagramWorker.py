@@ -77,7 +77,7 @@ class DiagramWorker:
                 return
             self.linksadded.add(link_keys)
 
-            val1["obj"] >> Edge(label=self.d_LinkLabel(val1, val2)) << val2["obj"]  # pylint: disable=expression-not-assigned
+            val1["obj"] >> Edge(xlabel=self.d_LinkLabel(val1, val2),minlen="8") << val2["obj"]  # pylint: disable=expression-not-assigned
 
     def d_addLinks(self):
         """Identify Links between items"""
@@ -101,7 +101,7 @@ class DiagramWorker:
                             siteName, switchName, portname = vals['data']['Peer'], vals['data']['Peer'], "Unknown"
                         with Cluster(siteName):
                             newSwitch = Custom(switchName, self.SWITCH_ICON_PATH)
-                        newSwitch >> Edge(label="Port 1: " + portname + '\n' + "Port 2: "+ vals['data']["Name"] + '\n' + "Vlan: " +  vals['data']["Vlan"]) << vals["obj"]  # pylint: disable=expression-not-assigned
+                        newSwitch >> Edge(xlabel="Port 1: " + portname + '\n' + "Port 2: "+ vals['data']["Name"] + '\n' + "Vlan: " +  vals['data']["Vlan"], minlen="8") << vals["obj"]  # pylint: disable=expression-not-assigned
                 elif 'PeerHost' in vals.get('data', {}):
                     fKey = vals['data']['PeerHost']
                     fItem = self.objects.get(fKey)
@@ -154,7 +154,7 @@ class DiagramWorker:
                 edge += "\nVlan: " + self.unique[switchLabel][1]["Vlan"]
 
             ds = Custom("PORT", self.MUL_ICON_PATH)
-            ds  >> Edge(label= edge, minlen="1") << self.unique[switchLabel][0]
+            ds  >> Edge(xlabel= edge, minlen="8") << self.unique[switchLabel][0]
             switch1 = self.unique[switchLabel][0]
         else:
             switch1 = Custom(switchLabel, self.SWITCH_ICON_PATH)

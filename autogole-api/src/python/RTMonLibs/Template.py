@@ -294,12 +294,17 @@ class Template():
         self.annotationids = []
         self.nextid = 0
 
-    def __getTitlesUrls(self, site, link):
+    def __getTitlesUrls(self, site, link, **kwargs):
         """Get Titles and URLs"""
         title = link.get('title', "Link-Title-Not-Present-in-Config")
         url = link.get('url', "https://link-not-present-in-config")
         title = title.replace("$$REPLACEMESITENAME$$", site)
         url = url.replace("$$REPLACEMESITENAME$$", site)
+        uuid = kwargs.get('referenceUUID', None)
+        senseodomain = kwargs.get('orchestrator', None)
+        if uuid and senseodomain:
+            url = url.replace("$$REPLACEMESENSEODOMAIN$$", senseodomain)
+            url = url.replace("$$REPLACEMEDELTAUUID$$", uuid)
         return title, url
 
     def _getNextID(self, recordAnnotations=False):
@@ -411,7 +416,7 @@ class Template():
             tmpcopy["url"] = f"{self.config['grafana_host']}/d/{uid}"
             ret.append(tmpcopy)
             for link in self.config['template_links']:
-                title, url = self.__getTitlesUrls(site, link)
+                title, url = self.__getTitlesUrls(site, link, **kwargs)
                 if url not in addedUrls:
                     tmpcopy = copy.deepcopy(out)
                     tmpcopy["title"] = title

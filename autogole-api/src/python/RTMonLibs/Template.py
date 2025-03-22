@@ -322,6 +322,7 @@ class Template():
     def addRowPanel(self, row, panels, recordAnnotations=False):
         """Add Panel to the Row (Depending on collapsed or not)"""
         # https://github.com/grafana/grafana/issues/50855
+        print("Breaks")
         out = []
         if not row['collapsed']:
             out.append(row)
@@ -335,6 +336,7 @@ class Template():
                 out.append(pan)
         if row['collapsed']:
             out.append(row)
+        print("Breaks2")
         return out
 
     def _t_getDataSourceUid(self, *_args):
@@ -377,6 +379,7 @@ class Template():
         out = self._t_loadTemplate("row.json")
         out["title"] = kwargs.get('title', "Row Title Not Present")
         out["id"] = self._getNextRowID()
+        out["collapsed"] = True
         if 'collapsed' in kwargs:
             out["collapsed"] = kwargs['collapsed']
         return out

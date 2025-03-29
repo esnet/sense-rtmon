@@ -4,67 +4,6 @@
         "type": "prometheus",
         "uid": "REPLACEME_DATASOURCE"
       },
-      "description": "Network Address Information indicates what address  is visible on interface (this comes out from Prometheus output)",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "displayMode": "gradient",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true
-      },
-      "pluginVersion": "8.5.27",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "REPLACEME_DATASOURCE"
-          },
-          "editorMode": "code",
-          "expr": "node_network_address_info{instance=~\"REPLACEME_HOSTNAME.*\",sitename=\"REPLACEME_SITENAME\", device=~\"REPLACEME_INTERFACE\"}",
-          "interval": "",
-          "legendFormat": "{{address}} {{device}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Network Address Information",
-      "transformations": [],
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "REPLACEME_DATASOURCE"
-      },
       "description": "Network Traffic by packets on interface",
       "fieldConfig": {
         "defaults": {

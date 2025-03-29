@@ -326,8 +326,6 @@ class Template():
         if not row['collapsed']:
             out.append(row)
         for pan in panels:
-            if pan['title'] == 'Network Address Information':
-                continue
             pan["id"] = self._getNextID(recordAnnotations)
             if 'gridPos' not in pan:
                 pan["gridPos"] = self.gridPos
@@ -379,7 +377,6 @@ class Template():
         out = self._t_loadTemplate("row.json")
         out["title"] = kwargs.get('title', "Row Title Not Present")
         out["id"] = self._getNextRowID()
-        out["collapsed"] = True
         if 'collapsed' in kwargs:
             out["collapsed"] = kwargs['collapsed']
         return out

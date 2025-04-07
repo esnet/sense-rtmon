@@ -26,8 +26,13 @@ grafana_dev:
 # Default image debug is False (mainly used for development)
 #image_debug:
 
+# Default topdiagrams is Diagrams (mainly used for development)
+#topdiagrams: 
+# Choices -> Diagrams | Mermaid 
+
+# Default debug is False (mainly used for development), If set to True Dashboard will be generated with Memaid and Debug Info 
 # Debug:
-# Default debug is False (mainly used for development), If set to True Dashboard will be generated with Memaid and Debug info. 
+
 # ==================================
 
 # Template path and tags. If tag updated - it will force update all templates
@@ -68,4 +73,3 @@ external_service:
 # HostCert and HostKey location (needed for SiteRM communications). Cert mush be authorized in all Frontends.
 hostcert: '/etc/grid-security/hostcert.pem'
 hostkey: '/etc/grid-security/hostkey.pem'
-

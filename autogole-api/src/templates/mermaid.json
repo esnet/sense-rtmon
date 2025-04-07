@@ -86,7 +86,7 @@
       "minWidth": 30
     },
     "pluginVersion": "1.10.4",
-    "style": "",
+    "style": "#diagram-101 {\n  height: 100% !important;\n}",
     "useBackground": false,
     "useBasicAuth": false,
     "valueName": "last"

@@ -21,7 +21,7 @@
   name: "Internet2"
   joint_net: True
 "urn:ogf:network:core1.losa.net.internet2.edu:2016":
-  name "Internet2"
+  name: "Internet2"
   joint_net: True
 "urn:ogf:network:ampath.net:2013":
   name: "AMPATH"

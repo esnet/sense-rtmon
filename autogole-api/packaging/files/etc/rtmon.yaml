@@ -26,13 +26,13 @@ grafana_dev:
 # Default image debug is False (mainly used for development)
 #image_debug:
 
-# Default topdiagrams is Diagrams (mainly used for development)
-#topdiagrams: 
-# Choices -> Diagrams | Mermaid 
 
 # Default debug is False (mainly used for development), If set to True Dashboard will be generated with Memaid and Debug Info 
 # Debug:
 
+# Default topdiagrams is Diagrams (mainly used for development)
+#topdiagrams: 
+# Choices -> Diagrams | Mermaid 
 # ==================================
 
 # Template path and tags. If tag updated - it will force update all templates

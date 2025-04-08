@@ -722,16 +722,17 @@ class Template():
         # Add Links on top of the page
         self.generated['links'] = self.t_addLinks(*args, **kwargs)
         added = []
-        hostnum, switchnum = 1, 1
-        for item in self.orderlist:
-            if item['Type'] == 'Host' and item['Name'] not in added:
-                self.generated['panels'] += self.t_createHostFlow(item["Name"], hostnum, *args)
-                added.append(item['Name'])
-                hostnum += 1
-            elif item['Type'] == 'Switch' and item['Node'] not in added:
-                self.generated['panels'] += self.t_createSwitchFlow(item["Node"], switchnum, *args)
-                added.append(item['Node'])
-                switchnum += 1
+        for idx, item in enumerate(self.orderlist, start=1):
+            if item['Type'] == 'Host':
+                # Check if this host name hasn't been processed already
+                if item['Name'] not in added:
+                    self.generated['panels'] += self.t_createHostFlow(item["Name"], idx, *args)
+                    added.append(item['Name'])
+            elif item['Type'] == 'Switch':
+                # Check if this switch node hasn't been processed already
+                if item['Node'] not in added:
+                    self.generated['panels'] += self.t_createSwitchFlow(item["Node"], idx, *args)
+                    added.append(item['Node'])
             else:
                 self.logger.error(f"Unknown Type: {item['Type']}. Skipping... {item}")
         # Add L2 Debugging

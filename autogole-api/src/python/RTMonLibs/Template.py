@@ -454,7 +454,7 @@ class Template():
         out["uid"] = args[0]["intents"][0]["id"]
         return out
 
-    def t_createHostFlow(self, sitehost, *args):
+    def t_createHostFlow(self, sitehost, num, *args):
         """Create Host Flow Template"""
         out = []
         interfaces = self.m_groups['Hosts'].get(sitehost, "")
@@ -464,7 +464,7 @@ class Template():
         sitename = sitehost.split(":")[0]
         hostname = sitehost.split(":")[1]
         intfline = "|".join(interfaces.keys())
-        row = self.t_addRow(*args, title=f"Host Flow Summary: {sitehost}")
+        row = self.t_addRow(*args, title=f"{num}. Host Flow Summary: {sitehost}")
         panels = dumpJson(self._t_loadTemplate("hostflow.json"), self.logger)
         panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
         panels = panels.replace("REPLACEME_SITENAME", sitename)
@@ -474,7 +474,7 @@ class Template():
         out += self.addRowPanel(row, panels, True)
         return out
 
-    def t_createSwitchFlow(self, sitehost, *args):
+    def t_createSwitchFlow(self, sitehost, num, *args):
         """Create Switch Flow Template"""
         def findIntf(interfaces):
             """Find Interface"""
@@ -519,7 +519,7 @@ class Template():
         sitename = sitehost.split(":")[0]
         hostname = sitehost.split(":")[1]
         intfline = findIntf(interfaces)
-        row = self.t_addRow(*args, title=f"Switch Flow Summary: {sitehost}")
+        row = self.t_addRow(*args, title=f"{num}. Switch Flow Summary: {sitehost}")
         panels = dumpJson(self._t_loadTemplate("switchflow.json"), self.logger)
         panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
         panels = panels.replace("REPLACEME_SITENAME", sitename)
@@ -721,21 +721,25 @@ class Template():
 
         # Add Links on top of the page
         self.generated['links'] = self.t_addLinks(*args, **kwargs)
-        # Add Debug Info (manifest, instance)
-        self.generated['panels'] += self.t_addDebug(*args)
         added = []
-        for item in self.orderlist:
-            if item['Type'] == 'Host' and item['Name'] not in added:
-                self.generated['panels'] += self.t_createHostFlow(item["Name"], *args)
-                added.append(item['Name'])
-            elif item['Type'] == 'Switch' and item['Node'] not in added:
-                self.generated['panels'] += self.t_createSwitchFlow(item["Node"], *args)
-                added.append(item['Node'])
+        for idx, item in enumerate(self.orderlist, start=1):
+            if item['Type'] == 'Host':
+                # Check if this host name hasn't been processed already
+                if item['Name'] not in added:
+                    self.generated['panels'] += self.t_createHostFlow(item["Name"], idx, *args)
+                    added.append(item['Name'])
+            elif item['Type'] == 'Switch':
+                # Check if this switch node hasn't been processed already
+                if item['Node'] not in added:
+                    self.generated['panels'] += self.t_createSwitchFlow(item["Node"], idx, *args)
+                    added.append(item['Node'])
             else:
                 self.logger.error(f"Unknown Type: {item['Type']}. Skipping... {item}")
         # Add L2 Debugging
         self.generated['panels'] += self.t_addL2Debugging(*args)
-
-        if len(diagrams) > 1:
-            self.generated['panels'] += diagrams[1]
+        if self.config.get('Debug', True):
+            if len(diagrams) > 1:
+                self.generated['panels'] += diagrams[1]
+            # Add Debug Info (manifest, instance)
+            self.generated['panels'] += self.t_addDebug(*args)
         return {"dashboard": self.generated}, {"uid": self.generated['uid'], "annotation_panels": self.annotationids}

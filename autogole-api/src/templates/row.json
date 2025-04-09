@@ -1,5 +1,5 @@
 {
-  "collapsed": false,
+  "collapsed": true,
   "datasource": {
     "type": "prometheus",
     "uid": "bdlb788gxxcsge"

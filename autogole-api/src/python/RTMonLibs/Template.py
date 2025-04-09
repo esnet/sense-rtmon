@@ -47,6 +47,20 @@ class Mermaid():
     def _m_addVlan(self, link, vlan):
         self.vlans[_processName(link)] = vlan
 
+    def _addSubgraph(self, name):
+        """Add subgraph to the mermaid graph"""
+        spaces = 0
+        for val in name.split(':'):
+            self.mermaid.append(f'{" "*spaces}subgraph {val}')
+            spaces += 2
+
+    def _endSubgraph(self, name):
+        """Write subgraph ends"""
+        spaces = len(name.split(":"))*2
+        for _val in name.split(':'):
+            self.mermaid.append(f'{" "*spaces}end')
+            spaces -= 2
+
     def _m_recordMac(self, hostdict):
         """Record mac into var"""
         try:
@@ -84,11 +98,14 @@ class Mermaid():
         self.m_groups['Switches'].setdefault(item["Node"], {}).setdefault(item["Name"], {})
         self.m_groups['Switches'][item["Node"]][item["Name"]] = item
         self._m_recordMac(item)  # Record mac of switch interfaces
+        subgraphval = ""
         if item.get('JointSite', False):
-            self.mermaid.append(f'    subgraph "{item["JointSite"]}"')
+            subgraphval = item['JointSite']
+            self._addSubgraph(subgraphval)
             self.mermaid.append(f'        {uniqname}("{item["JointNetwork"]}")')
         else:
-            self.mermaid.append(f'    subgraph "{item["Node"]}"')
+            subgraphval = item['Node']
+            self._addSubgraph(subgraphval)
             self.mermaid.append(f'        {uniqname}("{item["Name"]}")')
         if 'Peer' in item and item['Peer'] != "?peer?":
             self._m_addLink(uniqname, _processName(item['Peer']))
@@ -106,7 +123,7 @@ class Mermaid():
                     self._m_addLink(f'{uniqname}_vlan{item["Vlan"]}', f'{uniqname}_{ipkey}')
                     # Add BGP Peering information
                     self._m_addBGP(item, ipkey, f'{uniqname}_{ipkey}')
-        self.mermaid.append('    end')
+        self._endSubgraph(subgraphval)
         return uniqname
 
     def _m_addHost(self, host):
@@ -702,8 +719,7 @@ class Template():
         if mermaid and ddiagram:
             if self.config.get('topdiagrams', "Diagrams") == "Diagrams":
                 return [ddiagram, mermaid]
-            else:
-                return [mermaid, ddiagram]
+            return [mermaid, ddiagram]
         # If we have only one and diagrams failed for any reason, we would need to modify
         # many panels inside mermaid not to be collapsed. We regenerate mermaid
         if mermaid and not ddiagram:

@@ -6,6 +6,7 @@ import copy
 import os
 import uuid
 import json
+import time
 
 from sense.client.workflow_combined_api import WorkflowCombinedApi
 from sense.client.discover_api import DiscoverApi
@@ -193,7 +194,18 @@ class SenseAPI:
         }
         wApi = self.s_getWorkflowApi()
         wApi.si_uuid = instance['referenceUUID']
-        response = wApi.manifest_create(dumpJson(template, self.logger))
+        failures = 0
+        response = None
+        while failures < 3:
+            try:
+                response = wApi.manifest_create(dumpJson(template, self.logger))
+            except Exception as ex:
+                failures += 1
+                self.logger.error(f"Failed to get manifest from SENSE-O for {instance['referenceUUID']}: {ex}")
+                time.sleep(5)
+        if not response:
+            self.logger.error(f"Failed to get manifest from SENSE-O for {instance['referenceUUID']} after 3 tries.")
+            return {}
         json_response = loadJson(response, self.logger)
         if 'jsonTemplate' not in json_response:
             self.logger.debug(f"WARNING: {instance['referenceUUID']} did not receive correct output!")

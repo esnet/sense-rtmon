@@ -3,7 +3,7 @@
 import os
 import time
 from pprint import pformat
-from RTMonLibs.GeneralLibs import loadFileJson, getConfig, dumpJson, SENSEOFailure
+from RTMonLibs.GeneralLibs import loadFileJson, getConfig, dumpJson, getUTCnow, SENSEOFailure
 from RTMonLibs.LogLib import getLoggingObject
 from RTMonLibs.SenseAPI import SenseAPI
 from RTMonLibs.GrafanaAPI import GrafanaAPI
@@ -24,6 +24,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         self.generated = {}
         self.auth_instances = {}
         self.goodStates = ['CREATE - READY', 'REINSTATE - READY', 'MODIFY - READY']
+        self.senseotimer = getUTCnow()
 
     def _getFolderName(self):
         folderName = self.config.get('grafana_folder', 'Real Time Mon')
@@ -44,6 +45,22 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         """Update the state of the file"""
         with open(f'{self.config.get("workdir", "/srv")}/{filename}', 'w', encoding="utf-8") as fd:
             fd.write(dumpJson(fout, self.logger))
+
+    def _checkSenseOState(self, fout):
+        """Check SENSE-O Task State and cancel if not in a final state"""
+        # Run it only once an hour
+        if getUTCnow() - self.senseotimer < 3600:
+            return True
+        self.senseotimer = getUTCnow()
+        instanceuuid = fout.get('taskinfo').get('config', {}).get('uuid', '')
+        if not instanceuuid:
+            # If we are missing instanceuuid, we ignore it;
+            return True
+        out = self.s_getInstance(instanceuuid)
+        if out['state'] in self.goodStates:
+            self.logger.info(f'Instance {instanceuuid} is in good state: {out["state"]}')
+            return False
+        return True
 
     def renew_exe(self, filename, fout):
         """Renew instance mainly if new information received, like oscarsid"""
@@ -213,6 +230,11 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                         fout['ping'] = tmpOut
                         self.g_submitAnnotation(sitermOut=tmpOut, dashbInfo=fout["dashbInfo"])
                     self._updateState(filename, fout)
+                    # Check SENSE-O State and delete if not in a final state anymore;
+                    if not self._checkSenseOState(fout):
+                        self.logger.info('SENSE-O Task State not in a final state. Will delete the dashboard')
+                        fout['state'] = 'delete'
+                        self._updateState(filename, fout)
                     return
                 # Need to update the dashboard with new template_tag
                 self.logger.info('Dashboard is present in Grafana, but with old version: %s', dashbName)
@@ -333,24 +355,36 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                         stateInfo[fout['state']][filename] = fout
         if not stateInfo:
             return
+        excp = None
         for state in ['submitted', 'delete', 'running', 'failed', 'renew']:
             self.logger.info('State: %s, Files: %s', state, len(stateInfo.get(state, {})))
             for filename, fout in stateInfo.get(state, {}).items():
-                self.logger.debug('Filename: %s, Content: %s', filename, fout)
-                # Set correct environment variables for SENSE API
-                os.environ['SENSE_AUTH_OVERRIDE_NAME'] = fout['orchestrator']
-                if state == 'submitted':
-                    self.submit_exe(filename, fout)
-                elif state == 'delete':
-                    self.delete_exe(filename, fout)
-                elif state == 'running':
-                    self.running_exe(filename, fout)
-                elif state == 'failed':
-                    self.failed_exe(filename, fout)
-                elif state == 'renew':
-                    self.renew_exe(filename, fout)
-                self.logger.info('='*80)
+                try:
+                    self.logger.debug('Filename: %s, Content: %s', filename, fout)
+                    # Set correct environment variables for SENSE API
+                    os.environ['SENSE_AUTH_OVERRIDE_NAME'] = fout['orchestrator']
+                    if state == 'submitted':
+                        self.submit_exe(filename, fout)
+                    elif state == 'delete':
+                        self.delete_exe(filename, fout)
+                    elif state == 'running':
+                        self.running_exe(filename, fout)
+                    elif state == 'failed':
+                        self.failed_exe(filename, fout)
+                    elif state == 'renew':
+                        self.renew_exe(filename, fout)
+                    self.logger.info('='*80)
+                except Exception as ex:
+                    excp = ex
+                    self.logger.error('Exception: %s', ex)
+                    self.logger.error('Failed to process file: %s', filename)
+                    self.logger.error('File content: %s', fout)
+                    self.logger.info('-'*80)
             self.logger.info('-'*80)
+        if excp:
+            # Re-raise exception to sleep 30 seconds.
+            self.logger.error('Here is the last exception: %s', excp)
+            raise excp
 
     def startwork(self):
         """Execute Main Program."""

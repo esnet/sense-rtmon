@@ -89,6 +89,7 @@ class GrafanaAPI():
         """Get dashboard URL"""
         if folderTitle in self.dashboards and title in self.dashboards[folderTitle]:
             return self.dashboards[folderTitle][title]['url']
+        return None
 
     def g_deleteDashboard(self, title, folderTitle):
         """Delete dashboard"""
@@ -98,9 +99,12 @@ class GrafanaAPI():
                 try:
                     return self.grafanaapi.dashboard.delete_dashboard(self.dashboards[folderTitle][title]['uid'])
                 except Exception as ex:
+                    if 'Dashboard not found' in str(ex):
+                        # Dashboard already deleted
+                        return True
                     failures += 1
                     self.logger.error(f"Failed to delete dashboard {title}: {ex}")
-                    time.sleep(1)
+                    time.sleep(5)
         else:
             return False
         raise Exception(f"Failed to delete dashboard {title} after 3 retries")

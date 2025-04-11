@@ -5,8 +5,8 @@ import json
 import time
 import uuid
 import hashlib
-import requests
 from datetime import datetime, timezone
+import requests
 from yaml import safe_load as yload
 from yaml import safe_dump as ydump
 
@@ -114,7 +114,7 @@ def getWebContentFromURL(url, logger, raiseEx=True):
             out = {}
             out['error'] = str(ex)
             out['status_code'] = -1
-            time.sleep(1)
+            time.sleep(5)
     return out
 
 def escape(invalue):

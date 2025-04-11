@@ -57,7 +57,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
             # If we are missing instanceuuid, we ignore it;
             return True
         out = self.s_getInstance(instanceuuid)
-        if out['state'] in self.goodStates:
+        if out['state'] not in self.goodStates:
             self.logger.info(f'Instance {instanceuuid} is in good state: {out["state"]}')
             return False
         return True

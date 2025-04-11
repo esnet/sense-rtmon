@@ -404,6 +404,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
                 startTime = int(time.time())
                 os.environ['SENSE_AUTH_OVERRIDE_NAME'] = key
                 os.environ['SENSE_AUTH_OVERRIDE'] = val
+                os.environ['SENSE_TIMEOUT'] = str(self.config.get('sense_timeout', 30))
                 self.s_reloadClient()
                 self.s_updateMetadata()
                 self._getAllTasks()

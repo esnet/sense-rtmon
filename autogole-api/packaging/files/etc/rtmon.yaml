@@ -9,6 +9,9 @@ baseImageURL: 'http://localhost:8000/images'
 grafana_folder: 'Real Time Mon'
 grafana_dev:
 
+# Timeout for sense-o calls
+# sense_timeout: default (30) seconds
+
 # Image Server settings
 # Default image dir is /srv/images
 #image_dir:

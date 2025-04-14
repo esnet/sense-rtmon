@@ -199,6 +199,7 @@ class SenseAPI:
         while failures < 3:
             try:
                 response = wApi.manifest_create(dumpJson(template, self.logger))
+                failure = 4
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to get manifest from SENSE-O for {instance['referenceUUID']}: {ex}")

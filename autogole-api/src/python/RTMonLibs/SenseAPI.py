@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pylint: disable=no-member
 """
 Class for interacting with SENSE-0 API
 """
@@ -78,6 +79,30 @@ class SenseAPI:
             return self.meta_apis[orchestrator]
         raise Exception(f"Orchestrator {orchestrator} not found in the list of clients")
 
+    def s_getMetadataRegData(self):
+        """Get Metadata Registration Data"""
+        folderName = self._getFolderName()
+        data = {'name': folderName, 'uuid': self._s_getworkeruuid(), 'last_update': getUTCnow()}
+        data['description'] = []
+        if self.config.get('grafana_dev', None):
+            data['description'].append("THIS IS A DEVELOPMENT INSTANCE! It might not work as expected, please use production instance.")
+        else:
+            data['description'].append("THIS IS A PRODUCTION INSTANCE!")
+        data['description'].append("""RTMon (Real-Time Monitoring) is an automated service within the SENSE project designed to dynamically monitor and visualize
+                                   network paths provisioned by SENSE Orchestrators. It identifies active service deltas, retrieves path manifests, and generates
+                                   Grafana dashboards with detailed host, link, and L2 debug views. RTMon integrates with external monitoring systems like ESnet Stardust,
+                                   Internet2 TSDS, and other domains to normalize metrics across them. It manages lifecycle events by submitting and removing monitoring
+                                   actions, syncing dashboard state, and triggering diagnostics (e.g., ping) via SiteRM.
+                                   RTMon loops every 30s, updating visualizations and annotations in real-time, providing end-to-end visibility of cross-domain,
+                                   intent-driven network services.""")
+        # Add also supported actions
+        data['supported_actions'] = []
+        data['supported_actions'].append({"name": "Show All Learned Mac's", "key": "allmacs", "description": "Generate table in dashboard with all MAC addresses learned in the network devices (Default False)", "type": "boolean", "default": False})
+        data['supported_actions'].append({"name": "Debug Mode (Detailed graphs)", "key": "debugmode", "description": "Show more detailed dashboard with all debug information included (Default False)", "type": "boolean", "default": False})
+        data['supported_actions'].append({"name": "Issue Ping between endpoints", "key": "executeping", "description": "Issue ping automatically between endpoints (Default true)", "type": "boolean", "default": True})
+        return data
+
+
     def s_getMetadata(self):
         """Get Metadata Information from SENSE-O"""
         dApi = self.s_getMetaApi()
@@ -87,12 +112,14 @@ class SenseAPI:
         except ValueError as ex:
             raise ex
         return response
+
     def s_registerMetadata(self):
         """Register Metadata Information"""
         dApi = self.s_getMetaApi()
+        data = self.s_getMetadataRegData()
         folderName = self._getFolderName()
         try:
-            response = dApi.post_metadata(data=dumpJson({'name': folderName, 'uuid': self._s_getworkeruuid(), 'last_update': getUTCnow()}, self.logger), domain="RTMon", name=folderName)
+            response = dApi.post_metadata(data=dumpJson(data, self.logger), domain="RTMon", name=folderName)
         except ValueError as ex:
             self.logger.error(f"Metadata raised ValueError for post - {ex}.")
             response = self.s_getMetadata()

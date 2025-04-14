@@ -130,7 +130,6 @@ class SenseAPI:
 
     def _s_gettaskbyuuid(self, taskuuid):
         """Get task by UUID"""
-        tApi = self.s_getTaskApi()
         tasks = self.s_getassignedTasks()
         for task in tasks:
             if task.get('uuid', '') == taskuuid:

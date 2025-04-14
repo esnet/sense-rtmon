@@ -88,13 +88,13 @@ class SenseAPI:
             data['description'].append("THIS IS A DEVELOPMENT INSTANCE! It might not work as expected, please use production instance.")
         else:
             data['description'].append("THIS IS A PRODUCTION INSTANCE!")
-        data['descritption'].append("""RTMon (Real-Time Monitoring) is an automated service within the SENSE project designed to dynamically monitor and visualize
-                                    network paths provisioned by SENSE Orchestrators. It identifies active service deltas, retrieves path manifests, and generates
-                                    Grafana dashboards with detailed host, link, and L2 debug views. RTMon integrates with external monitoring systems like ESnet Stardust,
-                                    Internet2 TSDS, and other domains to normalize metrics across them. It manages lifecycle events by submitting and removing monitoring
-                                    actions, syncing dashboard state, and triggering diagnostics (e.g., ping) via SiteRM.
-                                    RTMon loops every 30s, updating visualizations and annotations in real-time, providing end-to-end visibility of cross-domain,
-                                    intent-driven network services.""")
+        data['description'].append("""RTMon (Real-Time Monitoring) is an automated service within the SENSE project designed to dynamically monitor and visualize
+                                   network paths provisioned by SENSE Orchestrators. It identifies active service deltas, retrieves path manifests, and generates
+                                   Grafana dashboards with detailed host, link, and L2 debug views. RTMon integrates with external monitoring systems like ESnet Stardust,
+                                   Internet2 TSDS, and other domains to normalize metrics across them. It manages lifecycle events by submitting and removing monitoring
+                                   actions, syncing dashboard state, and triggering diagnostics (e.g., ping) via SiteRM.
+                                   RTMon loops every 30s, updating visualizations and annotations in real-time, providing end-to-end visibility of cross-domain,
+                                   intent-driven network services.""")
         # Add also supported actions
         data['supported_actions'] = []
         data['supported_actions'].append({"name": "Show All Learned Mac's", "key": "allmacs", "description": "Generate table in dashboard with all MAC addresses learned in the network devices (Default False)", "type": "boolean", "default": False})

@@ -85,7 +85,8 @@ class SiteRMApi:
                                      "packetsize": kwargs.get("packetsize", 56),
                                      "interval": kwargs.get("interval", 5),
                                      "interface": host['Interface'] if not host.get('vlan') else host['vlan'],
-                                     "time": kwargs.get("time", 1800)}
+                                     "time": kwargs.get("time", 1800),
+                                     "onetime": False}
                         actionPresent = False
                         for action in allDebugActions:
                             if self._sr_all_keys_match(action.get('requestdict'), newaction):

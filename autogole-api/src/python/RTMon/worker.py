@@ -268,11 +268,15 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         fullpathfilename = f'{self.config.get("workdir", "/srv")}/{filename}'
         self.s_setTaskState(task['uuid'], 'ACCEPTED')
         if not os.path.exists(fullpathfilename):
-            self.s_setTaskState(task['uuid'], 'REJECTED', {'error': 'File not found on the server. RTMon has no knowledge about this monitoring instance'})
+            self.logger.info(f'File {fullpathfilename} not found on the server. RTMon has no knowledge about this monitoring instance')
+            # SENSE-O expects it to be FINISHED (even RTMon has no knowledge about it)
+            self.s_setTaskState(task['uuid'], 'FINISHED', {'error': 'File not found on the server. RTMon has no knowledge about this monitoring instance'})
             return
         fout = loadFileJson(fullpathfilename, self.logger)
         if not fout:
-            self.s_setTaskState(task['uuid'], 'REJECTED', {
+            self.logger.info(f'File {fullpathfilename} not found on the server. RTMon has no knowledge about this monitoring instance')
+            # SENSE-O expects it to be FINISHED (even RTMon has no knowledge about it)
+            self.s_setTaskState(task['uuid'], 'FINISHED', {
                 'error': 'File not found on the server. RTMon has no knowledge about this monitoring instance'})
             return
         fout['taskinfo'] = task

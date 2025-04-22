@@ -31,7 +31,7 @@ class DiagramWorker:
 
         :param indata: List of dictionaries containing host and switch details.
         """
-        super().__init__()
+        super().__init__(**kwargs)
         self.objects = {}
         self.added = {}
         self.linksadded = set()
@@ -189,7 +189,7 @@ class DiagramWorker:
                                 break
                     if ipLabel2:
                         ipNode = Custom("NeighIP: " + ipLabel + '\n' + "RouteMap: " + ipLabel2, self.BGP_ICON_PATH)
-                        switch1 >> Edge(minlen="1") << ipNode  # pylint: disable=expression-not-assigned
+                        switch1 >> Edge(minlen="8") << ipNode  # pylint: disable=expression-not-assigned
                         break
         return switch1
 
@@ -250,6 +250,11 @@ class DiagramWorker:
         if not os.path.exists(outputDir):
             os.makedirs(outputDir)
         indata = copy.deepcopy(self.orderlist)
+        # import json
+        # with open("Abaracadabra1indata_sunami-debug-ip 5.json", 'w') as file:
+        #     json.dump(indata,file, indent=2)
+        # print(self.instance)
+        # input()
         with Diagram("Network Topology", show=False, filename=output_filename):
             item = None
             while len(indata) > 0:

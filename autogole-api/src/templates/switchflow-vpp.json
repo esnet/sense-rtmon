@@ -1,0 +1,264 @@
+[
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "qjScxmmVz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "RX Loss %",
+            "axisPlacement": "left",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "linearThreshold": 1000,
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 0.5,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 20
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "TX Loss %"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Last *",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "qjScxmmVz"
+          },
+          "editorMode": "code",
+          "expr": "sum(irate(interfaces_rx_miss{sitename=\"REPLACEME_SITENAME\", software=\"VPP\"}[2m])) without (thread, index) * 100 / sum(irate(interfaces_rx_packets{sitename=\"REPLACEME_SITENAME\", software=\"VPP\"}[2m]) > 0) without (thread, index)\n",
+          "interval": "",
+          "legendFormat": "{{interface}} RX Loss",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "qjScxmmVz"
+          },
+          "editorMode": "code",
+          "expr": "sum(irate(interfaces_tx_error{sitename=\"REPLACEME_SITENAME\", software=\"VPP\"}[2m])) without (thread, index) / sum(irate(interfaces_tx_packets{sitename=\"REPLACEME_SITENAME\", software=\"VPP\"}[2m]) > 0) without (thread, index)\n",
+          "hide": false,
+          "legendFormat": "{{interface}} TX Loss",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Interface RX Miss / TX Error",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "qjScxmmVz"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Last *",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "qjScxmmVz"
+          },
+          "editorMode": "code",
+          "expr": "sum(irate(interfaces_rx_bytes{sitename=\"REPLACEME_SITENAME\", software=\"VPP\"}[2m])) without (thread, index) * 8\n",
+          "hide": false,
+          "legendFormat": "{{interface}} RX",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "qjScxmmVz"
+          },
+          "editorMode": "code",
+          "expr": "sum(irate(interfaces_tx_bytes{sitename=\"REPLACEME_SITENAME\", software=\"VPP\"}[2m])) without (thread, index) * 8\n",
+          "hide": false,
+          "legendFormat": "{{interface}} TX",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Sub-iface L2 Bits/Sec",
+      "type": "timeseries"
+    }
+  ]

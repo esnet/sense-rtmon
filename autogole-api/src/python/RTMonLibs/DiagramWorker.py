@@ -31,7 +31,7 @@ class DiagramWorker:
 
         :param indata: List of dictionaries containing host and switch details.
         """
-        super().__init__()
+        super().__init__(**kwargs)
         self.objects = {}
         self.added = {}
         self.linksadded = set()

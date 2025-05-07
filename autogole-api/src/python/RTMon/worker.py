@@ -13,8 +13,9 @@ from RTMonLibs.SiteOverride import SiteOverride
 from RTMonLibs.SiteRMApi import SiteRMApi
 from RTMonLibs.ExternalAPI import ExternalAPI
 from RTMonLibs.DiagramWorker import DiagramWorker
+from RTMonLibs.Prometheus import Prometheus
 
-class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, ExternalAPI, Mermaid, DiagramWorker):
+class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, ExternalAPI, Mermaid, DiagramWorker, Prometheus):
     """ RTMon Worker """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

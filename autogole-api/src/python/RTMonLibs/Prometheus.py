@@ -39,7 +39,6 @@ class Prometheus:
         Executes a PromQL query against the Prometheus server using basic auth and a custom session.
         Returns the value if available, or None on error or no data.
         """
-        
 
         if self.session:
 
@@ -48,7 +47,7 @@ class Prometheus:
                 prom = PrometheusConnect(
                     url=prom_url,
                     session=self.session,
-                    disable_ssl=True  # Set to True if using HTTP
+                    disable_ssl = False if prom_url.startswith('https') else True
                 )
                 result = prom.custom_query(query=query)
                 # Example result: [{'metric': {}, 'value': [timestamp, 'value']}]
@@ -69,7 +68,7 @@ class Prometheus:
         Constructs and executes a query to count the number of interfaces reporting traffic stats.
         Uses the metric 'interface_statistics' and key from config (default: ifHCInOctets).
         """
-        query = f'count(increase(interface_statistics{{Key="{self.config.get("prometheus_query_key", "ifHCInOctets")}", sitename="{kwargs["sitename"]}", hostname="{kwargs["hostname"]}"}}[24h])) or on() vector(0)'
+        query = f'count(increase(interface_statistics{{Key="ifHCInOctets", sitename="{kwargs["sitename"]}", hostname="{kwargs["hostname"]}"}}[24h])) or on() vector(0)'
         return self.p_get_query(query)
 
     def p_count_interfaces_rx_packets(self, **kwargs):
@@ -77,7 +76,7 @@ class Prometheus:
         Constructs and executes a query to count received unicast packets on interfaces.
         Uses the metric 'ifHCInUcastPkts' and key from config (default: ifHCInUcastPkts).
         """
-        query = f'count(increase(interfaces_rx_packets{{Key="{self.config.get("prometheus_query_key", "ifHCInUcastPkts")}", sitename="{kwargs["sitename"]}", hostname="{kwargs["hostname"]}"}}[24h])) or on() vector(0)'
+        query = f'count(increase(interfaces_rx_packets{{Key="ifHCInUcastPkts", sitename="{kwargs["sitename"]}", hostname="{kwargs["hostname"]}"}}[24h])) or on() vector(0)'
         return self.p_get_query(query)
 
     def p_get_switch_template(self, **kwargs):

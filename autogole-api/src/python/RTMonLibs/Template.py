@@ -537,14 +537,18 @@ class Template():
         hostname = sitehost.split(":")[1]
         intfline = findIntf(interfaces)
         row = self.t_addRow(*args, title=f"{num}. Switch Flow Summary: {sitehost}")
-        panels = dumpJson(self._t_loadTemplate("switchflow.json"), self.logger)
-        panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
-        panels = panels.replace("REPLACEME_SITENAME", sitename)
-        panels = panels.replace("REPLACEME_HOSTNAME", hostname)
-        panels = panels.replace("REPLACEME_INTERFACE", escape(intfline))
-        panels = loadJson(panels, self.logger)
-        out += self.addRowPanel(row, panels, True)
-        return out
+        template_type = self.p_get_switch_template(sitename=sitename, hostname=hostname)
+        if template_type:
+            panels = dumpJson(self._t_loadTemplate(f'switchflow-{template_type}.json'), self.logger)
+            panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
+            panels = panels.replace("REPLACEME_SITENAME", sitename)
+            panels = panels.replace("REPLACEME_HOSTNAME", hostname)
+            panels = panels.replace("REPLACEME_INTERFACE", escape(intfline))
+            panels = loadJson(panels, self.logger)
+            out += self.addRowPanel(row, panels, True)
+            return out
+        else:
+            return out
 
     def t_createMermaid(self, *args, **kwargs):
         """Create Mermaid Template"""

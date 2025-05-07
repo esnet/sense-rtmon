@@ -5,3 +5,4 @@ grafana-client
 diagrams
 flask
 gunicorn
+prometheus_api_client

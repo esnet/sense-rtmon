@@ -49,11 +49,17 @@ class SiteRMApi:
             out = self.siterm_debug.get_all_debug_hostname(sitename=kwargs.get("sitename"),
                                                            hostname=kwargs.get("hostname"),
                                                            state=key)
+            allitems = []
             if out and out[0]:
-                jsonOut = loadJson(out[0], self.logger)
-            for item in jsonOut:
-                item["requestdict"] = loadJson(item["requestdict"], self.logger)
-                allDebugActions.append(item)
+                allitems = loadJson(out[0], self.logger)
+            for tmpitem in allitems:
+                jsonOut = loadJson(tmpitem, self.logger)
+                ditem = self.siterm_debug.get_debug(sitename=kwargs.get("sitename"),
+                                                    id=jsonOut['id'])
+                if ditem and ditem[0]:
+                    ditem = ditem[0]
+                    ditem["requestdict"] = loadJson(ditem["requestdict"], self.logger)
+                allDebugActions.append(ditem)
         return allDebugActions
 
     def sr_submit_ping(self, **kwargs):

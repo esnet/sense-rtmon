@@ -3,7 +3,7 @@
 """Grafana Template Generation"""
 import copy
 import os.path
-from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, _processName
+from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, _processName, encodebase64
 
 def clamp(n, minn, maxn):
     """Clamp the value between min and max"""
@@ -24,6 +24,8 @@ class Mermaid():
         self.orderlist = []
         self.orderlistports = []
         self.instance = None
+        self.addedlinks = []
+        self.unsubgraphs = []
 
     def _m_cleanCache(self):
         """Clean Cache"""
@@ -36,8 +38,11 @@ class Mermaid():
         self.orderlist = []
         self.orderlistports = []
         self.instance = None
+        self.addedlinks = []
+        self.unsubgraphs = []
 
     def _m_addLink(self, val1, val2):
+        """Add Link to link list"""
         if [val1, val2] not in self.links and [val2, val1] not in self.links:
             self.links.append([val1, val2])
 
@@ -45,14 +50,28 @@ class Mermaid():
         self.portnames[port] = portname
 
     def _m_addVlan(self, link, vlan):
-        self.vlans[_processName(link)] = vlan
+        newname = _processName(link)
+        self.vlans.setdefault(newname, [])
+        if vlan not in self.vlans[newname]:
+            self.vlans[newname].append(vlan)
 
     def _addSubgraph(self, name):
         """Add subgraph to the mermaid graph"""
         spaces = 0
-        for val in name.split(':'):
-            self.mermaid.append(f'{" "*spaces}subgraph {val}')
+        splt = name.split(':')
+        if len(splt) == 1:
+            self.mermaid.append(f'{" "*spaces}subgraph {splt[0]}')
+        elif len(splt) == 2:
+            self.mermaid.append(f'{" "*spaces}subgraph {splt[0]}')
             spaces += 2
+            uniqname = splt[0] + "_" + splt[1]
+            self.mermaid.append(f'{" "*spaces}subgraph {uniqname}[{splt[1]}]')
+        else:
+            # This should not happen.
+            self.logger.debug("addSubgraph received 3 items. That is not supported as unsure how to use uniqname.")
+            for val in splt:
+                self.mermaid.append(f'{" "*spaces}subgraph {val}')
+                spaces += 2
 
     def _endSubgraph(self, name):
         """Write subgraph ends"""
@@ -60,6 +79,24 @@ class Mermaid():
         for _val in name.split(':'):
             self.mermaid.append(f'{" "*spaces}end')
             spaces -= 2
+
+    def _m_cleanDuplicates(self, start, end):
+        """Clean duplicate mermaid entries"""
+        # Generate input line from startsize to endsize
+        if start == end:
+            return
+        mermaidsubgraph = "".join(self.mermaid[start:end])
+        b64line = encodebase64(mermaidsubgraph)
+        if b64line in self.unsubgraphs:
+            del self.mermaid[start:end]
+        else:
+            self.unsubgraphs.append(b64line)
+
+    def _m_addMermaidUnique(self, line):
+        """Add to mermaid. Make sure it is unique"""
+        start = len(self.mermaid)
+        self.mermaid.append(line)
+        self._m_cleanDuplicates(start, len(self.mermaid))
 
     def _m_recordMac(self, hostdict):
         """Record mac into var"""
@@ -88,12 +125,16 @@ class Mermaid():
                         continue
                     if item['Site'] == terminal['uri'] and terminal.get(f'{ipkey.lower()}_prefix_list', None):
                         val = terminal[f'{ipkey.lower()}_prefix_list']
-                        self.mermaid.append(f'        {bgppeer}_bgp{ipkey}(BGP_{ipkey})')
-                        self._m_addLink(bgppeer, f'{bgppeer}_bgp{ipkey}')
-                        self.mermaid.append(f'        {bgppeer}_bgp{ipkey}_peer({val})')
-                        self._m_addLink(f'{bgppeer}_bgp{ipkey}', f'{bgppeer}_bgp{ipkey}_peer')
+                        # Mermaid key for IPv4/6 IP
+                        mermaidpeerkey = 'BGP'+ "_" + ipkey + "_" + _processName(val)
+
+                        self._m_addMermaidUnique(f'        {mermaidpeerkey}(BGP_{ipkey})')
+                        self._m_addLink(bgppeer, mermaidpeerkey)
+                        self._m_addMermaidUnique(f'        {mermaidpeerkey}_peer({val})')
+                        self._m_addLink(mermaidpeerkey, f'{mermaidpeerkey}_peer')
 
     def _m_addSwitch(self, item):
+        startsize = len(self.mermaid)
         uniqname = _processName(f'{item["Node"]}_{item["Name"]}')
         self.m_groups['Switches'].setdefault(item["Node"], {}).setdefault(item["Name"], {})
         self.m_groups['Switches'][item["Node"]][item["Name"]] = item
@@ -116,14 +157,18 @@ class Mermaid():
         for ipkey, ipdef in {'IPv4': '?port_ipv4?', 'IPv6': '?port_ipv6?'}.items():
             if ipkey in item and item[ipkey] != ipdef:
                 uniqname = _processName(f'{item["Node"]}')
-                self.mermaid.append(f'        {uniqname}_{ipkey}({item[ipkey]})')
+                mermaidipkey = uniqname + "_" + ipkey + "_" + _processName(item[ipkey])
+                self._m_addMermaidUnique(f'        {mermaidipkey}({item[ipkey]})')
                 if item.get('Vlan'):
-                    self.mermaid.append(f'        {uniqname}_vlan{item["Vlan"]}(vlan.{item["Vlan"]})')
+                    self._m_addMermaidUnique(f'        {uniqname}_vlan{item["Vlan"]}(vlan.{item["Vlan"]})')
                     self._m_addLink(_processName(item['Port']), f'{uniqname}_vlan{item["Vlan"]}')
-                    self._m_addLink(f'{uniqname}_vlan{item["Vlan"]}', f'{uniqname}_{ipkey}')
+                    # Generate unique ipkey vkey
+                    self._m_addLink(f'{uniqname}_vlan{item["Vlan"]}', f'{mermaidipkey}')
                     # Add BGP Peering information
-                    self._m_addBGP(item, ipkey, f'{uniqname}_{ipkey}')
+                    self._m_addBGP(item, ipkey, f'{mermaidipkey}')
         self._endSubgraph(subgraphval)
+        endsize = len(self.mermaid)
+        self._m_cleanDuplicates(startsize, endsize)
         return uniqname
 
     def _m_addHost(self, host):
@@ -133,12 +178,12 @@ class Mermaid():
         self.mermaid.append(f'    subgraph "{host["Name"]}"')
         self._m_recordMac(host)  # Record mac of host interface
         if 'Interface' in host:
-            self.mermaid.append(f'        {uniqname}("{host["Interface"]}")')
+            self._m_addMermaidUnique(f'        {uniqname}("{host["Interface"]}")')
             for ipkey, ipdef in {'IPv4': '?ipv4?', 'IPv6': '?ipv6?'}.items():
                 if ipkey in host and host[ipkey] != ipdef:
-                    self.mermaid.append(f'        {uniqname}_{ipkey}({host[ipkey]})')
+                    self._m_addMermaidUnique(f'        {uniqname}_{ipkey}({host[ipkey]})')
                     if host.get('Vlan'):
-                        self.mermaid.append(f'        {uniqname}_vlan{host["Vlan"]}(vlan.{host["Vlan"]})')
+                        self._m_addMermaidUnique(f'        {uniqname}_vlan{host["Vlan"]}(vlan.{host["Vlan"]})')
                         self._m_addLink(uniqname, f'{uniqname}_vlan{host["Vlan"]}')
                         self._m_addLink(f'{uniqname}_vlan{host["Vlan"]}', f'{uniqname}_{ipkey}')
                         self.m_groups['Hosts'].setdefault(host["Name"], {}).setdefault(f'vlan.{host["Vlan"]}', {})
@@ -156,23 +201,31 @@ class Mermaid():
                 return self.vlans[tmp]
         return None
 
+    def _m_addMermaidLink(self, line, end1, end2, vlan):
+        """Add mermaid link and track added"""
+        if [end1, end2, vlan] in self.addedlinks:
+            return
+        if line not in self.mermaid:
+            self.mermaid.append(line)
+        self.addedlinks.append([end1, end2, vlan])
+        self.addedlinks.append([end2, end1, vlan])
+
+
     def _m_createMermaidLinks(self):
         """Create Mermaid Links"""
-        added = []
         for link in self.links:
             end1 = link[0] if link[0] not in self.portnames else self.portnames[link[0]]
             end2 = link[1] if link[1] not in self.portnames else self.portnames[link[1]]
             vlan = self._m_getVlan(link)
-            if [end1, end2, vlan] in added:
-                continue
+            # Add all links if vlan present
             if vlan:
-                line = f'    {end1}<--{vlan}-->{end2}'
+                for tmpvlan in vlan:
+                    line = f'    {end1}<--{tmpvlan}-->{end2}'
+                    self._m_addMermaidLink(line, end1, end2, tmpvlan)
+            # Add links without vlan
             else:
                 line = f'    {end1}<-->{end2}'
-            if line not in self.mermaid:
-                self.mermaid.append(line)
-            added.append([end1, end2, vlan])
-            added.append([end2, end1, vlan])
+                self._m_addMermaidLink(line, end1, end2, vlan)
 
     def _m_addItem(self, item):
         """Add Item to the list"""
@@ -438,7 +491,6 @@ class Template():
                     tmpcopy = copy.deepcopy(out)
                     tmpcopy["title"] = title
                     tmpcopy["url"] = url
-                    print(tmpcopy)
                     ret.append(tmpcopy)
                 addedUrls.append(url)
         if kwargs.get('oscarsid', '') and self.config.get('oscars_base_url', ''):
@@ -501,7 +553,6 @@ class Template():
                 if "?port_name?" == intfname:
                     continue
                 if "JointNetwork" in intfdata:
-                    print(f"JointNetwork: {intfdata['JointNetwork']}")
                     # ifDescr=~"newy32aoa-cr6::1/1/c13/1|newy32aoa-cr6::.*1/1/c13/1-2015"
                     # 'JointNetwork': 'newy32aoa-cr6|1_1_c13_1|fabric'
                     splitdata = intfdata['JointNetwork'].split("|")

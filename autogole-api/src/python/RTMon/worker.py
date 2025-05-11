@@ -246,7 +246,7 @@ class RTMonWorker(SenseAPI, GrafanaAPI, Template, SiteOverride, SiteRMApi, Exter
         fout.setdefault('retries', 0)
         fout['retries'] += 1
         # If retries are more than 3 - we need to mark it as failed
-        if fout['retries'] > 3:
+        if fout['retries'] > 30:
             fout['state'] = 'failed'
             self._updateState(filename, fout)
         else:

@@ -1,5 +1,10 @@
 # Sleep timer between runs
 sleep_timer: 30
+# RTMon daemon overtake timeout
+# RTMon registers with UUID, and makes sure other RTMon (with same name) does not register;
+# If specific name not update its status for overtake_time, it will force overtake and replace
+# uuid with a new worker.
+overtake_time: 120
 # Work dir for temp files (api directory). Default /srv
 workdir: '/srv/'
 # Grafana settings (for the API)

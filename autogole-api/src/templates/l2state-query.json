@@ -1,0 +1,13 @@
+{
+  "datasource": {
+    "type": "prometheus",
+    "uid": "REPLACEME_DATASOURCE"
+  },
+  "editorMode": "code",
+  "expr": "REPLACE_ME_QUERY",
+  "instant": false,
+  "interval": "",
+  "legendFormat": "REPLACE_ME_LEGEND",
+  "range": true,
+  "refId": "REPLACE_ME_REFID"
+}

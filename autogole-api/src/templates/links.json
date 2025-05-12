@@ -1,0 +1,12 @@
+{
+  "asDropdown": false,
+  "icon": "dashboard",
+  "includeVars": true,
+  "keepTime": true,
+  "tags": [],
+  "targetBlank": true,
+  "title": "REPLACE_ME",
+  "tooltip": "",
+  "type": "link",
+  "url": "REPLACE_ME"
+}

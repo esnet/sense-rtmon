@@ -1,0 +1,28 @@
+---
+"urn:ogf:network:icair.org:2013":
+  name: "NSI_STARLIGHT"
+  joint_net: False
+"urn:ogf:network:es.net:2013":
+  name: "ESnet"
+  joint_net: True
+"urn:ogf:network:stack-fabric:2024":
+  name: "FABRIC"
+  joint_net: True
+"urn:ogf:network:lsanca.pacificwave.net:2016":
+  name: "NSI_PACWAVE"
+  joint_net: False
+"urn:ogf:network:uhnet.net:2021":
+  name: "NSI_HAWAII"
+  joint_net: False
+"urn:ogf:network:calit2.optiputer.net:2020":
+  name: "NSI_UCSD"
+  joint_net: False
+"urn:ogf:network:al2s.internet2.edu:2023":
+  name: "Internet2"
+  joint_net: True
+"urn:ogf:network:core1.losa.net.internet2.edu:2016":
+  name: "Internet2"
+  joint_net: True
+"urn:ogf:network:ampath.net:2013":
+  name: "AMPATH"
+  joint_net: True

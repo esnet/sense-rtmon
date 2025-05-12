@@ -1,0 +1,98 @@
+{
+  "datasource": null,
+  "gridPos": {
+        "h": 18,
+        "w": 24,
+        "x": 0,
+        "y": 0
+  },
+  "fieldConfig": {
+    "defaults": {
+      "custom": {
+        "valueName": "last"
+      },
+      "mappings": [],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "red",
+            "value": 80
+          }
+        ]
+      }
+    },
+    "overrides": []
+  },
+  "id": 117,
+  "options": {
+    "authPassword": "",
+    "authUsername": "",
+    "composites": [],
+    "content": "REPLACEME",
+    "legend": {
+      "asTable": true,
+      "displayMode": "table",
+      "gradient": {
+        "enabled": true,
+        "show": true
+      },
+      "hideEmpty": false,
+      "hideZero": false,
+      "placement": "bottom",
+      "show": true,
+      "showLegend": true,
+      "sortBy": "last",
+      "sortDesc": true,
+      "stats": [
+        "mean",
+        "last",
+        "min",
+        "max",
+        "sum"
+      ]
+    },
+    "maxWidth": true,
+    "mermaidServiceUrl": "",
+    "mermaidThemeVariablesDark": {
+      "classDiagram": {},
+      "common": {
+        "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+      },
+      "flowChart": {},
+      "sequenceDiagram": {},
+      "stateDiagram": {},
+      "userJourneyDiagram": {}
+    },
+    "mermaidThemeVariablesLight": {
+      "classDiagram": {},
+      "common": {
+        "fontFamily": "Roboto,Helvetica Neue,Arial,sans-serif"
+      },
+      "flowChart": {},
+      "sequenceDiagram": {},
+      "stateDiagram": {},
+      "userJourneyDiagram": {}
+    },
+    "metricCharacterReplacements": [],
+    "moddedSeriesVal": 0,
+    "mode": "content",
+    "nodeSize": {
+      "minHeight": 40,
+      "minWidth": 30
+    },
+    "pluginVersion": "1.10.4",
+    "style": "#diagram-101 {\n  height: 100% !important;\n}",
+    "useBackground": false,
+    "useBasicAuth": false,
+    "valueName": "last"
+  },
+  "pluginVersion": "1.7.3",
+  "targets": [],
+  "title": "End-to-End Flow Topology",
+  "type": "jdbranham-diagram-panel"
+}

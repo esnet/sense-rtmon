@@ -1,0 +1,78 @@
+# Sleep timer between runs
+sleep_timer: 30
+# Work dir for temp files (api directory). Default /srv
+workdir: '/srv/'
+# Grafana settings (for the API)
+grafana_host: 'https://autogole-grafana.nrp-nautilus.io'
+grafana_api_key: 
+baseImageURL: 'http://localhost:8000/images'
+grafana_folder: 'Real Time Mon'
+grafana_dev:
+
+# Timeout for sense-o calls
+# sense_timeout: default (30) seconds
+
+# Image Server settings
+# Default image dir is /srv/images
+#image_dir:
+
+
+# FOR DEVELOPMEENT ONLY
+# Enable grafana_dev parameter (can be any string, and will be used as name to create directory inside Grafana)
+# Additionally - all dashboards will have this added to name.
+# Grafana itself update's/inserts dashboards based on uid (and if this is not used, it can easily update production dashboards)
+# grafana_dev: 'Justas-Dev'
+# This is only used for development and running manually (gunicorn controls this via supervisor conf
+#image_host:
+# Default image port is 8000 - mainly used for development (gunicorn controls this via supervisor conf)
+# image_flask_port:
+# Default image debug is False (mainly used for development)
+#image_debug:
+
+
+# Default debug is False (mainly used for development), If set to True Dashboard will be generated with Memaid and Debug Info 
+# Debug:
+
+# Default topdiagrams is Diagrams (mainly used for development)
+#topdiagrams: 
+# Choices -> Diagrams | Mermaid 
+# ==================================
+
+# Template path and tags. If tag updated - it will force update all templates
+template_path: '/etc/rtmon/templates'
+template_tag: 'V0.1'
+
+# Data sources for Prometheus (It will use grafana API to find data sources uid)
+data_sources:
+  general: Prometheus
+  realtime: PrometheusRT
+
+# Sense endpoints and their auth files.
+sense_endpoints:
+  "sense-o.es.net": "/etc/sense-o-auth-prod.yaml"
+  "sense-o-dev.es.net": "/etc/sense-o-auth.yaml"
+
+# Additional links for the templates
+template_links:
+    - title: 'All Node Monitoring'
+      url: 'https://autogole-grafana.nrp-nautilus.io/d/D7xOxim4z/full-dtn-monitoring-variable?orgId=1&refresh=1m'
+    - title: 'All Switches Monitoring $$REPLACEMESITENAME$$'
+      url: 'https://autogole-grafana.nrp-nautilus.io/d/efe9ac84-9df5-47a4-bea8-67a196771a0d/switch-monitoring?orgId=1&refresh=1m&var-Sitename=$$REPLACEMESITENAME$$&var-switch=All'
+    - title: 'SENSE-O WebUI for Instance'
+      url: 'https://$$REPLACEMESENSEODOMAIN$$:8443/StackV-web/portal/details/$$REPLACEMEDELTAUUID$$'
+
+# Override URL for the NSI,ESnet,Fabric mermaid diagrams. Most of those RMs report everything in a single SwitchingSubnet
+# and we need to override it to show the actual topology (joint, or not). Additionally - most of those have no site name or
+# realportname - so we need to override it as well. (That is the feature not yet implemented in other RMs)
+override_url: "https://raw.githubusercontent.com/esnet/sense-rtmon/main/autogole-api/packaging/files/etc/overrides.yaml"
+
+# Base url for OSCARS monitoring. If not set, OSCARS monitoring link will not be added.
+oscars_base_url: "https://my.es.net/oscars/view/"
+
+external_service:
+  ESnet: "https://nsi-snmpmon-esnet.nrp-nautilus.io/"
+  Internet2: "https://nsi-snmpmon-internet2.nrp-nautilus.io/"
+
+# HostCert and HostKey location (needed for SiteRM communications). Cert mush be authorized in all Frontends.
+hostcert: '/etc/grid-security/hostcert.pem'
+hostkey: '/etc/grid-security/hostkey.pem'

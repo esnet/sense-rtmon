@@ -1,0 +1,20 @@
+{
+  "collapsed": true,
+  "datasource": {
+    "type": "prometheus",
+    "uid": "bdlb788gxxcsge"
+  },
+  "id": 0,
+  "panels": [],
+  "targets": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bdlb788gxxcsge"
+      },
+      "refId": "A"
+    }
+  ],
+  "title": "REPLACE_ME",
+  "type": "row"
+}

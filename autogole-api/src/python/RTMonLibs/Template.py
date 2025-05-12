@@ -257,6 +257,14 @@ class Mermaid():
                 return idx, tmpitem['Node'], tmpitem, nexthoptype
         return None, None, lastitem, None
 
+    def _findNodeName(self, manifest, searchuri):
+        """Find NodeName based on URI"""
+        for item in manifest['Ports']:
+            tmpitem  = self.so_override(item)
+            if tmpitem.get('Site') == searchuri:
+                return tmpitem['Node']
+        return None
+
     def _findNode(self, manifest, node, lastitem):
         nextHop = ""
         delitems = []
@@ -328,8 +336,24 @@ class Mermaid():
                 if loopcount < 0:
                     self.logger.error("Loopcount reached 0, breaking")
                     break
-                nexthoptype = 'Node'
-                nexthop = manifest["Ports"][0]["Node"]
+                # If first loop fails to find Host. Then next will look
+                # For a Specific
+                if loopcount == 4:
+                    # Get terminal from instance;
+                    # Find Node name;
+                    try:
+                        searchuri = self.instance['intents'][0]['json']['data']['connections'][0]['terminals'][0]['uri']
+                        nexthop = self._findNodeName(manifest, searchuri)
+                        if nexthop:
+                            nexthoptype = 'Node'
+                        else:
+                            raise KeyError('Unfound Node Name')
+                    except (IndexError, KeyError):
+                        nexthoptype = 'Node'
+                        nexthop = manifest["Ports"][0]["Node"]
+                else:
+                    nexthoptype = 'Node'
+                    nexthop = manifest["Ports"][0]["Node"]
                 counter = 50
 
     def m_getMermaidContent(self, instance, manifest):

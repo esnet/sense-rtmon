@@ -2,6 +2,6 @@ AUTH_ENDPOINT: https://sense-o.es.net:8543/auth/realms/StackV/protocol/openid-co
 API_ENDPOINT: https://sense-o-dev.es.net:8443/StackV-web/restapi
 CLIENT_ID: StackV
 USERNAME: REPLACEME
-PASSWORD: REPLACEME
+PASSWORD: gk1jMAi111k@@j1
 SECRET: REPLACEME
 verify: True

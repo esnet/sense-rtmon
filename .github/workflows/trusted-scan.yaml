@@ -1,0 +1,120 @@
+name: Secret Scanner
+
+on:
+  workflow_call:
+    inputs:
+      changed_files:
+        required: true
+        type: string
+    secrets:
+      AIAPIKEY:
+        required: true
+      AIAPIURL:
+        required: true
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout PR source
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    - name: Debug changed_files input
+      run: |
+        echo "Raw changed_files input:"
+        echo "${{ inputs.changed_files }}"
+
+    - name: Write file list
+      run: |
+        echo "${{ inputs.changed_files }}" | tr ',' '\n' > file_list.txt
+        echo "Files to be scanned:"
+        cat file_list.txt
+
+    - name: Ensure .leakignore exists
+      run: |
+        if [ ! -f .leakignore ]; then
+          echo ".leakignore not found in PR; falling back to base branch"
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          git show origin/${{ github.event.pull_request.base.ref }}:.leakignore > .leakignore || true
+        fi
+
+    - name: Load .leakignore patterns
+      run: |
+        if [ -f .leakignore ]; then
+          IGNORE=$(jq -Rs . < .leakignore)
+        else
+          IGNORE="\"\""
+        fi
+        echo "Here is ignored passwords: $IGNORE"
+        echo "IGNORE=$IGNORE" >> $GITHUB_ENV
+
+    - name: Analyze each file
+      env:
+        AIAPIKEY: ${{ secrets.AIAPIKEY }}
+        AIAPIURL: ${{ secrets.AIAPIURL }}
+      run: |
+        set -euo pipefail
+        trap 'echo "Error occurred on line $LINENO"' ERR
+
+        [[ -z "${AIAPIURL:-}" ]] && echo "AIAPIURL is not set" && exit 2
+        [[ -z "${AIAPIKEY:-}" ]] && echo "AIAPIKEY is not set" && exit 2
+
+        echo "Starting per-file secret scan..."
+        RESULT=0
+
+        while IFS= read -r FILE; do
+          if [ ! -f "$FILE" ]; then
+            echo "Skipping missing file: $FILE"
+            continue
+          fi
+          echo "Scanning: $FILE"
+
+          CONTENT=$(jq -Rs . < "$FILE")
+
+          PAYLOAD=$(jq -n \
+            --arg model "openai/gpt-4o-mini" \
+            --arg ignore "$IGNORE" \
+            --arg file "$FILE" \
+            --arg content "$CONTENT" \
+            '{
+              model: $model,
+              temperature: 0.2,
+              messages: [
+                {
+                  role: "system",
+                  content: "You are a security reviewer. You are given one file. Return a number from 0 to 100 representing the likelihood that a secret (e.g., password, API key, token, credential) was leaked. Ignore values clearly matching the .leakignore list. If the score is over 50, briefly explain. Otherwise, return just the number."
+                },
+                {
+                  role: "user",
+                  content: "Here is the .leakignore list:\n\($ignore)\n\nAnd here is the file (\($file)) content:\n\($content)"
+                }
+              ]
+            }')
+
+          echo "$PAYLOAD" > payload.json
+          jq . payload.json || { echo "Malformed payload JSON"; exit 4; }
+
+          if ! curl -sf "$AIAPIURL" \
+            -H "Authorization: Bearer $AIAPIKEY" \
+            -H "Content-Type: application/json" \
+            -d @payload.json > response.json; then
+              echo "curl request failed for $FILE"
+              cat response.json || echo "(No response received)"
+              exit 3
+          fi
+
+          RESPONSE=$(jq -r '.choices[0].message.content' response.json)
+          SCORE=$(echo "$RESPONSE" | grep -o '[0-9]\+' | head -n1)
+          echo "[$FILE] -> Score: $SCORE"
+
+          if [ "$SCORE" -ge 50 ]; then
+            echo "Secret risk in file: $FILE (score: $SCORE)"
+            echo -e "Reason:\n$RESPONSE"
+            RESULT=1
+          fi
+        done < file_list.txt
+
+        exit $RESULT

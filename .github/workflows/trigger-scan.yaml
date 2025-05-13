@@ -1,0 +1,40 @@
+name: Trigger Secret Scan from Fork
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+jobs:
+  get_diff:
+    runs-on: ubuntu-latest
+    outputs:
+      files_csv: ${{ steps.get.outputs.files_csv }}
+    steps:
+    - name: Checkout base repo
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.base.ref }}
+
+    - name: Get changed files in PR
+      id: get
+      run: |
+        git fetch origin +refs/pull/${{ github.event.pull_request.number }}/merge
+        git checkout FETCH_HEAD
+        git diff --name-only origin/${{ github.event.pull_request.base.ref }} > file_list.txt
+
+        FILES_CSV=$(paste -sd, file_list.txt)
+
+        {
+          echo "files_csv<<EOF"
+          echo "$FILES_CSV"
+          echo "EOF"
+        } >> "$GITHUB_OUTPUT"
+
+  prepare-and-call:
+    needs: get_diff
+    uses: esnet/sense-rtmon/.github/workflows/trusted-scan.yaml@master
+    with:
+      changed_files: ${{ needs.get_diff.outputs.files_csv }}
+    secrets:
+      AIAPIKEY: ${{ secrets.AIAPIKEY }}
+      AIAPIURL: ${{ secrets.AIAPIURL }}

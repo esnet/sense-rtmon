@@ -63,7 +63,9 @@ jobs:
         [[ -z "${AIAPIKEY:-}" ]] && echo "AIAPIKEY is not set" && exit 2
 
         echo "Starting per-file secret scan..."
-        RESULT=0
+        LEAK_FILES=()
+        JQ_FAILED_FILES=()
+        CURL_FAILED_FILES=()
 
         while IFS= read -r FILE; do
           if [ ! -f "$FILE" ]; then
@@ -95,7 +97,13 @@ jobs:
             }')
 
           echo "$PAYLOAD" > payload.json
-          jq . payload.json || { echo "Malformed payload JSON"; exit 4; }
+          if ! jq . payload.json > /dev/null 2> jq_error.log; then
+            echo "Malformed payload JSON for $FILE"
+            cat jq_error.log
+            cat payload.json
+            JQ_FAILED_FILES+=("$FILE")
+            continue
+          fi
 
           if ! curl -sf "$AIAPIURL" \
             -H "Authorization: Bearer $AIAPIKEY" \
@@ -103,7 +111,8 @@ jobs:
             -d @payload.json > response.json; then
               echo "curl request failed for $FILE"
               cat response.json || echo "(No response received)"
-              exit 3
+              CURL_FAILED_FILES+=("$FILE")
+              continue
           fi
 
           RESPONSE=$(jq -r '.choices[0].message.content' response.json)
@@ -113,8 +122,23 @@ jobs:
           if [ "$SCORE" -ge 50 ]; then
             echo "Secret risk in file: $FILE (score: $SCORE)"
             echo -e "Reason:\n$RESPONSE"
-            RESULT=1
+            LEAK_FILES+=("$FILE")
           fi
         done < file_list.txt
 
-        exit $RESULT
+        echo ""
+        echo "Summary Report:"
+        [ "${#LEAK_FILES[@]}" -ne 0 ] && echo " Files with secret risk: ${LEAK_FILES[*]}"
+        [ "${#JQ_FAILED_FILES[@]}" -ne 0 ] && echo "  Files with malformed JSON: ${JQ_FAILED_FILES[*]}"
+        [ "${#CURL_FAILED_FILES[@]}" -ne 0 ] && echo "  Files with failed curl requests: ${CURL_FAILED_FILES[*]}"
+
+        if [ "${#LEAK_FILES[@]}" -ne 0 ]; then
+          exit 1
+        elif [ "${#JQ_FAILED_FILES[@]}" -ne 0 ]; then
+          exit 2
+        elif [ "${#CURL_FAILED_FILES[@]}" -ne 0 ]; then
+          exit 3
+        else
+          echo "All files scanned successfully. No issues found."
+          exit 0
+        fi

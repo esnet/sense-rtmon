@@ -22,11 +22,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Debug pylintrc presence
-        run: |
-          echo "Working directory is: $(pwd)"
-          find . -type f | sort
-
       - name: Super-linter
         uses: super-linter/super-linter@v5.7.2  # x-release-please-version
         env:
@@ -37,6 +32,6 @@ jobs:
           VALIDATE_PYTHON_MYPY: false
           VALIDATE_PYTHON_ISORT: false
           VALIDATE_JSCPD: false
-          # PYTHON_PYLINT_CONFIG_FILE: autogole-api/standarts/pylintrc
+          PYTHON_PYLINT_CONFIG_FILE: autogole-api/standarts/pylintrc
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

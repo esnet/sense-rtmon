@@ -22,11 +22,6 @@ jobs:
         with:
           fetch-depth: 0
     
-      - name: Copy pylintrc to /action/lib
-        run: |
-          mkdir -p /action/lib/
-          cp autogole-api/standarts/pylintrc /action/lib/pylintrc
-
       - name: Super-linter
         uses: super-linter/super-linter/slim@latest  # x-release-please-version
         env:
@@ -37,6 +32,5 @@ jobs:
           VALIDATE_PYTHON_MYPY: false
           VALIDATE_PYTHON_ISORT: false
           VALIDATE_JSCPD: false
-          PYTHON_PYLINT_CONFIG_FILE: pylintrc
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -31,3 +31,5 @@ nothing
 null
 none
 dummy
+prometheus_username
+prometheus_password

@@ -17,6 +17,11 @@ jobs:
       statuses: write
 
     steps:
+      - name: Debug pylintrc presence
+        run: |
+          echo "Working directory is: $(pwd)"
+          find . -name pylintrc
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -32,6 +37,6 @@ jobs:
           VALIDATE_PYTHON_MYPY: false
           VALIDATE_PYTHON_ISORT: false
           VALIDATE_JSCPD: false
-          PYTHON_PYLINT_CONFIG_FILE: autogole-api/standarts/pylintrc
+          PYTHON_PYLINT_CONFIG_FILE: .automation/autogole-api/standarts/pylintrc
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

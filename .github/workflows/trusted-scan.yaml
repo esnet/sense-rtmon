@@ -12,6 +12,9 @@ on:
       AIAPIURL:
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   scan:
     runs-on: ubuntu-latest
@@ -36,9 +39,16 @@ jobs:
     - name: Ensure .leakignore exists
       run: |
         if [ ! -f .leakignore ]; then
-          echo ".leakignore not found in PR; falling back to base branch"
+          echo ".leakignore not found in PR; trying base branch..."
           git fetch origin ${{ github.event.pull_request.base.ref }}
-          git show origin/${{ github.event.pull_request.base.ref }}:.leakignore > .leakignore || true
+
+          if git ls-tree -r origin/${{ github.event.pull_request.base.ref }} --name-only | grep -q '^.leakignore$'; then
+            git show origin/${{ github.event.pull_request.base.ref }}:.leakignore > .leakignore
+            echo "Loaded .leakignore from base branch"
+          else
+            echo ".leakignore not found in base branch; downloading from fallback URL"
+            curl -sfL https://raw.githubusercontent.com/sdn-sense/default-actions/refs/heads/master/leakignore -o .leakignore || echo "" > .leakignore
+          fi
         fi
 
     - name: Load .leakignore patterns

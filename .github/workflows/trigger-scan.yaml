@@ -3,6 +3,10 @@ name: Trigger Secret Scan from Fork
 on:
   pull_request_target:
     types: [opened, synchronize]
+  push:
+    branches:
+      - master
+      - main
 
 permissions:
   contents: read
@@ -14,18 +18,27 @@ jobs:
     outputs:
       files_csv: ${{ steps.get.outputs.files_csv }}
     steps:
-    - name: Checkout base repo
+    - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        ref: ${{ github.event.pull_request.base.ref }}
+        fetch-depth: 2
 
-    - name: Get changed files in PR
+    - name: Get changed files
       id: get
       run: |
-        git fetch origin +refs/pull/${{ github.event.pull_request.number }}/merge
-        git checkout FETCH_HEAD
-        git diff --name-only origin/${{ github.event.pull_request.base.ref }} > file_list.txt
+        if [ "${{ github.event_name }}" == "push" ]; then
+          BASE_REF="${{ github.event.before }}"
+          HEAD_REF="${{ github.event.after }}"
+        else
+          BASE_REF="origin/${{ github.event.pull_request.base.ref }}"
+          git fetch origin +refs/pull/${{ github.event.pull_request.number }}/merge
+          HEAD_REF=FETCH_HEAD
+        fi
 
+        echo "Base: $BASE_REF"
+        echo "Head: $HEAD_REF"
+
+        git diff --name-only "$BASE_REF" "$HEAD_REF" > file_list.txt
         FILES_CSV=$(paste -sd, file_list.txt)
 
         {

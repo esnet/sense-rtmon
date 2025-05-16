@@ -1,6 +1,6 @@
 name: Docker Image Build for RTMon
 
-on:
+on: # checkov:skip=CKV_GHA_7 User input is controlled and intended for tag/branch selection
   workflow_dispatch:
     inputs:
       buildtag:

@@ -1,3 +1,5 @@
+# yamllint disable rule:line-length
+---
 # Sleep timer between runs
 sleep_timer: 10
 # Work dir for temp files (api directory). Default /srv
@@ -70,12 +72,12 @@ sense_endpoints:
 
 # Additional links for the templates
 template_links:
-    - title: 'All Node Monitoring'
-      url: 'https://autogole-grafana.nrp-nautilus.io/d/D7xOxim4z/full-dtn-monitoring-variable?orgId=1&refresh=1m'
-    - title: 'All Switches Monitoring $$REPLACEMESITENAME$$'
-      url: 'https://autogole-grafana.nrp-nautilus.io/d/efe9ac84-9df5-47a4-bea8-67a196771a0d/switch-monitoring?orgId=1&refresh=1m&var-Sitename=$$REPLACEMESITENAME$$&var-switch=All'
-    - title: 'SENSE-O WebUI for Instance'
-      url: 'https://$$REPLACEMESENSEODOMAIN$$:8443/StackV-web/portal/details/$$REPLACEMEDELTAUUID$$'
+  - title: 'All Node Monitoring'
+    url: 'https://autogole-grafana.nrp-nautilus.io/d/D7xOxim4z/full-dtn-monitoring-variable?orgId=1&refresh=1m'
+  - title: 'All Switches Monitoring $$REPLACEMESITENAME$$'
+    url: 'https://autogole-grafana.nrp-nautilus.io/d/efe9ac84-9df5-47a4-bea8-67a196771a0d/switch-monitoring?orgId=1&refresh=1m&var-Sitename=$$REPLACEMESITENAME$$&var-switch=All'
+  - title: 'SENSE-O WebUI for Instance'
+    url: 'https://$$REPLACEMESENSEODOMAIN$$:8443/StackV-web/portal/details/$$REPLACEMEDELTAUUID$$'
 
 # Override URL for the NSI,ESnet,Fabric mermaid diagrams. Most of those RMs report everything in a single SwitchingSubnet
 # and we need to override it to show the actual topology (joint, or not). Additionally - most of those have no site name or

@@ -97,7 +97,7 @@ jobs:
               messages: [
                 {
                   role: "system",
-                  content: "You are a security reviewer. You are given one file. Return a number from 0 to 100 representing the likelihood that a secret (e.g., password, API key, token, credential) was leaked. Ignore values clearly matching the .leakignore list. If the score is over 50, briefly explain. Otherwise, return just the number."
+                  content: "You are a security reviewer. You are given one file. Return a number from 0 to 100 representing the likelihood that a secret (e.g., password, API key, token, credential) was leaked. Any string or pattern matching entries from the .leakignore list must be completely excluded from analysis and scoring. Do not increase the score based on values that are present in the .leakignore list. If, after excluding those, the score is greater than 50, briefly explain. Otherwise, return just the number."
                 },
                 {
                   role: "user",

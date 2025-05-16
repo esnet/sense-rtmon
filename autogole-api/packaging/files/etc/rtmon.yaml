@@ -1,11 +1,12 @@
 # Sleep timer between runs
-sleep_timer: 30
+sleep_timer: 10
 # Work dir for temp files (api directory). Default /srv
 workdir: '/srv/'
 # Grafana settings (for the API)
 grafana_host: 'https://autogole-grafana.nrp-nautilus.io'
-grafana_api_key: 
-baseImageURL: 'http://localhost:8000/images'
+grafana_api_key: REPLACEME
+
+image_host: 'http://localhost:8000/images'
 grafana_folder: 'Real Time Mon'
 grafana_dev:
 
@@ -34,18 +35,27 @@ grafana_dev:
 # Debug:
 
 # Default topdiagrams is Diagrams (mainly used for development)
-#topdiagrams: 
+topdiagrams: Mermaid
 # Choices -> Diagrams | Mermaid 
 # ==================================
 
 # Template path and tags. If tag updated - it will force update all templates
 template_path: '/etc/rtmon/templates'
-template_tag: 'V0.1'
+template_tag: 'V0.5'
 
 # Data sources for Prometheus (It will use grafana API to find data sources uid)
 data_sources:
   general: Prometheus
-  realtime: PrometheusRT
+
+# Configure Prometheus access. This allows to control which graphs to show.
+# e.g. Identify if it should show vpp switchflow (and not default snmp based).
+#      Identify if SNMP Information available for device and show device information (TODO)
+#      Identify if show L2 graph (Check if mac address table information available in prometheus) (TODO)
+# If commented out, it will not use Prometheus.
+prometheus_url: REPLACEME
+prometheus_username: REPLACEME
+prometheus_password: REPLACEME
+
 
 # Sense endpoints and their auth files.
 sense_endpoints:
@@ -73,6 +83,6 @@ external_service:
   ESnet: "https://nsi-snmpmon-esnet.nrp-nautilus.io/"
   Internet2: "https://nsi-snmpmon-internet2.nrp-nautilus.io/"
 
-# HostCert and HostKey location (needed for SiteRM communications). Cert mush be authorized in all Frontends.
+# HostCert and HostKey location (needed for SiteRM communications). Cert must be authorized in all Frontends.
 hostcert: '/etc/grid-security/hostcert.pem'
 hostkey: '/etc/grid-security/hostkey.pem'

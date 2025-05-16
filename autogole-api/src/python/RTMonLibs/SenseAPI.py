@@ -97,9 +97,9 @@ class SenseAPI:
                                    intent-driven network services.""")
         # Add also supported actions
         data['supported_actions'] = []
+        data['supported_actions'].append({"name": "Issue Ping between endpoints", "key": "executeping", "description": "Issue ping automatically between endpoints (Default true)", "type": "boolean", "default": True})
         data['supported_actions'].append({"name": "Show All Learned Mac's", "key": "allmacs", "description": "Generate table in dashboard with all MAC addresses learned in the network devices (Default False)", "type": "boolean", "default": False})
         data['supported_actions'].append({"name": "Debug Mode (Detailed graphs)", "key": "debugmode", "description": "Show more detailed dashboard with all debug information included (Default False)", "type": "boolean", "default": False})
-        data['supported_actions'].append({"name": "Issue Ping between endpoints", "key": "executeping", "description": "Issue ping automatically between endpoints (Default true)", "type": "boolean", "default": True})
         return data
 
 
@@ -141,7 +141,7 @@ class SenseAPI:
             self.s_registerMetadata()
         else:
             # Check if timestamp older than 2 mins (if no entry - force update);
-            if getUTCnow() - response.get('last_update', 0) > 120:
+            if getUTCnow() - response.get('last_update', 0) > self.config.get('overtake_time', 120):
                 self.logger.error(f"Metadata is older than 2 minutes. Metadata information: UUID: {response}. My UUID is {myuuid}. Last update: {response['last_update']}. Taking over.")
                 self.s_registerMetadata()
             else:

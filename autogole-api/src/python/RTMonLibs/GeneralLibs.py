@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """General Libraries for RTMon"""
 import os
+import re
 import json
 import time
 import uuid
 import hashlib
+import base64
 from datetime import datetime, timezone
 import requests
 from yaml import safe_load as yload
@@ -14,11 +16,18 @@ def _processName(name):
     """Process Name for Mermaid and replace all special chars with _"""
     for repl in [[" ", "_"], [":", "_"], ["/", "_"], ["-", "_"], [".", "_"], ["?", "_"]]:
         name = name.replace(repl[0], repl[1])
+    name = re.sub(r'[^a-zA-Z0-9_-]', '', name)
+    name = re.sub(r'[-_]{2,}', '_', name)
+    # Avoid starting with a digit or symbol
+    if re.match(r'^[^a-zA-Z_]', name):
+        name = f"n_{name}"
     return name
+
 
 def getUTCnow():
     """Get UTC Time."""
     return int(datetime.now(timezone.utc).timestamp())
+
 
 def getUUID(inputstr):
     """Generate UUID from Input Str"""
@@ -27,6 +36,12 @@ def getUUID(inputstr):
     customUUID = str(uuid.UUID(hashHex[:32]))
     # Grafana allows max 40 chars for UUID
     return customUUID[:40]
+
+
+def encodebase64(inputstr):
+    """Encode string to base64"""
+    return base64.b64encode(inputstr.encode('utf-8'))
+
 
 def loadFileJson(filename, logger):
     """Load File"""
@@ -37,6 +52,7 @@ def loadFileJson(filename, logger):
             logger.error('Error in loading file: %s', ex)
     return {}
 
+
 def dumpFileJson(filename, data, logger):
     """Dump File"""
     with open(filename, 'wb') as fd:
@@ -45,6 +61,7 @@ def dumpFileJson(filename, data, logger):
         except json.JSONDecodeError as ex:
             logger.error('Error in dumping file: %s', ex)
     return {}
+
 
 def loadJson(data, logger):
     """Load JSON"""
@@ -56,6 +73,7 @@ def loadJson(data, logger):
         logger.error('Error in loading json dict: %s', ex)
     return {}
 
+
 def dumpJson(data, logger):
     """Dump JSON"""
     try:
@@ -64,6 +82,7 @@ def dumpJson(data, logger):
         logger.error('Error in dumping json dict: %s', ex)
     return {}
 
+
 def dumpYaml(data, logger):
     """Dump YAML"""
     try:
@@ -71,6 +90,7 @@ def dumpYaml(data, logger):
     except json.JSONDecodeError as ex:
         logger.error('Error in dumping yaml dict: %s', ex)
     return {}
+
 
 def loadYaml(data, logger):
     """Load YAML"""
@@ -89,6 +109,7 @@ def loadYaml(data, logger):
             print('Data type: %s', type(data))
     return {}
 
+
 def getConfig(logger=None):
     """Get Config"""
     if not os.path.isfile("/etc/rtmon.yaml"):
@@ -97,6 +118,7 @@ def getConfig(logger=None):
         raise Exception("Config file /etc/rtmon.yaml does not exist.")
     with open("/etc/rtmon.yaml", "r", encoding="utf-8") as fd:
         return loadYaml(fd.read(), logger)
+
 
 def getWebContentFromURL(url, logger, raiseEx=True):
     """GET from URL"""
@@ -117,9 +139,11 @@ def getWebContentFromURL(url, logger, raiseEx=True):
             time.sleep(5)
     return out
 
+
 def escape(invalue):
     """Escape special characters for regex matching"""
     return invalue.replace("+", "[+]")
+
 
 class ExceptionTemplate(Exception):
     """Exception template."""
@@ -127,6 +151,7 @@ class ExceptionTemplate(Exception):
         return self.__class__(*(self.args + args))
     def __str__(self):
         return ': '.join(self.args)
+
 
 class SENSEOFailure(ExceptionTemplate):
     """Not Found error."""

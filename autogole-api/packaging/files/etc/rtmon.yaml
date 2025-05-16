@@ -17,6 +17,12 @@ grafana_dev:
 # Default image dir is /srv/images
 #image_dir:
 
+# RTMon daemon overtake timeout
+# RTMon registers with UUID, and makes sure other RTMon (with same name) does not register;
+# If specific name not update its status for overtake_time, it will force overtake and replace
+# uuid with a new worker.
+overtake_time: 120
+
 
 # FOR DEVELOPMEENT ONLY
 # Enable grafana_dev parameter (can be any string, and will be used as name to create directory inside Grafana)

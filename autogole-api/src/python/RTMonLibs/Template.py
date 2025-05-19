@@ -884,6 +884,7 @@ class Template:
         # If we have only one and diagrams failed for any reason, we would need to modify
         # many panels inside mermaid not to be collapsed. We regenerate mermaid
         if mermaid and not ddiagram:
+            orig_args = copy.deepcopy(args)
             return [self.t_createMermaid(*orig_args, **{"collapsed": False})]
         return []
 

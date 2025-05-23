@@ -202,6 +202,7 @@ class Mermaid:
         self.m_groups["Hosts"].setdefault(host["Name"], {}).setdefault(
             host["Interface"], {}
         )
+        self._addSubgraph(host["Name"])
         self.m_groups["Hosts"][host["Name"]][host["Interface"]] = host
         self._m_addMermaidUnique(f'        {uniqname}("{host["Interface"]}")')
         self._m_recordMac(host)  # Record mac of host interface
@@ -223,7 +224,7 @@ class Mermaid:
                         self.m_groups["Hosts"].setdefault(host["Name"], {}).setdefault(
                             f'vlan.{host["Vlan"]}', {}
                         )
-        self.mermaid.append("    end\n")
+        self._endSubgraph(host["Name"])
         if "Link" in host:
             self._m_addLink(uniqname, host["Link"])
             if "Vlan" in host and host["Vlan"]:

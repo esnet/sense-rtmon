@@ -115,15 +115,15 @@ class SenseAPI:
         data["description"] = []
         if self.config.get("grafana_dev", None):
             data["description"].append(
-                "THIS IS A DEVELOPMENT INSTANCE! It might not work as expected, please use production instance."
+                "**THIS IS A DEVELOPMENT INSTANCE! It might not work as expected, please use production instance.**"
             )
         else:
-            data["description"].append("THIS IS A PRODUCTION INSTANCE!")
+            data["description"].append("**THIS IS A PRODUCTION INSTANCE!**")
         data["description"].append(
-            "RTMon (Real-Time Monitoring) is an automated service within the SENSE project designed to dynamically monitor and visualize network paths provisioned by SENSE Orchestrators. It identifies active service deltas, retrieves path manifests, and generates Grafana dashboards with detailed host, link, and L2 debug views. RTMon integrates with external monitoring systems like ESnet Stardust, Internet2 TSDS, and other domains to normalize metrics across them."
+            "**RTMon (Real-Time Monitoring)** is an automated service within the SENSE project designed to dynamically monitor and visualize network paths provisioned by SENSE Orchestrators. It identifies active service deltas, retrieves path manifests, and generates Grafana dashboards with detailed host, link, and L2 debug views. RTMon integrates with external monitoring systems like ESnet Stardust, Internet2 TSDS, and other domains to normalize metrics across them.\n"
         )
         data["description"].append(
-            "It manages lifecycle events by submitting and removing monitoring actions, syncing dashboard state, and triggering diagnostics (e.g., ping) via SiteRM."
+            "It manages lifecycle events by submitting and removing monitoring actions, syncing dashboard state, and triggering diagnostics (e.g., ping) via SiteRM.\n"
         )
         data["description"].append(
             "RTMon loops every 30s, updating visualizations and annotations in real-time, providing end-to-end visibility of cross-domain, intent-driven network services."

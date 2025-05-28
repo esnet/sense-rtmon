@@ -31,6 +31,29 @@ class SenseAPI:
         self.task_apis = {}
         self.meta_apis = {}
         self.uuids = {}
+        self.supported_actions = {
+            "executeping": {
+                "name": "Issue Ping between endpoints",
+                "key": "executeping",
+                "description": "Issue ping automatically between endpoints (Default true)",
+                "type": "boolean",
+                "default": True,
+            },
+            "allmacs": {
+                "name": "Show All Learned Mac's",
+                "key": "allmacs",
+                "description": "Generate table in dashboard with all MAC addresses learned in the network devices (Default False)",
+                "type": "boolean",
+                "default": False,
+            },
+            "debugmode": {
+                "name": "Debug Mode (Detailed graphs)",
+                "key": "debugmode",
+                "description": "Show more detailed dashboard with all debug information included (Default False)",
+                "type": "boolean",
+                "default": False,
+            },
+        }
 
     def _s_getworkeruuid(self):
         """Generate UUID"""
@@ -97,43 +120,16 @@ class SenseAPI:
         else:
             data["description"].append("THIS IS A PRODUCTION INSTANCE!")
         data["description"].append(
-            """RTMon (Real-Time Monitoring) is an automated service within the SENSE project designed to dynamically monitor and visualize
-                                   network paths provisioned by SENSE Orchestrators. It identifies active service deltas, retrieves path manifests, and generates
-                                   Grafana dashboards with detailed host, link, and L2 debug views. RTMon integrates with external monitoring systems like ESnet Stardust,
-                                   Internet2 TSDS, and other domains to normalize metrics across them. It manages lifecycle events by submitting and removing monitoring
-                                   actions, syncing dashboard state, and triggering diagnostics (e.g., ping) via SiteRM.
-                                   RTMon loops every 30s, updating visualizations and annotations in real-time, providing end-to-end visibility of cross-domain,
-                                   intent-driven network services."""
+            "RTMon (Real-Time Monitoring) is an automated service within the SENSE project designed to dynamically monitor and visualize network paths provisioned by SENSE Orchestrators. It identifies active service deltas, retrieves path manifests, and generates Grafana dashboards with detailed host, link, and L2 debug views. RTMon integrates with external monitoring systems like ESnet Stardust, Internet2 TSDS, and other domains to normalize metrics across them."
+        )
+        data["description"].append(
+            "It manages lifecycle events by submitting and removing monitoring actions, syncing dashboard state, and triggering diagnostics (e.g., ping) via SiteRM."
+        )
+        data["description"].append(
+            "RTMon loops every 30s, updating visualizations and annotations in real-time, providing end-to-end visibility of cross-domain, intent-driven network services."
         )
         # Add also supported actions
-        data["supported_actions"] = []
-        data["supported_actions"].append(
-            {
-                "name": "Issue Ping between endpoints",
-                "key": "executeping",
-                "description": "Issue ping automatically between endpoints (Default true)",
-                "type": "boolean",
-                "default": True,
-            }
-        )
-        data["supported_actions"].append(
-            {
-                "name": "Show All Learned Mac's",
-                "key": "allmacs",
-                "description": "Generate table in dashboard with all MAC addresses learned in the network devices (Default False)",
-                "type": "boolean",
-                "default": False,
-            }
-        )
-        data["supported_actions"].append(
-            {
-                "name": "Debug Mode (Detailed graphs)",
-                "key": "debugmode",
-                "description": "Show more detailed dashboard with all debug information included (Default False)",
-                "type": "boolean",
-                "default": False,
-            }
-        )
+        data["supported_actions"] = list(self.supported_actions.values())
         return data
 
     def s_getMetadata(self):

@@ -194,10 +194,11 @@ class RTMonWorker(
             },
         )
         # 7. Submit SiteRM Action to issue a ping test both ways
-        tmpOut = self.sr_submit_ping(instance=instance, manifest=manifest)
-        if tmpOut:
-            fout["ping"] = tmpOut
-            self.g_submitAnnotation(sitermOut=tmpOut, dashbInfo=fout["dashbInfo"])
+        if self.getTaskSetting(fout.get("taskinfo"), "executeping", True):
+            tmpOut = self.sr_submit_ping(instance=instance, manifest=manifest)
+            if tmpOut:
+                fout["ping"] = tmpOut
+                self.g_submitAnnotation(sitermOut=tmpOut, dashbInfo=fout["dashbInfo"])
         # 8. Submit to External API (if any configured)
         self.e_submitExternalAPI(fout, "submit")
         # 9. Update State to Running
@@ -283,16 +284,17 @@ class RTMonWorker(
                 if self.config["template_tag"] in dashbVals["tags"]:
                     self.logger.info("Dashboard is present in Grafana: %s", dashbName)
                     # Check if we need to re-issue ping test
-                    tmpOut = self.sr_submit_ping(
-                        instance=fout.get("instance", {}),
-                        manifest=fout.get("manifest", {}),
-                    )
-                    if tmpOut and fout.get("dashbInfo", {}):
-                        fout["ping"] = tmpOut
-                        self.g_submitAnnotation(
-                            sitermOut=tmpOut, dashbInfo=fout["dashbInfo"]
+                    if self.getTaskSetting(fout.get("taskinfo"), "executeping", True):
+                        tmpOut = self.sr_submit_ping(
+                            instance=fout.get("instance", {}),
+                            manifest=fout.get("manifest", {}),
                         )
-                    self._updateState(filename, fout)
+                        if tmpOut and fout.get("dashbInfo", {}):
+                            fout["ping"] = tmpOut
+                            self.g_submitAnnotation(
+                                sitermOut=tmpOut, dashbInfo=fout["dashbInfo"]
+                            )
+                        self._updateState(filename, fout)
                     # Check SENSE-O State and delete if not in a final state anymore;
                     if not self._checkSenseOState(fout):
                         self.logger.info(
@@ -409,6 +411,30 @@ class RTMonWorker(
             )
             self.logger.info(msg)
             self.s_setTaskState(task["uuid"], "REJECTED", {"error": msg})
+
+    def getTaskSetting(self, taskinfo, parameter, default=False):
+        """Get Task Setting - returns True/False.
+        Default - based on Registration Setting.
+        If not in registration, returns False."""
+        # Identify the default value for the parameter
+        if parameter not in self.supported_actions:
+            self.logger.error(
+                f"Parameter {parameter} not found in supported actions. Returning: False"
+            )
+            return False
+        default = self.supported_actions.get(parameter, {}).get("default", default)
+        # If default is provided, and no task info, return default
+        if not taskinfo:
+            self.logger.info(
+                f"Task info not provided. Returning default value for {parameter}: {default}"
+            )
+        else:
+            inputVal = (
+                taskinfo.get("config", {}).get("settings", {}).get(parameter, None)
+            )
+            if inputVal and isinstance(inputVal, str):
+                default = inputVal.lower() in ["true", "1", "t", "y", "yes"]
+        return default
 
     def _getAllTasks(self):
         """Get all instances from sense-o and ensure we have file present for each instance"""

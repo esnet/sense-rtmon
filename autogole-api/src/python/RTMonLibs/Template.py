@@ -121,6 +121,7 @@ class Mermaid:
             and hostdict["Mac"] not in self.mac_addresses[sitehost][hostname]
             and hostdict["Mac"] != "?mac?"
             and hostdict["Mac"] != "?port_mac?"
+            and (hostdict["IPv6"] != "?port_ipv6?" or hostdict["IPv4"] != "?port_ipv4?")
         ):
             self.mac_addresses[sitehost][hostname] = hostdict["Mac"]
 
@@ -649,6 +650,12 @@ class Template:
                     intfs.append(intfname.lower())
                     intfs.append(intfname.replace(" ", ""))
                     intfs.append(intfname.lower().replace(" ", ""))
+                # If we have a Vlan, add it to the interface
+                if "Vlan" in intfdata and intfdata["Vlan"]:
+                    for key in ["Vlan", "Vlan."]:
+                        intfs.append(f"{key}{intfdata['Vlan']}")
+                        intfs.append(f"{key.lower()}{intfdata['Vlan']}")
+                        intfs.append(f"{key.upper()}{intfdata['Vlan']}")
             intfline = "|".join(intfs)
             return intfline
 
@@ -668,15 +675,14 @@ class Template:
                 "This happens for Sites/Switches not exposing correct Sitename/Port. Are you missing an override?"
             )
             raise Exception(f"Sitehost not in correct format. Exception {ex}") from ex
-        sitename = sitehost.split(":")[0]
-        hostname = sitehost.split(":")[1]
-        intfline = findIntf(interfaces)
 
+        templateType = self.p_get_switch_template(sitename=sitename, hostname=hostname)
+
+        intfline = findIntf(interfaces)
         row = self.t_addRow(*args, title=f"{num}. Switch Flow Summary: {sitehost}")
-        template_type = self.p_get_switch_template(sitename=sitename, hostname=hostname)
-        if template_type:
+        if templateType:
             panels = dumpJson(
-                self._t_loadTemplate(f"switchflow-{template_type}.json"), self.logger
+                self._t_loadTemplate(f"switchflow-{templateType}.json"), self.logger
             )
             panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
             panels = panels.replace("REPLACEME_SITENAME", sitename)
@@ -889,6 +895,24 @@ class Template:
             return [self.t_createMermaid(*orig_args, **{"collapsed": False})]
         return []
 
+    def t_addAllMacs(self, *args, **kwargs):
+        """Add AllMacs to the Dashboard"""
+        out = []
+        for sitehost in self.mac_addresses.keys():
+            sitename = sitehost.split(":")[0]
+            hostname = sitehost.split(":")[1]
+            row = self.t_addRow(
+                *args, title=f"All MAC Addresses ({sitename}, {hostname})"
+            )
+            # Add AllMacs panel
+            panel = dumpJson(self._t_loadTemplate("allmacs.json"), self.logger)
+            panel = panel.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
+            panel = panel.replace("REPLACEME_SITENAME", sitename)
+            panel = panel.replace("REPLACEME_HOSTNAME", hostname)
+            panel = loadJson(panel, self.logger)
+            out += self.addRowPanel(row, [panel])
+        return out
+
     def t_createTemplate(self, *args, **kwargs):
         """Create Grafana Template"""
         self._clean()
@@ -923,11 +947,19 @@ class Template:
                 self.logger.error(f"Unknown Type: {item['Type']}. Skipping... {item}")
         # Add L2 Debugging
         self.generated["panels"] += self.t_addL2Debugging(*args)
-        if self.config.get("Debug", False):
+        debugmode = self.getTaskSetting(
+            kwargs.get("taskinfo"), "debugmode", self.config.get("Debug", False)
+        )
+        if debugmode:
             if len(diagrams) > 1:
                 self.generated["panels"] += diagrams[1]
             # Add Debug Info (manifest, instance)
             self.generated["panels"] += self.t_addDebug(*args)
+        # Add AllMacs panels if allmacs true (In case debug is True, we still want to add AllMacs)
+        if self.getTaskSetting(
+            kwargs.get("taskinfo"), "allmacs", self.config.get("Debug", False)
+        ):
+            self.generated["panels"] += self.t_addAllMacs(*args, **kwargs)
         return {"dashboard": self.generated}, {
             "uid": self.generated["uid"],
             "annotation_panels": self.annotationids,

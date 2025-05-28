@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# pylint: disable=line-too-long
+"Class for interacting with Prometheus metrics using the prometheus-api-client library."
 from prometheus_api_client import PrometheusConnect
 import requests
 from requests.auth import HTTPBasicAuth
@@ -6,8 +9,8 @@ class Prometheus:
     """
     Prometheus client wrapper for querying metrics using the prometheus-api-client library.
 
-    This class handles authenticated requests to a Prometheus server and provides 
-    utility functions to query specific network-related metrics such as interface statistics 
+    This class handles authenticated requests to a Prometheus server and provides
+    utility functions to query specific network-related metrics such as interface statistics
     and packet counts. Configuration and logging are passed via kwargs.
 
     Expected config keys:
@@ -31,8 +34,7 @@ class Prometheus:
         if prom_user and prom_pass:
             session.auth = HTTPBasicAuth(prom_user, prom_pass)
             return session
-        else:
-            return None
+        return None
 
     def p_get_query(self, query):
         """
@@ -42,26 +44,23 @@ class Prometheus:
         if not self.session:
             self.logger.error("Prometheus authentication missing in config or credentials not correct.")
             return None
-        
 
         prom_url = self.config.get("prometheus_url", None)
         if prom_url:
             prom = PrometheusConnect(
                 url=prom_url,
                 session=self.session,
-                disable_ssl = False if prom_url.startswith('https') else True
+                disable_ssl = not prom_url.startswith('https')
             )
             result = prom.custom_query(query=query)
             # Example result: [{'metric': {}, 'value': [timestamp, 'value']}]
 
             if result:
-                return result[0].get('value', [None, None])[1]  
-            else:
-                return None
-        else:
-            self.logger.error("Prometheus URL missing in config.")
+                return result[0].get('value', [None, None])[1]
             return None
-        
+        self.logger.error("Prometheus URL missing in config.")
+        return None
+
 
     def p_count_interface_statistics(self, **kwargs):
         """
@@ -90,9 +89,9 @@ class Prometheus:
             if self.p_count_interface_statistics(**kwargs) == '0':
                 if self.p_count_interfaces_rx_packets(**kwargs) == '0':
                     return None
-                else:
-                    return "vpp"
-            else:
-                return "default"
-        except:
+                return "vpp"
+            return "default"
+        except Exception as ex:
+            self.logger.error(f"Error in p_get_switch_template: {ex}")
+            self.logger.error("Failed to determine switch template type.")
             return None

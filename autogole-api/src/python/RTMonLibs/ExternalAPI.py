@@ -119,10 +119,21 @@ class ExternalAPI():
             return True
         return False
 
+    def _e_httpfailed(self, httpout):
+        """Check http error in output from external API"""
+        if len(httpout) == 3:
+            if httpout[2].status_code >= 400:
+                self.logger.error(f"External API error: {httpout[2].status_code} {httpout[2].text}")
+                return True
+        return False
+
     def e_getExternalAPI(self, data, action):
+        """Get external API data"""
         extinfo = []
         for url, extdata in self.external.items():
             out = self._e_submitget(url, extdata)
             self.logger.info(f"External API {url} {action} {extdata} {out}")
+            if self._e_httpfailed(out):
+                continue
             extinfo.append(out)
         return extinfo

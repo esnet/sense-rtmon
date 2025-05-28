@@ -5,6 +5,7 @@ from prometheus_api_client import PrometheusConnect
 import requests
 from requests.auth import HTTPBasicAuth
 
+
 class Prometheus:
     """
     Prometheus client wrapper for querying metrics using the prometheus-api-client library.
@@ -22,8 +23,8 @@ class Prometheus:
 
     def __init__(self, **kwargs):
         super().__init__()
-        self.config = kwargs.get('config')
-        self.logger = kwargs.get('logger')
+        self.config = kwargs.get("config")
+        self.logger = kwargs.get("logger")
         self.session = self.__connect()
 
     def __connect(self):
@@ -42,7 +43,9 @@ class Prometheus:
         Returns the value if available, or None on error or no data.
         """
         if not self.session:
-            self.logger.error("Prometheus authentication missing in config or credentials not correct.")
+            self.logger.error(
+                "Prometheus authentication missing in config or credentials not correct."
+            )
             return None
 
         prom_url = self.config.get("prometheus_url", None)
@@ -50,17 +53,16 @@ class Prometheus:
             prom = PrometheusConnect(
                 url=prom_url,
                 session=self.session,
-                disable_ssl = not prom_url.startswith('https')
+                disable_ssl=not prom_url.startswith("https"),
             )
             result = prom.custom_query(query=query)
             # Example result: [{'metric': {}, 'value': [timestamp, 'value']}]
 
             if result:
-                return result[0].get('value', [None, None])[1]
+                return result[0].get("value", [None, None])[1]
             return None
         self.logger.error("Prometheus URL missing in config.")
         return None
-
 
     def p_count_interface_statistics(self, **kwargs):
         """
@@ -86,8 +88,8 @@ class Prometheus:
         - Returns 'vpp' if only rx packets are found.
         """
         try:
-            if self.p_count_interface_statistics(**kwargs) == '0':
-                if self.p_count_interfaces_rx_packets(**kwargs) == '0':
+            if self.p_count_interface_statistics(**kwargs) == "0":
+                if self.p_count_interfaces_rx_packets(**kwargs) == "0":
                     return None
                 return "vpp"
             return "default"

@@ -515,7 +515,6 @@ class Template:
         }
         return panel
 
-
     def t_addRow(self, *_args, **kwargs):
         """Add Row to the Dashboard"""
         out = self._t_loadTemplate("row.json")
@@ -653,7 +652,7 @@ class Template:
                     intfs.append(intfname.lower().replace(" ", ""))
                 # If we have a Vlan, add it to the interface
                 if "Vlan" in intfdata and intfdata["Vlan"]:
-                    for key in ['Vlan', 'Vlan.']:
+                    for key in ["Vlan", "Vlan."]:
                         intfs.append(f"{key}{intfdata['Vlan']}")
                         intfs.append(f"{key.lower()}{intfdata['Vlan']}")
                         intfs.append(f"{key.upper()}{intfdata['Vlan']}")
@@ -682,7 +681,9 @@ class Template:
         intfline = findIntf(interfaces)
         row = self.t_addRow(*args, title=f"{num}. Switch Flow Summary: {sitehost}")
         if templateType:
-            panels = dumpJson(self._t_loadTemplate(f"switchflow-{templateType}.json"), self.logger)
+            panels = dumpJson(
+                self._t_loadTemplate(f"switchflow-{templateType}.json"), self.logger
+            )
             panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
             panels = panels.replace("REPLACEME_SITENAME", sitename)
             panels = panels.replace("REPLACEME_HOSTNAME", hostname)
@@ -900,7 +901,9 @@ class Template:
         for sitehost in self.mac_addresses.keys():
             sitename = sitehost.split(":")[0]
             hostname = sitehost.split(":")[1]
-            row = self.t_addRow(*args, title=f"All MAC Addresses ({sitename}, {hostname})")
+            row = self.t_addRow(
+                *args, title=f"All MAC Addresses ({sitename}, {hostname})"
+            )
             # Add AllMacs panel
             panel = dumpJson(self._t_loadTemplate("allmacs.json"), self.logger)
             panel = panel.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
@@ -944,14 +947,18 @@ class Template:
                 self.logger.error(f"Unknown Type: {item['Type']}. Skipping... {item}")
         # Add L2 Debugging
         self.generated["panels"] += self.t_addL2Debugging(*args)
-        debugmode = self.getTaskSetting(kwargs.get('taskinfo'), 'debugmode', self.config.get("Debug", False))
+        debugmode = self.getTaskSetting(
+            kwargs.get("taskinfo"), "debugmode", self.config.get("Debug", False)
+        )
         if debugmode:
             if len(diagrams) > 1:
                 self.generated["panels"] += diagrams[1]
             # Add Debug Info (manifest, instance)
             self.generated["panels"] += self.t_addDebug(*args)
         # Add AllMacs panels if allmacs true (In case debug is True, we still want to add AllMacs)
-        if self.getTaskSetting(kwargs.get('taskinfo'), 'allmacs', self.config.get("Debug", False)):
+        if self.getTaskSetting(
+            kwargs.get("taskinfo"), "allmacs", self.config.get("Debug", False)
+        ):
             self.generated["panels"] += self.t_addAllMacs(*args, **kwargs)
         return {"dashboard": self.generated}, {
             "uid": self.generated["uid"],

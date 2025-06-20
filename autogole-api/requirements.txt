@@ -9,3 +9,4 @@ prometheus_api_client
 pillow>=10.3.0
 fonttools>=4.43.0
 numpy>=1.22.2
+urllib3>=2.5.0 # not directly required, pinned by Snyk to avoid a vulnerability

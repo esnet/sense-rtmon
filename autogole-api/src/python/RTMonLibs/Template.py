@@ -3,7 +3,8 @@
 """Grafana Template Generation"""
 import copy
 import os.path
-from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, _processName, encodebase64
+from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape
+from RTMonLibs.GeneralLibs import _processName, encodebase64, generateUUID
 
 
 def clamp(n, minn, maxn):
@@ -479,13 +480,17 @@ class Template:
             out.append(row)
         return out
 
-    def _t_getDataSourceUid(self, *_args):
+    def _t_getDataSource(self, name):
+        """Get Data Source"""
+        return self.datasources.get(name, {}).get("uid", 1)
+
+    def _t_setDataSourceUid(self, *_args):
         """Get Data Source UID"""
         # TODO: We need a way for Orchestrator to tell us if this is real time (5sec resolution)
         # or historical (1min resolution)
         # For now return the historical one
         name = self.config.get("data_sources", {}).get("general", "Prometheus")
-        self.t_dsourceuid = self.datasources.get(name, {}).get("uid", 1)
+        self.t_dsourceuid = self._t_getDataSource(name)
 
     def _t_loadTemplate(self, templateName):
         """Load Template"""
@@ -571,12 +576,6 @@ class Template:
                     tmpcopy["url"] = url
                     ret.append(tmpcopy)
                 addedUrls.append(url)
-        if kwargs.get("oscarsid", "") and self.config.get("oscars_base_url", ""):
-            oscarsid = kwargs["oscarsid"]
-            tmpcopy = copy.deepcopy(out)
-            tmpcopy["title"] = f"Oscars monitoring: {oscarsid}"
-            tmpcopy["url"] = f"{self.config['oscars_base_url']}{oscarsid}"
-            ret.append(tmpcopy)
         return ret
 
     def t_addText(self, *args):
@@ -592,12 +591,15 @@ class Template:
         out = self._t_loadTemplate("dashboard.json")
         # Update title;
         title = f'{args[0]["alias"]}|Flow: {args[0]["intents"][0]["id"]}|{args[0]["timestamp"]}'
+        if self.devname:
+            title += f" ({self.devname})"
         out["title"] = title
         for key in ["referenceUUID", "orchestrator", "submission"]:
             if key in kwargs:
                 out["tags"].append(kwargs[key])
         out["tags"].append(self.config["template_tag"])
-        out["uid"] = args[0]["intents"][0]["id"]
+        # Generate dynamic UUID from title
+        out["uid"] = generateUUID(title)
         return out
 
     def t_createHostFlow(self, sitehost, num, *args):
@@ -620,45 +622,66 @@ class Template:
         out += self.addRowPanel(row, panels, True)
         return out
 
+    @staticmethod
+    def __t_findIntf(interfaces, maininc=True):
+        """Find Interface"""
+        intfs = []
+        for intfname, intfdata in interfaces.items():
+
+            if "?port_name?" == intfname:
+                continue
+            if "JointNetwork" in intfdata:
+                # ifDescr=~"newy32aoa-cr6::1/1/c13/1|newy32aoa-cr6::.*1/1/c13/1-2015"
+                # 'JointNetwork': 'newy32aoa-cr6|1_1_c13_1|fabric'
+                splitdata = intfdata["JointNetwork"].split("|")
+                if len(splitdata) >= 2:
+                    if maininc:
+                        intfs.append(f"{splitdata[0]}.*{splitdata[1].replace('_', '/')}")
+                    intfs.append(f"{splitdata[0]}.*{splitdata[1].replace('_', '/')}-{intfdata['Vlan']}")
+                if len(splitdata) == 3:
+                    intfs.append(splitdata[2])
+            else:
+                intfs.append(intfname)
+                # Add also lowercase and space removed intf names
+                # https://github.com/esnet/sense-rtmon/issues/128
+                intfs.append(intfname.lower())
+                intfs.append(intfname.replace(" ", ""))
+                intfs.append(intfname.lower().replace(" ", ""))
+            # If we have a Vlan, add it to the interface
+            if "Vlan" in intfdata and intfdata["Vlan"]:
+                for key in ["Vlan", "Vlan."]:
+                    intfs.append(f"{key}{intfdata['Vlan']}")
+                    intfs.append(f"{key.lower()}{intfdata['Vlan']}")
+                    intfs.append(f"{key.upper()}{intfdata['Vlan']}")
+        intfline = "|".join(intfs)
+        return intfline
+
+    def _t_createESnetSwitchFlow(self, sitehost, num, *args):
+        """Create ESnet Switch Flow Template to query stardust directly"""
+        out = []
+        interfaces = self.m_groups["Switches"].get(sitehost, "")
+        sitename = sitehost.split(":")[0]
+        hostname = sitehost.split(":")[1]
+        for _intfname, intfdata in interfaces.items():
+            tmpdict = {
+                "device": intfdata["JointNetwork"].split("|")[0],
+                "port": intfdata["JointNetwork"].split("|")[1].replace("_", "/"),
+                "vlan": intfdata["Vlan"],
+            }
+            row = self.t_addRow(*args, title=f"{num}. Switch Flow Summary: {sitehost}")
+            panels = dumpJson(self._t_loadTemplate("switchflow-custom-esnet.json"), self.logger)
+            panels = panels.replace("REPLACEME_DATASOURCE", str(self._t_getDataSource('ESnet')))
+            panels = panels.replace("REPLACEME_SITENAME", sitename)
+            panels = panels.replace("REPLACEME_HOSTNAME", hostname)
+            panels = panels.replace("REPLACEME_INTERFACE", f"{tmpdict['device']}::{tmpdict['port']}")
+            panels = panels.replace("REPLACEME_INTERVLAN", self.__t_findIntf(interfaces, False))
+            panels = panels.replace("REPLACEME_VLANNAME", f"Vlan{tmpdict['vlan']}")
+            panels = loadJson(panels, self.logger)
+            out += self.addRowPanel(row, panels, True)
+        return out
+
     def t_createSwitchFlow(self, sitehost, num, *args):
         """Create Switch Flow Template"""
-
-        def findIntf(interfaces):
-            """Find Interface"""
-            intfs = []
-            for intfname, intfdata in interfaces.items():
-
-                if "?port_name?" == intfname:
-                    continue
-                if "JointNetwork" in intfdata:
-                    # ifDescr=~"newy32aoa-cr6::1/1/c13/1|newy32aoa-cr6::.*1/1/c13/1-2015"
-                    # 'JointNetwork': 'newy32aoa-cr6|1_1_c13_1|fabric'
-                    splitdata = intfdata["JointNetwork"].split("|")
-                    if len(splitdata) >= 2:
-                        intfs.append(
-                            f"{splitdata[0]}.*{splitdata[1].replace('_', '/')}"
-                        )
-                        intfs.append(
-                            f"{splitdata[0]}.*{splitdata[1].replace('_', '/')}-{intfdata['Vlan']}"
-                        )
-                    if len(splitdata) == 3:
-                        intfs.append(splitdata[2])
-                else:
-                    intfs.append(intfname)
-                    # Add also lowercase and space removed intf names
-                    # https://github.com/esnet/sense-rtmon/issues/128
-                    intfs.append(intfname.lower())
-                    intfs.append(intfname.replace(" ", ""))
-                    intfs.append(intfname.lower().replace(" ", ""))
-                # If we have a Vlan, add it to the interface
-                if "Vlan" in intfdata and intfdata["Vlan"]:
-                    for key in ["Vlan", "Vlan."]:
-                        intfs.append(f"{key}{intfdata['Vlan']}")
-                        intfs.append(f"{key.lower()}{intfdata['Vlan']}")
-                        intfs.append(f"{key.upper()}{intfdata['Vlan']}")
-            intfline = "|".join(intfs)
-            return intfline
-
         out = []
         interfaces = self.m_groups["Switches"].get(sitehost, "")
         if not interfaces:
@@ -676,9 +699,12 @@ class Template:
             )
             raise Exception(f"Sitehost not in correct format. Exception {ex}") from ex
 
+        # Custom Site template based on sitename (for now only for ESnet, might neeed to expand to other sites in future)
+        if sitename.lower() == 'esnet':
+            return self._t_createESnetSwitchFlow(sitehost, num, *args)
+        # This is the default switch flow template for everything else
         templateType = self.p_get_switch_template(sitename=sitename, hostname=hostname)
-
-        intfline = findIntf(interfaces)
+        intfline = self.__t_findIntf(interfaces)
         row = self.t_addRow(*args, title=f"{num}. Switch Flow Summary: {sitehost}")
         if templateType:
             panels = dumpJson(
@@ -916,7 +942,7 @@ class Template:
     def t_createTemplate(self, *args, **kwargs):
         """Create Grafana Template"""
         self._clean()
-        self._t_getDataSourceUid(*args)
+        self._t_setDataSourceUid(*args)
         self.generated = self.t_createDashboard(*args, **kwargs)
         diagrams = self.__createDiagrams(*args, **kwargs)
         if diagrams:

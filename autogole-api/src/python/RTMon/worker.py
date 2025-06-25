@@ -39,21 +39,13 @@ class RTMonWorker(
         self.auth_instances = {}
         self.goodStates = ["CREATE - READY", "REINSTATE - READY", "MODIFY - READY"]
         self.senseotimer = getUTCnow()
+        self.devname = self.config.get("grafana_dev", None)
 
     def _getFolderName(self):
         folderName = self.config.get("grafana_folder", "Real Time Mon")
-        devname = self.config.get("grafana_dev", None)
-        if devname:
-            folderName = f"{folderName} - {devname}"
+        if self.devname:
+            folderName = f"{folderName} - {self.devname}"
         return folderName
-
-    def _forceRenewDashboard(self, fout, out):
-        """Force renew dashboard if oscars id not present and not same in instance"""
-        for item in out:
-            oscarsid = item[0].get("runinfo", {}).get("oscarsid", "")
-            if oscarsid and oscarsid != fout.get("oscarsid", ""):
-                return oscarsid
-        return None
 
     def _updateState(self, filename, fout):
         """Update the state of the file"""
@@ -81,7 +73,7 @@ class RTMonWorker(
         return True
 
     def renew_exe(self, filename, fout):
-        """Renew instance mainly if new information received, like oscarsid"""
+        """Renew instance mainly if new information received"""
         if "instance" not in fout or "manifest" not in fout:
             self.logger.error(
                 "Instance or Manifest not found in renew. Call back submit: %s", fout
@@ -248,16 +240,8 @@ class RTMonWorker(
         self.logger.debug("Running Execution: %s, %s", filename, fout)
         # Check external record to track info of device
         if self.e_submitExternalAPI(fout, "running"):
-            out = self.e_getExternalAPI(fout, "running")
-            oscarsid = self._forceRenewDashboard(fout, out)
-            if oscarsid:
-                self.logger.info(
-                    f"Got a new oscars id {oscarsid}. Will force renew dashboard"
-                )
-                fout["oscarsid"] = oscarsid
-                fout["state"] = "renew"
-                self._updateState(filename, fout)
-                return
+            # TODO: We might want to check status of external service.
+            self.e_getExternalAPI(fout, "running")
         for dashbName, dashbVals in self.dashboards.get(
             self._getFolderName(), {}
         ).items():

@@ -1,0 +1,635 @@
+[
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "REPLACEME_DATASOURCE"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 507,
+      "interval": "30",
+      "maxDataPoints": 1000,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.5.27",
+      "targets": [
+        {
+          "alias": "In Traffic (REPLACEME_INTERFACE)",
+          "bucketAggs": [
+            {
+              "field": "start",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "metrics": [
+            {
+              "field": "values.in_bits.delta",
+              "id": "1",
+              "settings": {
+                "script": "_value / ($__interval_ms / 1000)"
+              },
+              "type": "sum"
+            }
+          ],
+          "query": "meta.id:/REPLACEME_INTERFACE/",
+          "refId": "A",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "In Traffic (REPLACEME_VLANNAME)",
+          "bucketAggs": [
+            {
+              "field": "start",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "values.in_bits.delta",
+              "id": "1",
+              "settings": {
+                "script": "_value / ($__interval_ms / 1000)"
+              },
+              "type": "sum"
+            }
+          ],
+          "query": "meta.id:/REPLACEME_INTERVLAN/",
+          "refId": "C",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Out Traffic (REPLACEME_VLANNAME)",
+          "bucketAggs": [
+            {
+              "field": "start",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "values.out_bits.delta",
+              "id": "1",
+              "settings": {
+                "script": "-1 * _value / ($__interval_ms / 1000)"
+              },
+              "type": "sum"
+            }
+          ],
+          "query": "meta.id:/REPLACEME_INTERVLAN/",
+          "refId": "B",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Out Traffic (REPLACEME_INTERFACE)",
+          "bucketAggs": [
+            {
+              "field": "start",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "values.out_bits.delta",
+              "id": "1",
+              "settings": {
+                "script": "-1 * _value / ($__interval_ms / 1000)"
+              },
+              "type": "sum"
+            }
+          ],
+          "query": "meta.id:/REPLACEME_INTERFACE/",
+          "refId": "D",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Interface Status (Octets In/Out)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "REPLACEME_DATASOURCE"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "/sec"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 1331,
+      "interval": "30",
+      "maxDataPoints": 1000,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.5.27",
+      "targets": [
+        {
+          "alias": "In Discards (REPLACEME_INTERFACE)",
+          "bucketAggs": [
+            {
+              "field": "start",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "metrics": [
+            {
+              "field": "values.in_discards.delta",
+              "id": "1",
+              "settings": {
+                "script": "_value / ($__interval_ms / 1000)"
+              },
+              "type": "sum"
+            }
+          ],
+          "query": "meta.id:/REPLACEME_INTERFACE/",
+          "refId": "A",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "In Discards (REPLACEME_VLANNAME)",
+          "bucketAggs": [
+            {
+              "field": "start",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "values.in_discards.delta",
+              "id": "1",
+              "settings": {
+                "script": "_value / ($__interval_ms / 1000)"
+              },
+              "type": "sum"
+            }
+          ],
+          "query": "meta.id:/REPLACEME_INTERVLAN/",
+          "refId": "C",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Out Discards (REPLACEME_VLANNAME)",
+          "bucketAggs": [
+            {
+              "field": "start",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "values.out_discards.delta",
+              "id": "1",
+              "settings": {
+                "script": "-1 * _value / ($__interval_ms / 1000)"
+              },
+              "type": "sum"
+            }
+          ],
+          "query": "meta.id:/REPLACEME_INTERVLAN/",
+          "refId": "B",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Out Discards (REPLACEME_INTERFACE)",
+          "bucketAggs": [
+            {
+              "field": "start",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "values.out_discards.delta",
+              "id": "1",
+              "settings": {
+                "script": "-1 * _value / ($__interval_ms / 1000)"
+              },
+              "type": "sum"
+            }
+          ],
+          "query": "meta.id:/REPLACEME_INTERFACE/",
+          "refId": "D",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Interface Status (Discards In/Out)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "REPLACEME_DATASOURCE"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "/sec"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 1332,
+      "interval": "30",
+      "maxDataPoints": 1000,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.5.27",
+      "targets": [
+        {
+          "alias": "In Errors (REPLACEME_INTERFACE)",
+          "bucketAggs": [
+            {
+              "field": "start",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "metrics": [
+            {
+              "field": "values.in_errors.delta",
+              "id": "1",
+              "settings": {
+                "script": "_value / ($__interval_ms / 1000)"
+              },
+              "type": "sum"
+            }
+          ],
+          "query": "meta.id:/REPLACEME_INTERFACE/",
+          "refId": "A",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "In Errors (REPLACEME_VLANNAME)",
+          "bucketAggs": [
+            {
+              "field": "start",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "values.in_errors.delta",
+              "id": "1",
+              "settings": {
+                "script": "_value / ($__interval_ms / 1000)"
+              },
+              "type": "sum"
+            }
+          ],
+          "query": "meta.id:/REPLACEME_INTERVLAN/",
+          "refId": "C",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Out Errors (REPLACEME_VLANNAME)",
+          "bucketAggs": [
+            {
+              "field": "start",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "values.out_errors.delta",
+              "id": "1",
+              "settings": {
+                "script": "-1 * _value / ($__interval_ms / 1000)"
+              },
+              "type": "sum"
+            }
+          ],
+          "query": "meta.id:/REPLACEME_INTERVLAN/",
+          "refId": "B",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Out Errors (REPLACEME_INTERFACE)",
+          "bucketAggs": [
+            {
+              "field": "start",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "REPLACEME_DATASOURCE"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "values.out_errors.delta",
+              "id": "1",
+              "settings": {
+                "script": "-1 * _value / ($__interval_ms / 1000)"
+              },
+              "type": "sum"
+            }
+          ],
+          "query": "meta.id:/REPLACEME_INTERFACE/",
+          "refId": "D",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Interface Status (Errors In/Out)",
+      "type": "timeseries"
+    }
+]

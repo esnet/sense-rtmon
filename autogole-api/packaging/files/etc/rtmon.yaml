@@ -84,11 +84,7 @@ template_links:
 # realportname - so we need to override it as well. (That is the feature not yet implemented in other RMs)
 override_url: "https://raw.githubusercontent.com/esnet/sense-rtmon/master/autogole-api/packaging/files/etc/overrides.yaml"
 
-# Base url for OSCARS monitoring. If not set, OSCARS monitoring link will not be added.
-oscars_base_url: "https://my.es.net/oscars/view/"
-
 external_service:
-  ESnet: "https://nsi-snmpmon-esnet.nrp-nautilus.io/"
   Internet2: "https://nsi-snmpmon-internet2.nrp-nautilus.io/"
 
 # HostCert and HostKey location (needed for SiteRM communications). Cert must be authorized in all Frontends.

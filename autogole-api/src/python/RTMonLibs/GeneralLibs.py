@@ -45,6 +45,9 @@ def getUUID(inputstr):
     # Grafana allows max 40 chars for UUID
     return customUUID[:40]
 
+def generateUUID(inputstr):
+    """Generate dashboard UUID from Input Str"""
+    return str(uuid.uuid5(uuid.NAMESPACE_DNS, inputstr))
 
 def encodebase64(inputstr):
     """Encode string to base64"""

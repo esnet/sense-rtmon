@@ -157,6 +157,9 @@ def escape(invalue):
     """Escape special characters for regex matching"""
     return invalue.replace("+", "[+]")
 
+def escapeES(invalue):
+    """Escape special characters for Elasticsearch queries"""
+    return invalue.replace("/", r"\/")
 
 class ExceptionTemplate(Exception):
     """Exception template."""

@@ -3,7 +3,7 @@
 """Grafana Template Generation"""
 import copy
 import os.path
-from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape
+from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, escapeES
 from RTMonLibs.GeneralLibs import _processName, encodebase64, generateUUID
 
 
@@ -673,8 +673,8 @@ class Template:
             panels = panels.replace("REPLACEME_DATASOURCE", str(self._t_getDataSource('ESnet')))
             panels = panels.replace("REPLACEME_SITENAME", sitename)
             panels = panels.replace("REPLACEME_HOSTNAME", hostname)
-            panels = panels.replace("REPLACEME_INTERFACE", f"{tmpdict['device']}::{tmpdict['port']}")
-            panels = panels.replace("REPLACEME_INTERVLAN", self.__t_findIntf(interfaces, False))
+            panels = panels.replace("REPLACEME_INTERFACE", escapeES(f"{tmpdict['device']}::{tmpdict['port']}"))
+            panels = panels.replace("REPLACEME_INTERVLAN", escapeES(self.__t_findIntf(interfaces, False)))
             panels = panels.replace("REPLACEME_VLANNAME", f"Vlan{tmpdict['vlan']}")
             panels = loadJson(panels, self.logger)
             out += self.addRowPanel(row, panels, True)

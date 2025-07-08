@@ -45,6 +45,7 @@ def getUUID(inputstr):
     # Grafana allows max 40 chars for UUID
     return customUUID[:40]
 
+
 def generateUUID(inputstr):
     """Generate dashboard UUID from Input Str"""
     return str(uuid.uuid5(uuid.NAMESPACE_DNS, inputstr))
@@ -159,7 +160,7 @@ def escape(invalue):
 
 def escapeES(invalue):
     """Escape special characters for Elasticsearch queries"""
-    return invalue.replace("/", r"\/")
+    return invalue.replace("/", r"\\\/")
 
 class ExceptionTemplate(Exception):
     """Exception template."""

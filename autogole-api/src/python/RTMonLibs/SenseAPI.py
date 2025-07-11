@@ -35,24 +35,113 @@ class SenseAPI:
             "executeping": {
                 "name": "Issue Ping between endpoints",
                 "key": "executeping",
+                "label": "Ping Test",
                 "description": "Issue ping automatically between endpoints (Default true)",
-                "type": "boolean",
-                "default": True,
+                "type": "complex",
+                "options": [
+                    {
+                        "key": "enabled",
+                        "type": "boolean",
+                        "default": False,
+                        "description": "Enable ping between endpoints"
+                    }
+                ]
             },
             "allmacs": {
                 "name": "Show All Learned Mac's",
                 "key": "allmacs",
+                "label": "Show All MACs",
                 "description": "Generate table in dashboard with all MAC addresses learned in the network devices (Default False)",
-                "type": "boolean",
-                "default": False,
+                "type": "complex",
+                "options": [
+                    {
+                        "key": "enabled",
+                        "type": "boolean",
+                        "default": False,
+                        "description": "Enable showing all MAC addresses in the dashboard"
+                    }
+                ]
+            },
+            "executeiperf": {
+                "name": "Issue Iperf Between 2 Sites",
+                "description": "Issue Iperf test between 2 endpoints.",
+                "key": "executeiperf",
+                "label": "IPerf Test",
+                "type": "complex",
+                "options": [
+                    {
+                        "key": "enabled",
+                        "type": "boolean",
+                        "default": False,
+                        "description": "Enable Iperf between 2 endpoints"
+                    },
+                    {
+                        "key": "streams",
+                        "type": "number",
+                        "default": 4,
+                        "description": "Number of Streams to use. Default 4, Max 16"
+                    },
+                    {
+                        "key": "runtime",
+                        "type": "number",
+                        "default": 300,
+                        "description": "Total Runtime in seconds. Default 300, Max 1800"
+                    },
+                    {
+                        "key": "bothdirections",
+                        "type": "boolean",
+                        "default": True,
+                        "description": "Execute Iperf in both directions at the same time (Default True). If False - will execute in one direction only after another (+2min timeout between them)"
+                    }
+                ]
+            },
+            "executefdt": {
+                "name": "Issue FDT Between 2 Sites",
+                "key": "executefdt",
+                "label": "FDT Test",
+                "type": "complex",
+                "options": [
+                    {
+                        "key": "enabled",
+                        "type": "boolean",
+                        "default": False,
+                        "description": "Enable FDT between 2 endpoints"
+                    },
+                    {
+                        "key": "streams",
+                        "type": "number",
+                        "default": 4,
+                        "description": "Number of Streams to use. Default 4, Max 16"
+                    },
+                    {
+                        "key": "runtime",
+                        "type": "number",
+                        "default": 300,
+                        "description": "Total Runtime in seconds. Default 300, Max 1800"
+                    },
+                    {
+                        "key": "bothdirections",
+                        "type": "boolean",
+                        "default": True,
+                        "description": "Execute Iperf in both directions at the same time (Default True). If False - will execute in one direction only after another (+2min timeout between them)"
+                    }
+                ]
             },
             "debugmode": {
                 "name": "Debug Mode (Detailed graphs)",
                 "key": "debugmode",
+                "label": "Debug Mode",
                 "description": "Show more detailed dashboard with all debug information included (Default False)",
-                "type": "boolean",
-                "default": False,
-            },
+                "type": "complex",
+                "options": [
+                    {
+                        "key": "enabled",
+                        "type": "boolean",
+                        "default": False,
+                        "description": "Enable debug mode in the dashboard. Will show all debug information, like L2, L3, Intent, Model, etc."
+                    }
+                ]
+            }
         }
 
     def _s_getworkeruuid(self):

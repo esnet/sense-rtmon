@@ -60,10 +60,11 @@ class SiteRMApi:
             for tmpitem in allitems:
                 jsonOut = loadJson(tmpitem, self.logger)
                 ditem = self.siterm_debug.get_debug(
-                    sitename=kwargs.get("sitename"), id=jsonOut["id"]
+                    sitename=kwargs.get("sitename"), id=jsonOut["id"],
+                    details=True, state=key
                 )
                 if ditem and ditem[0]:
-                    ditem = ditem[0]
+                    ditem = ditem[0][0]
                     ditem["requestdict"] = loadJson(ditem["requestdict"], self.logger)
                 allDebugActions.append(ditem)
         return allDebugActions
@@ -105,7 +106,7 @@ class SiteRMApi:
                             "interface": host["Interface"]
                             if not host.get("vlan")
                             else host["vlan"],
-                            "time": kwargs.get("time", 1800),
+                            "time": kwargs.get("time", 600),
                             "onetime": False,
                         }
                         actionPresent = False

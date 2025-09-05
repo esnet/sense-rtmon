@@ -807,35 +807,7 @@ class Template:
         self.logger.info("Creating diagrams")
         # Generate Mermaid (Send copy of args, as t_createMermaid will modify it by del items)
         orig_args = copy.deepcopy(args)
-        collapsed = self.config.get("topdiagrams", "Diagrams") == "Diagrams"
-        mermaid = self.t_createMermaid(*orig_args, **{"collapsed": collapsed})
-        # Generate Diagrams diagram.
-        ddiagram = None
-        try:
-            diagramFilename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{kwargs['referenceUUID']}"
-            self.d_createGraph(diagramFilename)
-            self.logger.info(f"Diagram saved at {diagramFilename}.png")
-            # Image Panel
-            imageHost = self.config.get("image_host", "http://localhost")
-            imagePort = self.config.get("image_port", "8000")
-            baseImageUrl = imageHost + ":" + imagePort + "/images"
-            imageUrl = f"{baseImageUrl}/diagram_{kwargs['referenceUUID']}.png"
-            collapsed = self.config.get("topdiagrams", "Diagrams") != "Diagrams"
-        except Exception as ex:
-            self.logger.error("Failed to create diagram: %s", ex)
-        # If we have two diagrams, first we identify order and based on config, first one will be on top
-        # while second will be at the bottom of the page
-        # This means that second one should change row to collapsed
-        if mermaid and ddiagram:
-            if self.config.get("topdiagrams", "Diagrams") == "Diagrams":
-                return [ddiagram, mermaid]
-            return [mermaid, ddiagram]
-        # If we have only one and diagrams failed for any reason, we would need to modify
-        # many panels inside mermaid not to be collapsed. We regenerate mermaid
-        if mermaid and not ddiagram:
-            orig_args = copy.deepcopy(args)
-            return [self.t_createMermaid(*orig_args, **{"collapsed": False})]
-        return []
+        return [self.t_createMermaid(*orig_args, **{"collapsed": False})]
 
     def t_addAllMacs(self, *args, **_kwargs):
         """Add AllMacs to the Dashboard"""

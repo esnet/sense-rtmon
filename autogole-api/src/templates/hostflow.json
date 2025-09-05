@@ -11,7 +11,7 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "packets out (-) / in (+)",
+            "axisLabel": "Bits/s out (-) / in (+)",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -53,7 +53,7 @@
               }
             ]
           },
-          "unit": "pps"
+          "unit": "bps"
         },
         "overrides": [
           {
@@ -155,7 +155,7 @@
             "type": "prometheus",
             "uid": "REPLACEME_DATASOURCE"
           },
-          "expr": "irate(node_network_receive_packets_total{instance=~\"REPLACEME_HOSTNAME.*\",sitename=\"REPLACEME_SITENAME\", device=~\"REPLACEME_INTERFACE\"}[2m])",
+          "expr": "irate(node_network_receive_bytes_total{instance=~\"REPLACEME_HOSTNAME.*\",sitename=\"REPLACEME_SITENAME\", device=~\"REPLACEME_INTERFACE\"}[2m])*8",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -168,7 +168,7 @@
             "type": "prometheus",
             "uid": "REPLACEME_DATASOURCE"
           },
-          "expr": "irate(node_network_transmit_packets_total{instance=~\"REPLACEME_HOSTNAME.*\",sitename=\"REPLACEME_SITENAME\", device=~\"REPLACEME_INTERFACE\"}[2m])",
+          "expr": "irate(node_network_transmit_bytes_total{instance=~\"REPLACEME_HOSTNAME.*\",sitename=\"REPLACEME_SITENAME\", device=~\"REPLACEME_INTERFACE\"}[2m])*8",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,

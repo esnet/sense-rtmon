@@ -3,8 +3,6 @@ requests
 pyyaml
 grafana-client
 diagrams
-flask
-gunicorn
 prometheus_api_client
 pillow>=10.3.0
 fonttools>=4.43.0

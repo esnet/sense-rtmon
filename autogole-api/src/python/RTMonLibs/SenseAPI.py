@@ -32,26 +32,85 @@ class SenseAPI:
         self.meta_apis = {}
         self.uuids = {}
         self.supported_actions = {
-            "executeping": {
-                "name": "Issue Ping between endpoints",
-                "key": "executeping",
+            "executepinghost": {
+                "name": "Issue Ping from Hosts",
+                "key": "executepinghost",
+                "label": "Ping Test from Hosts",
                 "description": "Issue ping automatically between endpoints (Default true)",
-                "type": "boolean",
-                "default": True,
+                "type": "complex",
+                "options": [{"key": "enabled", "name": "Enable flag", "type": "boolean", "default": False, "description": "Enable ping between hosts. Done continously and repeated every 5 minutes."}],
+            },
+            "executepingnet": {
+                "name": "Issue Ping from Network endpoints",
+                "key": "executepingnet",
+                "label": "Ping Test from Network",
+                "description": "Issue ping automatically between network endpoints (Default false)",
+                "type": "complex",
+                "options": [
+                    {
+                        "key": "enabled",
+                        "name": "Enable flag",
+                        "type": "boolean",
+                        "default": False,
+                        "description": "Enable ping from network endpoints. Only done once for 5 minutes, when enabled. To re-enable - disable and enable again.",
+                    }
+                ],
             },
             "allmacs": {
                 "name": "Show All Learned Mac's",
                 "key": "allmacs",
-                "description": "Generate table in dashboard with all MAC addresses learned in the network devices (Default False)",
-                "type": "boolean",
-                "default": False,
+                "label": "Show All MACs",
+                "description": "Generate table in dashboard with all MAC addresses learned in the network devices",
+                "type": "complex",
+                "options": [{"key": "enabled", "name": "Enable flag", "type": "boolean", "default": False, "description": "Enable showing all MAC addresses in the dashboard"}],
             },
             "debugmode": {
                 "name": "Debug Mode (Detailed graphs)",
                 "key": "debugmode",
-                "description": "Show more detailed dashboard with all debug information included (Default False)",
-                "type": "boolean",
-                "default": False,
+                "label": "Debug Mode",
+                "description": "Show more detailed dashboard with all debug information included",
+                "type": "complex",
+                "options": [
+                    {
+                        "key": "enabled",
+                        "name": "Enable flag",
+                        "type": "boolean",
+                        "default": False,
+                        "description": "Enable debug mode in the dashboard. Will show all debug information, like L2, L3, Intent, Model, etc.",
+                    }
+                ],
+            },
+            "executeperf": {
+                "name": "Issue Performance Test Between 2 Sites",
+                "description": "Issue performance test between 2 endpoints.",
+                "key": "executeperf",
+                "label": "Performance Test",
+                "type": "complex",
+                "options": [
+                    {"key": "enabled", "name": "Enable flag", "type": "boolean", "default": False, "description": "Enable performance test between 2 endpoints. Default False"},
+                    {
+                        "label": "Test Application",
+                        "description": "Select Performance Test application",
+                        "key": "perfapp",
+                        "type": "select",
+                        "default": "notselected",
+                        "options": [
+                            {"key": "notselected", "description": "No performance testing"},
+                            {"key": "iperf", "description": "Use IPerf3 for performance testing"},
+                            {"key": "fdt", "description": "Use FDT for performance testing"},
+                            {"key": "ethr", "description": "Use Ethr for performance testing"},
+                        ],
+                    },
+                    {"key": "streams", "name": "Streams", "type": "number", "default": 4, "description": "Number of Streams to use. Default 4, Max 16"},
+                    {"key": "runtime", "name": "Runtime", "type": "number", "default": 600, "description": "Total Runtime in seconds. Default 300, Max 1800"},
+                    {
+                        "key": "bothdirections",
+                        "name": "Bidirectional",
+                        "type": "boolean",
+                        "default": False,
+                        "description": "Execute Performance Test in both directions at the same time (Default False). If False - will execute in one direction only",
+                    },
+                ],
             },
         }
 
@@ -114,20 +173,14 @@ class SenseAPI:
         }
         data["description"] = []
         if self.config.get("grafana_dev", None):
-            data["description"].append(
-                "**THIS IS A DEVELOPMENT INSTANCE! It might not work as expected, please use production instance.**"
-            )
+            data["description"].append("**THIS IS A DEVELOPMENT INSTANCE! It might not work as expected, please use production instance.**")
         else:
             data["description"].append("**THIS IS A PRODUCTION INSTANCE!**")
         data["description"].append(
             "**RTMon (Real-Time Monitoring)** is an automated service within the SENSE project designed to dynamically monitor and visualize network paths provisioned by SENSE Orchestrators. It identifies active service deltas, retrieves path manifests, and generates Grafana dashboards with detailed host, link, and L2 debug views. RTMon integrates with external monitoring systems like ESnet Stardust, Internet2 TSDS, and other domains to normalize metrics across them.\n"
         )
-        data["description"].append(
-            "It manages lifecycle events by submitting and removing monitoring actions, syncing dashboard state, and triggering diagnostics (e.g., ping) via SiteRM.\n"
-        )
-        data["description"].append(
-            "RTMon loops every 30s, updating visualizations and annotations in real-time, providing end-to-end visibility of cross-domain, intent-driven network services."
-        )
+        data["description"].append("It manages lifecycle events by submitting and removing monitoring actions, syncing dashboard state, and triggering diagnostics (e.g., ping) via SiteRM.\n")
+        data["description"].append("RTMon loops every 30s, updating visualizations and annotations in real-time, providing end-to-end visibility of cross-domain, intent-driven network services.")
         # Add also supported actions
         data["supported_actions"] = list(self.supported_actions.values())
         return data
@@ -148,9 +201,7 @@ class SenseAPI:
         data = self.s_getMetadataRegData()
         folderName = self._getFolderName()
         try:
-            response = dApi.post_metadata(
-                data=dumpJson(data, self.logger), domain="RTMon", name=folderName
-            )
+            response = dApi.post_metadata(data=dumpJson(data, self.logger), domain="RTMon", name=folderName)
         except ValueError as ex:
             self.logger.error(f"Metadata raised ValueError for post - {ex}.")
             response = self.s_getMetadata()
@@ -163,43 +214,27 @@ class SenseAPI:
         try:
             response = self.s_getMetadata()
         except ValueError as ex:
-            self.logger.error(
-                f"Metadata raised ValueError - {ex}. No metadata found for {folderName}. Register new one"
-            )
+            self.logger.error(f"Metadata raised ValueError - {ex}. No metadata found for {folderName}. Register new one")
             response = self.s_registerMetadata()
         if "uuid" not in response:
-            self.logger.error(
-                f"Metadata does not have UUID. My UUID is {myuuid}. Failing to run. Response from SENSE-O: {response}"
-            )
-            raise SENSEOFailure(
-                f"Metadata does not have UUID. My UUID is {myuuid}. Failing to run. Response from SENSE-O: {response}"
-            )
+            self.logger.error(f"Metadata does not have UUID. My UUID is {myuuid}. Failing to run. Response from SENSE-O: {response}")
+            raise SENSEOFailure(f"Metadata does not have UUID. My UUID is {myuuid}. Failing to run. Response from SENSE-O: {response}")
         if response["uuid"] == myuuid:
             self.s_registerMetadata()
         else:
             # Check if timestamp older than 2 mins (if no entry - force update);
-            if getUTCnow() - response.get("last_update", 0) > self.config.get(
-                "overtake_time", 120
-            ):
-                self.logger.error(
-                    f"Metadata is older than 2 minutes. Metadata information: UUID: {response}. My UUID is {myuuid}. Last update: {response['last_update']}. Taking over."
-                )
+            if getUTCnow() - response.get("last_update", 0) > self.config.get("overtake_time", 120):
+                self.logger.error(f"Metadata is older than 2 minutes. Metadata information: UUID: {response}. My UUID is {myuuid}. Last update: {response['last_update']}. Taking over.")
                 self.s_registerMetadata()
             else:
-                raise SENSEOFailure(
-                    f"UUID does not match - {response['uuid']} in database. My UUID is {myuuid}. Last update: {response['last_update']}"
-                )
+                raise SENSEOFailure(f"UUID does not match - {response['uuid']} in database. My UUID is {myuuid}. Last update: {response['last_update']}")
 
     def s_getassignedTasks(self):
         """Get all assigned tasks"""
         tApi = self.s_getTaskApi()
         ret = tApi.get_tasks(assigned="rtmon.instance-manager")
         folderName = self._getFolderName()
-        ret = [
-            task
-            for task in ret
-            if task.get("config", {}).get("deployment", "") == folderName
-        ]
+        ret = [task for task in ret if task.get("config", {}).get("deployment", "") == folderName]
         return ret
 
     def _s_gettaskbyuuid(self, taskuuid):
@@ -213,10 +248,9 @@ class SenseAPI:
     def s_setTaskState(self, taskuuid, state, data=None):
         """Set task state"""
         # Get the task from SENSE-O and check if state is different
+        print(f"Setting task {taskuuid} to state {state}")
         if not taskuuid:
-            self.logger.error(
-                f"No task UUID provided. Ignore to set task state. Data: {data}"
-            )
+            self.logger.error(f"No task UUID provided. Ignore to set task state. Data: {data}")
             return None
         task = self._s_gettaskbyuuid(taskuuid)
         if not task:
@@ -230,9 +264,7 @@ class SenseAPI:
     def s_finishTask(self, taskuuid, data=None):
         """Accept task"""
         if not taskuuid:
-            self.logger.error(
-                f"No task UUID provided. Ignore to finish task. Data: {data}"
-            )
+            self.logger.error(f"No task UUID provided. Ignore to finish task. Data: {data}")
             return None
         task = self._s_gettaskbyuuid(taskuuid)
         if task:
@@ -281,20 +313,14 @@ class SenseAPI:
                 failures = 4
             except Exception as ex:
                 failures += 1
-                self.logger.error(
-                    f"Failed to get manifest from SENSE-O for {instance['referenceUUID']}: {ex}"
-                )
+                self.logger.error(f"Failed to get manifest from SENSE-O for {instance['referenceUUID']}: {ex}")
                 time.sleep(5)
         if not response:
-            self.logger.error(
-                f"Failed to get manifest from SENSE-O for {instance['referenceUUID']} after 3 tries."
-            )
+            self.logger.error(f"Failed to get manifest from SENSE-O for {instance['referenceUUID']} after 3 tries.")
             return {}
         json_response = loadJson(response, self.logger)
         if "jsonTemplate" not in json_response:
-            self.logger.debug(
-                f"WARNING: {instance['referenceUUID']} did not receive correct output!"
-            )
+            self.logger.debug(f"WARNING: {instance['referenceUUID']} did not receive correct output!")
             self.logger.debug(f"WARNING: Response: {response}")
             return {}
         manifest = loadJson(json_response["jsonTemplate"], self.logger)
@@ -307,12 +333,8 @@ class SenseAPI:
             dApi = self.s_getDiscoverApi()
             response = dApi.discover_service_instances_get()
         except Exception as ex:
-            self.logger.critical(
-                f"API Call Failed!. Exception {ex} Response: {response}"
-            )
-            raise SENSEOFailure(
-                f"API Call Failed!. Exception {ex} Response: {response}"
-            ) from ex
+            self.logger.critical(f"API Call Failed!. Exception {ex} Response: {response}")
+            raise SENSEOFailure(f"API Call Failed!. Exception {ex} Response: {response}") from ex
         if not response:
             self.logger.error("No Data received from SENSE-O")
             return {}
@@ -332,9 +354,6 @@ class SenseAPI:
         """Get instance by UUID"""
         instances = self.s_getInstances()
         for instance in instances:
-            if (
-                "referenceUUID" in instance
-                and instance["referenceUUID"] == instance_uuid
-            ):
+            if "referenceUUID" in instance and instance["referenceUUID"] == instance_uuid:
                 return instance
         return {}

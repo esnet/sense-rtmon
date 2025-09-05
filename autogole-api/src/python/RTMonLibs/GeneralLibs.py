@@ -13,6 +13,17 @@ from yaml import safe_load as yload
 from yaml import safe_dump as ydump
 
 
+def valtoboolean(value):
+    """Convert value to boolean"""
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, int):
+        return value != 0
+    if isinstance(value, str):
+        return value.lower() in ["true", "1", "t", "y", "yes"]
+    return False
+
+
 def _processName(name):
     """Process Name for Mermaid and replace all special chars with _"""
     for repl in [
@@ -49,6 +60,7 @@ def getUUID(inputstr):
 def generateUUID(inputstr):
     """Generate dashboard UUID from Input Str"""
     return str(uuid.uuid5(uuid.NAMESPACE_DNS, inputstr))
+
 
 def encodebase64(inputstr):
     """Encode string to base64"""
@@ -142,9 +154,7 @@ def getWebContentFromURL(url, logger, raiseEx=True):
             out = requests.get(url, timeout=60)
             return out
         except requests.exceptions.RequestException as ex:
-            logger.error(
-                f"Got requests.exceptions.RequestException: {ex}. Retries left: {retries}"
-            )
+            logger.error(f"Got requests.exceptions.RequestException: {ex}. Retries left: {retries}")
             if raiseEx and retries == 0:
                 raise
             out = {}
@@ -158,9 +168,11 @@ def escape(invalue):
     """Escape special characters for regex matching"""
     return invalue.replace("+", "[+]")
 
+
 def escapeES(invalue):
     """Escape special characters for Elasticsearch queries"""
     return invalue.replace("/", r"\\\/")
+
 
 class ExceptionTemplate(Exception):
     """Exception template."""

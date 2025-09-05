@@ -74,9 +74,7 @@ class Mermaid:
             self.mermaid.append(f'{" "*spaces}subgraph {uniqname}[{splt[1]}]')
         else:
             # This should not happen.
-            self.logger.debug(
-                "addSubgraph received 3 items. That is not supported as unsure how to use uniqname."
-            )
+            self.logger.debug("addSubgraph received 3 items. That is not supported as unsure how to use uniqname.")
             for val in splt:
                 self.mermaid.append(f'{" "*spaces}subgraph {val}')
                 spaces += 2
@@ -131,35 +129,25 @@ class Mermaid:
         if not item.get("Site", None):
             return
         for intitem in self.instance.get("intents", []):
-            for connections in (
-                intitem.get("json", {}).get("data", {}).get("connections", [])
-            ):
+            for connections in intitem.get("json", {}).get("data", {}).get("connections", []):
                 for terminal in connections.get("terminals", []):
                     if "uri" not in terminal:
                         continue
-                    if item["Site"] == terminal["uri"] and terminal.get(
-                        f"{ipkey.lower()}_prefix_list", None
-                    ):
+                    if item["Site"] == terminal["uri"] and terminal.get(f"{ipkey.lower()}_prefix_list", None):
                         val = terminal[f"{ipkey.lower()}_prefix_list"]
                         # Mermaid key for IPv4/6 IP
                         mermaidpeerkey = "BGP" + "_" + ipkey + "_" + _processName(val)
 
-                        self._m_addMermaidUnique(
-                            f"        {mermaidpeerkey}(BGP_{ipkey})"
-                        )
+                        self._m_addMermaidUnique(f"        {mermaidpeerkey}(BGP_{ipkey})")
                         self._m_addLink(bgppeer, mermaidpeerkey)
-                        self._m_addMermaidUnique(
-                            f"        {mermaidpeerkey}_peer({val})"
-                        )
+                        self._m_addMermaidUnique(f"        {mermaidpeerkey}_peer({val})")
                         self._m_addLink(mermaidpeerkey, f"{mermaidpeerkey}_peer")
 
     def _m_addSwitch(self, item):
         """Add Switch to Mermaid"""
         startsize = len(self.mermaid)
         uniqname = _processName(f'{item["Node"]}_{item["Name"]}')
-        self.m_groups["Switches"].setdefault(item["Node"], {}).setdefault(
-            item["Name"], {}
-        )
+        self.m_groups["Switches"].setdefault(item["Node"], {}).setdefault(item["Name"], {})
         self.m_groups["Switches"][item["Node"]][item["Name"]] = item
         self._m_recordMac(item)  # Record mac of switch interfaces
         subgraphval = ""
@@ -183,12 +171,8 @@ class Mermaid:
                 mermaidipkey = uniqname + "_" + ipkey + "_" + _processName(item[ipkey])
                 self._m_addMermaidUnique(f"        {mermaidipkey}({item[ipkey]})")
                 if item.get("Vlan"):
-                    self._m_addMermaidUnique(
-                        f'        {uniqname}_vlan{item["Vlan"]}(vlan.{item["Vlan"]})'
-                    )
-                    self._m_addLink(
-                        _processName(item["Port"]), f'{uniqname}_vlan{item["Vlan"]}'
-                    )
+                    self._m_addMermaidUnique(f'        {uniqname}_vlan{item["Vlan"]}(vlan.{item["Vlan"]})')
+                    self._m_addLink(_processName(item["Port"]), f'{uniqname}_vlan{item["Vlan"]}')
                     # Generate unique ipkey vkey
                     self._m_addLink(f'{uniqname}_vlan{item["Vlan"]}', f"{mermaidipkey}")
                     # Add BGP Peering information
@@ -201,9 +185,7 @@ class Mermaid:
     def _m_addHost(self, host):
         """Add Host to Mermaid"""
         uniqname = _processName(f'{host["Name"]}_{host["Interface"]}')
-        self.m_groups["Hosts"].setdefault(host["Name"], {}).setdefault(
-            host["Interface"], {}
-        )
+        self.m_groups["Hosts"].setdefault(host["Name"], {}).setdefault(host["Interface"], {})
         self._addSubgraph(host["Name"])
         self.m_groups["Hosts"][host["Name"]][host["Interface"]] = host
         self._m_addMermaidUnique(f'        {uniqname}("{host["Interface"]}")')
@@ -212,20 +194,12 @@ class Mermaid:
             self.mermaid.append(f'        {uniqname}("{host["Interface"]}")')
             for ipkey, ipdef in {"IPv4": "?ipv4?", "IPv6": "?ipv6?"}.items():
                 if ipkey in host and host[ipkey] != ipdef:
-                    self._m_addMermaidUnique(
-                        f"        {uniqname}_{ipkey}({host[ipkey]})"
-                    )
+                    self._m_addMermaidUnique(f"        {uniqname}_{ipkey}({host[ipkey]})")
                     if host.get("Vlan"):
-                        self._m_addMermaidUnique(
-                            f'        {uniqname}_vlan{host["Vlan"]}(vlan.{host["Vlan"]})'
-                        )
+                        self._m_addMermaidUnique(f'        {uniqname}_vlan{host["Vlan"]}(vlan.{host["Vlan"]})')
                         self._m_addLink(uniqname, f'{uniqname}_vlan{host["Vlan"]}')
-                        self._m_addLink(
-                            f'{uniqname}_vlan{host["Vlan"]}', f"{uniqname}_{ipkey}"
-                        )
-                        self.m_groups["Hosts"].setdefault(host["Name"], {}).setdefault(
-                            f'vlan.{host["Vlan"]}', {}
-                        )
+                        self._m_addLink(f'{uniqname}_vlan{host["Vlan"]}', f"{uniqname}_{ipkey}")
+                        self.m_groups["Hosts"].setdefault(host["Name"], {}).setdefault(f'vlan.{host["Vlan"]}', {})
         self._endSubgraph(host["Name"])
         if "Link" in host:
             self._m_addLink(uniqname, host["Link"])
@@ -316,10 +290,7 @@ class Mermaid:
                     continue
                 tmpitem["Type"] = "Switch"
                 self.orderlist.append(tmpitem)
-                if (
-                    tmpitem["Peer"] != "?peer?"
-                    and item["Peer"] not in self.orderlistports
-                ):
+                if tmpitem["Peer"] != "?peer?" and item["Peer"] not in self.orderlistports:
                     tmpitem["Type"] = "Switch"
                     self.orderlistports.append(tmpitem["Peer"])
                     nextHop = tmpitem["Peer"]
@@ -344,18 +315,14 @@ class Mermaid:
         loopcount = 5
         while len(manifest["Ports"]) > 0:
             if nexthoptype == "Host":
-                hostid, nexthop, lastitem, nexthoptype = self._findHost(
-                    manifest, nexthop, lastitem
-                )
+                hostid, nexthop, lastitem, nexthoptype = self._findHost(manifest, nexthop, lastitem)
                 if hostid is not None:
                     del manifest["Ports"][hostid]
                     continue
             if nexthoptype == "Node":
                 hostid, nexthop, lastitem = self._findNode(manifest, nexthop, lastitem)
                 if hostid:
-                    hostid.sort(
-                        reverse=True
-                    )  # Deletion should happen from the last item
+                    hostid.sort(reverse=True)  # Deletion should happen from the last item
                     for idx in hostid:
                         del manifest["Ports"][idx]
                     nexthoptype = "Peer"
@@ -387,9 +354,7 @@ class Mermaid:
                     # Get terminal from instance;
                     # Find Node name;
                     try:
-                        searchuri = self.instance["intents"][0]["json"]["data"][
-                            "connections"
-                        ][0]["terminals"][0]["uri"]
+                        searchuri = self.instance["intents"][0]["json"]["data"]["connections"][0]["terminals"][0]["uri"]
                         nexthop = self._findNodeName(manifest, searchuri)
                         if nexthop:
                             nexthoptype = "Node"
@@ -495,30 +460,9 @@ class Template:
     def _t_loadTemplate(self, templateName):
         """Load Template"""
         template = None
-        with open(
-            os.path.join(self.templatePath, templateName), "r", encoding="utf-8"
-        ) as fd:
+        with open(os.path.join(self.templatePath, templateName), "r", encoding="utf-8") as fd:
             template = loadJson(fd.read(), self.logger)
         return template
-
-    def t_addImageRow(self, image_url, title="Network Topology Image", collapsed=False):
-        """Add an Image Panel to a Collapsible Row"""
-        row = self.t_addRow(title=f"{title} Row", collapsed=collapsed)
-        panel = self.t_addImagePanel(image_url, title=title)
-        return self.addRowPanel(row, [panel], recordAnnotations=False)
-
-    def t_addImagePanel(self, image_url, title="Image Panel"):
-        """Add an Image Panel to the Dashboard"""
-        panel = {
-            "type": "text",
-            "title": title,
-            "options": {
-                "content": f"<div style='text-align:center;'><img src='{image_url}' style='max-width:100%; height:auto;'></div>",
-            },
-            "gridPos": {"x": 0, "y": 0, "w": 24, "h": 20},
-            "id": self._getNextID(),
-        }
-        return panel
 
     def t_addRow(self, *_args, **kwargs):
         """Add Row to the Dashboard"""
@@ -549,10 +493,7 @@ class Template:
                 sites.append(sitename)
         for sitehost, _interfaces in self.m_groups["Switches"].items():
             sitename = sitehost.split(":")[0]
-            if (
-                sitename in self.dashboards.get("SiteRM", {})
-                or sitename in self.dashboards.get("NSI", {})
-            ) and sitename not in sites:
+            if (sitename in self.dashboards.get("SiteRM", {}) or sitename in self.dashboards.get("NSI", {})) and sitename not in sites:
                 sites.append(sitename)
 
         # Add dynamic urls from configuration and replace sitename with site
@@ -562,9 +503,7 @@ class Template:
             tmpcopy["title"] = f"Site Monitoring: {site}"
             uid = _getSiteDashbUID(site)
             if not uid:
-                self.logger.debug(
-                    f"Site {site} dashboard does not exist in Grafana. Will not add link back."
-                )
+                self.logger.debug(f"Site {site} dashboard does not exist in Grafana. Will not add link back.")
                 continue
             tmpcopy["url"] = f"{self.config['grafana_host']}/d/{uid}"
             ret.append(tmpcopy)
@@ -670,7 +609,7 @@ class Template:
             }
             row = self.t_addRow(*args, title=f"{num}. Switch Flow Summary: {sitehost}")
             panels = dumpJson(self._t_loadTemplate("switchflow-custom-esnet.json"), self.logger)
-            panels = panels.replace("REPLACEME_DATASOURCE", str(self._t_getDataSource('ESnet')))
+            panels = panels.replace("REPLACEME_DATASOURCE", str(self._t_getDataSource("ESnet")))
             panels = panels.replace("REPLACEME_SITENAME", sitename)
             panels = panels.replace("REPLACEME_HOSTNAME", hostname)
             panels = panels.replace("REPLACEME_INTERFACE", escapeES(f"{tmpdict['device']}::{tmpdict['port']}"))
@@ -694,22 +633,18 @@ class Template:
             self.logger.error(f"Got Exception: {ex}")
             self.logger.error(f"Sitehost: {sitehost}")
             self.logger.error(f"Interfaces: {interfaces}")
-            self.logger.error(
-                "This happens for Sites/Switches not exposing correct Sitename/Port. Are you missing an override?"
-            )
+            self.logger.error("This happens for Sites/Switches not exposing correct Sitename/Port. Are you missing an override?")
             raise Exception(f"Sitehost not in correct format. Exception {ex}") from ex
 
         # Custom Site template based on sitename (for now only for ESnet, might neeed to expand to other sites in future)
-        if sitename.lower() == 'esnet':
+        if sitename.lower() == "esnet":
             return self._t_createESnetSwitchFlow(sitehost, num, *args)
         # This is the default switch flow template for everything else
         templateType = self.p_get_switch_template(sitename=sitename, hostname=hostname)
         intfline = self.__t_findIntf(interfaces)
         row = self.t_addRow(*args, title=f"{num}. Switch Flow Summary: {sitehost}")
         if templateType:
-            panels = dumpJson(
-                self._t_loadTemplate(f"switchflow-{templateType}.json"), self.logger
-            )
+            panels = dumpJson(self._t_loadTemplate(f"switchflow-{templateType}.json"), self.logger)
             panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
             panels = panels.replace("REPLACEME_SITENAME", sitename)
             panels = panels.replace("REPLACEME_HOSTNAME", hostname)
@@ -786,12 +721,8 @@ class Template:
                 if items[0] in intfdata and intfdata[items[0]] != items[1]:
                     query = copy.deepcopy(origin_query)
                     query["datasource"]["uid"] = str(self.t_dsourceuid)
-                    query["expr"] = (
-                        f'node_network_address_info{{instance=~"{hostname}.*",sitename="{sitename}", address=~"{intfdata[items[0]].split("/")[0]}"}}'
-                    )
-                    query["legendFormat"] = (
-                        f"{items[0]} Address present on {sitename} {hostname}"
-                    )
+                    query["expr"] = f'node_network_address_info{{instance=~"{hostname}.*",sitename="{sitename}", address=~"{intfdata[items[0]].split("/")[0]}"}}'
+                    query["legendFormat"] = f"{items[0]} Address present on {sitename} {hostname}"
                     query["refId"] = f"A{refid}"
                     refid += 1
                     queries.append(query)
@@ -802,12 +733,8 @@ class Template:
                         if mhost != hostname and macaddr:
                             query = copy.deepcopy(origin_query)
                             query["datasource"]["uid"] = str(self.t_dsourceuid)
-                            query["expr"] = (
-                                f'sum(arp_state{{HWaddress=~"{macaddr}.*",Hostname="{hostname}",sitename="{sitename}",Device="vlan.{vlan}"}}) OR on() vector(0)'
-                            )
-                            query["legendFormat"] = (
-                                f"MAC address of {ssite} {mhost} end visible in arptable under vlan.{vlan}"
-                            )
+                            query["expr"] = f'sum(arp_state{{HWaddress=~"{macaddr}.*",Hostname="{hostname}",sitename="{sitename}",Device="vlan.{vlan}"}}) OR on() vector(0)'
+                            query["legendFormat"] = f"MAC address of {ssite} {mhost} end visible in arptable under vlan.{vlan}"
                             query["refId"] = f"A{refid}"
                             refid += 1
                             queries.append(query)
@@ -828,9 +755,7 @@ class Template:
         query = copy.deepcopy(origin_query)
         # Add state and check if it receives information from snmp monitoring
         query["datasource"]["uid"] = str(self.t_dsourceuid)
-        query["expr"] = (
-            f'count(interface_statistics{{sitename="{sitename}", hostname="{hostname}"}}) OR on() vector(0)'
-        )
+        query["expr"] = f'count(interface_statistics{{sitename="{sitename}", hostname="{hostname}"}}) OR on() vector(0)'
         query["legendFormat"] = f"SNMP Data available for {sitename} {hostname}"
         query["refId"] = f"A{refid}"
         refid += 1
@@ -849,12 +774,8 @@ class Template:
                         continue
                     query = copy.deepcopy(origin_query)
                     query["datasource"]["uid"] = str(self.t_dsourceuid)
-                    query["expr"] = (
-                        f'sum(mac_table_info{{sitename="{sitename}",hostname="{hostname}", macaddress="{macaddr}", vlan="{vlan}"}}) OR on() vector(0)'
-                    )
-                    query["legendFormat"] = (
-                        f"MAC address of {ssite} {mhost} visible in mac table ({vlan})"
-                    )
+                    query["expr"] = f'sum(mac_table_info{{sitename="{sitename}",hostname="{hostname}", macaddress="{macaddr}", vlan="{vlan}"}}) OR on() vector(0)'
+                    query["legendFormat"] = f"MAC address of {ssite} {mhost} visible in mac table ({vlan})"
                     query["refId"] = f"A{refid}"
                     refid += 1
                     queries.append(query)
@@ -877,9 +798,7 @@ class Template:
             out += self._t_addHostL2Debugging(sitehost, interfaces, refID)
         # For each switch:
         for sitehost, interfaces in self.m_groups["Switches"].items():
-            self.logger.debug(
-                f"Adding L2 Debugging for Switch: {sitehost}, {interfaces}"
-            )
+            self.logger.debug(f"Adding L2 Debugging for Switch: {sitehost}, {interfaces}")
             out += self._t_addSwitchL2Debugging(sitehost, interfaces, refID)
         return self.addRowPanel(row, out, True)
 
@@ -902,9 +821,6 @@ class Template:
             baseImageUrl = imageHost + ":" + imagePort + "/images"
             imageUrl = f"{baseImageUrl}/diagram_{kwargs['referenceUUID']}.png"
             collapsed = self.config.get("topdiagrams", "Diagrams") != "Diagrams"
-            ddiagram = self.t_addImageRow(
-                imageUrl, title="Network Topology Image", collapsed=collapsed
-            )
         except Exception as ex:
             self.logger.error("Failed to create diagram: %s", ex)
         # If we have two diagrams, first we identify order and based on config, first one will be on top
@@ -921,22 +837,41 @@ class Template:
             return [self.t_createMermaid(*orig_args, **{"collapsed": False})]
         return []
 
-    def t_addAllMacs(self, *args, **kwargs):
+    def t_addAllMacs(self, *args, **_kwargs):
         """Add AllMacs to the Dashboard"""
         out = []
+        mappings = {}
         for sitehost in self.mac_addresses.keys():
-            sitename = sitehost.split(":")[0]
-            hostname = sitehost.split(":")[1]
-            row = self.t_addRow(
-                *args, title=f"All MAC Addresses ({sitename}, {hostname})"
-            )
-            # Add AllMacs panel
-            panel = dumpJson(self._t_loadTemplate("allmacs.json"), self.logger)
-            panel = panel.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
-            panel = panel.replace("REPLACEME_SITENAME", sitename)
-            panel = panel.replace("REPLACEME_HOSTNAME", hostname)
-            panel = loadJson(panel, self.logger)
-            out += self.addRowPanel(row, [panel])
+            if len(sitehost.split(":")) == 2:
+                sitename = sitehost.split(":")[0]
+                hostname = sitehost.split(":")[1]
+                mappings.setdefault(sitename, [])
+                if hostname not in mappings[sitename]:
+                    mappings[sitename].append(hostname)
+                continue
+        for sitename, hostnames in mappings.items():
+            for hostname in hostnames:
+                row = self.t_addRow(*args, title=f"All MAC Addresses ({sitename}, {hostname})")
+                # Add AllMacs panel
+                panel = dumpJson(self._t_loadTemplate("allmacs.json"), self.logger)
+                panel = panel.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
+                panel = panel.replace("REPLACEME_SITENAME", sitename)
+                panel = panel.replace("REPLACEME_HOSTNAME", hostname)
+                panel = loadJson(panel, self.logger)
+                out += self.addRowPanel(row, [panel])
+        for sitename, sdata in self.mac_addresses.items():
+            # if sitename split len is 0, then it is a host;
+            if len(sitename.split(":")) == 1:
+                for hostname in sdata.keys():
+                    # We add host panels now
+                    row = self.t_addRow(*args, title=f"All MAC Addresses ({sitename}, {hostname})")
+                    # Add AllMacs panel
+                    panel = dumpJson(self._t_loadTemplate("allmacshost.json"), self.logger)
+                    panel = panel.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
+                    panel = panel.replace("REPLACEME_SITENAME", sitename)
+                    panel = panel.replace("REPLACEME_HOSTNAME", hostname)
+                    panel = loadJson(panel, self.logger)
+                    out += self.addRowPanel(row, [panel])
         return out
 
     def t_createTemplate(self, *args, **kwargs):
@@ -956,35 +891,27 @@ class Template:
             if item["Type"] == "Host":
                 # Check if this host name hasn't been processed already
                 if item["Name"] not in added:
-                    self.generated["panels"] += self.t_createHostFlow(
-                        item["Name"], counter, *args
-                    )
+                    self.generated["panels"] += self.t_createHostFlow(item["Name"], counter, *args)
                     added.append(item["Name"])
                     counter += 1
             elif item["Type"] == "Switch":
                 # Check if this switch node hasn't been processed already
                 if item["Node"] not in added:
-                    self.generated["panels"] += self.t_createSwitchFlow(
-                        item["Node"], counter, *args
-                    )
+                    self.generated["panels"] += self.t_createSwitchFlow(item["Node"], counter, *args)
                     added.append(item["Node"])
                     counter += 1
             else:
                 self.logger.error(f"Unknown Type: {item['Type']}. Skipping... {item}")
         # Add L2 Debugging
         self.generated["panels"] += self.t_addL2Debugging(*args)
-        debugmode = self.getTaskSetting(
-            kwargs.get("taskinfo"), "debugmode", self.config.get("Debug", False)
-        )
+        debugmode = self.getTaskEnabled(kwargs.get("taskinfo"), "debugmode")
         if debugmode:
             if len(diagrams) > 1:
                 self.generated["panels"] += diagrams[1]
             # Add Debug Info (manifest, instance)
             self.generated["panels"] += self.t_addDebug(*args)
         # Add AllMacs panels if allmacs true (In case debug is True, we still want to add AllMacs)
-        if self.getTaskSetting(
-            kwargs.get("taskinfo"), "allmacs", self.config.get("Debug", False)
-        ):
+        if self.getTaskEnabled(kwargs.get("taskinfo"), "allmacs"):
             self.generated["panels"] += self.t_addAllMacs(*args, **kwargs)
         return {"dashboard": self.generated}, {
             "uid": self.generated["uid"],

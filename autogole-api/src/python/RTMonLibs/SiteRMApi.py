@@ -231,6 +231,12 @@ class SiteRMApi:
             remsiteid = 1 if indx == 0 else 0
             self.logger.info(f"Found overlapping range for {item['sitename']} {item['iptype']} {item['dynamicfrom']}, can submit ping from L3 host")
             # We have a range that overlaps, we can submit a ping from this site
+            if not pingactions:
+                self.logger.info("No ping actions identified. Sites down?")
+                continue
+            if remsiteid == 1 and len(pingactions) < 2:
+                self.logger.info("No ping actions identified. Sites down?")
+                continue
             newaction = {
                 "type": actionname,
                 "sitename": item["sitename"],

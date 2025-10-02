@@ -1,0 +1,26 @@
+{
+    "alias": "REPLACE_ME_LEGEND",
+    "bucketAggs": [
+        {
+            "field": "@timestamp",
+            "id": "2",
+            "settings": {
+              "interval": "auto"
+            },
+            "type": "date_histogram"
+        }
+    ],
+    "datasource": {
+        "type": "elasticsearch",
+        "uid": "REPLACEME_DATASOURCE"
+    },
+    "metrics": [
+        {
+            "id": "1",
+            "type": "count"
+        }
+    ],
+    "query": "meta.id:/REPLACEME_INTERFACE/ AND meta.fdb_mac_addrs:\"REPLACEME_MACADDR\"",
+    "refId": "REPLACE_ME_REFID",
+    "timeField": "@timestamp"
+}

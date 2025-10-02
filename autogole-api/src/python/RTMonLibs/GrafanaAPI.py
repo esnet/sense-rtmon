@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Grafana API for Autogole SENSE RTMon"""
+import traceback
 import time
 import random
 from urllib.parse import urlparse
@@ -63,6 +64,7 @@ class GrafanaAPI:
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to get dashboards: {ex}")
+                self.logger.error(traceback.format_exc())
                 time.sleep(1)
         raise Exception("Failed to get dashboards after 3 retries")
 
@@ -84,6 +86,7 @@ class GrafanaAPI:
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to get datasources: {ex}")
+                self.logger.error(traceback.format_exc())
                 time.sleep(1)
         raise Exception("Failed to get datasources after 3 retries")
 
@@ -96,6 +99,7 @@ class GrafanaAPI:
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to create dashboard {dashbJson}: {ex}")
+                self.logger.error(traceback.format_exc())
                 time.sleep(1)
         raise Exception(f"Failed to create dashboard {dashbJson} after 3 retries")
 
@@ -118,6 +122,7 @@ class GrafanaAPI:
                         return True
                     failures += 1
                     self.logger.error(f"Failed to delete dashboard {title}: {ex}")
+                    self.logger.error(traceback.format_exc())
                     time.sleep(5)
         else:
             return False
@@ -135,6 +140,7 @@ class GrafanaAPI:
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to create folder {title}: {ex}")
+                self.logger.error(traceback.format_exc())
                 time.sleep(1)
         raise Exception(f"Failed to create folder {title} after 3 retries")
 
@@ -150,6 +156,7 @@ class GrafanaAPI:
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to get folders: {ex}")
+                self.logger.error(traceback.format_exc())
                 time.sleep(1)
         raise Exception("Failed to get folders after 3 retries")
 
@@ -239,6 +246,7 @@ class GrafanaAPI:
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to get dashboard permissions for {dashbuid}: {ex}")
+                self.logger.error(traceback.format_exc())
                 time.sleep(1)
         return {}
 

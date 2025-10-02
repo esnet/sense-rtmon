@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # pylint: disable=line-too-long
 "Class for interacting with Prometheus metrics using the prometheus-api-client library."
+import traceback
 from prometheus_api_client import PrometheusConnect
 import requests
 from requests.auth import HTTPBasicAuth
@@ -43,9 +44,7 @@ class Prometheus:
         Returns the value if available, or None on error or no data.
         """
         if not self.session:
-            self.logger.error(
-                "Prometheus authentication missing in config or credentials not correct."
-            )
+            self.logger.error("Prometheus authentication missing in config or credentials not correct.")
             return None
 
         prom_url = self.config.get("prometheus_url", None)
@@ -96,4 +95,5 @@ class Prometheus:
         except Exception as ex:
             self.logger.error(f"Error in p_get_switch_template: {ex}")
             self.logger.error("Failed to determine switch template type.")
+            self.logger.error(traceback.format_exc())
             return None

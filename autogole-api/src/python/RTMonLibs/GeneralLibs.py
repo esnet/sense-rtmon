@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """General Libraries for RTMon"""
+import traceback
 import os
 import re
 import json
@@ -127,6 +128,7 @@ def loadYaml(data, logger):
             logger.error("Error in loading yaml dict: %s", ex)
             logger.error("Data: %s", data)
             logger.error("Data type: %s", type(data))
+            logger.error(traceback.format_exc())
         else:
             print("Error in loading yaml dict: %s", ex)
             print("Data: %s", data)

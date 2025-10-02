@@ -2,6 +2,7 @@
 """
 Class for interacting with SENSE SiteRMs
 """
+import traceback
 import time
 import random
 from RTMonLibs.GeneralLibs import loadJson, getUTCnow, valtoboolean
@@ -39,6 +40,7 @@ class SiteRMApi:
                         out.setdefault(sitename, {}).setdefault(iptype, []).append(iprange)
         except Exception as ex:
             self.logger.error(f"Error occurred: {ex}")
+            self.logger.error(traceback.format_exc())
         return out
 
     def _sr_get_all_hosts(self, **kwargs):
@@ -104,6 +106,7 @@ class SiteRMApi:
                     allDebugActions.append(ditem)
             except Exception as e:
                 self.logger.error(f"Failed to get debug actions for {kwargs.get('sitename')}:{kwargs.get('hostname')} action {kwargs.get('action')}: {e}")
+                self.logger.error(traceback.format_exc())
                 continue
         return allDebugActions
 
@@ -588,5 +591,6 @@ class SiteRMApi:
                         self.g_updateAnnotationEndTime(annotation_ids=fout["all_annotations"][action][item["sitename"]][item.get("hostname", "undefined")][item["type"]], time_to=getUTCnow() * 1000)
                     except Exception as e:
                         self.logger.error(f"Error updating annotation end time for {item}: {e}")
+                        self.logger.error(traceback.format_exc())
                     pruneEmpty(fout["all_annotations"], [action, item["sitename"], item["hostname"], item["type"]])
         return fout

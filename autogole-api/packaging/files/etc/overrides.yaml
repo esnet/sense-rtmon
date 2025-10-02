@@ -26,3 +26,6 @@
 "urn:ogf:network:ampath.net:2013":
   name: "AMPATH"
   joint_net: True
+"urn:ogf:network:surf.nl:2020":
+  name: "SURFnet"
+  joint_net: True

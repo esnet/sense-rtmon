@@ -445,9 +445,9 @@ class Template:
             out.append(row)
         return out
 
-    def _t_getDataSource(self, name):
+    def _t_getDataSource(self, name, key="uid", default=1):
         """Get Data Source"""
-        return self.datasources.get(name, {}).get("uid", 1)
+        return self.datasources.get(name, {}).get(key, default)
 
     def _t_setDataSourceUid(self, *_args):
         """Get Data Source UID"""
@@ -541,15 +541,21 @@ class Template:
         out["uid"] = generateUUID(title)
         return out
 
-    def t_createHostFlow(self, sitehost, num, *args):
+    def t_createHostFlow(self, item, num, *args):
         """Create Host Flow Template"""
         out = []
+        sitehost = item["Name"]
         interfaces = self.m_groups["Hosts"].get(sitehost, "")
         if not interfaces:
             self.logger.error(f"Host {sitehost} not found in the groups")
             return out
-        sitename = sitehost.split(":")[0]
-        hostname = sitehost.split(":")[1]
+        try:
+            sitename = sitehost.split(":")[0]
+            hostname = sitehost.split(":")[1]
+        except IndexError as ex:
+            hostname = item["Name"]
+            sitehost = item["Node"]
+            self.logger.debug(f"Got Exception: {ex}")
         intfline = "|".join(interfaces.keys())
         row = self.t_addRow(*args, title=f"{num}. Host Flow Summary: {sitehost}")
         panels = dumpJson(self._t_loadTemplate("hostflow.json"), self.logger)
@@ -619,9 +625,74 @@ class Template:
             out += self.addRowPanel(row, panels, True)
         return out
 
-    def t_createSwitchFlow(self, sitehost, num, *args):
+    def _t_createESnetL2Debug(self, sitehost, interfaces, refid):
+        """Create ESnet L2 Debug Template to query stardust directly"""
+        queries = []
+        try:
+            sitename = sitehost.split(":")[0]
+            hostname = sitehost.split(":")[1]
+        except IndexError as ex:
+            self.logger.error(f"Got Exception: {ex}")
+            self.logger.error(f"Sitehost: {sitehost}")
+            self.logger.error(f"Interfaces: {interfaces}")
+            self.logger.error("This happens for Sites/Switches not exposing correct Sitename/Port. Are you missing an override?")
+            hostname = sitehost
+            sitename = sitehost
+
+        origin_query = self._t_loadTemplate("l2state-query-custom-esnet.json")
+        # For each host mac address - do mac_table_info
+        vlans = []
+        for _intf, intfdata in interfaces.items():
+            if "Vlan" in intfdata and intfdata["Vlan"] not in vlans:
+                vlans.append(intfdata["Vlan"])
+        for vlan in vlans:
+            for ssite, sdata in self.mac_addresses.items():
+                for mhost, macaddr in sdata.items():
+                    if not macaddr:
+                        continue
+                    if sitehost == ssite:
+                        continue
+                    query = dumpJson(copy.deepcopy(origin_query), self.logger)
+                    query = query.replace("REPLACEME_SITENAME", sitename)
+                    query = query.replace("REPLACEME_HOSTNAME", hostname)
+                    query = query.replace("REPLACEME_MACADDR", str(macaddr).upper())
+                    query = query.replace("REPLACEME_DATASOURCE", str(self._t_getDataSource("ESnet")))
+                    query = query.replace("REPLACEME_DATATYPE", str(self._t_getDataSource("ESnet", key="type", default="prometheus")))
+                    query = query.replace("REPLACEME_INTERFACE", escapeES(self.__t_findIntf(interfaces, False)))
+                    query = query.replace("REPLACE_ME_LEGEND", f"MAC address of {ssite} {mhost} visible in mac table ({vlan})")
+                    query = query.replace("REPLACE_ME_REFID", f"A{refid}")
+                    refid += 1
+                    queries.append(loadJson(query, self.logger))
+        panel = self._t_loadTemplate("l2state.json")
+        panel["id"] = self._getNextID()
+        panel["title"] = f"L2 Debugging for Switch: {sitehost}"
+        panel["interval"] = "60s"
+        panel["timeshift"] = "60s"
+        panel["targets"] = queries
+        panel["datasource"]["uid"] = str(self._t_getDataSource("ESnet"))
+        panel["datasource"]["type"] = str(self._t_getDataSource("ESnet", key="type", default="prometheus"))
+        panel["gridPos"]["h"] = 4 + len(queries)
+        return [panel]
+
+    def _t_createESnetAllMacDebug(self, sitename, hostnames, *args):
+        """Create ESnet All Mac Debug Template to query stardust directly"""
+        out = []
+        for hostname in hostnames:
+            row = self.t_addRow(*args, title=f"All MAC Addresses ({sitename}, {hostname})")
+            # Add AllMacs panel
+            panel = dumpJson(self._t_loadTemplate("allmacs-custom-esnet.json"), self.logger)
+            panel = panel.replace("REPLACEME_DATASOURCE", str(self._t_getDataSource("ESnet")))
+            panel = panel.replace("REPLACEME_DATATYPE", str(self._t_getDataSource("ESnet", key="type", default="prometheus")))
+            panel = panel.replace("REPLACEME_SITENAME", sitename)
+            panel = panel.replace("REPLACEME_HOSTNAME", f"{hostname}.*")
+            panel = loadJson(panel, self.logger)
+            out += self.addRowPanel(row, [panel])
+        return out
+
+    def t_createSwitchFlow(self, item, num, *args):
         """Create Switch Flow Template"""
         out = []
+        sitehost = item["Node"]
         interfaces = self.m_groups["Switches"].get(sitehost, "")
         if not interfaces:
             self.logger.error(f"Switch {sitehost} not found in the groups")
@@ -634,7 +705,8 @@ class Template:
             self.logger.error(f"Sitehost: {sitehost}")
             self.logger.error(f"Interfaces: {interfaces}")
             self.logger.error("This happens for Sites/Switches not exposing correct Sitename/Port. Are you missing an override?")
-            raise Exception(f"Sitehost not in correct format. Exception {ex}") from ex
+            hostname = item["Name"]
+            sitehost = item["Node"]
 
         # Custom Site template based on sitename (for now only for ESnet, might neeed to expand to other sites in future)
         if sitename.lower() == "esnet":
@@ -749,8 +821,21 @@ class Template:
     def _t_addSwitchL2Debugging(self, sitehost, interfaces, refid):
         """Add L2 Debugging for Switch"""
         queries = []
-        sitename = sitehost.split(":")[0]
-        hostname = sitehost.split(":")[1]
+        try:
+            sitename = sitehost.split(":")[0]
+            hostname = sitehost.split(":")[1]
+        except IndexError as ex:
+            self.logger.error(f"Got Exception: {ex}")
+            self.logger.error(f"Sitehost: {sitehost}")
+            self.logger.error(f"Interfaces: {interfaces}")
+            self.logger.error("This happens for Sites/Switches not exposing correct Sitename/Port. Are you missing an override?")
+            hostname = sitehost
+            sitename = sitehost
+
+        # Custom Site template based on sitename (for now only for ESnet, might neeed to expand to other sites in future)
+        if sitename.lower() == "esnet":
+            return self._t_createESnetL2Debug(sitehost, interfaces, refid)
+
         origin_query = self._t_loadTemplate("l2state-query.json")
         query = copy.deepcopy(origin_query)
         # Add state and check if it receives information from snmp monitoring
@@ -807,35 +892,7 @@ class Template:
         self.logger.info("Creating diagrams")
         # Generate Mermaid (Send copy of args, as t_createMermaid will modify it by del items)
         orig_args = copy.deepcopy(args)
-        collapsed = self.config.get("topdiagrams", "Diagrams") == "Diagrams"
-        mermaid = self.t_createMermaid(*orig_args, **{"collapsed": collapsed})
-        # Generate Diagrams diagram.
-        ddiagram = None
-        try:
-            diagramFilename = f"{self.config.get('image_dir', '/srv/images')}/diagram_{kwargs['referenceUUID']}"
-            self.d_createGraph(diagramFilename)
-            self.logger.info(f"Diagram saved at {diagramFilename}.png")
-            # Image Panel
-            imageHost = self.config.get("image_host", "http://localhost")
-            imagePort = self.config.get("image_port", "8000")
-            baseImageUrl = imageHost + ":" + imagePort + "/images"
-            imageUrl = f"{baseImageUrl}/diagram_{kwargs['referenceUUID']}.png"
-            collapsed = self.config.get("topdiagrams", "Diagrams") != "Diagrams"
-        except Exception as ex:
-            self.logger.error("Failed to create diagram: %s", ex)
-        # If we have two diagrams, first we identify order and based on config, first one will be on top
-        # while second will be at the bottom of the page
-        # This means that second one should change row to collapsed
-        if mermaid and ddiagram:
-            if self.config.get("topdiagrams", "Diagrams") == "Diagrams":
-                return [ddiagram, mermaid]
-            return [mermaid, ddiagram]
-        # If we have only one and diagrams failed for any reason, we would need to modify
-        # many panels inside mermaid not to be collapsed. We regenerate mermaid
-        if mermaid and not ddiagram:
-            orig_args = copy.deepcopy(args)
-            return [self.t_createMermaid(*orig_args, **{"collapsed": False})]
-        return []
+        return [self.t_createMermaid(*orig_args, **{"collapsed": False})]
 
     def t_addAllMacs(self, *args, **_kwargs):
         """Add AllMacs to the Dashboard"""
@@ -850,6 +907,10 @@ class Template:
                     mappings[sitename].append(hostname)
                 continue
         for sitename, hostnames in mappings.items():
+            # Custom Site template based on sitename (for now only for ESnet, might neeed to expand to other sites in future)
+            if sitename.lower() == "esnet":
+                out += self._t_createESnetAllMacDebug(sitename, hostnames, *args)
+                continue
             for hostname in hostnames:
                 row = self.t_addRow(*args, title=f"All MAC Addresses ({sitename}, {hostname})")
                 # Add AllMacs panel
@@ -891,13 +952,13 @@ class Template:
             if item["Type"] == "Host":
                 # Check if this host name hasn't been processed already
                 if item["Name"] not in added:
-                    self.generated["panels"] += self.t_createHostFlow(item["Name"], counter, *args)
+                    self.generated["panels"] += self.t_createHostFlow(item, counter, *args)
                     added.append(item["Name"])
                     counter += 1
             elif item["Type"] == "Switch":
                 # Check if this switch node hasn't been processed already
                 if item["Node"] not in added:
-                    self.generated["panels"] += self.t_createSwitchFlow(item["Node"], counter, *args)
+                    self.generated["panels"] += self.t_createSwitchFlow(item, counter, *args)
                     added.append(item["Node"])
                     counter += 1
             else:

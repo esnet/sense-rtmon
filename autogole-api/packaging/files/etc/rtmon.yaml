@@ -7,8 +7,10 @@ workdir: '/srv/'
 # Grafana settings (for the API)
 grafana_host: 'https://autogole-grafana.nrp-nautilus.io'
 grafana_api_key: REPLACEME
-
-image_host: 'http://localhost:8000/images'
+# Username and pass is used for Grafana Dashboard user permissions
+# These are not available in api usecase, and need to use user/pass based authentication
+#grafana_username: REPLACEME
+#grafana_password: REPLACEME
 grafana_folder: 'Real Time Mon'
 grafana_dev:
 
@@ -42,9 +44,8 @@ overtake_time: 120
 # Default debug is False (mainly used for development), If set to True Dashboard will be generated with Memaid and Debug Info 
 # Debug:
 
-# Default topdiagrams is Diagrams (mainly used for development)
+# Default topdiagrams is Mermaid
 topdiagrams: Mermaid
-# Choices -> Diagrams | Mermaid 
 # ==================================
 
 # Template path and tags. If tag updated - it will force update all templates

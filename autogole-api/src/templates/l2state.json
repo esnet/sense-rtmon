@@ -1,6 +1,6 @@
 {
   "datasource": {
-    "type": "prometheus",
+    "type": "REPLACEME_DATATYPE",
     "uid": "REPLACEME_DATASOURCE"
   },
   "description": "L2 State Debugging",

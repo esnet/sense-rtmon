@@ -3,6 +3,7 @@
 """
 Class for interacting with SENSE-0 API
 """
+import traceback
 import copy
 import os
 import uuid
@@ -314,6 +315,7 @@ class SenseAPI:
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to get manifest from SENSE-O for {instance['referenceUUID']}: {ex}")
+                self.logger.error(traceback.format_exc())
                 time.sleep(5)
         if not response:
             self.logger.error(f"Failed to get manifest from SENSE-O for {instance['referenceUUID']} after 3 tries.")
@@ -334,6 +336,7 @@ class SenseAPI:
             response = dApi.discover_service_instances_get()
         except Exception as ex:
             self.logger.critical(f"API Call Failed!. Exception {ex} Response: {response}")
+            self.logger.error(traceback.format_exc())
             raise SENSEOFailure(f"API Call Failed!. Exception {ex} Response: {response}") from ex
         if not response:
             self.logger.error("No Data received from SENSE-O")

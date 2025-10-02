@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Grafana API for Autogole SENSE RTMon"""
+import traceback
 import time
 import random
+from urllib.parse import urlparse
 from grafana_client import GrafanaApi
 
 
@@ -15,6 +17,15 @@ class GrafanaAPI:
         self.config = kwargs.get("config")
         self.logger = kwargs.get("logger")
         self.grafanaapi = GrafanaApi.from_url(url=self.config["grafana_host"], credential=self.config["grafana_api_key"], timeout=30)
+        # See https://grafana.com/docs/grafana/latest/developers/http_api/user/#user-api
+        if self.config.get("grafana_username", None) and self.config.get("grafana_password", None):
+            user = self.config["grafana_username"]
+            password = self.config["grafana_password"]
+            parsed = urlparse(self.config["grafana_host"])
+            urlWithAuth = f"{parsed.scheme}://{user}:{password}@{parsed.netloc}{parsed.path or ''}"
+            self.grafanauserapi = GrafanaApi.from_url(url=urlWithAuth, timeout=30)
+        else:
+            self.grafanauserapi = None
         self.datasources = {}
         self.dashboards = {}
         self.folders = {}
@@ -25,6 +36,14 @@ class GrafanaAPI:
         # pylint: disable=E1123
         # Grafana lib does support timeout, but pylint does not know it.
         self.grafanaapi = GrafanaApi.from_url(url=self.config["grafana_host"], credential=self.config["grafana_api_key"], timeout=30)
+        if self.config.get("grafana_username", None) and self.config.get("grafana_password", None):
+            user = self.config["grafana_username"]
+            password = self.config["grafana_password"]
+            parsed = urlparse(self.config["grafana_host"])
+            urlWithAuth = f"{parsed.scheme}://{user}:{password}@{parsed.netloc}{parsed.path or ''}"
+            self.grafanauserapi = GrafanaApi.from_url(url=urlWithAuth, timeout=30)
+        else:
+            self.grafanauserapi = None
         self.g_getDashboards()
         self.g_getFolders()
         self.g_getDataSources()
@@ -45,6 +64,7 @@ class GrafanaAPI:
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to get dashboards: {ex}")
+                self.logger.error(traceback.format_exc())
                 time.sleep(1)
         raise Exception("Failed to get dashboards after 3 retries")
 
@@ -66,6 +86,7 @@ class GrafanaAPI:
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to get datasources: {ex}")
+                self.logger.error(traceback.format_exc())
                 time.sleep(1)
         raise Exception("Failed to get datasources after 3 retries")
 
@@ -78,6 +99,7 @@ class GrafanaAPI:
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to create dashboard {dashbJson}: {ex}")
+                self.logger.error(traceback.format_exc())
                 time.sleep(1)
         raise Exception(f"Failed to create dashboard {dashbJson} after 3 retries")
 
@@ -100,6 +122,7 @@ class GrafanaAPI:
                         return True
                     failures += 1
                     self.logger.error(f"Failed to delete dashboard {title}: {ex}")
+                    self.logger.error(traceback.format_exc())
                     time.sleep(5)
         else:
             return False
@@ -117,6 +140,7 @@ class GrafanaAPI:
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to create folder {title}: {ex}")
+                self.logger.error(traceback.format_exc())
                 time.sleep(1)
         raise Exception(f"Failed to create folder {title} after 3 retries")
 
@@ -132,6 +156,7 @@ class GrafanaAPI:
             except Exception as ex:
                 failures += 1
                 self.logger.error(f"Failed to get folders: {ex}")
+                self.logger.error(traceback.format_exc())
                 time.sleep(1)
         raise Exception("Failed to get folders after 3 retries")
 
@@ -189,3 +214,80 @@ class GrafanaAPI:
         """Update annotation"""
         for annotation_id in kwargs.get("annotation_ids", []):
             self.grafanaapi.annotations.partial_update_annotation(annotation_id, time_to=kwargs["time_to"])
+
+    def g_finduseridsByEmail(self, email):
+        """Find user ids by email address"""
+        failures = 0
+        while failures < 3:
+            try:
+                return self.grafanauserapi.users.find_user(email)
+            except Exception as ex:
+                failures += 1
+                self.logger.error(f"Failed to find user ids by email {email}: {ex}")
+                if "user not found" in str(ex).lower():
+                    return {}
+                time.sleep(1)
+        return {}
+
+    def g_getDashboardPermissions(self, dashbuid):
+        """Get dashboard permissions"""
+        if not self.grafanauserapi:
+            self.logger.error("Grafana user API not configured, cannot get dashboard permissions")
+            return {}
+        failures = 0
+        while failures < 3:
+            try:
+                dashbusers = self.grafanauserapi.client.GET(f"/access-control/dashboards/{dashbuid}")
+                out = {}
+                for item in dashbusers:
+                    if item.get("userId", None):
+                        out[item["userId"]] = item
+                return out
+            except Exception as ex:
+                failures += 1
+                self.logger.error(f"Failed to get dashboard permissions for {dashbuid}: {ex}")
+                self.logger.error(traceback.format_exc())
+                time.sleep(1)
+        return {}
+
+    def g_addUserDashboardPermissions(self, dashbuid, users, permission="View"):
+        """Add user permissions to dashboard"""
+        if not self.grafanauserapi:
+            self.logger.error("Grafana user API not configured, cannot add user permissions")
+            return
+        # Get current dashboard permissions
+        dashbusers = self.g_getDashboardPermissions(dashbuid)
+        for email in users:
+            # Need to identify if user exists;
+            # Get user by email address and identify user id (which is userid)
+            user = self.g_finduseridsByEmail(email)
+            if not user:
+                self.logger.warning(f"User with email {email} not found in Grafana. Cannot add permissions to dashboard {dashbuid}")
+                continue
+            if user["id"] in dashbusers:
+                self.logger.info(f"User with email {email} already has permissions to dashboard {dashbuid}")
+                continue
+            # Once known, add this user id to dashboard permissions.
+            failures = 0
+            while failures < 3:
+                try:
+                    out = self.grafanauserapi.client.POST(f"/access-control/dashboards/{dashbuid}/users/{user['id']}", {"permission": permission})
+                    self.logger.info(f"Added user permissions to dashboard {dashbuid} for user {email}. Result: {out}")
+                    failures = 3  # Just to break the loop
+                except Exception as ex:
+                    failures += 1
+                    self.logger.error(f"Failed to add user permissions to dashboard {dashbuid}: {ex}")
+                    time.sleep(1)
+        # We also need to check what users are in dashbusers and if need to delete it if that user is not in users list anymore
+        for userid, userdict in dashbusers.items():
+            if userdict.get("userLogin", "") not in users and userdict.get("permission", "") != "Admin":
+                failures = 0
+                while failures < 3:
+                    try:
+                        out = self.grafanauserapi.client.DELETE(f"/access-control/dashboards/{dashbuid}/users/{userid}")
+                        self.logger.info(f"Deleted user permissions to dashboard {dashbuid} for user {userdict.get('userLogin', '')}. Result: {out}")
+                    except Exception as ex:
+                        failures += 1
+                        self.logger.error(f"Failed to delete user permissions to dashboard {dashbuid} for user {userdict.get('userLogin', '')}: {ex}")
+                        time.sleep(1)
+        return

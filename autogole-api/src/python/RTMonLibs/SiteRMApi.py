@@ -2,6 +2,7 @@
 """
 Class for interacting with SENSE SiteRMs
 """
+import traceback
 import time
 import random
 from RTMonLibs.GeneralLibs import loadJson, getUTCnow, valtoboolean
@@ -39,6 +40,7 @@ class SiteRMApi:
                         out.setdefault(sitename, {}).setdefault(iptype, []).append(iprange)
         except Exception as ex:
             self.logger.error(f"Error occurred: {ex}")
+            self.logger.error(traceback.format_exc())
         return out
 
     def _sr_get_all_hosts(self, **kwargs):
@@ -104,6 +106,7 @@ class SiteRMApi:
                     allDebugActions.append(ditem)
             except Exception as e:
                 self.logger.error(f"Failed to get debug actions for {kwargs.get('sitename')}:{kwargs.get('hostname')} action {kwargs.get('action')}: {e}")
+                self.logger.error(traceback.format_exc())
                 continue
         return allDebugActions
 
@@ -231,6 +234,12 @@ class SiteRMApi:
             remsiteid = 1 if indx == 0 else 0
             self.logger.info(f"Found overlapping range for {item['sitename']} {item['iptype']} {item['dynamicfrom']}, can submit ping from L3 host")
             # We have a range that overlaps, we can submit a ping from this site
+            if not pingactions:
+                self.logger.info("No ping actions identified. Sites down?")
+                continue
+            if remsiteid == 1 and len(pingactions) < 2:
+                self.logger.info("No ping actions identified. Sites down?")
+                continue
             newaction = {
                 "type": actionname,
                 "sitename": item["sitename"],
@@ -582,5 +591,6 @@ class SiteRMApi:
                         self.g_updateAnnotationEndTime(annotation_ids=fout["all_annotations"][action][item["sitename"]][item.get("hostname", "undefined")][item["type"]], time_to=getUTCnow() * 1000)
                     except Exception as e:
                         self.logger.error(f"Error updating annotation end time for {item}: {e}")
+                        self.logger.error(traceback.format_exc())
                     pruneEmpty(fout["all_annotations"], [action, item["sitename"], item["hostname"], item["type"]])
         return fout

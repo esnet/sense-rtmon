@@ -66,6 +66,15 @@ class RTMonWorker(
             return False
         return True
 
+    def _updateDashboardPermissions(self, fout):
+        """Update dashboard permissions"""
+        # Get dashboard uid;
+        dashbuid = fout.get("dashbInfo", {}).get("uid", None)
+        if not dashbuid:
+            self.logger.error("Dashboard UID not found in dashbInfo. Cannot update permissions")
+            return
+        self.g_addUserDashboardPermissions(dashbuid, fout["taskinfo"]["config"]["users"])
+
     def renew_exe(self, filename, fout):
         """Renew instance mainly if new information received"""
         if "instance" not in fout or "manifest" not in fout:
@@ -98,6 +107,7 @@ class RTMonWorker(
         self._updateState(filename, fout)
         # Update dashboard url to sense-o
         self.s_finishTask(fout.get("taskinfo", {}).get("uuid", ""), {"callbackURL": self.g_getDashboardURL(template["dashboard"]["title"], self._getFolderName())})
+        self._updateDashboardPermissions(fout)
 
     def submit_exe(self, filename, fout):
         """Submit Action Execution"""
@@ -166,6 +176,7 @@ class RTMonWorker(
             fout.get("taskinfo", {}).get("uuid", ""),
             {"callbackURL": self.g_getDashboardURL(template["dashboard"]["title"], self._getFolderName())},
         )
+        self._updateDashboardPermissions(fout)
         # 7. Submit SiteRM Action to issue a test both ways
         fout = self._executeSiteRMActions(fout, instance, manifest)
         # 8. Submit to External API (if any configured)
@@ -233,9 +244,11 @@ class RTMonWorker(
                     self._updateState(filename, fout)
                 if self.config["template_tag"] in dashbVals["tags"]:
                     self.logger.info("Dashboard is present in Grafana: %s", dashbName)
+                    self._updateDashboardPermissions(fout)
                     # Check if we need to execute any SiteRM actions
                     self._executeSiteRMActions(fout, fout.get("instance", {}), fout.get("manifest", {}))
                     self._updateState(filename, fout)
+                    # Add user permissions (if any)
                     # Check SENSE-O State and delete if not in a final state anymore;
                     if not self._checkSenseOState(fout):
                         self.logger.info("SENSE-O Task State not in a final state. Will delete the dashboard")

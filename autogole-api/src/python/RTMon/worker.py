@@ -38,6 +38,7 @@ class RTMonWorker(
         self.goodStates = ["CREATE - READY", "REINSTATE - READY", "MODIFY - READY"]
         self.senseotimer = getUTCnow()
         self.devname = self.config.get("grafana_dev", None)
+        self.active_orchestrators = set()
 
     def _getFolderName(self):
         folderName = self.config.get("grafana_folder", "Real Time Mon")
@@ -448,11 +449,16 @@ class RTMonWorker(
         # 1. Identify all files and submitted items;
         # list alls files under '/srv/ and load as json
         stateInfo = {}
+        skipped = {}
         for root, _, files in os.walk(self.config.get("workdir", "/srv")):
             for filename in files:
                 if filename.startswith("rtmon-debug-"):
                     fout = loadFileJson(os.path.join(root, filename), self.logger)
                     if not fout:
+                        continue
+                    orchestrator = fout.get("orchestrator", "")
+                    if orchestrator not in self.active_orchestrators:
+                        skipped[orchestrator] = skipped.get(orchestrator, 0) + 1
                         continue
                     if fout.get("state", "") in [
                         "delete",
@@ -463,6 +469,8 @@ class RTMonWorker(
                     ]:
                         stateInfo.setdefault(fout["state"], {})
                         stateInfo[fout["state"]][filename] = fout
+        if skipped:
+            self.logger.info("Skipped files for orchestrators not owned by this instance: %s", skipped)
         if not stateInfo:
             return
         excp = None
@@ -496,6 +504,41 @@ class RTMonWorker(
             self.logger.error("Here is the last exception: %s", excp)
             raise excp
 
+    def _writeHeartbeat(self, clean, failed, endpoints):
+        """Record run status so health can be judged from outside the process.
+        
+        This is a simple JSON file that contains the last run time,
+        whether the last run was clean,
+        and the list of configured and active orchestrators.
+        It also records the last time a clean run was completed,
+        so that external monitoring can determine if the process is healthy or not.
+        """
+        hbfile = os.path.join(self.config.get("workdir", "/srv"), ".rtmon-heartbeat")
+        healthy = not failed and clean
+        data = {
+            "last_run": getUTCnow(),
+            "healthy": healthy,
+            "configured_orchestrators": sorted(endpoints),
+            "active_orchestrators": sorted(self.active_orchestrators),
+            "failed_orchestrators": failed,
+            "main_error": not clean,
+        }
+        if healthy:
+            data["last_clean_run"] = data["last_run"]
+        else:
+            previous = {}
+            if os.path.exists(hbfile):
+                try:
+                    previous = loadFileJson(hbfile, self.logger) or {}
+                except OSError as ex:
+                    self.logger.error("Failed to read previous heartbeat %s: %s", hbfile, ex)
+            data["last_clean_run"] = previous.get("last_clean_run", 0)
+        try:
+            with open(hbfile, "w", encoding="utf-8") as fd:
+                fd.write(dumpJson(data, self.logger))
+        except OSError as ex:
+            self.logger.error("Failed to write heartbeat file %s: %s", hbfile, ex)
+
     def startwork(self):
         """Execute Main Program."""
         try:
@@ -507,9 +550,12 @@ class RTMonWorker(
         """Execute Main Program."""
         # Loop via all sense-o instances and create files for each instance
         timings = {}
+        failed = {}
+        self.active_orchestrators = set()
         # Load all grafana dashboards
         self.g_loadAll()
-        for key, val in self.config.get("sense_endpoints", {}).items():
+        endpoints = self.config.get("sense_endpoints", {})
+        for key, val in endpoints.items():
             try:
                 startTime = int(time.time())
                 os.environ["SENSE_AUTH_OVERRIDE_NAME"] = key
@@ -520,16 +566,28 @@ class RTMonWorker(
                 self._getAllTasks()
                 endTime = int(time.time())
                 timings[key] = endTime - startTime
+                self.active_orchestrators.add(key)
             except SENSEOFailure as ex:
-                self.logger.error("SENSEOFailure: %s", ex)
-                self.logger.error("Failed to load SENSE-O data. Will not check any local files")
-                raise ex
+                self.logger.error("SENSEOFailure for %s: %s", key, ex)
+                self.logger.error("Skipping %s this run. Other orchestrators are unaffected.", key)
+                failed[key] = str(ex)
+        if failed:
+            self.logger.error("Orchestrators unavailable this run: %s", sorted(failed))
+        if endpoints and not self.active_orchestrators:
+            # Still not a reason to exit or to stop cycling. RTMon reports itself
+            # unhealthy and keeps polling, so it recovers by itself once they return.
+            self.logger.error("No configured orchestrator is reachable. Reporting unhealthy and continuing.")
         startTime = int(time.time())
         self.logger.info("Running Main")
-        self.main()
-        endTime = int(time.time())
+        clean = False
+        try:
+            self.main()
+            clean = True
+        finally:
+            endTime = int(time.time())
+            timings["MAIN_PROGRAM"] = endTime - startTime
+            self._writeHeartbeat(clean, failed, endpoints)
         self.logger.info("Main run finished")
-        timings["MAIN_PROGRAM"] = endTime - startTime
         self.logger.info("Timings: %s", timings)
         # self.runtimeGauge.labels(**self._getLabels('MAIN_PROGRAM', "main", "xrootd")).set(totalRuntime)
         # data = generate_latest(self.registry)

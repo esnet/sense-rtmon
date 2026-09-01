@@ -39,3 +39,10 @@ COPY icons/multipoint.png /opt/icons/multipoint.png
 WORKDIR /opt
 # Get latest CA's while suppressing warnings
 RUN fetch-crl || echo "Suppress warnings."
+
+# Report container health from the RTMon heartbeat. Liveness only: an unreachable
+# SENSE-O orchestrator is a remote outage that restarting the container cannot
+# fix, so that is surfaced through readiness instead. Resolves Trivy DS-0026 and
+# the Checkov HEALTHCHECK policy.
+HEALTHCHECK --interval=60s --timeout=15s --start-period=180s --retries=3 \
+    CMD RTMon-Health --mode liveness || exit 1

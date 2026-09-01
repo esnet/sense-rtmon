@@ -28,7 +28,9 @@ jobs:
           fetch-depth: 0
 
       - name: Super-linter
-        uses: super-linter/super-linter/slim@latest  # x-release-please-version
+        # Pinned deliberately. Tracking @latest means a super-linter release can
+        # turn the pipeline red without any change to this repository.
+        uses: super-linter/super-linter/slim@v8.7.0
         env:
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           VALIDATE_ALL_CODEBASE: false
@@ -37,5 +39,17 @@ jobs:
           VALIDATE_PYTHON_MYPY: false
           VALIDATE_PYTHON_ISORT: false
           VALIDATE_JSCPD: false
+          # Use this repository's own pylint configuration, the same one linter.sh
+          # runs locally. Without this super-linter applies stock pylint defaults,
+          # so passing ./linter.sh told you nothing about whether CI would pass.
+          LINTER_RULES_PATH: standarts
+          PYTHON_PYLINT_CONFIG_FILE: pylintrc
+          # linter.sh formats Python with 'pyink -l 200'. ruff format defaults to
+          # 88 columns, so the two disagree on essentially every file and this
+          # check can never go green. PYTHON_RUFF (the linter) stays enabled.
+          VALIDATE_PYTHON_RUFF_FORMAT: false
+          # src/templates holds exported Grafana dashboard JSON containing
+          # REPLACEME placeholders. Reformatting vendored artifacts is churn.
+          FILTER_REGEX_EXCLUDE: autogole-api/src/templates/.*
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

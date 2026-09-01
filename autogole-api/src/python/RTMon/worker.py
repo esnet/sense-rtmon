@@ -447,7 +447,7 @@ class RTMonWorker(
     def main(self):
         """Main Method"""
         # 1. Identify all files and submitted items;
-        # list alls files under '/srv/ and load as json
+        # list all files under '/srv/ and load as json
         stateInfo = {}
         skipped = {}
         for root, _, files in os.walk(self.config.get("workdir", "/srv")):

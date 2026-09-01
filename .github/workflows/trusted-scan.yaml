@@ -115,12 +115,25 @@ jobs:
             continue
           fi
 
-          if ! curl -sf "$AIAPIURL" \
+          # -f was hiding why this fails: it suppresses the response body and the
+          # status code, so a failure was indistinguishable between an expired
+          # key, a rate limit and an unreachable endpoint. Capture the code and
+          # retry transient errors instead.
+          HTTP_CODE=$(curl -sS -o response.json -w '%{http_code}' "$AIAPIURL" \
             -H "Authorization: Bearer $AIAPIKEY" \
             -H "Content-Type: application/json" \
-            -d @payload.json > response.json; then
-              echo "curl request failed for $FILE"
-              cat response.json || echo "(No response received)"
+            -d @payload.json \
+            --retry 3 --retry-delay 2 --retry-connrefused \
+            --max-time 60 2> curl_error.log) || HTTP_CODE="000"
+
+          if [ "$HTTP_CODE" = "000" ] || [ "$HTTP_CODE" -ge 400 ]; then
+              if [ "$HTTP_CODE" = "000" ]; then
+                echo "curl request failed for $FILE (endpoint unreachable)"
+              else
+                echo "curl request failed for $FILE (HTTP $HTTP_CODE)"
+              fi
+              cat curl_error.log 2>/dev/null || true
+              head -c 500 response.json 2>/dev/null || echo "(No response received)"
               CURL_FAILED_FILES+=("$FILE")
               continue
           fi

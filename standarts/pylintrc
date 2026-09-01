@@ -58,9 +58,9 @@ py-version=3.6
 # Discover python modules and packages in the file system subtree.
 recursive=no
 
-# When enabled, pylint would attempt to guess common misconfiguration and emit
-# user-friendly hints instead of false-positive error messages.
-suggestion-mode=yes
+# 'suggestion-mode' was removed in pylint 4 and now raises E0015
+# (unrecognized-option) on every run. It defaulted to yes, which is the
+# behaviour we want anyway, so the option is simply dropped.
 
 # Allow loading of arbitrary C extensions. Extensions are imported into the
 # active Python interpreter and may run arbitrary code.

@@ -1,0 +1,6 @@
+[codespell]
+# 'standarts' is the actual name of this directory, referenced by linter.sh and
+# by the LINTER_RULES_PATH in .github/workflows/linter.yaml. Codespell flags it
+# as a misspelling of 'standards', which it is, but renaming the directory would
+# break those references, so it is ignored here instead.
+ignore-words-list = standarts

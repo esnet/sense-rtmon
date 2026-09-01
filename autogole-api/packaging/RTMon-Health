@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+"""
+Health check for RTMon, intended for Kubernetes probes.
+
+Two questions that need different answers:
+
+  liveness  - is the worker still completing cycles? An unreachable orchestrator
+              still counts as a completed cycle, because restarting RTMon cannot
+              fix a remote outage. This fails only when the loop is genuinely
+              wedged, which is the only case a restart helps.
+
+  readiness - is everything actually working? This fails while any configured
+              orchestrator is unreachable or main() is erroring. The pod is
+              marked NotReady so the degradation is visible in `kubectl get pods`
+              and to alerting, but nothing is restarted and nothing exits.
+
+Both read the heartbeat that RTMonWorker._writeHeartbeat writes at the end of
+every cycle.
+"""
+import argparse
+import json
+import sys
+import time
+
+DEFAULT_HEARTBEAT = '/srv/.rtmon-heartbeat'
+DEFAULT_MAX_AGE = 300
+
+
+def getParser():
+    """Return argument parser for the health check."""
+    parser = argparse.ArgumentParser(description='RTMon health check')
+    parser.add_argument('--mode', choices=['liveness', 'readiness'], required=True,
+                        help='liveness reports whether the loop still runs; '
+                             'readiness reports whether all orchestrators are healthy')
+    parser.add_argument('--file', default=DEFAULT_HEARTBEAT,
+                        help=f'Heartbeat file written by RTMon. Default {DEFAULT_HEARTBEAT}')
+    parser.add_argument('--max-age', type=int, default=DEFAULT_MAX_AGE,
+                        help=f'Seconds since the last completed cycle before the check '
+                             f'fails. Default {DEFAULT_MAX_AGE}')
+    return parser
+
+
+def checkHealth(args):
+    """Evaluate the heartbeat and return (exit code, message)."""
+    try:
+        with open(args.file, 'r', encoding='utf-8') as fd:
+            data = json.load(fd)
+    except (OSError, ValueError) as ex:
+        return 1, f'UNHEALTHY: cannot read {args.file}: {ex}'
+
+    age = int(time.time()) - int(data.get('last_run', 0))
+    if age > args.max_age:
+        return 1, f'UNHEALTHY: last cycle completed {age}s ago, limit is {args.max_age}s'
+
+    if args.mode == 'liveness':
+        return 0, f'OK: cycle completed {age}s ago'
+
+    if not data.get('healthy', False):
+        reasons = []
+        failed = data.get('failed_orchestrators', {})
+        if failed:
+            reasons.append(f'unreachable orchestrators: {", ".join(sorted(failed))}')
+        if data.get('main_error'):
+            reasons.append('main() reported errors on the last cycle')
+        lastclean = int(data.get('last_clean_run', 0))
+        if lastclean:
+            since = f'last healthy cycle {int(time.time()) - lastclean}s ago'
+        else:
+            since = 'no healthy cycle recorded yet'
+        return 1, f'DEGRADED: {"; ".join(reasons) or "unknown"}. {since}'
+
+    active = ', '.join(data.get('active_orchestrators', [])) or 'none configured'
+    return 0, f'OK: all orchestrators healthy ({active})'
+
+
+if __name__ == '__main__':
+    ARGS = getParser().parse_args()
+    CODE, MESSAGE = checkHealth(ARGS)
+    print(MESSAGE)
+    sys.exit(CODE)

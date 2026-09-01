@@ -1,5 +1,13 @@
 FROM opensciencegrid/software-base:24-el9-release
 
+# This image intentionally runs as root. The base image starts supervisord as
+# root (the deployment invokes it with -u 0), and RTMon writes to /var/log/rtmon,
+# /srv and /etc/grid-security at runtime, the last of which is refreshed by
+# fetch-crl. Switching to a non-root user requires reworking the supervisord
+# setup and the volume ownership in the deployment, so the finding is recorded
+# here rather than silently disabled. See also .trivyignore.
+#checkov:skip=CKV_DOCKER_3:supervisord runs as root; see the comment above
+
 # hadolint ignore=DL3033
 RUN yum -y install wget epel-release && \
     yum -y install git python3 python3-pyyaml python3-devel python3-pip gcc openssl-devel cronie python3-pyOpenSSL fetch-crl graphviz && \
@@ -19,6 +27,7 @@ RUN pip3 install --no-cache-dir --upgrade setuptools==58.2.0 wheel==0.37.0 && \
 WORKDIR /opt/sense-rtmon
 RUN git clone https://github.com/esnet/sense-rtmon.git .
 WORKDIR /opt/sense-rtmon/autogole-api
+# hadolint ignore=DL3013
 RUN pip3 install --no-cache-dir -r requirements.txt && \
     pip3 install --no-cache-dir . && \
     pip3 install --no-cache-dir --upgrade urllib3 requests chardet && \
@@ -39,3 +48,10 @@ COPY icons/multipoint.png /opt/icons/multipoint.png
 WORKDIR /opt
 # Get latest CA's while suppressing warnings
 RUN fetch-crl || echo "Suppress warnings."
+
+# Report container health from the RTMon heartbeat. Liveness only: an unreachable
+# SENSE-O orchestrator is a remote outage that restarting the container cannot
+# fix, so that is surfaced through readiness instead. Resolves Trivy DS-0026 and
+# the Checkov HEALTHCHECK policy.
+HEALTHCHECK --interval=60s --timeout=15s --start-period=180s --retries=3 \
+    CMD ["RTMon-Health", "--mode", "liveness"]

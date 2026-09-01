@@ -21,29 +21,43 @@ jobs:
 
     steps:
     - name: Checkout PR source
-      uses: actions/checkout@v3
+      # Pinned to a SHA (zizmor unpinned-uses) and bumped off v3, whose runner
+      # is too old for current GitHub Actions (actionlint).
+      uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
       with:
         ref: ${{ github.event.pull_request.head.sha }}
+        persist-credentials: false
 
+    # ${{ }} expressions are passed through env rather than interpolated into
+    # the shell. This workflow is reached via pull_request_target, so it runs
+    # with secrets while the branch name and file list are attacker-controlled
+    # on a fork PR. Interpolating them directly was a code injection route
+    # (zizmor template-injection, 5x high).
     - name: Debug changed_files input
+      env:
+        CHANGED_FILES: ${{ inputs.changed_files }}
       run: |
         echo "Raw changed_files input:"
-        echo "${{ inputs.changed_files }}"
+        echo "$CHANGED_FILES"
 
     - name: Write file list
+      env:
+        CHANGED_FILES: ${{ inputs.changed_files }}
       run: |
-        echo "${{ inputs.changed_files }}" | tr ',' '\n' > file_list.txt
+        echo "$CHANGED_FILES" | tr ',' '\n' > file_list.txt
         echo "Files to be scanned:"
         cat file_list.txt
 
     - name: Ensure .leakignore exists
+      env:
+        BASE_REF: ${{ github.event.pull_request.base.ref }}
       run: |
         if [ ! -f .leakignore ]; then
           echo ".leakignore not found in PR; trying base branch..."
-          git fetch origin ${{ github.event.pull_request.base.ref }}
+          git fetch origin "$BASE_REF"
 
-          if git ls-tree -r origin/${{ github.event.pull_request.base.ref }} --name-only | grep -q '^.leakignore$'; then
-            git show origin/${{ github.event.pull_request.base.ref }}:.leakignore > .leakignore
+          if git ls-tree -r "origin/$BASE_REF" --name-only | grep -q '^.leakignore$'; then
+            git show "origin/$BASE_REF:.leakignore" > .leakignore
             echo "Loaded .leakignore from base branch"
           else
             echo ".leakignore not found in base branch; downloading from fallback URL"
@@ -59,7 +73,7 @@ jobs:
           IGNORE="\"\""
         fi
         echo "Here is ignored passwords: $IGNORE"
-        echo "IGNORE=$IGNORE" >> $GITHUB_ENV
+        echo "IGNORE=$IGNORE" >> "$GITHUB_ENV"
 
     - name: Analyze each file
       env:

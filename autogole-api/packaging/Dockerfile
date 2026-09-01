@@ -19,6 +19,7 @@ RUN pip3 install --no-cache-dir --upgrade setuptools==58.2.0 wheel==0.37.0 && \
 WORKDIR /opt/sense-rtmon
 RUN git clone https://github.com/esnet/sense-rtmon.git .
 WORKDIR /opt/sense-rtmon/autogole-api
+# hadolint ignore=DL3013
 RUN pip3 install --no-cache-dir -r requirements.txt && \
     pip3 install --no-cache-dir . && \
     pip3 install --no-cache-dir --upgrade urllib3 requests chardet && \
@@ -45,4 +46,4 @@ RUN fetch-crl || echo "Suppress warnings."
 # fix, so that is surfaced through readiness instead. Resolves Trivy DS-0026 and
 # the Checkov HEALTHCHECK policy.
 HEALTHCHECK --interval=60s --timeout=15s --start-period=180s --retries=3 \
-    CMD RTMon-Health --mode liveness || exit 1
+    CMD ["RTMon-Health", "--mode", "liveness"]

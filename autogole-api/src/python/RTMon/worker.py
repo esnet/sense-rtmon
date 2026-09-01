@@ -545,6 +545,12 @@ class RTMonWorker(
             self._startwork()
         except SENSEOFailure as ex:
             self.logger.error("SENSEOFailure: %s", ex)
+        except Exception as ex:  # pylint: disable=broad-exception-caught
+            # The daemon must not exit on a transient fault. Anything reaching
+            # here already failed after main() ran, so the heartbeat has recorded
+            # it and readiness reports the degradation; letting it escape would
+            # only kill the loop that is going to retry in 30 seconds.
+            self.logger.error("Unhandled %s in main run: %s", type(ex).__name__, ex)
 
     def _startwork(self):
         """Execute Main Program."""
@@ -567,10 +573,19 @@ class RTMonWorker(
                 endTime = int(time.time())
                 timings[key] = endTime - startTime
                 self.active_orchestrators.add(key)
-            except SENSEOFailure as ex:
-                self.logger.error("SENSEOFailure for %s: %s", key, ex)
+            except Exception as ex:  # pylint: disable=broad-exception-caught
+                # Deliberately broad. The guarantee this loop has to provide is
+                # that no single orchestrator can stop the others, and that has
+                # to hold for every failure mode, not just the anticipated ones.
+                # Catching only SENSEOFailure missed the case that caused
+                # sdn-sense/siterm#1003 in the first place: an orchestrator that
+                # is simply down raises requests.exceptions.ConnectionError,
+                # which escaped to the caller and skipped main() entirely.
+                # Swallowing here is safe only because the failure is recorded in
+                # the heartbeat and surfaces through the readiness probe.
+                self.logger.error("Orchestrator %s failed with %s: %s", key, type(ex).__name__, ex)
                 self.logger.error("Skipping %s this run. Other orchestrators are unaffected.", key)
-                failed[key] = str(ex)
+                failed[key] = f"{type(ex).__name__}: {ex}"
         if failed:
             self.logger.error("Orchestrators unavailable this run: %s", sorted(failed))
         if endpoints and not self.active_orchestrators:

@@ -1,5 +1,13 @@
 FROM opensciencegrid/software-base:24-el9-release
 
+# This image intentionally runs as root. The base image starts supervisord as
+# root (the deployment invokes it with -u 0), and RTMon writes to /var/log/rtmon,
+# /srv and /etc/grid-security at runtime, the last of which is refreshed by
+# fetch-crl. Switching to a non-root user requires reworking the supervisord
+# setup and the volume ownership in the deployment, so the finding is recorded
+# here rather than silently disabled. See also .trivyignore.
+#checkov:skip=CKV_DOCKER_3:supervisord runs as root; see the comment above
+
 # hadolint ignore=DL3033
 RUN yum -y install wget epel-release && \
     yum -y install git python3 python3-pyyaml python3-devel python3-pip gcc openssl-devel cronie python3-pyOpenSSL fetch-crl graphviz && \

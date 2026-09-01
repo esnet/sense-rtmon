@@ -1,0 +1,12 @@
+# DS-0002: "Specify at least 1 USER command in Dockerfile with non-root user"
+#
+# autogole-api/packaging/Dockerfile runs as root on purpose. The base image
+# starts supervisord as root (the deployment passes -u 0) and RTMon writes to
+# /var/log/rtmon, /srv and /etc/grid-security at runtime, the last of which is
+# refreshed by fetch-crl. Moving to a non-root user means reworking both the
+# supervisord setup and volume ownership in the deployment, which is a change
+# worth making on its own rather than as a side effect of an unrelated PR.
+#
+# The equivalent Checkov exception (CKV_DOCKER_3) is recorded inline in the
+# Dockerfile.
+DS-0002

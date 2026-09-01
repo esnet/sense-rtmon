@@ -1,7 +1,7 @@
 ---
 name: Linter
 
-on:  # yamllint disable-line rule:truthy
+on: # yamllint disable-line rule:truthy
   push: null
   pull_request: null
 
@@ -25,7 +25,7 @@ jobs:
       - name: Checkout code
         # Actions pinned to commit SHAs: zizmor's unpinned-uses audit treats a
         # bare tag as an error, since tags are mutable and can be repointed.
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
           # Do not leave the token in .git/config for later steps to pick up.
@@ -34,7 +34,7 @@ jobs:
       - name: Super-linter
         # Pinned deliberately. Tracking @latest means a super-linter release can
         # turn the pipeline red without any change to this repository.
-        uses: super-linter/super-linter/slim@4ce20838b8ab83717e78138c5b3a1407148e0918  # v8.7.0
+        uses: super-linter/super-linter/slim@4ce20838b8ab83717e78138c5b3a1407148e0918 # v8.7.0
         env:
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           VALIDATE_ALL_CODEBASE: false

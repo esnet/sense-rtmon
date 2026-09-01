@@ -2,7 +2,12 @@
 name: Linter
 
 on: # yamllint disable-line rule:truthy
-  push: null
+  # Branches in this repository fire both events for a pull request, which ran
+  # the whole suite twice per commit and reported two identical status rows.
+  # Limit push to the default branch; PR branches are still covered.
+  push:
+    branches:
+      - master
   pull_request: null
 
 permissions:

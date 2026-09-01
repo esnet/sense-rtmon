@@ -8,32 +8,54 @@ on: # checkov:skip=CKV_GHA_7 User input is controlled and intended for tag/branc
         default: "dev"
         type: "string"
 
+# Publishing happens against Docker Hub with its own credentials, so the GitHub
+# token only needs to read the repository. Without an explicit block this
+# inherits the repository default, which Checkov flags as write-all (CKV_GHA_1).
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout tools repo
+        # Pinned to a SHA (zizmor unpinned-uses) and moved off v3, whose runner
+        # actionlint reports as too old.
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: esnet/sense-rtmon
+          path: sense-rtmon
+          persist-credentials: false
 
-    - name: Checkout tools repo
-      uses: actions/checkout@v3
-      with:
-        repository: esnet/sense-rtmon
-        path: sense-rtmon
+      - name: docker login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        # --password-stdin keeps the token out of the process list and out of
+        # any shell trace.
+        run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
 
-    - name: docker login
-      env:
-        DOCKER_USER: ${{secrets.DOCKER_USER}}
-        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+      # The build tag reaches the shell through env rather than being
+      # interpolated into it (zizmor template-injection). It is also computed
+      # once so every push below refers to the same image.
+      - name: Resolve image tags
+        env:
+          BUILD_TAG: ${{ github.event.inputs.buildtag }}
+        run: |
+          {
+            echo "IMAGE_TAG=sdnsense/sense-rtmon:${BUILD_TAG}"
+            echo "IMAGE_TAG_DATED=sdnsense/sense-rtmon:${BUILD_TAG}-$(date +%Y%m%d)"
+          } >> "$GITHUB_ENV"
 
-    - name: Build the RTMon Image
-      run: | 
-        cd sense-rtmon/autogole-api/packaging
-        docker build . --file Dockerfile --build-arg ARCH=amd64 --tag sdnsense/sense-rtmon:${{ github.event.inputs.buildtag }}-$(date +%Y%m%d)
+      - name: Build the RTMon Image
+        run: |
+          cd sense-rtmon/autogole-api/packaging
+          docker build . --file Dockerfile --build-arg ARCH=amd64 --tag "$IMAGE_TAG_DATED"
 
-    - name: Docker Push RTMon Image with tag and date
-      run: docker push sdnsense/sense-rtmon:${{ github.event.inputs.buildtag }}-$(date +%Y%m%d)
+      - name: Docker Push RTMon Image with tag and date
+        run: docker push "$IMAGE_TAG_DATED"
 
-    - name: Docker Push RTMon Image with tag
-      run: |
-        docker tag sdnsense/sense-rtmon:${{ github.event.inputs.buildtag }}-$(date +%Y%m%d) sdnsense/sense-rtmon:${{ github.event.inputs.buildtag }}
-        docker push sdnsense/sense-rtmon:${{ github.event.inputs.buildtag }}
+      - name: Docker Push RTMon Image with tag
+        run: |
+          docker tag "$IMAGE_TAG_DATED" "$IMAGE_TAG"
+          docker push "$IMAGE_TAG"

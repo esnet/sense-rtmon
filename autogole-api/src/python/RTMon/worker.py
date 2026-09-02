@@ -14,6 +14,7 @@ from RTMonLibs.SiteOverride import SiteOverride
 from RTMonLibs.SiteRMApi import SiteRMApi
 from RTMonLibs.ExternalAPI import ExternalAPI
 from RTMonLibs.Prometheus import Prometheus
+from RTMonLibs.DataWarnings import DataWarnings
 
 
 class RTMonWorker(
@@ -25,6 +26,7 @@ class RTMonWorker(
     ExternalAPI,
     Mermaid,
     Prometheus,
+    DataWarnings,
 ):
     """RTMon Worker"""
 

@@ -79,21 +79,52 @@ class Prometheus:
         query = f'count(increase(interfaces_rx_packets{{Key="ifHCInUcastPkts", sitename="{kwargs["sitename"]}", hostname="{kwargs["hostname"]}"}}[24h])) or on() vector(0)'
         return self.p_get_query(query)
 
-    def p_get_switch_template(self, **kwargs):
+    def p_count_host_statistics(self, **kwargs):
         """
-        Returns a switch template type based on which Prometheus metrics are present.
-        If neither interface_statistics nor unicast packet metrics are found, returns None.
-        - Returns 'default' if interface_statistics are found.
-        - Returns 'vpp' if only rx packets are found.
+        Constructs and executes a query to count the interface counters node_exporter
+        reports for a host. Mirrors the metric hostflow.json graphs, so a zero here
+        means those panels would render empty.
+        """
+        query = f'count(increase(node_network_receive_bytes_total{{instance=~"{kwargs["hostname"]}.*", sitename="{kwargs["sitename"]}"}}[24h])) or on() vector(0)'
+        return self.p_get_query(query)
+
+    def _p_safe_count(self, func, **kwargs):
+        """Run one of the count helpers and fold every failure into None.
+
+        None means "could not answer" and is kept distinct from a real zero,
+        because callers hide dashboard panels on a zero.
         """
         try:
-            if self.p_count_interface_statistics(**kwargs) == "0":
-                if self.p_count_interfaces_rx_packets(**kwargs) == "0":
-                    return None
-                return "vpp"
-            return "default"
-        except Exception as ex:
-            self.logger.error(f"Error in p_get_switch_template: {ex}")
-            self.logger.error("Failed to determine switch template type.")
+            return func(**kwargs)
+        except Exception as ex:  # pylint: disable=broad-exception-caught
+            self.logger.error(f"Error querying Prometheus via {func.__name__}: {ex}")
             self.logger.error(traceback.format_exc())
             return None
+
+    def p_get_switch_template_state(self, **kwargs):
+        """
+        Returns (templateType, available) for a switch.
+
+        templateType is 'default' when interface_statistics are present, 'vpp' when
+        only rx packets are, and None when neither is - unchanged from issue #167.
+        available is True, False, or None when the question could not be answered.
+        """
+        stats = self._p_safe_count(self.p_count_interface_statistics, **kwargs)
+        if stats is None:
+            # Unanswered. Keep the historical default template, report unknown.
+            return "default", None
+        if stats != "0":
+            return "default", True
+        packets = self._p_safe_count(self.p_count_interfaces_rx_packets, **kwargs)
+        if packets is None:
+            return "default", None
+        if packets != "0":
+            return "vpp", True
+        return None, False
+
+    def p_check_host_available(self, **kwargs):
+        """Returns the tri-state availability of host monitoring data."""
+        count = self._p_safe_count(self.p_count_host_statistics, **kwargs)
+        if count is None:
+            return None
+        return count != "0"

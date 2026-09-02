@@ -719,7 +719,7 @@ class Template:
             hostname = item["Name"]
             sitehost = item["Node"]
 
-        # Custom Site template based on sitename (for now only for ESnet, might neeed to expand to other sites in future)
+        # Custom Site template based on sitename (for now only for ESnet, might need to expand to other sites in future)
         if sitename.lower() == "esnet":
             return self._t_createESnetSwitchFlow(sitehost, num, *args)
         # This is the default switch flow template for everything else
@@ -852,7 +852,7 @@ class Template:
             hostname = sitehost
             sitename = sitehost
 
-        # Custom Site template based on sitename (for now only for ESnet, might neeed to expand to other sites in future)
+        # Custom Site template based on sitename (for now only for ESnet, might need to expand to other sites in future)
         if sitename.lower() == "esnet":
             return self._t_createESnetL2Debug(sitehost, interfaces, refid)
 
@@ -933,7 +933,7 @@ class Template:
                     mappings[sitename].append(hostname)
                 continue
         for sitename, hostnames in mappings.items():
-            # Custom Site template based on sitename (for now only for ESnet, might neeed to expand to other sites in future)
+            # Custom Site template based on sitename (for now only for ESnet, might need to expand to other sites in future)
             if sitename.lower() == "esnet":
                 out += self._t_createESnetAllMacDebug(sitename, hostnames, *args)
                 continue

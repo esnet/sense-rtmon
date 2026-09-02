@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# pylint: disable=E1101,line-too-long
+# Already at 980 of the 1000 line limit before #204, so any feature trips
+# too-many-lines. The real fix is moving Mermaid into its own module.
+# pylint: disable=E1101,line-too-long,too-many-lines
 """Grafana Template Generation"""
 import copy
 import os.path
@@ -395,12 +397,18 @@ class Template:
         self.nextid = 0
         self.gridPos = {"x": 0, "y": 0, "w": 24, "h": 8}
         self.annotationids = []
+        self.datawarnings = []
+        self.dataavailable = {}
+        self.debugmode = False
 
     def _clean(self):
         """Clean previous generated data"""
         self.generated = {}
         self.annotationids = []
         self.nextid = 0
+        self.datawarnings = []
+        self.dataavailable = {}
+        self.debugmode = False
 
     def __getTitlesUrls(self, site, link, **kwargs):
         """Get Titles and URLs"""
@@ -552,10 +560,13 @@ class Template:
         try:
             sitename = sitehost.split(":")[0]
             hostname = sitehost.split(":")[1]
+            self.t_dataAvailable("Host", sitehost, sitename, hostname)
         except IndexError as ex:
             hostname = item["Name"]
             sitehost = item["Node"]
             self.logger.debug(f"Got Exception: {ex}")
+        if self.t_skipMonitoring("Host", sitehost):
+            return out
         intfline = "|".join(interfaces.keys())
         row = self.t_addRow(*args, title=f"{num}. Host Flow Summary: {sitehost}")
         panels = dumpJson(self._t_loadTemplate("hostflow.json"), self.logger)
@@ -708,11 +719,20 @@ class Template:
             hostname = item["Name"]
             sitehost = item["Node"]
 
-        # Custom Site template based on sitename (for now only for ESnet, might neeed to expand to other sites in future)
+        # Custom Site template based on sitename (for now only for ESnet, might need to expand to other sites in future)
         if sitename.lower() == "esnet":
             return self._t_createESnetSwitchFlow(sitehost, num, *args)
         # This is the default switch flow template for everything else
-        templateType = self.p_get_switch_template(sitename=sitename, hostname=hostname)
+        templateType, available = self.p_get_switch_template_state(sitename=sitename, hostname=hostname)
+        self.t_recordAvailability("Switch", sitehost, available)
+        if self.t_skipMonitoring("Switch", sitehost):
+            return out
+        if not templateType:
+            if self.debugmode:
+                # No vpp evidence either way here, so fall back to the default.
+                templateType = "default"
+            else:
+                self.t_recordWarning(f"Could not select a switch flow template for {sitehost}. The flow row is omitted.")
         intfline = self.__t_findIntf(interfaces)
         row = self.t_addRow(*args, title=f"{num}. Switch Flow Summary: {sitehost}")
         if templateType:
@@ -832,7 +852,7 @@ class Template:
             hostname = sitehost
             sitename = sitehost
 
-        # Custom Site template based on sitename (for now only for ESnet, might neeed to expand to other sites in future)
+        # Custom Site template based on sitename (for now only for ESnet, might need to expand to other sites in future)
         if sitename.lower() == "esnet":
             return self._t_createESnetL2Debug(sitehost, interfaces, refid)
 
@@ -879,10 +899,16 @@ class Template:
         # For each host if available:
         refID = 0
         for sitehost, interfaces in self.m_groups["Hosts"].items():
+            if self.t_skipMonitoring("Host", sitehost):
+                self.logger.debug(f"Skipping L2 Debugging for Host without data: {sitehost}")
+                continue
             self.logger.debug(f"Adding L2 Debugging for Host: {sitehost}, {interfaces}")
             out += self._t_addHostL2Debugging(sitehost, interfaces, refID)
         # For each switch:
         for sitehost, interfaces in self.m_groups["Switches"].items():
+            if self.t_skipMonitoring("Switch", sitehost):
+                self.logger.debug(f"Skipping L2 Debugging for Switch without data: {sitehost}")
+                continue
             self.logger.debug(f"Adding L2 Debugging for Switch: {sitehost}, {interfaces}")
             out += self._t_addSwitchL2Debugging(sitehost, interfaces, refID)
         return self.addRowPanel(row, out, True)
@@ -907,7 +933,7 @@ class Template:
                     mappings[sitename].append(hostname)
                 continue
         for sitename, hostnames in mappings.items():
-            # Custom Site template based on sitename (for now only for ESnet, might neeed to expand to other sites in future)
+            # Custom Site template based on sitename (for now only for ESnet, might need to expand to other sites in future)
             if sitename.lower() == "esnet":
                 out += self._t_createESnetAllMacDebug(sitename, hostnames, *args)
                 continue
@@ -939,6 +965,9 @@ class Template:
         """Create Grafana Template"""
         self._clean()
         self._t_setDataSourceUid(*args)
+        # Must be resolved before any panel is built, as it decides whether the
+        # availability checks are allowed to hide anything.
+        self.debugmode = self.getTaskEnabled(kwargs.get("taskinfo"), "debugmode")
         self.generated = self.t_createDashboard(*args, **kwargs)
         diagrams = self.__createDiagrams(*args, **kwargs)
         if diagrams:
@@ -965,8 +994,7 @@ class Template:
                 self.logger.error(f"Unknown Type: {item['Type']}. Skipping... {item}")
         # Add L2 Debugging
         self.generated["panels"] += self.t_addL2Debugging(*args)
-        debugmode = self.getTaskEnabled(kwargs.get("taskinfo"), "debugmode")
-        if debugmode:
+        if self.debugmode:
             if len(diagrams) > 1:
                 self.generated["panels"] += diagrams[1]
             # Add Debug Info (manifest, instance)
@@ -974,6 +1002,7 @@ class Template:
         # Add AllMacs panels if allmacs true (In case debug is True, we still want to add AllMacs)
         if self.getTaskEnabled(kwargs.get("taskinfo"), "allmacs"):
             self.generated["panels"] += self.t_addAllMacs(*args, **kwargs)
+        self.generated["panels"] += self.t_addDataWarnings(*args)
         return {"dashboard": self.generated}, {
             "uid": self.generated["uid"],
             "annotation_panels": self.annotationids,

@@ -123,7 +123,11 @@ def loadYaml(data, logger):
         return data
     try:
         return yload(data)
-    except Exception as ex:
+    except Exception as ex:  # pylint: disable=broad-exception-caught
+        # Deliberately broad. The contract here is that loading never raises and
+        # returns {} instead, and the caller may hand in something that is not a
+        # string at all, which fails outside yaml's own error hierarchy. That is
+        # why the data type is logged below.
         if logger:
             logger.error("Error in loading yaml dict: %s", ex)
             logger.error("Data: %s", data)
@@ -141,7 +145,7 @@ def getConfig(logger=None):
     if not os.path.isfile("/etc/rtmon.yaml"):
         if logger:
             logger.error("Config file /etc/rtmon.yaml does not exist.")
-        raise Exception("Config file /etc/rtmon.yaml does not exist.")
+        raise FileNotFoundError("Config file /etc/rtmon.yaml does not exist.")
     with open("/etc/rtmon.yaml", "r", encoding="utf-8") as fd:
         return loadYaml(fd.read(), logger)
 
@@ -188,3 +192,11 @@ class ExceptionTemplate(Exception):
 
 class SENSEOFailure(ExceptionTemplate):
     """Not Found error."""
+
+
+class InstanceDataFailure(ExceptionTemplate):
+    """SENSE-O returned no usable instance or manifest for a monitoring entry.
+
+    Distinct from SENSEOFailure, which means the orchestrator itself cannot be
+    used this run. This one is scoped to a single instance and is retried.
+    """

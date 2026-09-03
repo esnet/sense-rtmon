@@ -24,6 +24,37 @@ def get_path_to_root(appendLocation=None):
     return fullPath
 
 
+def module_names_in(relPath, fileNames):
+    """Return the dotted module names for the .py files of one directory."""
+    modules = []
+    for fileName in fileNames:
+        if fileName.startswith('__init__.') or \
+           fileName.endswith('.pyc') or \
+           not fileName.endswith('.py'):
+            continue
+        relName = fileName.rsplit('.', 1)
+        modules.append(f"{'.'.join(relPath)}.{relName[0]}")
+    return modules
+
+
+def walk_package_dir(aDir, ignoreThese, pyFiles):
+    """Walk one directory tree and return its (packages, modules)."""
+    packages = []
+    modules = []
+    for dirpath, dummyDirnames, dummyFilenames in os.walk(aDir, topdown=True):
+        pathelements = dirpath.split('/')
+        # If any part of pathelements is in the ignore_these set skip the path
+        if list(set(pathelements) & ignoreThese):
+            continue
+        relPath = os.path.relpath(dirpath, get_path_to_root())
+        relPath = relPath.split('/')[2:]
+        if not pyFiles:
+            packages.append('.'.join(relPath))
+        else:
+            modules.extend(module_names_in(relPath, dummyFilenames))
+    return packages, modules
+
+
 def list_packages(packageDirs=None, recurse=True, ignoreThese=None, pyFiles=False):
     """Take a list of directories and return a list of all packages under those
     directories, Skipping 'CVS', '.svn', 'svn', '.git', '', 'sitermagent.egg-
@@ -40,24 +71,9 @@ def list_packages(packageDirs=None, recurse=True, ignoreThese=None, pyFiles=Fals
     for aDir in packageDirs:
         if recurse:
             # Recurse the sub-directories
-            for dirpath, dummyDirnames, dummyFilenames in os.walk(aDir, topdown=True):
-                pathelements = dirpath.split('/')
-                # If any part of pathelements is in the ignore_these set skip the path
-                if not list(set(pathelements) & ignoreThese):
-                    relPath = os.path.relpath(dirpath, get_path_to_root())
-                    relPath = relPath.split('/')[2:]
-                    if not pyFiles:
-                        packages.append('.'.join(relPath))
-                    else:
-                        for fileName in dummyFilenames:
-                            if fileName.startswith('__init__.') or \
-                               fileName.endswith('.pyc') or \
-                               not fileName.endswith('.py'):
-                                continue
-                            relName = fileName.rsplit('.', 1)
-                            modules.append(f"{'.'.join(relPath)}.{relName[0]}")
-                else:
-                    continue
+            dirPackages, dirModules = walk_package_dir(aDir, ignoreThese, pyFiles)
+            packages.extend(dirPackages)
+            modules.extend(dirModules)
         else:
             relPath = os.path.relpath(aDir, get_path_to_root())
             relPath = relPath.split('/')[2:]

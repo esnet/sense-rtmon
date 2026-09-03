@@ -4,7 +4,7 @@
 import os
 import time
 from pprint import pformat
-from RTMonLibs.GeneralLibs import loadFileJson, getConfig, dumpJson, getUTCnow, SENSEOFailure, valtoboolean
+from RTMonLibs.GeneralLibs import loadFileJson, getConfig, dumpJson, getUTCnow, SENSEOFailure, InstanceDataFailure, valtoboolean
 from RTMonLibs.LogLib import getLoggingObject
 from RTMonLibs.SenseAPI import SenseAPI
 from RTMonLibs.GrafanaAPI import GrafanaAPI
@@ -30,14 +30,21 @@ class RTMonWorker(
 ):
     """RTMon Worker"""
 
+    # States SENSE-O reports for an instance RTMon is willing to monitor.
+    # Constant rather than an instance attribute: it never varies per worker.
+    goodStates = ["CREATE - READY", "REINSTATE - READY", "MODIFY - READY"]
+
+    # The states main() acts on, in the order it acts on them. Submitted runs
+    # first so a new dashboard exists before anything else looks for it.
+    stateOrder = ("submitted", "delete", "running", "failed", "renew")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.logger = kwargs.get("logger")
         self.config = kwargs.get("config")
-        self.templatePath = self.config["template_path"]
-        self.generated = {}
+        # templatePath and generated are set by Template.__init__, which runs
+        # ahead of this through the cooperative super() chain.
         self.auth_instances = {}
-        self.goodStates = ["CREATE - READY", "REINSTATE - READY", "MODIFY - READY"]
         self.senseotimer = getUTCnow()
         self.devname = self.config.get("grafana_dev", None)
         self.active_orchestrators = set()
@@ -112,49 +119,65 @@ class RTMonWorker(
         self.s_finishTask(fout.get("taskinfo", {}).get("uuid", ""), {"callbackURL": self.g_getDashboardURL(template["dashboard"]["title"], self._getFolderName())})
         self._updateDashboardPermissions(fout)
 
+    def _s_fetchInstanceManifest(self, fout):
+        """Fetch the instance and its manifest from SENSE-O.
+
+        Raises InstanceDataFailure when either is missing, so the caller records
+        a retryable warning rather than going on to build an empty dashboard.
+        """
+        # 1. Get the instance from SENSE-0
+        instance = self.s_getInstance(fout["referenceUUID"])
+        fout["instance"] = instance
+        self.logger.info(f"Here is instance for {fout['referenceUUID']}:")
+        self.logger.info(pformat(instance))
+        # 1.a Check if instance is found
+        if not instance:
+            msg = f'Instance not found in SENSE-0: {fout["referenceUUID"]}'
+            self.logger.error(msg)
+            raise InstanceDataFailure(msg)
+        # 2.a Check if the instance is already running and in good state
+        if instance["state"] not in self.goodStates:
+            msg = f'Instance not in correct state: {fout["referenceUUID"]}, {instance["state"]}'
+            self.logger.error(msg)
+        # 3. Get the manifest from SENSE-0
+        manifest = self.s_getManifest(instance)
+        fout["manifest"] = manifest
+        # 4. Check if manifest is found
+        if not manifest:
+            msg = f'Manifest not found. Got empty manifest from SENSE-0: {fout["referenceUUID"]}'
+            self.logger.error(msg)
+            raise InstanceDataFailure(msg)
+        return instance, manifest
+
+    def _recordSubmitFailure(self, filename, fout, errmsg):
+        """Record a failed submit attempt, and give up once there are more than three."""
+        self.logger.error(errmsg)
+        fout.setdefault("warnings", [])
+        fout["warnings"].append(errmsg)
+        self._updateState(filename, fout)
+        if len(fout["warnings"]) > 3:
+            errormsg = f"Got exceptions while receiving data from SENSE-0 for 3 times. Will mark it as failed. Errors: {fout['warnings']}"
+            self.logger.error(errormsg)
+            self.s_setTaskState(
+                fout.get("taskinfo", {}).get("uuid", ""),
+                "REJECTED",
+                {"error": "Failed to get manifest"},
+            )
+            fout["state"] = "failed"
+            self._updateState(filename, fout)
+
     def submit_exe(self, filename, fout):
         """Submit Action Execution"""
         self.logger.info("=" * 80)
         self.logger.info("Submit Execution: %s, %s", filename, fout)
         try:
-            # 1. Get the instance from SENSE-0
-            instance = self.s_getInstance(fout["referenceUUID"])
-            fout["instance"] = instance
-            self.logger.info(f"Here is instance for {fout['referenceUUID']}:")
-            self.logger.info(pformat(instance))
-            # 1.a Check if instance is found
-            if not instance:
-                msg = f'Instance not found in SENSE-0: {fout["referenceUUID"]}'
-                self.logger.error(msg)
-                raise Exception(msg)
-            # 2.a Check if the instance is already running and in good state
-            if instance["state"] not in self.goodStates:
-                msg = f'Instance not in correct state: {fout["referenceUUID"]}, {instance["state"]}'
-                self.logger.error(msg)
-            # 3. Get the manifest from SENSE-0
-            manifest = self.s_getManifest(instance)
-            fout["manifest"] = manifest
-            # 4. Check if manifest is found
-            if not manifest:
-                msg = f'Manifest not found. Got empty manifest from SENSE-0: {fout["referenceUUID"]}'
-                self.logger.error(msg)
-                raise Exception(msg)
-        except Exception as ex:
-            errmsg = f"Got exceptions while receiving data from SENSE-0: {ex}"
-            self.logger.error(errmsg)
-            fout.setdefault("warnings", [])
-            fout["warnings"].append(errmsg)
-            self._updateState(filename, fout)
-            if len(fout["warnings"]) > 3:
-                errormsg = f"Got exceptions while receiving data from SENSE-0 for 3 times. Will mark it as failed. Errors: {fout['warnings']}"
-                self.logger.error(errormsg)
-                self.s_setTaskState(
-                    fout.get("taskinfo", {}).get("uuid", ""),
-                    "REJECTED",
-                    {"error": "Failed to get manifest"},
-                )
-                fout["state"] = "failed"
-                self._updateState(filename, fout)
+            instance, manifest = self._s_fetchInstanceManifest(fout)
+        except Exception as ex:  # pylint: disable=broad-exception-caught
+            # Deliberately broad. Anything the SENSE-O client can raise, from a
+            # missing manifest to a socket timeout, has to become a retryable
+            # warning on this one entry. Narrowing it would let a transport
+            # error escape to main() and abort the remaining state files.
+            self._recordSubmitFailure(filename, fout, f"Got exceptions while receiving data from SENSE-0: {ex}")
             return
 
         # If we reach here - we set task as accepted
@@ -226,7 +249,9 @@ class RTMonWorker(
         self.logger.debug("Running Execution: %s, %s", filename, fout)
         # Check external record to track info of device
         if self.e_submitExternalAPI(fout, "running"):
-            # TODO: We might want to check status of external service.
+            # Read back, but deliberately fire-and-forget. The external record is
+            # advisory and the dashboard is never gated on it, so acting on the
+            # returned status would need a retry policy that does not exist yet.
             self.e_getExternalAPI(fout, "running")
         for dashbName, dashbVals in self.dashboards.get(self._getFolderName(), {}).items():
             present = True
@@ -364,39 +389,48 @@ class RTMonWorker(
         inputVal = taskinfo.get("config", {}).get("settings", {}).get(f"{parameter}.enabled", None)
         return valtoboolean(inputVal)
 
+    def _storeAnnotationResults(self, annotations):
+        """Submit the annotations for one action and return what should be stored."""
+        annotation_results = {}
+        for annotation in annotations:
+            # Generate new place to store results
+            if not annotation.get("storeresults"):
+                continue
+            tmp_results = {}
+            for idnum, keyval in enumerate(annotation["storeresults"], start=1):
+                # If it is the last item, then we make default to list
+                if idnum == 1:
+                    tmp_result = annotation_results.setdefault(keyval, {})
+                if idnum == len(annotation["storeresults"]):
+                    tmp_result = tmp_results.setdefault(keyval, [])
+                else:
+                    tmp_result = tmp_results.setdefault(keyval, {})
+            try:
+                annoout = self.g_submitAnnotation(submitout=annotation.get("submitout", {}), dashbInfo=annotation.get("dashbInfo", {}), timespan=annotation.get("timespan", True))
+                tmp_result.extend(annoout)
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                # An annotation is cosmetic. Losing one must not abort the
+                # remaining annotations or the actions that follow.
+                self.logger.error(f"Error submitting annotation: {e}")
+        return annotation_results
+
     def _executeSiteRMActions(self, fout, instance, manifest):
         """Execute SiteRM Actions"""
         ## Need to loop over supported action and check if there was a request to execute it.
         for action in self.supported_actions:
             # Any action that starts with execute is a SiteRM action
             # All other actions are for dashboard generation.
-            if action.startswith("execute"):
-                if self.getTaskEnabled(fout.get("taskinfo"), action):
-                    tmpOut = self.sr_submit_action(action, fout, instance=instance, manifest=manifest)
-                    if tmpOut:
-                        fout[tmpOut[2]] = tmpOut[0]
-                        if tmpOut[1] and isinstance(tmpOut[1], list):
-                            annotation_results = {}
-                            for annotation in tmpOut[1]:
-                                # Generate new place to store results
-                                if annotation.get("storeresults"):
-                                    tmp_results = {}
-                                    for idnum, keyval in enumerate(annotation["storeresults"], start=1):
-                                        # If it is the last item, then we make default to list
-                                        if idnum == 1:
-                                            tmp_result = annotation_results.setdefault(keyval, {})
-                                        if idnum == len(annotation["storeresults"]):
-                                            tmp_result = tmp_results.setdefault(keyval, [])
-                                        else:
-                                            tmp_result = tmp_results.setdefault(keyval, {})
-                                    try:
-                                        annoout = self.g_submitAnnotation(
-                                            submitout=annotation.get("submitout", {}), dashbInfo=annotation.get("dashbInfo", {}), timespan=annotation.get("timespan", True)
-                                        )
-                                        tmp_result.extend(annoout)
-                                    except Exception as e:
-                                        self.logger.error(f"Error submitting annotation: {e}")
-                            fout.setdefault("all_annotations", {}).setdefault(action[7:], {}).update(annotation_results)
+            if not action.startswith("execute"):
+                continue
+            if not self.getTaskEnabled(fout.get("taskinfo"), action):
+                continue
+            tmpOut = self.sr_submit_action(action, fout, instance=instance, manifest=manifest)
+            if not tmpOut:
+                continue
+            fout[tmpOut[2]] = tmpOut[0]
+            if tmpOut[1] and isinstance(tmpOut[1], list):
+                annotation_results = self._storeAnnotationResults(tmpOut[1])
+                fout.setdefault("all_annotations", {}).setdefault(action[7:], {}).update(annotation_results)
         return fout
 
     def _executeSiteRMCancel(self, fout, callstate):
@@ -446,55 +480,61 @@ class RTMonWorker(
                 self.logger.error(msg)
                 self.s_setTaskState(task["uuid"], "REJECTED", {"error": msg})
 
-    def main(self):
-        """Main Method"""
-        # 1. Identify all files and submitted items;
-        # list all files under '/srv/ and load as json
+    def _collectStateFiles(self):
+        """Load every state file this instance owns, grouped by state.
+
+        Returns the grouped files and a per-orchestrator count of the ones
+        skipped because another RTMon instance owns them.
+        """
         stateInfo = {}
         skipped = {}
         for root, _, files in os.walk(self.config.get("workdir", "/srv")):
             for filename in files:
-                if filename.startswith("rtmon-debug-"):
-                    fout = loadFileJson(os.path.join(root, filename), self.logger)
-                    if not fout:
-                        continue
-                    orchestrator = fout.get("orchestrator", "")
-                    if orchestrator not in self.active_orchestrators:
-                        skipped[orchestrator] = skipped.get(orchestrator, 0) + 1
-                        continue
-                    if fout.get("state", "") in [
-                        "delete",
-                        "submitted",
-                        "running",
-                        "failed",
-                        "renew",
-                    ]:
-                        stateInfo.setdefault(fout["state"], {})
-                        stateInfo[fout["state"]][filename] = fout
+                if not filename.startswith("rtmon-debug-"):
+                    continue
+                fout = loadFileJson(os.path.join(root, filename), self.logger)
+                if not fout:
+                    continue
+                orchestrator = fout.get("orchestrator", "")
+                if orchestrator not in self.active_orchestrators:
+                    skipped[orchestrator] = skipped.get(orchestrator, 0) + 1
+                    continue
+                if fout.get("state", "") in self.stateOrder:
+                    stateInfo.setdefault(fout["state"], {})
+                    stateInfo[fout["state"]][filename] = fout
+        return stateInfo, skipped
+
+    def main(self):
+        """Main Method"""
+        # 1. Identify all files and submitted items;
+        # list all files under '/srv/ and load as json
+        stateInfo, skipped = self._collectStateFiles()
         if skipped:
             self.logger.info("Skipped files for orchestrators not owned by this instance: %s", skipped)
         if not stateInfo:
             return
+        handlers = {
+            "submitted": self.submit_exe,
+            "delete": self.delete_exe,
+            "running": self.running_exe,
+            "failed": self.failed_exe,
+            "renew": self.renew_exe,
+        }
         excp = None
-        for state in ["submitted", "delete", "running", "failed", "renew"]:
+        for state in self.stateOrder:
             self.logger.info("State: %s, Files: %s", state, len(stateInfo.get(state, {})))
             for filename, fout in stateInfo.get(state, {}).items():
                 try:
                     self.logger.debug("Filename: %s, Content: %s", filename, fout)
                     # Set correct environment variables for SENSE API
                     os.environ["SENSE_AUTH_OVERRIDE_NAME"] = fout["orchestrator"]
-                    if state == "submitted":
-                        self.submit_exe(filename, fout)
-                    elif state == "delete":
-                        self.delete_exe(filename, fout)
-                    elif state == "running":
-                        self.running_exe(filename, fout)
-                    elif state == "failed":
-                        self.failed_exe(filename, fout)
-                    elif state == "renew":
-                        self.renew_exe(filename, fout)
+                    handlers[state](filename, fout)
                     self.logger.info("=" * 80)
-                except Exception as ex:
+                except Exception as ex:  # pylint: disable=broad-exception-caught
+                    # Deliberately broad, for the same reason as the orchestrator
+                    # loop below: one unprocessable state file must not stop the
+                    # rest. The last exception is re-raised at the end so the
+                    # caller still backs off, and nothing is swallowed silently.
                     excp = ex
                     self.logger.error("Exception: %s", ex)
                     self.logger.error("Failed to process file: %s", filename)

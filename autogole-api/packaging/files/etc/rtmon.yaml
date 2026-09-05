@@ -56,9 +56,20 @@ senseo_state_retire: false
 topdiagrams: Mermaid
 # ==================================
 
-# Template path and tags. If tag updated - it will force update all templates
+# Template path and tags. The tag is written onto every dashboard RTMon
+# generates. Bumping it marks every existing dashboard as being on an older
+# template, and RTMon rebuilds each one in place from the current templates.
+# Dashboards are never deleted to rebuild them: one that cannot be rebuilt, for
+# instance while SENSE-O is unreachable, is left on the old template and tried
+# again later.
 template_path: "/etc/rtmon/templates"
 template_tag: "V0.5"
+
+# How many outdated dashboards to rebuild per cycle. A tag bump makes all of
+# them outdated at once, and each rebuild costs a SENSE-O fetch and a Grafana
+# write, so the whole set is spread over several cycles rather than stalling
+# one. Raise it to move through a bump faster.
+rerender_per_cycle: 5
 
 # Data sources for Prometheus (It will use grafana API to find data sources uid)
 data_sources:

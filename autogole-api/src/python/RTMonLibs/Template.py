@@ -629,6 +629,44 @@ class Template:  # pylint: disable=too-many-instance-attributes
         intfline = "|".join(intfs)
         return intfline
 
+    @staticmethod
+    def __t_findVlans(interfaces):
+        """VLAN label values SNMPMon reports for these interfaces, as a regex.
+
+        SNMPMon writes the label as "Vlan <id>", so they are matched in that form
+        rather than as bare numbers.
+        """
+        vlans = []
+        for intfdata in interfaces.values():
+            if not isinstance(intfdata, dict):
+                continue
+            vlan = intfdata.get("Vlan", "")
+            if vlan and f"Vlan {vlan}" not in vlans:
+                vlans.append(f"Vlan {vlan}")
+        return "|".join(vlans)
+
+    def _t_createQoSPanel(self, sitehost, sitename, hostname, interfaces):
+        """QoS reservation panel for one switch, when SNMPMon reports one.
+
+        Selected on sitename, key1 and VLAN rather than on key2. key2 is the port
+        name as the device spells it (Port-channel_102, et-0-0-32, sense-mghpcc),
+        which does not match the interface names RTMon carries. The VLAN does,
+        and it narrows the series to this instance instead of showing every
+        reservation on the switch.
+        """
+        vlans = self.__t_findVlans(interfaces)
+        if not vlans:
+            self.t_recordWarning(f"No VLAN found in the manifest for switch {sitehost}, so its QoS reservation panel is not shown.")
+            return []
+        if self.t_qosAvailable(sitehost, sitename, hostname, vlans) is False and not self.debugmode:
+            return []
+        panels = dumpJson(self._t_loadTemplate("qos.json"), self.logger)
+        panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
+        panels = panels.replace("REPLACEME_SITENAME", sitename)
+        panels = panels.replace("REPLACEME_HOSTNAME", hostname)
+        panels = panels.replace("REPLACEME_VLANS", escape(vlans))
+        return loadJson(panels, self.logger)
+
     def _t_createESnetSwitchFlow(self, sitehost, num, *args):
         """Create ESnet Switch Flow Template to query stardust directly"""
         out = []
@@ -761,6 +799,9 @@ class Template:  # pylint: disable=too-many-instance-attributes
             panels = panels.replace("REPLACEME_HOSTNAME", hostname)
             panels = panels.replace("REPLACEME_INTERFACE", escape(intfline))
             panels = loadJson(panels, self.logger)
+            # ESnet never reaches here, it returns above through
+            # _t_createESnetSwitchFlow. Stardust does not export qos_status.
+            panels += self._t_createQoSPanel(sitehost, sitename, hostname, interfaces)
             out += self.addRowPanel(row, panels, True)
         return out
 

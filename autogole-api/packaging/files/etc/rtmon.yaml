@@ -27,6 +27,16 @@ grafana_dev:
 # uuid with a new worker.
 overtake_time: 120
 
+# Retire dashboards whose instance SENSE-O no longer reports.
+# RTMon re-checks each monitored instance once an hour. An instance that SENSE-O
+# answers about and does not list, or lists in a state other than READY, counts
+# as one confirmation; three consecutive confirmations retire the dashboard. An
+# orchestrator that cannot be reached never counts, so a maintenance window
+# cannot delete a live dashboard.
+# Default false: RTMon logs what it would retire without retiring it, so the
+# blast radius is visible in the pod logs before this is turned on.
+senseo_state_retire: false
+
 
 # FOR DEVELOPMEENT ONLY
 # Enable grafana_dev parameter (can be any string, and will be used as name to create directory inside Grafana)

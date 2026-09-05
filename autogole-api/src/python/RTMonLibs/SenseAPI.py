@@ -339,8 +339,14 @@ class SenseAPI:
             self.logger.error(traceback.format_exc())
             raise SENSEOFailure(f"API Call Failed!. Exception {ex} Response: {response}") from ex
         if not response:
-            self.logger.error("No Data received from SENSE-O")
-            return {}
+            # An empty body is not the same as "there are no instances": SENSE-O
+            # answers that with a document holding an empty list. Empty means the
+            # call gave us nothing usable, and callers have to be able to tell
+            # that apart from an instance genuinely being gone, so it raises like
+            # any other failure to reach the orchestrator.
+            msg = "No data received from SENSE-O when discovering instances"
+            self.logger.error(msg)
+            raise SENSEOFailure(msg)
         # SENSE-O returns str json key - which we need to load and make it a dict
         out = []
         for item in loadJson(response, self.logger).get("instances", []):
@@ -354,7 +360,13 @@ class SenseAPI:
         return out
 
     def s_getInstance(self, instance_uuid):
-        """Get instance by UUID"""
+        """Get instance by UUID.
+
+        Returns {} only when SENSE-O answered and the instance was not among the
+        instances it listed. If SENSE-O could not be reached or returned nothing,
+        s_getInstances raises SENSEOFailure instead, so an empty return here is
+        always an authoritative "not there" and never a failed lookup.
+        """
         instances = self.s_getInstances()
         for instance in instances:
             if "referenceUUID" in instance and instance["referenceUUID"] == instance_uuid:

@@ -14,7 +14,11 @@ def clamp(n, minn, maxn):
     return max(min(maxn, n), minn)
 
 
-class Mermaid:
+# The attribute count is the diagram state itself: node groups, port names,
+# vlans, mac addresses and the ordered path are all built up across a single
+# render. Splitting them into a holder object would move the same 13 values
+# behind one more indirection without making any of them easier to follow.
+class Mermaid:  # pylint: disable=too-many-instance-attributes
     """Mermaid Template Class"""
 
     def __init__(self, **kwargs):
@@ -106,6 +110,18 @@ class Mermaid:
         self.mermaid.append(line)
         self._m_cleanDuplicates(start, len(self.mermaid))
 
+    @staticmethod
+    def _m_realMac(hostdict):
+        """True when the manifest gave a MAC and an address worth recording.
+
+        The manifest fills in ?mac?, ?port_mac?, ?port_ipv4? and ?port_ipv6?
+        where it has no value, so a host carrying only those has nothing to
+        record.
+        """
+        if hostdict.get("Mac", "?mac?") in ("?mac?", "?port_mac?"):
+            return False
+        return hostdict["IPv6"] != "?port_ipv6?" or hostdict["IPv4"] != "?port_ipv4?"
+
     def _m_recordMac(self, hostdict):
         """Record mac into var"""
         try:
@@ -117,13 +133,7 @@ class Mermaid:
             self.logger.debug(f"Got Exception: {ex}")
         self.mac_addresses.setdefault(sitehost, {})
         self.mac_addresses[sitehost].setdefault(hostname, {})
-        if (
-            "Mac" in hostdict
-            and hostdict["Mac"] not in self.mac_addresses[sitehost][hostname]
-            and hostdict["Mac"] != "?mac?"
-            and hostdict["Mac"] != "?port_mac?"
-            and (hostdict["IPv6"] != "?port_ipv6?" or hostdict["IPv4"] != "?port_ipv4?")
-        ):
+        if self._m_realMac(hostdict) and hostdict["Mac"] not in self.mac_addresses[sitehost][hostname]:
             self.mac_addresses[sitehost][hostname] = hostdict["Mac"]
 
     def _m_addBGP(self, item, ipkey, bgppeer):
@@ -308,7 +318,10 @@ class Mermaid:
                 return idx, tmpitem["Node"], tmpitem
         return None, None, lastitem
 
-    def findorder(self, manifest):
+    # Walks the manifest hop by hop and has a distinct case per hop shape. The
+    # branches are the cases, so collapsing them would only move the same
+    # decisions into helpers that are meaningless on their own.
+    def findorder(self, manifest):  # pylint: disable=too-many-branches,too-many-statements
         """Find all orders of the manifest"""
         nexthop = None
         nexthoptype = "Host"
@@ -384,7 +397,9 @@ class Mermaid:
         return self.mermaid
 
 
-class Template:
+# Same as Mermaid: these are the accumulators one dashboard render writes into,
+# and _clean resets them together at the top of every render.
+class Template:  # pylint: disable=too-many-instance-attributes
     """Autogole SENSE Grafana RTMon API"""
 
     def __init__(self, **kwargs):
@@ -459,9 +474,9 @@ class Template:
 
     def _t_setDataSourceUid(self, *_args):
         """Get Data Source UID"""
-        # TODO: We need a way for Orchestrator to tell us if this is real time (5sec resolution)
-        # or historical (1min resolution)
-        # For now return the historical one
+        # Always the historical source (1min resolution). The orchestrator has no
+        # way to tell RTMon that an instance wants the real time one (5sec), so
+        # there is nothing to choose between here until it does.
         name = self.config.get("data_sources", {}).get("general", "Prometheus")
         self.t_dsourceuid = self._t_getDataSource(name)
 
@@ -481,7 +496,9 @@ class Template:
             out["collapsed"] = kwargs["collapsed"]
         return out
 
-    def t_addLinks(self, *_args, **kwargs):
+    # One local per link attribute the Grafana link object needs, built in a
+    # loop over the configured links. There is no smaller unit to extract.
+    def t_addLinks(self, *_args, **kwargs):  # pylint: disable=too-many-locals
         """Add Links to the Dashboard"""
 
         def _getSiteDashbUID(site):
@@ -636,7 +653,9 @@ class Template:
             out += self.addRowPanel(row, panels, True)
         return out
 
-    def _t_createESnetL2Debug(self, sitehost, interfaces, refid):
+    # Builds one query per (vlan, peer site, peer host, mac) combination, so the
+    # locals are the loop variables of a four deep walk plus the substitutions.
+    def _t_createESnetL2Debug(self, sitehost, interfaces, refid):  # pylint: disable=too-many-locals
         """Create ESnet L2 Debug Template to query stardust directly"""
         queries = []
         try:
@@ -792,7 +811,9 @@ class Template:
         out += self.addRowPanel(row, [textGraph, textGraph1])
         return out
 
-    def _t_addHostL2Debugging(self, sitehost, interfaces, refid):
+    # Same shape as _t_createESnetL2Debug: a nested walk over vlans, peers and
+    # mac addresses, one local per substitution the query template needs.
+    def _t_addHostL2Debugging(self, sitehost, interfaces, refid):  # pylint: disable=too-many-locals
         """Add L2 Debugging for Host"""
         queries = []
         sitename = sitehost.split(":")[0]
@@ -838,7 +859,9 @@ class Template:
         panel["gridPos"]["h"] = 4 + len(queries)
         return [panel]
 
-    def _t_addSwitchL2Debugging(self, sitehost, interfaces, refid):
+    # Same shape as _t_addHostL2Debugging, against the switch mac table rather
+    # than the host one.
+    def _t_addSwitchL2Debugging(self, sitehost, interfaces, refid):  # pylint: disable=too-many-locals
         """Add L2 Debugging for Switch"""
         queries = []
         try:
@@ -913,7 +936,7 @@ class Template:
             out += self._t_addSwitchL2Debugging(sitehost, interfaces, refID)
         return self.addRowPanel(row, out, True)
 
-    def __createDiagrams(self, *args, **kwargs):
+    def __createDiagrams(self, *args, **_kwargs):
         """Create diagrams from the mermaid code"""
         self.logger.info("Creating diagrams")
         # Generate Mermaid (Send copy of args, as t_createMermaid will modify it by del items)

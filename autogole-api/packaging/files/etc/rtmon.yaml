@@ -84,6 +84,12 @@ prometheus_url: REPLACEME
 prometheus_username: REPLACEME
 prometheus_password: REPLACEME
 
+# Assignee tag RTMon asks SENSE-O for tasks under. Must match the tag the
+# orchestrator's RTMon addon assigns tasks to. A tag SENSE-O does not know comes
+# back as an empty list rather than an error, so a mistake here looks exactly
+# like having no work to do; RTMon logs the tag it asked for at debug level.
+senseo_assignee: "rtmon.instance-manager"
+
 # Sense endpoints and their auth files.
 sense_endpoints:
   "sense-o.es.net": "/etc/sense-o-auth-prod.yaml"

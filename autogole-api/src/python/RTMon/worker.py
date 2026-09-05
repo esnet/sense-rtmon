@@ -53,6 +53,13 @@ class RTMonWorker(
     retryBase = 60
     retryMax = 3600
 
+    # How many dashboards on an outdated template are rebuilt in a single cycle.
+    # A template_tag bump makes every dashboard stale at once, and each rebuild
+    # is a SENSE-O fetch plus a Grafana write, so doing them all in one pass
+    # stalls the cycle and holds up the heartbeat the health probes read.
+    # Overridable with rerender_per_cycle.
+    rerenderPerCycle = 5
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.logger = kwargs.get("logger")
@@ -62,6 +69,8 @@ class RTMonWorker(
         self.auth_instances = {}
         self.devname = self.config.get("grafana_dev", None)
         self.active_orchestrators = set()
+        # Rebuilds done in the current cycle. main() resets it.
+        self.rerendered = 0
 
     def _getFolderName(self):
         folderName = self.config.get("grafana_folder", "Real Time Mon")
@@ -333,6 +342,122 @@ class RTMonWorker(
         # Cancel all SiteRM actions (if any)
         self._executeSiteRMCancel(fout, "delete")
 
+    def _findDashboard(self, fout):
+        """The Grafana dashboard belonging to this entry, matched on its tags.
+
+        Returns (None, None) when there is none. A dashboard already carrying
+        the configured template_tag wins: a rebuild that had to change the title
+        leaves the superseded dashboard in place until the new one is confirmed,
+        so both can be present at once, and matching the stale one would rebuild
+        it again on every cycle.
+        """
+        match = (None, None)
+        for dashbName, dashbVals in self.dashboards.get(self._getFolderName(), {}).items():
+            if any(fout.get(key, "") not in dashbVals["tags"] for key in ["referenceUUID", "orchestrator", "submission"]):
+                continue
+            if self.config.get("template_tag", "") in dashbVals["tags"]:
+                return dashbName, dashbVals
+            if match[0] is None:
+                match = (dashbName, dashbVals)
+        return match
+
+    def _rerenderLimit(self):
+        """How many dashboards may be rebuilt this cycle."""
+        try:
+            return max(int(self.config.get("rerender_per_cycle", self.rerenderPerCycle)), 1)
+        except (TypeError, ValueError):
+            self.logger.error("rerender_per_cycle is not a number: %s. Using %s.", self.config.get("rerender_per_cycle"), self.rerenderPerCycle)
+            return self.rerenderPerCycle
+
+    def _rerenderData(self, filename, fout):
+        """Instance and manifest to rebuild a dashboard from, newest first.
+
+        Falls back to the copy held in the state file, so bumping the template
+        during an orchestrator outage still applies the new template to the last
+        data RTMon had instead of leaving the dashboard behind indefinitely.
+        """
+        # Snapshotted because _s_fetchInstanceManifest assigns into fout before
+        # it checks what it got, so a lookup that comes back empty overwrites the
+        # cached copy with nothing. Restoring it below also keeps that failure
+        # from destroying what renew_exe would otherwise have rebuilt from.
+        cached = (fout.get("instance", {}), fout.get("manifest", {}))
+        try:
+            return self._s_fetchInstanceManifest(fout)
+        except (SENSEOFailure, InstanceDataFailure) as ex:
+            self.logger.warning("Could not refresh data for %s: %s. Falling back to the cached copy.", filename, ex)
+        except Exception as ex:  # pylint: disable=broad-exception-caught
+            # Same reason as submit_exe: anything the SENSE-O client raises has
+            # to leave the existing dashboard standing rather than escape.
+            self.logger.error("Failed to refresh data for %s: %s. Falling back to the cached copy.", filename, ex)
+        fout["instance"], fout["manifest"] = cached
+        if not cached[0] or not cached[1]:
+            self.logger.error("Nothing to rebuild %s from. Leaving the dashboard on the old template.", filename)
+        return cached
+
+    def _dropSupersededDashboard(self, dashbVals, newtitle):
+        """Remove the dashboard a rebuild replaced, once the new one is up.
+
+        Only reached when the rebuilt title differs from the old one. The title
+        carries the instance timestamp and the uid is derived from it, so a
+        changed title means the rebuild landed beside the old dashboard instead
+        of on top of it. Leaving it is not an option: both carry the tags
+        _findDashboard matches on.
+
+        Only the Grafana dashboard goes. The state file and the SENSE-O task
+        stay, which is the whole difference between this and delete_exe.
+        """
+        if not self.g_getDashboardByTitle(newtitle, self._getFolderName()):
+            self.logger.error("Rebuilt dashboard %s is not in Grafana yet. Keeping %s until it is.", newtitle, dashbVals["title"])
+            return
+        self.logger.info("Deleting superseded dashboard %s, replaced by %s", dashbVals["title"], newtitle)
+        self.g_deleteDashboard(dashbVals["title"], self._getFolderName())
+
+    def _rerenderDashboard(self, filename, fout, dashbVals):
+        """Rebuild a dashboard whose template_tag is behind the configured one.
+
+        This used to set the state to delete, which sent the entry through
+        delete_exe: the dashboard went, the state file went, and s_finishTask
+        un-assigned the SENSE-O task, so nothing was left to rebuild from.
+        Bumping the tag permanently destroyed the dashboards it was documented
+        to refresh.
+
+        Nothing here deletes on failure. A dashboard on an old template is
+        recoverable on the next cycle and a deleted one is not, so every failure
+        path leaves the current dashboard exactly where it is.
+        """
+        if self.rerendered >= self._rerenderLimit():
+            self.logger.info("Rebuild budget for this cycle is used up. %s stays on the old template until the next cycle.", filename)
+            return
+        self.rerendered += 1
+        instance, manifest = self._rerenderData(filename, fout)
+        if not instance or not manifest:
+            self._backoff(fout)
+            self._updateState(filename, fout)
+            return
+        try:
+            template, dashbInfo = self.t_createTemplate(instance, manifest, **fout)
+        except IOError as ex:
+            self.logger.error("Failed to build the new template for %s: %s. Keeping the current dashboard.", filename, ex)
+            self._backoff(fout)
+            self._updateState(filename, fout)
+            return
+        fout["dashbInfo"] = dashbInfo
+        folderInfo = self.g_createFolder(self._getFolderName())
+        template["folderId"] = folderInfo["id"]
+        template["overwrite"] = True
+        self.g_addNewDashboard(template)
+        self.g_loadAll()  # Reload, both to confirm the rebuild landed and to get its URL
+        newtitle = template["dashboard"]["title"]
+        if newtitle != dashbVals["title"]:
+            self._dropSupersededDashboard(dashbVals, newtitle)
+            # The old URL is what SENSE-O still hands users, and it now points at
+            # a dashboard that is gone, so the task has to be told the new one.
+            self.s_finishTask(fout.get("taskinfo", {}).get("uuid", ""), {"callbackURL": self.g_getDashboardURL(newtitle, self._getFolderName())})
+        self._updateDashboardPermissions(fout)
+        self.logger.info("Rebuilt %s on template %s", newtitle, self.config.get("template_tag", ""))
+        self._clearRetryState(fout)
+        self._updateState(filename, fout)
+
     def running_exe(self, filename, fout):
         """Running Action Execution"""
         self.logger.debug("Running Execution: %s, %s", filename, fout)
@@ -342,50 +467,42 @@ class RTMonWorker(
             # advisory and the dashboard is never gated on it, so acting on the
             # returned status would need a retry policy that does not exist yet.
             self.e_getExternalAPI(fout, "running")
-        for dashbName, dashbVals in self.dashboards.get(self._getFolderName(), {}).items():
-            present = True
-            for key in ["referenceUUID", "orchestrator", "submission"]:
-                if fout.get(key, "") not in dashbVals["tags"]:
-                    present = False
-            if present:
-                # Check that version is the same, in case of new release,
-                # we need to update the dashboard with new template_tag
-                # Set default task info
-                fout.setdefault("taskinfo", {}).setdefault("status", "UNKNOWN")
-                if fout["taskinfo"]["status"] != "FINISHED":
-                    self.s_finishTask(
-                        fout["taskinfo"]["uuid"],
-                        {"callbackURL": self.g_getDashboardURL(dashbVals["title"], self._getFolderName())},
-                    )
-                    fout["taskinfo"]["status"] = "FINISHED"
-                    self._updateState(filename, fout)
-                if self.config["template_tag"] in dashbVals["tags"]:
-                    self.logger.info("Dashboard is present in Grafana: %s", dashbName)
-                    self._updateDashboardPermissions(fout)
-                    # Check if we need to execute any SiteRM actions
-                    self._executeSiteRMActions(fout, fout.get("instance", {}), fout.get("manifest", {}))
-                    # Seeing the dashboard is the definition of this entry being
-                    # healthy, so the misses that got it here are forgotten. They
-                    # used to accumulate for the lifetime of the entry, which
-                    # meant thirty transient misses spread over months eventually
-                    # marked a working dashboard failed.
-                    self._clearRetryState(fout)
-                    self._updateState(filename, fout)
-                    # Add user permissions (if any)
-                    # Check SENSE-O State and delete if not in a final state anymore;
-                    if not self._checkSenseOState(filename, fout):
-                        self.logger.info("SENSE-O Task State not in a final state. Will delete the dashboard")
-                        fout["state"] = "delete"
-                        self._updateState(filename, fout)
-                    return
-                # Need to update the dashboard with new template_tag
-                self.logger.info(
-                    "Dashboard is present in Grafana, but with old version: %s",
-                    dashbName,
+        dashbName, dashbVals = self._findDashboard(fout)
+        if dashbName:
+            # Set default task info
+            fout.setdefault("taskinfo", {}).setdefault("status", "UNKNOWN")
+            if fout["taskinfo"]["status"] != "FINISHED":
+                self.s_finishTask(
+                    fout["taskinfo"]["uuid"],
+                    {"callbackURL": self.g_getDashboardURL(dashbVals["title"], self._getFolderName())},
                 )
+                fout["taskinfo"]["status"] = "FINISHED"
+                self._updateState(filename, fout)
+            if self.config["template_tag"] not in dashbVals["tags"]:
+                # A new release bumped template_tag, so this dashboard is on an
+                # older template. Rebuild it where it stands. Routing it through
+                # delete_exe instead is what destroyed dashboards permanently.
+                self.logger.info("Dashboard is present in Grafana, but with old version: %s", dashbName)
+                self._rerenderDashboard(filename, fout, dashbVals)
+                return
+            self.logger.info("Dashboard is present in Grafana: %s", dashbName)
+            self._updateDashboardPermissions(fout)
+            # Check if we need to execute any SiteRM actions
+            self._executeSiteRMActions(fout, fout.get("instance", {}), fout.get("manifest", {}))
+            # Seeing the dashboard is the definition of this entry being
+            # healthy, so the misses that got it here are forgotten. They
+            # used to accumulate for the lifetime of the entry, which
+            # meant thirty transient misses spread over months eventually
+            # marked a working dashboard failed.
+            self._clearRetryState(fout)
+            self._updateState(filename, fout)
+            # Add user permissions (if any)
+            # Check SENSE-O State and delete if not in a final state anymore;
+            if not self._checkSenseOState(filename, fout):
+                self.logger.info("SENSE-O Task State not in a final state. Will delete the dashboard")
                 fout["state"] = "delete"
                 self._updateState(filename, fout)
-                return
+            return
         # If we reach here - means the dashboard is not present in Grafana
         self.logger.info("Dashboard is not present in Grafana: %s", fout)
         fout.setdefault("retries", 0)
@@ -621,6 +738,7 @@ class RTMonWorker(
         """
         # 1. Identify all files and submitted items;
         # list all files under '/srv/ and load as json
+        self.rerendered = 0
         stateInfo, skipped = self._collectStateFiles()
         if skipped:
             self.logger.info("Skipped files for orchestrators not owned by this instance: %s", skipped)

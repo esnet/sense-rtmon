@@ -22,6 +22,92 @@ from RTMonLibs.GeneralLibs import getUTCnow
 class SenseAPI:
     """Class for interacting with SENSE-0 API"""
 
+    # The actions RTMon advertises to SENSE-O so they appear as user options.
+    # Constant rather than an instance attribute: it is only ever read, and it
+    # is identical for every orchestrator this worker talks to.
+    supported_actions = {
+        "executepinghost": {
+            "name": "Issue Ping from Hosts",
+            "key": "executepinghost",
+            "label": "Ping Test from Hosts",
+            "description": "Issue ping automatically between endpoints (Default true)",
+            "type": "complex",
+            "options": [{"key": "enabled", "name": "Enable flag", "type": "boolean", "default": False, "description": "Enable ping between hosts. Done continuously and repeated every 5 minutes."}],
+        },
+        "executepingnet": {
+            "name": "Issue Ping from Network endpoints",
+            "key": "executepingnet",
+            "label": "Ping Test from Network",
+            "description": "Issue ping automatically between network endpoints (Default false)",
+            "type": "complex",
+            "options": [
+                {
+                    "key": "enabled",
+                    "name": "Enable flag",
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Enable ping from network endpoints. Only done once for 5 minutes, when enabled. To re-enable - disable and enable again.",
+                }
+            ],
+        },
+        "allmacs": {
+            "name": "Show All Learned Mac's",
+            "key": "allmacs",
+            "label": "Show All MACs",
+            "description": "Generate table in dashboard with all MAC addresses learned in the network devices",
+            "type": "complex",
+            "options": [{"key": "enabled", "name": "Enable flag", "type": "boolean", "default": False, "description": "Enable showing all MAC addresses in the dashboard"}],
+        },
+        "debugmode": {
+            "name": "Debug Mode (Detailed graphs)",
+            "key": "debugmode",
+            "label": "Debug Mode",
+            "description": "Show more detailed dashboard with all debug information included",
+            "type": "complex",
+            "options": [
+                {
+                    "key": "enabled",
+                    "name": "Enable flag",
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Enable debug mode in the dashboard. Will show all debug information, like L2, L3, Intent, Model, etc.",
+                }
+            ],
+        },
+        "executeperf": {
+            "name": "Issue Performance Test Between 2 Sites",
+            "description": "Issue performance test between 2 endpoints.",
+            "key": "executeperf",
+            "label": "Performance Test",
+            "type": "complex",
+            "options": [
+                {"key": "enabled", "name": "Enable flag", "type": "boolean", "default": False, "description": "Enable performance test between 2 endpoints. Default False"},
+                {
+                    "label": "Test Application",
+                    "description": "Select Performance Test application",
+                    "key": "perfapp",
+                    "type": "select",
+                    "default": "notselected",
+                    "options": [
+                        {"key": "notselected", "description": "No performance testing"},
+                        {"key": "iperf", "description": "Use IPerf3 for performance testing"},
+                        {"key": "fdt", "description": "Use FDT for performance testing"},
+                        {"key": "ethr", "description": "Use Ethr for performance testing"},
+                    ],
+                },
+                {"key": "streams", "name": "Streams", "type": "number", "default": 4, "description": "Number of Streams to use. Default 4, Max 16"},
+                {"key": "runtime", "name": "Runtime", "type": "number", "default": 600, "description": "Total Runtime in seconds. Default 300, Max 1800"},
+                {
+                    "key": "bothdirections",
+                    "name": "Bidirectional",
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Execute Performance Test in both directions at the same time (Default False). If False - will execute in one direction only",
+                },
+            ],
+        },
+    }
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.config = kwargs.get("config")
@@ -32,88 +118,6 @@ class SenseAPI:
         self.task_apis = {}
         self.meta_apis = {}
         self.uuids = {}
-        self.supported_actions = {
-            "executepinghost": {
-                "name": "Issue Ping from Hosts",
-                "key": "executepinghost",
-                "label": "Ping Test from Hosts",
-                "description": "Issue ping automatically between endpoints (Default true)",
-                "type": "complex",
-                "options": [{"key": "enabled", "name": "Enable flag", "type": "boolean", "default": False, "description": "Enable ping between hosts. Done continously and repeated every 5 minutes."}],
-            },
-            "executepingnet": {
-                "name": "Issue Ping from Network endpoints",
-                "key": "executepingnet",
-                "label": "Ping Test from Network",
-                "description": "Issue ping automatically between network endpoints (Default false)",
-                "type": "complex",
-                "options": [
-                    {
-                        "key": "enabled",
-                        "name": "Enable flag",
-                        "type": "boolean",
-                        "default": False,
-                        "description": "Enable ping from network endpoints. Only done once for 5 minutes, when enabled. To re-enable - disable and enable again.",
-                    }
-                ],
-            },
-            "allmacs": {
-                "name": "Show All Learned Mac's",
-                "key": "allmacs",
-                "label": "Show All MACs",
-                "description": "Generate table in dashboard with all MAC addresses learned in the network devices",
-                "type": "complex",
-                "options": [{"key": "enabled", "name": "Enable flag", "type": "boolean", "default": False, "description": "Enable showing all MAC addresses in the dashboard"}],
-            },
-            "debugmode": {
-                "name": "Debug Mode (Detailed graphs)",
-                "key": "debugmode",
-                "label": "Debug Mode",
-                "description": "Show more detailed dashboard with all debug information included",
-                "type": "complex",
-                "options": [
-                    {
-                        "key": "enabled",
-                        "name": "Enable flag",
-                        "type": "boolean",
-                        "default": False,
-                        "description": "Enable debug mode in the dashboard. Will show all debug information, like L2, L3, Intent, Model, etc.",
-                    }
-                ],
-            },
-            "executeperf": {
-                "name": "Issue Performance Test Between 2 Sites",
-                "description": "Issue performance test between 2 endpoints.",
-                "key": "executeperf",
-                "label": "Performance Test",
-                "type": "complex",
-                "options": [
-                    {"key": "enabled", "name": "Enable flag", "type": "boolean", "default": False, "description": "Enable performance test between 2 endpoints. Default False"},
-                    {
-                        "label": "Test Application",
-                        "description": "Select Performance Test application",
-                        "key": "perfapp",
-                        "type": "select",
-                        "default": "notselected",
-                        "options": [
-                            {"key": "notselected", "description": "No performance testing"},
-                            {"key": "iperf", "description": "Use IPerf3 for performance testing"},
-                            {"key": "fdt", "description": "Use FDT for performance testing"},
-                            {"key": "ethr", "description": "Use Ethr for performance testing"},
-                        ],
-                    },
-                    {"key": "streams", "name": "Streams", "type": "number", "default": 4, "description": "Number of Streams to use. Default 4, Max 16"},
-                    {"key": "runtime", "name": "Runtime", "type": "number", "default": 600, "description": "Total Runtime in seconds. Default 300, Max 1800"},
-                    {
-                        "key": "bothdirections",
-                        "name": "Bidirectional",
-                        "type": "boolean",
-                        "default": False,
-                        "description": "Execute Performance Test in both directions at the same time (Default False). If False - will execute in one direction only",
-                    },
-                ],
-            },
-        }
 
     def _s_getworkeruuid(self):
         """Generate UUID"""
@@ -141,28 +145,28 @@ class SenseAPI:
         orchestrator = os.environ.get("SENSE_AUTH_OVERRIDE_NAME")
         if orchestrator in self.workflow_apis:
             return self.workflow_apis[orchestrator]
-        raise Exception(f"Orchestrator {orchestrator} not found in the list of clients")
+        raise SENSEOFailure(f"Orchestrator {orchestrator} not found in the list of clients")
 
     def s_getDiscoverApi(self):
         """Get Discover API"""
         orchestrator = os.environ.get("SENSE_AUTH_OVERRIDE_NAME")
         if orchestrator in self.discover_apis:
             return self.discover_apis[orchestrator]
-        raise Exception(f"Orchestrator {orchestrator} not found in the list of clients")
+        raise SENSEOFailure(f"Orchestrator {orchestrator} not found in the list of clients")
 
     def s_getTaskApi(self):
         """Get Task API"""
         orchestrator = os.environ.get("SENSE_AUTH_OVERRIDE_NAME")
         if orchestrator in self.task_apis:
             return self.task_apis[orchestrator]
-        raise Exception(f"Orchestrator {orchestrator} not found in the list of clients")
+        raise SENSEOFailure(f"Orchestrator {orchestrator} not found in the list of clients")
 
     def s_getMetaApi(self):
         """Get Metadata API"""
         orchestrator = os.environ.get("SENSE_AUTH_OVERRIDE_NAME")
         if orchestrator in self.meta_apis:
             return self.meta_apis[orchestrator]
-        raise Exception(f"Orchestrator {orchestrator} not found in the list of clients")
+        raise SENSEOFailure(f"Orchestrator {orchestrator} not found in the list of clients")
 
     def s_getMetadataRegData(self):
         """Get Metadata Registration Data"""
@@ -312,7 +316,11 @@ class SenseAPI:
             try:
                 response = wApi.manifest_create(dumpJson(template, self.logger))
                 failures = 4
-            except Exception as ex:
+            except Exception as ex:  # pylint: disable=broad-exception-caught
+                # Deliberately broad. This is the retry loop for one manifest,
+                # and every way the call can fail, from a transport error to the
+                # client raising on a malformed body, has to be retried the same
+                # way. The caller gets {} after three tries either way.
                 failures += 1
                 self.logger.error(f"Failed to get manifest from SENSE-O for {instance['referenceUUID']}: {ex}")
                 self.logger.error(traceback.format_exc())

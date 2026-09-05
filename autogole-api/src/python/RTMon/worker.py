@@ -38,6 +38,21 @@ class RTMonWorker(
     # first so a new dashboard exists before anything else looks for it.
     stateOrder = ("submitted", "delete", "running", "failed", "renew")
 
+    # How long between SENSE-O state checks for a single monitoring entry, and
+    # how many consecutive checks have to agree the instance is gone before the
+    # dashboard is retired. Both are tracked in the entry's own state file, so
+    # the pacing survives a restart and a crash looping pod cannot confirm an
+    # absence three times in three minutes.
+    senseoCheckInterval = 3600
+    senseoAbsentLimit = 3
+
+    # Per entry retry pacing. A failed entry waits retryBase seconds, doubling
+    # on each further failure up to retryMax, before it is looked at again.
+    # Without this every entry retries on the 30 second loop, so a maintenance
+    # window a few minutes long exhausts a retry budget meant to span hours.
+    retryBase = 60
+    retryMax = 3600
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.logger = kwargs.get("logger")
@@ -45,7 +60,6 @@ class RTMonWorker(
         # templatePath and generated are set by Template.__init__, which runs
         # ahead of this through the cooperative super() chain.
         self.auth_instances = {}
-        self.senseotimer = getUTCnow()
         self.devname = self.config.get("grafana_dev", None)
         self.active_orchestrators = set()
 
@@ -60,21 +74,80 @@ class RTMonWorker(
         with open(f'{self.config.get("workdir", "/srv")}/{filename}', "w", encoding="utf-8") as fd:
             fd.write(dumpJson(fout, self.logger))
 
-    def _checkSenseOState(self, fout):
-        """Check SENSE-O Task State and cancel if not in a final state"""
-        # Run it only once an hour
-        if getUTCnow() - self.senseotimer < 3600:
-            return True
-        self.senseotimer = getUTCnow()
-        instanceuuid = fout.get("taskinfo").get("config", {}).get("uuid", "")
+    def _checkSenseOState(self, filename, fout):
+        """Ask SENSE-O whether the instance behind this dashboard is still live.
+
+        Returns False only when the dashboard should be retired. An orchestrator
+        that could not answer never produces False: absence has to be reported by
+        a SENSE-O that actually responded, on senseoAbsentLimit consecutive
+        checks, before anything is torn down. Until senseo_state_retire is turned
+        on, a confirmed absence is logged and nothing is retired.
+        """
+        instanceuuid = fout.get("taskinfo", {}).get("config", {}).get("uuid", "")
         if not instanceuuid:
-            # If we are missing instanceuuid, we ignore it;
+            # Entries written before the task carried an instance uuid have
+            # nothing to ask about, so they are left alone.
             return True
-        out = self.s_getInstance(instanceuuid)
-        if out["state"] not in self.goodStates:
-            self.logger.info(f'Instance {instanceuuid} is in good state: {out["state"]}')
+        # Paced per entry, not globally. A single shared timer meant only the
+        # first entry reached in a given hour was ever checked, which is why
+        # dashboards for long deleted instances survived indefinitely.
+        if getUTCnow() - fout.get("senseocheck", 0) < self.senseoCheckInterval:
+            return True
+        try:
+            instance = self.s_getInstance(instanceuuid)
+        except SENSEOFailure as ex:
+            # The orchestrator could not answer. That is not evidence the
+            # instance is gone, so the absence count is left untouched and the
+            # check is simply retried next cycle. Escalating here is how a
+            # maintenance window would delete a live dashboard.
+            self.logger.warning("SENSE-O could not be queried for %s: %s. Leaving dashboard alone.", instanceuuid, ex)
+            return True
+        fout["senseocheck"] = getUTCnow()
+        if instance and instance.get("state", "") in self.goodStates:
+            if fout.pop("senseoabsent", 0):
+                self.logger.info("Instance %s is back in a good state. Clearing absence count.", instanceuuid)
+            self._updateState(filename, fout)
+            return True
+        reason = "gone from SENSE-O" if not instance else f'in state {instance.get("state", "")}'
+        confirmations = fout.get("senseoabsent", 0) + 1
+        fout["senseoabsent"] = confirmations
+        self._updateState(filename, fout)
+        if confirmations < self.senseoAbsentLimit:
+            self.logger.info("Instance %s is %s (%s of %s confirmations). Not retiring yet.", instanceuuid, reason, confirmations, self.senseoAbsentLimit)
+        elif not valtoboolean(self.config.get("senseo_state_retire", False)):
+            self.logger.info("Instance %s is %s, confirmed %s times. Would retire dashboard, but senseo_state_retire is off.", instanceuuid, reason, confirmations)
+        else:
+            self.logger.info("Instance %s is %s, confirmed %s times. Retiring dashboard.", instanceuuid, reason, confirmations)
             return False
         return True
+
+    def _retryReady(self, filename, fout):
+        """False while a previously failed entry is still inside its backoff."""
+        nextattempt = fout.get("nextattempt", 0)
+        if getUTCnow() >= nextattempt:
+            return True
+        self.logger.debug("Skipping %s for another %s seconds of backoff", filename, nextattempt - getUTCnow())
+        return False
+
+    def _backoff(self, fout):
+        """Push this entry's next attempt out, exponentially in its failures.
+
+        Every kind of failure lengthens the wait, including the ones that are not
+        held against the entry, so an orchestrator that is down is retried less
+        and less often without that ever being read as the entry misbehaving.
+        """
+        attempts = fout.get("retries", 0) + len(fout.get("warnings", [])) + fout.get("senseofailures", 0)
+        delay = min(self.retryBase * 2 ** max(attempts - 1, 0), self.retryMax)
+        fout["nextattempt"] = getUTCnow() + delay
+        return delay
+
+    @staticmethod
+    def _clearRetryState(fout):
+        """Forget an entry's failure history once it has succeeded."""
+        fout.pop("nextattempt", None)
+        fout.pop("warnings", None)
+        fout.pop("senseofailures", None)
+        fout["retries"] = 0
 
     def _updateDashboardPermissions(self, fout):
         """Update dashboard permissions"""
@@ -111,7 +184,7 @@ class RTMonWorker(
         fout["state"] = "running"
         fout.setdefault("taskinfo", {})
         fout["taskinfo"]["status"] = "FINISHED"
-        fout.setdefault("retries", 0)
+        self._clearRetryState(fout)
         # Cancel actions (if any have changed)
         fout = self._executeSiteRMCancel(fout, "renew")
         self._updateState(filename, fout)
@@ -154,6 +227,8 @@ class RTMonWorker(
         self.logger.error(errmsg)
         fout.setdefault("warnings", [])
         fout["warnings"].append(errmsg)
+        delay = self._backoff(fout)
+        self.logger.info("Next attempt for %s in %s seconds", filename, delay)
         self._updateState(filename, fout)
         if len(fout["warnings"]) > 3:
             errormsg = f"Got exceptions while receiving data from SENSE-0 for 3 times. Will mark it as failed. Errors: {fout['warnings']}"
@@ -172,6 +247,17 @@ class RTMonWorker(
         self.logger.info("Submit Execution: %s, %s", filename, fout)
         try:
             instance, manifest = self._s_fetchInstanceManifest(fout)
+        except SENSEOFailure as ex:
+            # The orchestrator could not answer. Back off and come back to it,
+            # but do not hold it against the entry. Warnings are what walk an
+            # entry to failed, and failed_exe walks it from there to delete, so
+            # counting an outage here is how a maintenance window ends up
+            # deleting a live instance.
+            fout["senseofailures"] = fout.get("senseofailures", 0) + 1
+            delay = self._backoff(fout)
+            self.logger.error("SENSE-O unavailable for %s: %s. Retrying in %s seconds, attempt %s.", filename, ex, delay, fout["senseofailures"])
+            self._updateState(filename, fout)
+            return
         except Exception as ex:  # pylint: disable=broad-exception-caught
             # Deliberately broad. Anything the SENSE-O client can raise, from a
             # missing manifest to a socket timeout, has to become a retryable
@@ -209,7 +295,10 @@ class RTMonWorker(
         self.e_submitExternalAPI(fout, "submit")
         # 9. Update State to Running
         fout["state"] = "running"
-        fout.setdefault("retries", 0)
+        # A submit that got all the way here clears the failure history. Warnings
+        # left over from an orchestrator outage must not count toward the three
+        # that mark the entry failed the next time something goes wrong.
+        self._clearRetryState(fout)
         self._updateState(filename, fout)
 
     def delete_exe(self, filename, fout):
@@ -275,10 +364,16 @@ class RTMonWorker(
                     self._updateDashboardPermissions(fout)
                     # Check if we need to execute any SiteRM actions
                     self._executeSiteRMActions(fout, fout.get("instance", {}), fout.get("manifest", {}))
+                    # Seeing the dashboard is the definition of this entry being
+                    # healthy, so the misses that got it here are forgotten. They
+                    # used to accumulate for the lifetime of the entry, which
+                    # meant thirty transient misses spread over months eventually
+                    # marked a working dashboard failed.
+                    self._clearRetryState(fout)
                     self._updateState(filename, fout)
                     # Add user permissions (if any)
                     # Check SENSE-O State and delete if not in a final state anymore;
-                    if not self._checkSenseOState(fout):
+                    if not self._checkSenseOState(filename, fout):
                         self.logger.info("SENSE-O Task State not in a final state. Will delete the dashboard")
                         fout["state"] = "delete"
                         self._updateState(filename, fout)
@@ -300,6 +395,8 @@ class RTMonWorker(
             fout["state"] = "failed"
             self._updateState(filename, fout)
         else:
+            # Space the resubmits out. submit_exe clears this again if it works.
+            self._backoff(fout)
             self.submit_exe(filename, fout)
 
     def failed_exe(self, filename, fout):
@@ -311,6 +408,11 @@ class RTMonWorker(
         # If retries are more than 10 - we need to mark it as delete
         if fout["retries"] > 10:
             fout["state"] = "delete"
+        else:
+            # Ten cycles used to be five minutes, short enough that an
+            # orchestrator restart walked an entry from failed to delete. Backed
+            # off, the same ten cycles span hours.
+            self._backoff(fout)
         self._updateState(filename, fout)
 
     def _taskCancel(self, task, filename):
@@ -345,6 +447,11 @@ class RTMonWorker(
         """Accept task"""
         fullpathfilename = f'{self.config.get("workdir", "/srv")}/{filename}'
         instanceuuid = task.get("config", {}).get("uuid", "")
+        # A SENSEOFailure here is deliberately not caught. It means the
+        # orchestrator could not answer, and _startwork records it as a failed
+        # orchestrator and skips the rest of its tasks this run. Catching it
+        # would fall through to the rejection below and report a live task
+        # failed because the orchestrator happened to be restarting.
         out = self.s_getInstance(instanceuuid)
         if os.environ["SENSE_AUTH_OVERRIDE_NAME"] in self.auth_instances:
             del self.auth_instances[os.environ["SENSE_AUTH_OVERRIDE_NAME"]]
@@ -505,14 +612,20 @@ class RTMonWorker(
         return stateInfo, skipped
 
     def main(self):
-        """Main Method"""
+        """Process every state file this instance owns.
+
+        Returns the entries that could not be processed, keyed by filename. A
+        failed entry is a property of that entry, not of the process, so it is
+        reported rather than raised: one unprocessable state file used to abort
+        the cycle and take the whole pod NotReady until it was cleaned up.
+        """
         # 1. Identify all files and submitted items;
         # list all files under '/srv/ and load as json
         stateInfo, skipped = self._collectStateFiles()
         if skipped:
             self.logger.info("Skipped files for orchestrators not owned by this instance: %s", skipped)
         if not stateInfo:
-            return
+            return {}
         handlers = {
             "submitted": self.submit_exe,
             "delete": self.delete_exe,
@@ -520,10 +633,12 @@ class RTMonWorker(
             "failed": self.failed_exe,
             "renew": self.renew_exe,
         }
-        excp = None
+        failedentries = {}
         for state in self.stateOrder:
             self.logger.info("State: %s, Files: %s", state, len(stateInfo.get(state, {})))
             for filename, fout in stateInfo.get(state, {}).items():
+                if not self._retryReady(filename, fout):
+                    continue
                 try:
                     self.logger.debug("Filename: %s, Content: %s", filename, fout)
                     # Set correct environment variables for SENSE API
@@ -533,27 +648,36 @@ class RTMonWorker(
                 except Exception as ex:  # pylint: disable=broad-exception-caught
                     # Deliberately broad, for the same reason as the orchestrator
                     # loop below: one unprocessable state file must not stop the
-                    # rest. The last exception is re-raised at the end so the
-                    # caller still backs off, and nothing is swallowed silently.
-                    excp = ex
+                    # rest. It is recorded per entry and surfaced in the
+                    # heartbeat, so nothing is swallowed silently.
+                    failedentries[filename] = f"{type(ex).__name__}: {ex}"
                     self.logger.error("Exception: %s", ex)
                     self.logger.error("Failed to process file: %s", filename)
                     self.logger.error("File content: %s", fout)
                     self.logger.info("-" * 80)
+                    try:
+                        self._backoff(fout)
+                        self._updateState(filename, fout)
+                    except OSError as writeex:
+                        self.logger.error("Could not record backoff for %s: %s", filename, writeex)
             self.logger.info("-" * 80)
-        if excp:
-            # Re-raise exception to sleep 30 seconds.
-            self.logger.error("Here is the last exception: %s", excp)
-            raise excp
+        if failedentries:
+            self.logger.error("Entries that failed this run: %s", sorted(failedentries))
+        return failedentries
 
-    def _writeHeartbeat(self, clean, failed, endpoints):
+    def _writeHeartbeat(self, clean, failed, endpoints, failedentries=None):
         """Record run status so health can be judged from outside the process.
-        
+
         This is a simple JSON file that contains the last run time,
         whether the last run was clean,
         and the list of configured and active orchestrators.
         It also records the last time a clean run was completed,
         so that external monitoring can determine if the process is healthy or not.
+
+        failed_entries is reported but deliberately left out of healthy. An entry
+        RTMon cannot process is a problem with that entry, and restarting the pod
+        does not fix it, so it must not take readiness down. It stays here to be
+        alerted on.
         """
         hbfile = os.path.join(self.config.get("workdir", "/srv"), ".rtmon-heartbeat")
         healthy = not failed and clean
@@ -563,6 +687,7 @@ class RTMonWorker(
             "configured_orchestrators": sorted(endpoints),
             "active_orchestrators": sorted(self.active_orchestrators),
             "failed_orchestrators": failed,
+            "failed_entries": failedentries or {},
             "main_error": not clean,
         }
         if healthy:
@@ -637,13 +762,14 @@ class RTMonWorker(
         startTime = int(time.time())
         self.logger.info("Running Main")
         clean = False
+        failedentries = {}
         try:
-            self.main()
+            failedentries = self.main()
             clean = True
         finally:
             endTime = int(time.time())
             timings["MAIN_PROGRAM"] = endTime - startTime
-            self._writeHeartbeat(clean, failed, endpoints)
+            self._writeHeartbeat(clean, failed, endpoints, failedentries)
         self.logger.info("Main run finished")
         self.logger.info("Timings: %s", timings)
         # self.runtimeGauge.labels(**self._getLabels('MAIN_PROGRAM', "main", "xrootd")).set(totalRuntime)

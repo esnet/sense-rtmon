@@ -3,15 +3,15 @@
 # Sleep timer between runs
 sleep_timer: 10
 # Work dir for temp files (api directory). Default /srv
-workdir: '/srv/'
+workdir: "/srv/"
 # Grafana settings (for the API)
-grafana_host: 'https://autogole-grafana.nrp-nautilus.io'
+grafana_host: "https://autogole-grafana.nrp-nautilus.io"
 grafana_api_key: REPLACEME
 # Username and pass is used for Grafana Dashboard user permissions
 # These are not available in api usecase, and need to use user/pass based authentication
 #grafana_username: REPLACEME
 #grafana_password: REPLACEME
-grafana_folder: 'Real Time Mon'
+grafana_folder: "Real Time Mon"
 grafana_dev:
 
 # Timeout for sense-o calls
@@ -27,6 +27,15 @@ grafana_dev:
 # uuid with a new worker.
 overtake_time: 120
 
+# Retire dashboards whose instance SENSE-O no longer reports.
+# RTMon re-checks each monitored instance once an hour. An instance that SENSE-O
+# answers about and does not list, or lists in a state other than READY, counts
+# as one confirmation; three consecutive confirmations retire the dashboard. An
+# orchestrator that cannot be reached never counts, so a maintenance window
+# cannot delete a live dashboard.
+# Default false: RTMon logs what it would retire without retiring it, so the
+# blast radius is visible in the pod logs before this is turned on.
+senseo_state_retire: false
 
 # FOR DEVELOPMEENT ONLY
 # Enable grafana_dev parameter (can be any string, and will be used as name to create directory inside Grafana)
@@ -40,8 +49,7 @@ overtake_time: 120
 # Default image debug is False (mainly used for development)
 #image_debug:
 
-
-# Default debug is False (mainly used for development), If set to True Dashboard will be generated with Memaid and Debug Info 
+# Default debug is False (mainly used for development), If set to True Dashboard will be generated with Memaid and Debug Info
 # Debug:
 
 # Default topdiagrams is Mermaid
@@ -49,8 +57,8 @@ topdiagrams: Mermaid
 # ==================================
 
 # Template path and tags. If tag updated - it will force update all templates
-template_path: '/etc/rtmon/templates'
-template_tag: 'V0.5'
+template_path: "/etc/rtmon/templates"
+template_tag: "V0.5"
 
 # Data sources for Prometheus (It will use grafana API to find data sources uid)
 data_sources:
@@ -65,7 +73,6 @@ prometheus_url: REPLACEME
 prometheus_username: REPLACEME
 prometheus_password: REPLACEME
 
-
 # Sense endpoints and their auth files.
 sense_endpoints:
   "sense-o.es.net": "/etc/sense-o-auth-prod.yaml"
@@ -73,12 +80,12 @@ sense_endpoints:
 
 # Additional links for the templates
 template_links:
-  - title: 'All Node Monitoring'
-    url: 'https://autogole-grafana.nrp-nautilus.io/d/D7xOxim4z/full-dtn-monitoring-variable?orgId=1&refresh=1m'
-  - title: 'All Switches Monitoring $$REPLACEMESITENAME$$'
-    url: 'https://autogole-grafana.nrp-nautilus.io/d/efe9ac84-9df5-47a4-bea8-67a196771a0d/switch-monitoring?orgId=1&refresh=1m&var-Sitename=$$REPLACEMESITENAME$$&var-switch=All'
-  - title: 'SENSE-O WebUI for Instance'
-    url: 'https://$$REPLACEMESENSEODOMAIN$$:8443/StackV-web/portal/details/$$REPLACEMEDELTAUUID$$'
+  - title: "All Node Monitoring"
+    url: "https://autogole-grafana.nrp-nautilus.io/d/D7xOxim4z/full-dtn-monitoring-variable?orgId=1&refresh=1m"
+  - title: "All Switches Monitoring $$REPLACEMESITENAME$$"
+    url: "https://autogole-grafana.nrp-nautilus.io/d/efe9ac84-9df5-47a4-bea8-67a196771a0d/switch-monitoring?orgId=1&refresh=1m&var-Sitename=$$REPLACEMESITENAME$$&var-switch=All"
+  - title: "SENSE-O WebUI for Instance"
+    url: "https://$$REPLACEMESENSEODOMAIN$$:8443/StackV-web/portal/details/$$REPLACEMEDELTAUUID$$"
 
 # Override URL for the NSI,ESnet,Fabric mermaid diagrams. Most of those RMs report everything in a single SwitchingSubnet
 # and we need to override it to show the actual topology (joint, or not). Additionally - most of those have no site name or
@@ -89,5 +96,5 @@ external_service:
   Internet2: "https://nsi-snmpmon-internet2.nrp-nautilus.io/"
 
 # HostCert and HostKey location (needed for SiteRM communications). Cert must be authorized in all Frontends.
-hostcert: '/etc/grid-security/hostcert.pem'
-hostkey: '/etc/grid-security/hostkey.pem'
+hostcert: "/etc/grid-security/hostcert.pem"
+hostkey: "/etc/grid-security/hostkey.pem"

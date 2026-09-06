@@ -22,6 +22,13 @@ from RTMonLibs.GeneralLibs import getUTCnow
 class SenseAPI:
     """Class for interacting with SENSE-0 API"""
 
+    # The assignee tag RTMon asks SENSE-O for tasks under. It has to match the
+    # tag the orchestrator's RTMon addon assigns tasks to, and a deployment that
+    # uses a different one simply sees no tasks: SENSE-O answers an unknown tag
+    # with an empty list, not an error. Overridable with senseo_assignee, so a
+    # deployment can run against a differently named addon without a code change.
+    assigneeTag = "rtmon.instance-manager"
+
     # The actions RTMon advertises to SENSE-O so they appear as user options.
     # Constant rather than an instance attribute: it is only ever read, and it
     # is identical for every orchestrator this worker talks to.
@@ -235,12 +242,29 @@ class SenseAPI:
                 raise SENSEOFailure(f"UUID does not match - {response['uuid']} in database. My UUID is {myuuid}. Last update: {response['last_update']}")
 
     def s_getassignedTasks(self):
-        """Get all assigned tasks"""
+        """Get all assigned tasks for this deployment.
+
+        Both filters here fail silently by design: an assignee tag SENSE-O does
+        not know and a deployment name no task carries both come back as an empty
+        list, which is also what "nothing to do right now" looks like. The logs
+        below are the only way to tell those apart from outside.
+        """
         tApi = self.s_getTaskApi()
-        ret = tApi.get_tasks(assigned="rtmon.instance-manager")
+        # "or", not a get default: a key left in the config with its value blanked
+        # out is present and empty, and polling for an empty tag returns nothing
+        # at all. Falling back on empty keeps that from looking like idleness.
+        assignee = self.config.get("senseo_assignee") or self.assigneeTag
         folderName = self._getFolderName()
-        ret = [task for task in ret if task.get("config", {}).get("deployment", "") == folderName]
-        return ret
+        self.logger.debug("Asking SENSE-O for tasks assigned to %s for deployment %s", assignee, folderName)
+        ret = tApi.get_tasks(assigned=assignee)
+        matched = [task for task in ret if task.get("config", {}).get("deployment", "") == folderName]
+        if ret and not matched:
+            # The tag is right, since tasks came back under it, but not one of
+            # them names this deployment. That is a grafana_folder mismatch, and
+            # without this it looks identical to having no work.
+            deployments = sorted({task.get("config", {}).get("deployment", "") for task in ret})
+            self.logger.warning("SENSE-O returned %s tasks for assignee %s, none for deployment %s. Deployments seen: %s", len(ret), assignee, folderName, deployments)
+        return matched
 
     def _s_gettaskbyuuid(self, taskuuid):
         """Get task by UUID"""

@@ -59,6 +59,28 @@ class DataWarnings:
             available = self.p_check_host_available(sitename=sitename, hostname=hostname)
         return self.t_recordAvailability(dtype, sitehost, available)
 
+    def t_qosAvailable(self, sitehost, sitename, hostname, vlans):
+        """Tri-state check of whether SENSE QoS reservation data backs this switch.
+
+        Kept apart from t_dataAvailable because the two answer different
+        questions: SNMP counters and QoS reservations come from different parts
+        of SNMPMon, and a switch that reports interface statistics may report no
+        reservation at all. Gating the QoS panel on the SNMP answer would show an
+        empty panel on exactly the switches that have no reservation to show.
+        """
+        if not self.t_prometheusBacked(sitehost):
+            return None
+        available = self.p_check_qos_available(sitename=sitename, hostname=hostname, vlans=vlans)
+        if available is True:
+            return available
+        if available is None:
+            self.t_recordWarning(f"Could not determine whether QoS reservation data exists for switch {sitehost}. Prometheus did not answer the check, so the panel is left in place.")
+        elif self.debugmode:
+            self.t_recordWarning(f"No QoS reservation data in Prometheus for switch {sitehost}. The panel is shown anyway because debugmode is enabled, and it is expected to be empty.")
+        else:
+            self.t_recordWarning(f"No QoS reservation data in Prometheus for switch {sitehost}. Its QoS panel is not shown.")
+        return available
+
     def t_skipMonitoring(self, dtype, sitehost):
         """Decide whether to leave this device out of the dashboard."""
         if self.debugmode or not self.t_prometheusBacked(sitehost):

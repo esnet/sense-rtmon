@@ -88,6 +88,19 @@ class Prometheus:
         query = f'count(increase(node_network_receive_bytes_total{{instance=~"{kwargs["hostname"]}.*", sitename="{kwargs["sitename"]}"}}[24h])) or on() vector(0)'
         return self.p_get_query(query)
 
+    def p_count_qos_status(self, **kwargs):
+        """
+        Constructs and executes a query to count the QoS reservation series
+        SNMPMon reports for a device on the given VLANs. Mirrors what the QoS
+        panel graphs, so a zero here means that panel would render empty.
+
+        key1 is the device SNMPMon saw the reservation on. The VLANs come from
+        the manifest and are what scopes the answer to this instance rather than
+        to every reservation on the device.
+        """
+        query = f'count(qos_status{{sitename="{kwargs["sitename"]}", key1="{kwargs["hostname"]}", vlan=~"{kwargs["vlans"]}"}}) or on() vector(0)'
+        return self.p_get_query(query)
+
     def _p_safe_count(self, func, **kwargs):
         """Run one of the count helpers and fold every failure into None.
 
@@ -125,6 +138,13 @@ class Prometheus:
     def p_check_host_available(self, **kwargs):
         """Returns the tri-state availability of host monitoring data."""
         count = self._p_safe_count(self.p_count_host_statistics, **kwargs)
+        if count is None:
+            return None
+        return count != "0"
+
+    def p_check_qos_available(self, **kwargs):
+        """Returns the tri-state availability of QoS reservation data."""
+        count = self._p_safe_count(self.p_count_qos_status, **kwargs)
         if count is None:
             return None
         return count != "0"

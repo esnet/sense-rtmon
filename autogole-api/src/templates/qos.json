@@ -1,0 +1,150 @@
+[
+  {
+    "datasource": {
+      "type": "prometheus",
+      "uid": "REPLACEME_DATASOURCE"
+    },
+    "description": "QoS reservation SNMPMon reports for this switch on the VLANs used by this instance. Capacities are on the left axis, granularity and priority on the right. Series exported in mbps are scaled to bits/s so both kinds of site read on the same axis.",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "axisLabel": "",
+          "axisPlacement": "left",
+          "barAlignment": 0,
+          "drawStyle": "line",
+          "fillOpacity": 0,
+          "gradientMode": "none",
+          "hideFrom": {
+            "legend": false,
+            "tooltip": false,
+            "viz": false
+          },
+          "lineInterpolation": "stepAfter",
+          "lineWidth": 2,
+          "pointSize": 5,
+          "scaleDistribution": {
+            "type": "linear"
+          },
+          "showPoints": "never",
+          "spanNulls": false,
+          "stacking": {
+            "group": "A",
+            "mode": "none"
+          },
+          "thresholdsStyle": {
+            "mode": "off"
+          }
+        },
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            }
+          ]
+        },
+        "unit": "bps"
+      },
+      "overrides": [
+        {
+          "matcher": {
+            "id": "byRegexp",
+            "options": "/^granularity .*/"
+          },
+          "properties": [
+            {
+              "id": "custom.axisPlacement",
+              "value": "right"
+            },
+            {
+              "id": "custom.axisLabel",
+              "value": "granularity"
+            },
+            {
+              "id": "unit",
+              "value": "bps"
+            }
+          ]
+        },
+        {
+          "matcher": {
+            "id": "byRegexp",
+            "options": "/^priority .*/"
+          },
+          "properties": [
+            {
+              "id": "custom.axisPlacement",
+              "value": "right"
+            },
+            {
+              "id": "custom.axisLabel",
+              "value": "priority"
+            },
+            {
+              "id": "unit",
+              "value": "short"
+            }
+          ]
+        }
+      ]
+    },
+    "options": {
+      "legend": {
+        "calcs": ["lastNotNull", "min", "max"],
+        "displayMode": "table",
+        "placement": "bottom",
+        "showLegend": true
+      },
+      "tooltip": {
+        "mode": "multi",
+        "sort": "none"
+      }
+    },
+    "pluginVersion": "8.5.27",
+    "targets": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "REPLACEME_DATASOURCE"
+        },
+        "editorMode": "code",
+        "expr": "qos_status{sitename=\"REPLACEME_SITENAME\", key1=\"REPLACEME_HOSTNAME\", vlan=~\"REPLACEME_VLANS\", valuetype=~\"availableCapacity|maximumCapacity|reservableCapacity\", unit=\"bps\"} or qos_status{sitename=\"REPLACEME_SITENAME\", key1=\"REPLACEME_HOSTNAME\", vlan=~\"REPLACEME_VLANS\", valuetype=~\"availableCapacity|maximumCapacity|reservableCapacity\", unit=\"mbps\"} * 1000000",
+        "interval": "",
+        "legendFormat": "{{valuetype}} {{key2}} {{vlan}}",
+        "range": true,
+        "refId": "A"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "REPLACEME_DATASOURCE"
+        },
+        "editorMode": "code",
+        "expr": "qos_status{sitename=\"REPLACEME_SITENAME\", key1=\"REPLACEME_HOSTNAME\", vlan=~\"REPLACEME_VLANS\", valuetype=\"granularity\", unit=\"bps\"} or qos_status{sitename=\"REPLACEME_SITENAME\", key1=\"REPLACEME_HOSTNAME\", vlan=~\"REPLACEME_VLANS\", valuetype=\"granularity\", unit=\"mbps\"} * 1000000",
+        "hide": false,
+        "legendFormat": "{{valuetype}} {{key2}} {{vlan}}",
+        "range": true,
+        "refId": "B"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "REPLACEME_DATASOURCE"
+        },
+        "editorMode": "code",
+        "expr": "qos_status{sitename=\"REPLACEME_SITENAME\", key1=\"REPLACEME_HOSTNAME\", vlan=~\"REPLACEME_VLANS\", valuetype=\"priority\"}",
+        "hide": false,
+        "legendFormat": "{{valuetype}} {{key2}} {{vlan}}",
+        "range": true,
+        "refId": "C"
+      }
+    ],
+    "title": "QoS Reservation from SENSE (REPLACEME_HOSTNAME)",
+    "type": "timeseries"
+  }
+]

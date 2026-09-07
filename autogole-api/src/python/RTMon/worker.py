@@ -2,6 +2,7 @@
 # pylint: disable=line-too-long
 """Main Worker for RTMon."""
 import os
+import math
 import time
 from pprint import pformat
 from RTMonLibs.GeneralLibs import loadFileJson, getConfig, dumpJson, getUTCnow, SENSEOFailure, InstanceDataFailure, valtoboolean
@@ -35,8 +36,17 @@ class RTMonWorker(
     goodStates = ["CREATE - READY", "REINSTATE - READY", "MODIFY - READY"]
 
     # The states main() acts on, in the order it acts on them. Submitted runs
-    # first so a new dashboard exists before anything else looks for it.
+    # first so a new dashboard exists before anything else looks for it. Every
+    # entry here needs a handler in main(), which checks the two agree.
     stateOrder = ("submitted", "delete", "running", "failed", "renew")
+
+    # States processed whatever _startwork made of their orchestrator this run.
+    # The ownership filter exists so two RTMon instances do not fight over the
+    # same entry, but it also means an entry whose orchestrator is unreachable,
+    # or has been dropped from the config, is never looked at again. That is
+    # harmless for work that needs the orchestrator and wrong for work that does
+    # not.
+    ownerlessStates = ()
 
     # How long between SENSE-O state checks for a single monitoring entry, and
     # how many consecutive checks have to agree the instance is gone before the
@@ -79,9 +89,22 @@ class RTMonWorker(
         return folderName
 
     def _updateState(self, filename, fout):
-        """Update the state of the file"""
-        with open(f'{self.config.get("workdir", "/srv")}/{filename}', "w", encoding="utf-8") as fd:
+        """Write an entry's state file, atomically.
+
+        Written to a temporary file alongside the real one and moved into place,
+        because the previous truncate and rewrite left a window where a crash or
+        a full disk produced a half written file. loadFileJson skips whatever it
+        cannot parse, so an entry damaged that way is dropped from every later
+        run and whatever it was tracking is never cleaned up.
+        """
+        workdir = self.config.get("workdir", "/srv")
+        target = os.path.join(workdir, filename)
+        tmp = f"{target}.tmp"
+        with open(tmp, "w", encoding="utf-8") as fd:
             fd.write(dumpJson(fout, self.logger))
+            fd.flush()
+            os.fsync(fd.fileno())
+        os.replace(tmp, target)
 
     def _checkSenseOState(self, filename, fout):
         """Ask SENSE-O whether the instance behind this dashboard is still live.
@@ -613,6 +636,42 @@ class RTMonWorker(
         inputVal = taskinfo.get("config", {}).get("settings", {}).get(f"{parameter}.enabled", None)
         return valtoboolean(inputVal)
 
+    def getTaskNumber(self, taskinfo, parameter, option, default):
+        """Read a number typed option off a task, falling back on anything odd.
+
+        supported_actions already advertises number options (streams, runtime),
+        but nothing reads them, so the obvious int(value) is what a caller would
+        write next. It raises on every value SENSE-O can legitimately send that
+        is not a number, and an exception on a teardown path leaves the entry
+        half processed. This never raises and never returns a value it did not
+        understand.
+
+        Non finite floats are rejected outright rather than clamped: float()
+        accepts "inf", json would write it straight back into the state file, and
+        every later comparison against it silently succeeds.
+        """
+        if parameter not in self.supported_actions:
+            self.logger.error("Parameter %s not found in supported actions. Using default %s", parameter, default)
+            return default
+        raw = (taskinfo or {}).get("config", {}).get("settings", {}).get(f"{parameter}.{option}", None)
+        if raw is None or isinstance(raw, bool):
+            # A boolean is never a meaningful answer to a numeric question, and
+            # bool is a subclass of int, so it has to be rejected before float().
+            return default
+        if isinstance(raw, str):
+            raw = raw.strip()
+            if not raw:
+                return default
+        try:
+            value = float(raw)
+        except (TypeError, ValueError):
+            self.logger.error("Option %s.%s is not a number: %r. Using default %s", parameter, option, raw, default)
+            return default
+        if not math.isfinite(value):
+            self.logger.error("Option %s.%s is not finite: %r. Using default %s", parameter, option, raw, default)
+            return default
+        return value
+
     def _storeAnnotationResults(self, annotations):
         """Submit the annotations for one action and return what should be stored."""
         annotation_results = {}
@@ -709,23 +768,37 @@ class RTMonWorker(
 
         Returns the grouped files and a per-orchestrator count of the ones
         skipped because another RTMon instance owns them.
+
+        Files whose state RTMon does not recognise are counted and reported
+        rather than passed over in silence. Downgrading to a build that predates
+        a state makes every entry in it invisible, and an invisible entry is one
+        nothing will ever finish or clean up.
         """
         stateInfo = {}
         skipped = {}
+        unknown = {}
         for root, _, files in os.walk(self.config.get("workdir", "/srv")):
             for filename in files:
-                if not filename.startswith("rtmon-debug-"):
+                # .tmp is _updateState's half written file, which is about to be
+                # moved over the real one. It carries the same prefix.
+                if not filename.startswith("rtmon-debug-") or filename.endswith(".tmp"):
                     continue
                 fout = loadFileJson(os.path.join(root, filename), self.logger)
                 if not fout:
+                    self.logger.error("State file %s is empty or could not be parsed. Skipping it this run.", filename)
+                    continue
+                state = fout.get("state", "")
+                if state not in self.stateOrder:
+                    unknown[state] = unknown.get(state, 0) + 1
                     continue
                 orchestrator = fout.get("orchestrator", "")
-                if orchestrator not in self.active_orchestrators:
+                if orchestrator not in self.active_orchestrators and state not in self.ownerlessStates:
                     skipped[orchestrator] = skipped.get(orchestrator, 0) + 1
                     continue
-                if fout.get("state", "") in self.stateOrder:
-                    stateInfo.setdefault(fout["state"], {})
-                    stateInfo[fout["state"]][filename] = fout
+                stateInfo.setdefault(state, {})
+                stateInfo[state][filename] = fout
+        if unknown:
+            self.logger.error("State files in states this build does not handle: %s. They are not being processed.", unknown)
         return stateInfo, skipped
 
     def main(self):
@@ -751,6 +824,11 @@ class RTMonWorker(
             "failed": self.failed_exe,
             "renew": self.renew_exe,
         }
+        # These two are edited by hand and drift apart quietly. A state in
+        # stateOrder with no handler raises KeyError mid cycle; a handler with no
+        # state in stateOrder is never reached and its entries pile up unseen.
+        if set(handlers) != set(self.stateOrder):
+            self.logger.error("stateOrder and handlers disagree. Only in stateOrder: %s. Only in handlers: %s.", sorted(set(self.stateOrder) - set(handlers)), sorted(set(handlers) - set(self.stateOrder)))
         failedentries = {}
         for state in self.stateOrder:
             self.logger.info("State: %s, Files: %s", state, len(stateInfo.get(state, {})))

@@ -58,17 +58,26 @@ class GrafanaAPI:
         self.g_getDataSources()
 
     def g_getDashboards(self):
-        """Get dashboards from Grafana"""
-        self.dashboards = {}
+        """Get dashboards from Grafana.
+
+        Built into a local dict and only published on success. Clearing
+        self.dashboards up front meant a search that failed part way through left
+        the worker believing the folder was empty, and callers read an empty
+        folder as "this dashboard does not exist" rather than as "Grafana did not
+        answer", which is the difference between rebuilding a dashboard and
+        deleting one.
+        """
         failures = 0
         while failures < 3:
             try:
+                dashboards = {}
                 for item in self.grafanaapi.search.search_dashboards():
                     folderTitle = item.get("folderTitle", "")
                     if folderTitle:
-                        self.dashboards.setdefault(folderTitle, {})
-                        self.dashboards[folderTitle][item["title"]] = item
-                        self.dashboards[folderTitle][item["title"]]["url"] = f"{self.config['grafana_host']}/d/{item['uid']}/{item['slug']}"
+                        dashboards.setdefault(folderTitle, {})
+                        dashboards[folderTitle][item["title"]] = item
+                        dashboards[folderTitle][item["title"]]["url"] = f"{self.config['grafana_host']}/d/{item['uid']}/{item['slug']}"
+                self.dashboards = dashboards
                 return
             except Exception as ex:  # pylint: disable=broad-exception-caught
                 failures += 1

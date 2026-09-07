@@ -1,15 +1,24 @@
 #!/usr/bin/env python3
+# Long lines here are Grafana JSON payloads and log messages carrying an entire
+# API response. Wrapping them hides what was actually sent or returned, which is
+# the only thing these lines exist for.
+# pylint: disable=line-too-long
 """Grafana API for Autogole SENSE RTMon"""
 import traceback
 import time
 import random
 from urllib.parse import urlparse
 from grafana_client import GrafanaApi
+from RTMonLibs.GeneralLibs import GrafanaFailure
 
 
 class GrafanaAPI:
     """Autogole SENSE Grafana RTMon API"""
 
+    # Deliberately broad catches throughout: each one wraps a retry loop whose
+    # job is to survive anything Grafana or the HTTP stack raises, including the
+    # library's own error types, and narrowing them would let a transport error
+    # escape into a dashboard generation path.
     def __init__(self, **kwargs):
         # pylint: disable=E1123
         # Grafana lib does support timeout, but pylint does not know it.
@@ -61,12 +70,12 @@ class GrafanaAPI:
                         self.dashboards[folderTitle][item["title"]] = item
                         self.dashboards[folderTitle][item["title"]]["url"] = f"{self.config['grafana_host']}/d/{item['uid']}/{item['slug']}"
                 return
-            except Exception as ex:
+            except Exception as ex:  # pylint: disable=broad-exception-caught
                 failures += 1
                 self.logger.error(f"Failed to get dashboards: {ex}")
                 self.logger.error(traceback.format_exc())
                 time.sleep(1)
-        raise Exception("Failed to get dashboards after 3 retries")
+        raise GrafanaFailure("Failed to get dashboards after 3 retries")
 
     def g_getDashboardByTitle(self, title, folderTitle):
         """Get dashboard by Title inside folder"""
@@ -83,12 +92,12 @@ class GrafanaAPI:
                 for item in self.grafanaapi.datasource.list_datasources():
                     self.datasources[item["name"]] = item
                 return
-            except Exception as ex:
+            except Exception as ex:  # pylint: disable=broad-exception-caught
                 failures += 1
                 self.logger.error(f"Failed to get datasources: {ex}")
                 self.logger.error(traceback.format_exc())
                 time.sleep(1)
-        raise Exception("Failed to get datasources after 3 retries")
+        raise GrafanaFailure("Failed to get datasources after 3 retries")
 
     def g_addNewDashboard(self, dashbJson):
         """Add new dashboard"""
@@ -96,12 +105,12 @@ class GrafanaAPI:
         while failures < 3:
             try:
                 return self.grafanaapi.dashboard.update_dashboard(dashbJson)
-            except Exception as ex:
+            except Exception as ex:  # pylint: disable=broad-exception-caught
                 failures += 1
                 self.logger.error(f"Failed to create dashboard {dashbJson}: {ex}")
                 self.logger.error(traceback.format_exc())
                 time.sleep(1)
-        raise Exception(f"Failed to create dashboard {dashbJson} after 3 retries")
+        raise GrafanaFailure(f"Failed to create dashboard {dashbJson} after 3 retries")
 
     def g_getDashboardURL(self, title, folderTitle):
         """Get dashboard URL"""
@@ -116,7 +125,7 @@ class GrafanaAPI:
             while failures < 3:
                 try:
                     return self.grafanaapi.dashboard.delete_dashboard(self.dashboards[folderTitle][title]["uid"])
-                except Exception as ex:
+                except Exception as ex:  # pylint: disable=broad-exception-caught
                     if "Dashboard not found" in str(ex):
                         # Dashboard already deleted
                         return True
@@ -126,7 +135,7 @@ class GrafanaAPI:
                     time.sleep(5)
         else:
             return False
-        raise Exception(f"Failed to delete dashboard {title} after 3 retries")
+        raise GrafanaFailure(f"Failed to delete dashboard {title} after 3 retries")
 
     def g_createFolder(self, title):
         """Create Folder"""
@@ -137,12 +146,12 @@ class GrafanaAPI:
         while failures < 3:
             try:
                 return self.grafanaapi.folder.create_folder(title)
-            except Exception as ex:
+            except Exception as ex:  # pylint: disable=broad-exception-caught
                 failures += 1
                 self.logger.error(f"Failed to create folder {title}: {ex}")
                 self.logger.error(traceback.format_exc())
                 time.sleep(1)
-        raise Exception(f"Failed to create folder {title} after 3 retries")
+        raise GrafanaFailure(f"Failed to create folder {title} after 3 retries")
 
     def g_getFolders(self):
         """Get all folders"""
@@ -153,12 +162,12 @@ class GrafanaAPI:
                 for item in self.grafanaapi.folder.get_all_folders():
                     self.folders[item["title"]] = item
                 return
-            except Exception as ex:
+            except Exception as ex:  # pylint: disable=broad-exception-caught
                 failures += 1
                 self.logger.error(f"Failed to get folders: {ex}")
                 self.logger.error(traceback.format_exc())
                 time.sleep(1)
-        raise Exception("Failed to get folders after 3 retries")
+        raise GrafanaFailure("Failed to get folders after 3 retries")
 
     def g_getFolderID(self, name):
         """Get folder ID by Name. Default None"""
@@ -221,7 +230,7 @@ class GrafanaAPI:
         while failures < 3:
             try:
                 return self.grafanauserapi.users.find_user(email)
-            except Exception as ex:
+            except Exception as ex:  # pylint: disable=broad-exception-caught
                 failures += 1
                 self.logger.error(f"Failed to find user ids by email {email}: {ex}")
                 if "user not found" in str(ex).lower():
@@ -243,7 +252,7 @@ class GrafanaAPI:
                     if item.get("userId", None):
                         out[item["userId"]] = item
                 return out
-            except Exception as ex:
+            except Exception as ex:  # pylint: disable=broad-exception-caught
                 failures += 1
                 self.logger.error(f"Failed to get dashboard permissions for {dashbuid}: {ex}")
                 self.logger.error(traceback.format_exc())
@@ -274,7 +283,7 @@ class GrafanaAPI:
                     out = self.grafanauserapi.client.POST(f"/access-control/dashboards/{dashbuid}/users/{user['id']}", {"permission": permission})
                     self.logger.info(f"Added user permissions to dashboard {dashbuid} for user {email}. Result: {out}")
                     failures = 3  # Just to break the loop
-                except Exception as ex:
+                except Exception as ex:  # pylint: disable=broad-exception-caught
                     failures += 1
                     self.logger.error(f"Failed to add user permissions to dashboard {dashbuid}: {ex}")
                     time.sleep(1)
@@ -286,7 +295,7 @@ class GrafanaAPI:
                     try:
                         out = self.grafanauserapi.client.DELETE(f"/access-control/dashboards/{dashbuid}/users/{userid}")
                         self.logger.info(f"Deleted user permissions to dashboard {dashbuid} for user {userdict.get('userLogin', '')}. Result: {out}")
-                    except Exception as ex:
+                    except Exception as ex:  # pylint: disable=broad-exception-caught
                         failures += 1
                         self.logger.error(f"Failed to delete user permissions to dashboard {dashbuid} for user {userdict.get('userLogin', '')}: {ex}")
                         time.sleep(1)

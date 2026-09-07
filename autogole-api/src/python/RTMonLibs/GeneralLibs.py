@@ -194,6 +194,16 @@ class SENSEOFailure(ExceptionTemplate):
     """Not Found error."""
 
 
+class GrafanaFailure(ExceptionTemplate):
+    """Grafana could not be reached or refused an operation after its retries.
+
+    Raised instead of a bare Exception so callers can tell a Grafana problem
+    apart from a bug in the code that called it. Every raise site is the end of
+    a retry loop, so it always means Grafana stayed unusable, never that a single
+    request happened to fail.
+    """
+
+
 class InstanceDataFailure(ExceptionTemplate):
     """SENSE-O returned no usable instance or manifest for a monitoring entry.
 

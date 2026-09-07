@@ -57,6 +57,22 @@ class SenseAPI:
                 }
             ],
         },
+        "retention": {
+            "name": "Keep Dashboard After Cancellation",
+            "key": "retention",
+            "label": "Dashboard Retention",
+            "description": "How long to keep this dashboard after the instance is cancelled, so the history stays readable",
+            "type": "complex",
+            "options": [
+                {
+                    "key": "days",
+                    "name": "Days to keep",
+                    "type": "number",
+                    "default": 0,
+                    "description": "Days to keep the dashboard after cancellation. 0 removes it immediately. The deployment sets the default and a ceiling, and a request above the ceiling is clamped to it.",
+                }
+            ],
+        },
         "allmacs": {
             "name": "Show All Learned Mac's",
             "key": "allmacs",

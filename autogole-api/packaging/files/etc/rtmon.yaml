@@ -37,6 +37,23 @@ overtake_time: 120
 # blast radius is visible in the pod logs before this is turned on.
 senseo_state_retire: false
 
+# Keep a dashboard for a while after its instance is cancelled, so the history
+# stays readable instead of disappearing with the instance.
+# default_days 0 means retention is off and teardown behaves exactly as before.
+# Anything above 0 turns it on for every cancellation, so raise it deliberately.
+# A task may ask for less through the retention action, never for more:
+# max_days clamps the request and the clamp is logged.
+# allow_perpetual lets a task ask to keep a dashboard indefinitely. Off by
+# default, because an unbounded dashboard is an unbounded Grafana folder and
+# that should be the operator's decision rather than any requester's.
+# expire_per_cycle caps how many are removed per cycle, so a batch retired
+# together does not all expire in one pass.
+dashboard_retention:
+  default_days: 0
+  max_days: 90
+  allow_perpetual: false
+  expire_per_cycle: 10
+
 # FOR DEVELOPMEENT ONLY
 # Enable grafana_dev parameter (can be any string, and will be used as name to create directory inside Grafana)
 # Additionally - all dashboards will have this added to name.

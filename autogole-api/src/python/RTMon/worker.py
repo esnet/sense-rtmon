@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-# pylint: disable=line-too-long
+# Over the 1000 line limit since retention split the teardown path in two. The
+# module is one class and splitting it would mean splitting RTMonWorker, which is
+# the thing the mixins are composed into.
+# pylint: disable=line-too-long,too-many-lines
 """Main Worker for RTMon."""
 import os
+import math
 import time
 from pprint import pformat
 from RTMonLibs.GeneralLibs import loadFileJson, getConfig, dumpJson, getUTCnow, SENSEOFailure, InstanceDataFailure, valtoboolean
@@ -17,6 +21,9 @@ from RTMonLibs.Prometheus import Prometheus
 from RTMonLibs.DataWarnings import DataWarnings
 
 
+# The instance attributes are per cycle counters and caches that main() resets
+# together, in the same spirit as the accumulators on Template and Mermaid.
+# pylint: disable=too-many-instance-attributes
 class RTMonWorker(
     SenseAPI,
     GrafanaAPI,
@@ -35,8 +42,32 @@ class RTMonWorker(
     goodStates = ["CREATE - READY", "REINSTATE - READY", "MODIFY - READY"]
 
     # The states main() acts on, in the order it acts on them. Submitted runs
-    # first so a new dashboard exists before anything else looks for it.
-    stateOrder = ("submitted", "delete", "running", "failed", "renew")
+    # first so a new dashboard exists before anything else looks for it. Every
+    # entry here needs a handler in main(), which checks the two agree.
+    stateOrder = ("submitted", "delete", "running", "failed", "renew", "retained")
+
+    # States processed whatever _startwork made of their orchestrator this run.
+    # The ownership filter exists so two RTMon instances do not fight over the
+    # same entry, but it also means an entry whose orchestrator is unreachable,
+    # or has been dropped from the config, is never looked at again. That is
+    # harmless for work that needs the orchestrator and wrong for work that does
+    # not.
+    # Retiring a retained dashboard touches Grafana and the local state file and
+    # nothing else, so it must not wait on the orchestrator. A retained entry's
+    # task is already finished, so its orchestrator may never be polled again,
+    # and gating expiry on ownership is how a retained dashboard becomes
+    # permanent.
+    ownerlessStates = ("retained",)
+
+    # Dashboard retention. default_days 0 keeps the old behaviour, where a
+    # cancelled instance takes its dashboard with it. retentionMinSeconds stops a
+    # rounding error or a tiny request producing an expiry that has already
+    # passed: removing now is only ever reached by asking for no retention at
+    # all, never by asking for a very small amount.
+    retentionDefaultDays = 0
+    retentionMaxDays = 90
+    retentionMinSeconds = 300
+    expirePerCycle = 10
 
     # How long between SENSE-O state checks for a single monitoring entry, and
     # how many consecutive checks have to agree the instance is gone before the
@@ -69,8 +100,10 @@ class RTMonWorker(
         self.auth_instances = {}
         self.devname = self.config.get("grafana_dev", None)
         self.active_orchestrators = set()
-        # Rebuilds done in the current cycle. main() resets it.
+        # Rebuilds and expiries done in the current cycle. main() resets both.
         self.rerendered = 0
+        self.expired = 0
+        self.retained = 0
 
     def _getFolderName(self):
         folderName = self.config.get("grafana_folder", "Real Time Mon")
@@ -79,9 +112,22 @@ class RTMonWorker(
         return folderName
 
     def _updateState(self, filename, fout):
-        """Update the state of the file"""
-        with open(f'{self.config.get("workdir", "/srv")}/{filename}', "w", encoding="utf-8") as fd:
+        """Write an entry's state file, atomically.
+
+        Written to a temporary file alongside the real one and moved into place,
+        because the previous truncate and rewrite left a window where a crash or
+        a full disk produced a half written file. loadFileJson skips whatever it
+        cannot parse, so an entry damaged that way is dropped from every later
+        run and whatever it was tracking is never cleaned up.
+        """
+        workdir = self.config.get("workdir", "/srv")
+        target = os.path.join(workdir, filename)
+        tmp = f"{target}.tmp"
+        with open(tmp, "w", encoding="utf-8") as fd:
             fd.write(dumpJson(fout, self.logger))
+            fd.flush()
+            os.fsync(fd.fileno())
+        os.replace(tmp, target)
 
     def _checkSenseOState(self, filename, fout):
         """Ask SENSE-O whether the instance behind this dashboard is still live.
@@ -310,39 +356,142 @@ class RTMonWorker(
         self._clearRetryState(fout)
         self._updateState(filename, fout)
 
-    def delete_exe(self, filename, fout):
-        """Delete Action Execution"""
+    def _deleteStateFile(self, filename):
+        """Remove an entry's state file, and any temporary left beside it."""
+        path = os.path.join(self.config.get("workdir", "/srv"), filename)
+        for candidate in (path, f"{path}.tmp"):
+            if os.path.exists(candidate):
+                os.remove(candidate)
 
-        def _deletefile(filename):
-            filename = f'{self.config.get("workdir", "/srv")}/{filename}'
-            if os.path.exists(filename):
-                os.remove(filename)
+    def _retentionSeconds(self, fout):
+        """How long this entry's dashboard should outlive its instance.
 
-        self.logger.info("Delete Execution: %s, %s", filename, fout)
-        # Delete the dashboard and template from Grafana
-        for dashbName, dashbVals in self.dashboards.get(self._getFolderName(), {}).items():
-            present = True
-            for key in ["referenceUUID", "orchestrator", "submission"]:
-                if fout.get(key, "") not in dashbVals["tags"]:
-                    present = False
-            if present:
-                self.logger.info("Deleting Dashboard: %s", dashbName)
-                self.g_deleteDashboard(dashbName, self._getFolderName())
-                _deletefile(filename)
-                # Set task action as finished
+        Returns 0 for no retention and None for perpetual. The operator sets the
+        default and the ceiling; a task can only ask for less than the ceiling,
+        never more, and a request that is not a usable number falls back to the
+        operator default rather than being read as an instruction to remove now.
+        """
+        retention = self.config.get("dashboard_retention", {}) or {}
+        default = retention.get("default_days", self.retentionDefaultDays)
+        maxdays = retention.get("max_days", self.retentionMaxDays)
+        requested = self.getTaskNumber(fout.get("taskinfo"), "retention", "days", default)
+        if requested < 0 and valtoboolean(retention.get("allow_perpetual", False)):
+            self.logger.info("Retention is perpetual for this entry, as the task asked and the operator allows.")
+            return None
+        if requested <= 0:
+            # Includes a negative request when perpetual is not allowed. Asking
+            # for something impossible is not the same as asking for nothing, so
+            # it falls back rather than removing the dashboard immediately.
+            if requested < 0:
+                self.logger.info("Perpetual retention was requested but allow_perpetual is off. Using %s days.", default)
+                requested = default
+            if requested <= 0:
+                return 0
+        if requested > maxdays:
+            self.logger.info("Retention request of %s days exceeds max_days %s. Clamping.", requested, maxdays)
+            requested = maxdays
+        return max(int(round(requested * 86400)), self.retentionMinSeconds)
 
-                self.s_finishTask(
-                    fout.get("taskinfo", {}).get("uuid", ""),
-                    {"callbackURL": "", "msg": "Deleted dashboard from Grafana"},
-                )
-                break
-        _deletefile(filename)
-        # Delete the action from External API
+    def _teardownActions(self, filename, fout):
+        """Everything a cancellation has to tell the outside world.
+
+        Runs once, at cancel time, and needs the orchestrator. Deliberately does
+        not touch the filesystem: the state file is what carries the promise to
+        keep a dashboard, and the old delete_exe removed it unconditionally on
+        the way past.
+
+        s_finishTask is called whether or not a dashboard was found. It used to
+        sit inside the branch that matched one, so a cancellation with no
+        dashboard left the task unfinished and SENSE-O redelivered it forever.
+        """
+        if fout.get("teardown_done"):
+            return
+        self.s_finishTask(
+            fout.get("taskinfo", {}).get("uuid", ""),
+            {"callbackURL": "", "msg": "Monitoring stopped for this instance"},
+        )
         self.e_submitExternalAPI(fout, "delete")
-        # Cancel all SiteRM actions (if any)
         self._executeSiteRMCancel(fout, "delete")
+        fout["teardown_done"] = True
+        self._updateState(filename, fout)
 
-    def _findDashboard(self, fout):
+    def _removeDashboard(self, filename, fout):
+        """Delete the dashboard and forget the entry. Local only, no orchestrator."""
+        dashbName, _ = self._findDashboard(fout, retained=True)
+        if dashbName:
+            self.logger.info("Deleting Dashboard: %s", dashbName)
+            self.g_deleteDashboard(dashbName, self._getFolderName())
+        self._deleteStateFile(filename)
+
+    def delete_exe(self, filename, fout):
+        """Delete Action Execution.
+
+        Splits into the part that has to talk to the orchestrator and the part
+        that only touches Grafana and disk, so a dashboard can be kept for a
+        while after its instance is cancelled without leaving the task hanging.
+        """
+        self.logger.info("Delete Execution: %s, %s", filename, fout)
+        if fout.get("state", "") == "retained":
+            # Already torn down and waiting out its deadline. Re-running the
+            # decision would recompute the retention from scratch, and since
+            # _findDashboard hides a retained dashboard it would conclude there
+            # is nothing to keep and delete the entry outright.
+            self.logger.debug("%s is already retained. Leaving it to the expiry sweep.", filename)
+            return
+        self._teardownActions(filename, fout)
+        seconds = self._retentionSeconds(fout)
+        dashbName, _ = self._findDashboard(fout)
+        if not dashbName:
+            # Nothing to keep. An entry that never rendered leaves no history
+            # worth a retention record.
+            self.logger.info("No dashboard found for %s. Removing the entry.", filename)
+            self._removeDashboard(filename, fout)
+            return
+        if seconds == 0:
+            self._removeDashboard(filename, fout)
+            return
+        # setdefault, not assignment: SENSE-O redelivers a cancel task until it
+        # is finished, and recomputing the deadline on each redelivery pushes it
+        # out by the full period every cycle, which no log line would show.
+        if seconds is None:
+            fout.setdefault("retain_forever", True)
+            fout.pop("retain_until", None)
+            self.logger.info("Retaining dashboard %s for %s indefinitely.", dashbName, filename)
+        else:
+            fout.setdefault("retain_until", getUTCnow() + seconds)
+            self.logger.info("Retaining dashboard %s for %s until %s.", dashbName, filename, fout["retain_until"])
+        fout["state"] = "retained"
+        self._updateState(filename, fout)
+
+    def retained_exe(self, filename, fout):
+        """Remove a retained dashboard once its deadline has passed."""
+        if fout.get("retain_forever"):
+            return
+        deadline = fout.get("retain_until")
+        if not isinstance(deadline, int) or deadline <= 0:
+            # A missing or unusable deadline must never read as expired, or a
+            # renamed key would delete every retained dashboard at once.
+            self.logger.error("Retained entry %s has no usable deadline (%r). Re-stamping it.", filename, deadline)
+            fout["retain_until"] = getUTCnow() + max(self._retentionSeconds(fout) or 0, self.retentionMinSeconds)
+            self._updateState(filename, fout)
+            return
+        if getUTCnow() < deadline:
+            return
+        if self.expired >= self._expireLimit():
+            self.logger.info("Expiry budget for this cycle is used up. %s waits until the next cycle.", filename)
+            return
+        self.expired += 1
+        self.logger.info("Retention expired for %s. Removing the dashboard.", filename)
+        self._removeDashboard(filename, fout)
+
+    def _expireLimit(self):
+        """How many retained dashboards may be removed this cycle."""
+        try:
+            return max(int((self.config.get("dashboard_retention", {}) or {}).get("expire_per_cycle", self.expirePerCycle)), 1)
+        except (TypeError, ValueError):
+            return self.expirePerCycle
+
+    def _findDashboard(self, fout, retained=False):
         """The Grafana dashboard belonging to this entry, matched on its tags.
 
         Returns (None, None) when there is none. A dashboard already carrying
@@ -350,7 +499,14 @@ class RTMonWorker(
         leaves the superseded dashboard in place until the new one is confirmed,
         so both can be present at once, and matching the stale one would rebuild
         it again on every cycle.
+
+        A retained entry's dashboard is deliberately invisible unless retained is
+        set. It still carries the tags this matches on, so without that a live
+        entry could be handed a dashboard that is only waiting to be deleted, and
+        the running path would rebuild and re-adopt something already retired.
         """
+        if fout.get("state", "") == "retained" and not retained:
+            return (None, None)
         match = (None, None)
         for dashbName, dashbVals in self.dashboards.get(self._getFolderName(), {}).items():
             if any(fout.get(key, "") not in dashbVals["tags"] for key in ["referenceUUID", "orchestrator", "submission"]):
@@ -556,9 +712,34 @@ class RTMonWorker(
             )
             return
         fout["taskinfo"] = task
+        if fout.get("state", "") == "retained":
+            # SENSE-O redelivers a cancel task until it is finished. Without this
+            # the entry would be walked back through delete_exe every cycle,
+            # which is harmless for the dashboard but re-runs teardown forever.
+            self.logger.debug("Cancel redelivered for %s, which is already retained. Nothing to do.", filename)
+            return
         fout["state"] = "delete"
         self._updateState(filename, fout)
         return
+
+    def _adoptRetained(self, filename, fout, instance):
+        """Take a retained entry back into service for a re-provisioned instance.
+
+        Same instance uuid, so it is the same state file and the same dashboard.
+        Clearing the retention keys is what stops the expiry sweep deleting a
+        dashboard that is live again, and dropping the cached instance and
+        manifest is what stops the rebuild rendering the previous provisioning:
+        the title carries the instance timestamp, so stale data would also mean a
+        stale title and a second dashboard beside the one being adopted.
+        """
+        if not fout or fout.get("state", "") != "retained":
+            return fout
+        self.logger.info("Instance behind retained entry %s is provisioned again. Adopting the dashboard back.", filename)
+        for key in ["retain_until", "retain_forever", "teardown_done", "instance", "manifest"]:
+            fout.pop(key, None)
+        fout["referenceUUID"] = instance.get("referenceUUID", fout.get("referenceUUID", ""))
+        self._clearRetryState(fout)
+        return fout
 
     def _taskAccept(self, task, filename):
         """Accept task"""
@@ -594,6 +775,7 @@ class RTMonWorker(
             # In this case task remained in ACCEPTED state (or means dashboard already present).
             # We push it to renew
             fout = loadFileJson(fullpathfilename, self.logger)
+            fout = self._adoptRetained(filename, fout, out)
             fout["state"] = "renew"
             fout["taskinfo"] = task
             self._updateState(filename, fout)
@@ -612,6 +794,42 @@ class RTMonWorker(
             return False
         inputVal = taskinfo.get("config", {}).get("settings", {}).get(f"{parameter}.enabled", None)
         return valtoboolean(inputVal)
+
+    def getTaskNumber(self, taskinfo, parameter, option, default):
+        """Read a number typed option off a task, falling back on anything odd.
+
+        supported_actions already advertises number options (streams, runtime),
+        but nothing reads them, so the obvious int(value) is what a caller would
+        write next. It raises on every value SENSE-O can legitimately send that
+        is not a number, and an exception on a teardown path leaves the entry
+        half processed. This never raises and never returns a value it did not
+        understand.
+
+        Non finite floats are rejected outright rather than clamped: float()
+        accepts "inf", json would write it straight back into the state file, and
+        every later comparison against it silently succeeds.
+        """
+        if parameter not in self.supported_actions:
+            self.logger.error("Parameter %s not found in supported actions. Using default %s", parameter, default)
+            return default
+        raw = (taskinfo or {}).get("config", {}).get("settings", {}).get(f"{parameter}.{option}", None)
+        if raw is None or isinstance(raw, bool):
+            # A boolean is never a meaningful answer to a numeric question, and
+            # bool is a subclass of int, so it has to be rejected before float().
+            return default
+        if isinstance(raw, str):
+            raw = raw.strip()
+            if not raw:
+                return default
+        try:
+            value = float(raw)
+        except (TypeError, ValueError):
+            self.logger.error("Option %s.%s is not a number: %r. Using default %s", parameter, option, raw, default)
+            return default
+        if not math.isfinite(value):
+            self.logger.error("Option %s.%s is not finite: %r. Using default %s", parameter, option, raw, default)
+            return default
+        return value
 
     def _storeAnnotationResults(self, annotations):
         """Submit the annotations for one action and return what should be stored."""
@@ -709,23 +927,37 @@ class RTMonWorker(
 
         Returns the grouped files and a per-orchestrator count of the ones
         skipped because another RTMon instance owns them.
+
+        Files whose state RTMon does not recognise are counted and reported
+        rather than passed over in silence. Downgrading to a build that predates
+        a state makes every entry in it invisible, and an invisible entry is one
+        nothing will ever finish or clean up.
         """
         stateInfo = {}
         skipped = {}
+        unknown = {}
         for root, _, files in os.walk(self.config.get("workdir", "/srv")):
             for filename in files:
-                if not filename.startswith("rtmon-debug-"):
+                # .tmp is _updateState's half written file, which is about to be
+                # moved over the real one. It carries the same prefix.
+                if not filename.startswith("rtmon-debug-") or filename.endswith(".tmp"):
                     continue
                 fout = loadFileJson(os.path.join(root, filename), self.logger)
                 if not fout:
+                    self.logger.error("State file %s is empty or could not be parsed. Skipping it this run.", filename)
+                    continue
+                state = fout.get("state", "")
+                if state not in self.stateOrder:
+                    unknown[state] = unknown.get(state, 0) + 1
                     continue
                 orchestrator = fout.get("orchestrator", "")
-                if orchestrator not in self.active_orchestrators:
+                if orchestrator not in self.active_orchestrators and state not in self.ownerlessStates:
                     skipped[orchestrator] = skipped.get(orchestrator, 0) + 1
                     continue
-                if fout.get("state", "") in self.stateOrder:
-                    stateInfo.setdefault(fout["state"], {})
-                    stateInfo[fout["state"]][filename] = fout
+                stateInfo.setdefault(state, {})
+                stateInfo[state][filename] = fout
+        if unknown:
+            self.logger.error("State files in states this build does not handle: %s. They are not being processed.", unknown)
         return stateInfo, skipped
 
     def main(self):
@@ -739,7 +971,12 @@ class RTMonWorker(
         # 1. Identify all files and submitted items;
         # list all files under '/srv/ and load as json
         self.rerendered = 0
+        self.expired = 0
         stateInfo, skipped = self._collectStateFiles()
+        # Reported so a retained backlog is visible from outside the process.
+        # Retention is the one thing here that accumulates silently: nothing
+        # fails and nothing logs an error while a folder fills up.
+        self.retained = len(stateInfo.get("retained", {}))
         if skipped:
             self.logger.info("Skipped files for orchestrators not owned by this instance: %s", skipped)
         if not stateInfo:
@@ -750,7 +987,13 @@ class RTMonWorker(
             "running": self.running_exe,
             "failed": self.failed_exe,
             "renew": self.renew_exe,
+            "retained": self.retained_exe,
         }
+        # These two are edited by hand and drift apart quietly. A state in
+        # stateOrder with no handler raises KeyError mid cycle; a handler with no
+        # state in stateOrder is never reached and its entries pile up unseen.
+        if set(handlers) != set(self.stateOrder):
+            self.logger.error("stateOrder and handlers disagree. Only in stateOrder: %s. Only in handlers: %s.", sorted(set(self.stateOrder) - set(handlers)), sorted(set(handlers) - set(self.stateOrder)))
         failedentries = {}
         for state in self.stateOrder:
             self.logger.info("State: %s, Files: %s", state, len(stateInfo.get(state, {})))
@@ -806,6 +1049,7 @@ class RTMonWorker(
             "active_orchestrators": sorted(self.active_orchestrators),
             "failed_orchestrators": failed,
             "failed_entries": failedentries or {},
+            "retained_dashboards": self.retained,
             "main_error": not clean,
         }
         if healthy:

@@ -79,12 +79,36 @@ jobs:
         env:
           AIAPIKEY: ${{ secrets.AIAPIKEY }}
           AIAPIURL: ${{ secrets.AIAPIURL }}
+          # Model served by the configured endpoint. Kept here rather than in a
+          # secret because it is not sensitive and a wrong value should be
+          # visible in review. Checked against the four candidates the endpoint
+          # offers: this one and qwen3 scored every planted secret above 50 and
+          # every real repository file below it, while deepseek-v4-flash missed a
+          # plaintext password outright.
+          AIMODEL: gpt-oss
         run: |
           set -euo pipefail
           trap 'echo "Error occurred on line $LINENO"' ERR
 
           [[ -z "${AIAPIURL:-}" ]] && echo "AIAPIURL is not set" && exit 2
           [[ -z "${AIAPIKEY:-}" ]] && echo "AIAPIKEY is not set" && exit 2
+
+          # One probe before the loop. Without it an endpoint that rejects every
+          # request produces one identical failure per changed file and a summary
+          # that reads like a scanning problem, which is how this job spent
+          # months reporting nothing while appearing to run.
+          PROBE=$(curl -sS -o /dev/null -w '%{http_code}' "$AIAPIURL" \
+            -H "Authorization: Bearer $AIAPIKEY" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg m "$AIMODEL" '{model: $m, max_tokens: 1, messages: [{role: "user", content: "ping"}]}')" \
+            --max-time 30) || PROBE="000"
+          if [ "$PROBE" = "000" ] || [ "$PROBE" -ge 400 ]; then
+            echo "::error::Secret scanning endpoint is not usable (HTTP $PROBE). No file was scanned."
+            echo "The endpoint rejected a minimal request, so scanning would fail identically for every file." >> "$GITHUB_STEP_SUMMARY"
+            echo "Check the AIAPIURL and AIAPIKEY secrets and that the endpoint reaches GitHub hosted runners. See issue #247." >> "$GITHUB_STEP_SUMMARY"
+            exit 4
+          fi
+          echo "Endpoint reachable, scanning with $AIMODEL."
 
           echo "Starting per-file secret scan..."
           LEAK_FILES=()
@@ -101,7 +125,7 @@ jobs:
             CONTENT=$(jq -Rs . < "$FILE")
 
             PAYLOAD=$(jq -n \
-              --arg model "openai/gpt-4o-mini" \
+              --arg model "$AIMODEL" \
               --arg ignore "$IGNORE" \
               --arg file "$FILE" \
               --arg content "$CONTENT" \

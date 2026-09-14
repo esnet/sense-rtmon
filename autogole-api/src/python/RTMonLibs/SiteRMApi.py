@@ -35,8 +35,14 @@ class SiteRMApi:
                     uri = terminal.get("uri", "")
                     iprange = terminal.get("ipv6_prefix_list", {}) if "ipv6_prefix_list" in terminal else terminal.get("ipv4_prefix_list", {})
                     iptype = "ipv6" if "ipv6_prefix_list" in terminal else "ipv4"
-                    sitename = self.siterm_debug.getSitename(**{"urn": uri})
-                    if sitename and iprange:
+                    # A path crosses transit domains that run no SiteRM, so they report
+                    # no state to monitor. findSitename returns None for those; the
+                    # remaining terminals still carry ranges we want.
+                    sitename = self.siterm_debug.findSitename(**{"urn": uri})
+                    if not sitename:
+                        self.logger.debug(f"Terminal {uri} is not in a SiteRM managed domain. Skipping it.")
+                        continue
+                    if iprange:
                         out.setdefault(sitename, {}).setdefault(iptype, []).append(iprange)
         except Exception as ex:
             self.logger.error(f"Error occurred: {ex}")

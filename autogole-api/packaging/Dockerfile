@@ -24,8 +24,12 @@ RUN pip3 install --no-cache-dir --upgrade setuptools==58.2.0 wheel==0.37.0 && \
     pip3 install --no-cache-dir -r requirements.txt && pip3 install --no-cache-dir .
 
 # Install RTMON
+# Source ref to build from. Defaults to master, so an unargumented build is
+# exactly the production build; a test image is built with
+# --build-arg RTMON_BRANCH=<branch>.
+ARG RTMON_BRANCH=master
 WORKDIR /opt/sense-rtmon
-RUN git clone https://github.com/esnet/sense-rtmon.git .
+RUN git clone --branch "${RTMON_BRANCH}" --single-branch https://github.com/esnet/sense-rtmon.git .
 WORKDIR /opt/sense-rtmon/autogole-api
 # hadolint ignore=DL3013
 RUN pip3 install --no-cache-dir -r requirements.txt && \

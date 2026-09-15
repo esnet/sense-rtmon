@@ -7,6 +7,14 @@ on: # checkov:skip=CKV_GHA_7 User input is controlled and intended for tag/branc
         description: "Build Tag"
         default: "dev"
         type: "string"
+      # The Dockerfile clones the source from GitHub rather than using the
+      # checkout, so building anything other than master takes an explicit
+      # branch here and the matching build-arg below. Defaults to master, so a
+      # dispatch that leaves this alone builds exactly what it always did.
+      branch:
+        description: "Branch to build from"
+        default: "master"
+        type: "string"
 
 # Publishing happens against Docker Hub with its own credentials, so the GitHub
 # token only needs to read the repository. Without an explicit block this
@@ -24,6 +32,10 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           repository: esnet/sense-rtmon
+          # Without this the checkout is the default branch whatever ref the
+          # dispatch names, so the Dockerfile being built came from master even
+          # for a branch build.
+          ref: ${{ github.event.inputs.branch }}
           path: sense-rtmon
           persist-credentials: false
 
@@ -48,9 +60,13 @@ jobs:
           } >> "$GITHUB_ENV"
 
       - name: Build the RTMon Image
+        # Through env rather than interpolated into the shell, same as BUILD_TAG
+        # above (zizmor template-injection).
+        env:
+          RTMON_BRANCH: ${{ github.event.inputs.branch }}
         run: |
           cd sense-rtmon/autogole-api/packaging
-          docker build . --file Dockerfile --build-arg ARCH=amd64 --tag "$IMAGE_TAG_DATED"
+          docker build . --file Dockerfile --build-arg ARCH=amd64 --build-arg RTMON_BRANCH="$RTMON_BRANCH" --tag "$IMAGE_TAG_DATED"
 
       - name: Docker Push RTMon Image with tag and date
         run: docker push "$IMAGE_TAG_DATED"

@@ -15,6 +15,13 @@ from RTMonLibs.GeneralLibs import GrafanaFailure
 class GrafanaAPI:
     """Autogole SENSE Grafana RTMon API"""
 
+    # Grafana's search endpoint pages. Asking for no limit gets one page at its
+    # own default size, which is 1000, so this asks for that explicitly and
+    # walks the pages. searchMaxPages is a runaway guard, not an expected limit:
+    # reaching it means 50000 dashboards or a Grafana that is not paging.
+    searchPageSize = 1000
+    searchMaxPages = 50
+
     # Deliberately broad catches throughout: each one wraps a retry loop whose
     # job is to survive anything Grafana or the HTTP stack raises, including the
     # library's own error types, and narrowing them would let a transport error
@@ -57,6 +64,36 @@ class GrafanaAPI:
         self.g_getFolders()
         self.g_getDataSources()
 
+    def _g_searchAllDashboards(self):
+        """Every dashboard Grafana will return, following its paging.
+
+        A single unpaged search returns one page, and a folder bigger than that
+        page comes back looking exactly like a complete answer. self.dashboards
+        is what _findDashboard, delete_exe and _removeDashboard all decide from,
+        so a dashboard past the cut reads as one that does not exist: it gets
+        rebuilt on every cycle, is never torn down and is never expired.
+
+        The loop stops on an empty page rather than a short one. A Grafana that
+        clamps the requested limit to something smaller makes every page short,
+        and stopping on the first short page would leave the rest unread.
+        """
+        items = []
+        seen = set()
+        for page in range(1, self.searchMaxPages + 1):
+            batch = self.grafanaapi.search.search_dashboards(limit=self.searchPageSize, page=page) or []
+            fresh = [item for item in batch if item.get("uid") not in seen]
+            seen.update(item.get("uid") for item in fresh)
+            items += fresh
+            if not batch:
+                return items
+            if not fresh:
+                # The same page again, so this Grafana is ignoring the page
+                # parameter. What has been collected is all it is going to give.
+                self.logger.error("Grafana returned no new dashboards on page %s of the search. It appears not to page; %s dashboards collected.", page, len(items))
+                return items
+        self.logger.error("Dashboard search stopped at the %s page cap with %s dashboards. The list is truncated and lookups against it will be wrong.", self.searchMaxPages, len(items))
+        return items
+
     def g_getDashboards(self):
         """Get dashboards from Grafana.
 
@@ -71,13 +108,18 @@ class GrafanaAPI:
         while failures < 3:
             try:
                 dashboards = {}
-                for item in self.grafanaapi.search.search_dashboards():
+                found = self._g_searchAllDashboards()
+                for item in found:
                     folderTitle = item.get("folderTitle", "")
                     if folderTitle:
                         dashboards.setdefault(folderTitle, {})
                         dashboards[folderTitle][item["title"]] = item
                         dashboards[folderTitle][item["title"]]["url"] = f"{self.config['grafana_host']}/d/{item['uid']}/{item['slug']}"
                 self.dashboards = dashboards
+                # Logged every load so the folder size is visible long before it
+                # is large enough to page, rather than only once lookups start
+                # silently missing dashboards.
+                self.logger.info("Loaded %s dashboards from Grafana, %s of them in folders, across %s folders.", len(found), sum(len(v) for v in dashboards.values()), len(dashboards))
                 return
             except Exception as ex:  # pylint: disable=broad-exception-caught
                 failures += 1

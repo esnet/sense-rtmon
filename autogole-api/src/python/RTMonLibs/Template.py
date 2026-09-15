@@ -4,6 +4,7 @@
 # pylint: disable=E1101,line-too-long,too-many-lines
 """Grafana Template Generation"""
 import copy
+import html
 import os.path
 from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, escapeES
 from RTMonLibs.GeneralLibs import _processName, encodebase64, generateUUID
@@ -457,7 +458,10 @@ class Template:  # pylint: disable=too-many-instance-attributes
         if not row["collapsed"]:
             out.append(row)
         for pan in panels:
-            pan["id"] = self._getNextID(recordAnnotations)
+            # A text panel has no time axis to draw an annotation on, so
+            # recording its id only buys an extra Grafana write for every
+            # annotation of every submitted action.
+            pan["id"] = self._getNextID(recordAnnotations and pan.get("type") != "text")
             if "gridPos" not in pan:
                 pan["gridPos"] = self.gridPos
             if row["collapsed"]:
@@ -956,9 +960,64 @@ class Template:  # pylint: disable=too-many-instance-attributes
         panel["gridPos"]["h"] = 4 + len(queries)
         return [panel]
 
+    def _t_macVlans(self, sitehost, name):
+        """Vlans the manifest gave for one mac_addresses entry.
+
+        A switch is recorded under its node with the port as the name, a host
+        under its site with the hostname as the name, so the two groups have to
+        be looked up differently."""
+        vlans = []
+        intfdata = self.m_groups["Switches"].get(sitehost, {}).get(name, {})
+        # A host's interfaces also carry vlan.X keys mapping to {}, which is why
+        # every value is checked rather than indexed.
+        interfaces = {name: intfdata} if intfdata else self.m_groups["Hosts"].get(f"{sitehost}:{name}", {})
+        for item in interfaces.values():
+            vlan = item.get("Vlan") if isinstance(item, dict) else None
+            if vlan and str(vlan) not in vlans:
+                vlans.append(str(vlan))
+        return vlans
+
+    def _t_macSearchRows(self):
+        """Every (endpoint, port or host, vlans, mac) the L2 queries search for.
+
+        mac_addresses holds {} for an endpoint the manifest gave no address for,
+        which is why the mac is normalised here rather than filtered out: the
+        endpoints with no address are the reason a query a reader expects to see
+        is missing."""
+        rows = []
+        for sitehost, entries in self.mac_addresses.items():
+            for name, macaddr in entries.items():
+                vlans = self._t_macVlans(sitehost, name)
+                rows.append((sitehost, name, ", ".join(vlans), macaddr if isinstance(macaddr, str) else ""))
+        return sorted(rows)
+
+    def _t_addMacSummary(self):
+        """List the MAC addresses the L2 queries search for, above those queries.
+
+        Each L2 panel answers "is this MAC visible here" with a yes or a no and
+        keeps the address itself in the legend text, so reading a no means
+        opening a query to find out which address it was about. The addresses
+        are gathered once here instead, in the order the panels use them."""
+        rows = self._t_macSearchRows()
+        if not rows:
+            return []
+        widths = [max(len(row[col]) for row in rows) for col in range(3)]
+        lines = []
+        for sitehost, name, vlans, macaddr in rows:
+            cols = [sitehost.ljust(widths[0]), name.ljust(widths[1]), (vlans or "-").ljust(widths[2]), macaddr or "no MAC in manifest"]
+            lines.append(html.escape("  ".join(cols).rstrip()))
+        content = "<pre>" + "\n".join(lines) + "</pre>"
+        if any(not row[3] for row in rows):
+            content += "<br/>An endpoint with no MAC in the manifest is not searched for below."
+        panel = self.t_addText("MAC addresses searched for below", content)
+        # Sized to the content: the shared default would leave a fixed 8 rows
+        # whether there are two addresses or twenty.
+        panel["gridPos"] = {"x": 0, "y": 0, "w": 24, "h": clamp(2 + len(lines), 4, 20)}
+        return [panel]
+
     def t_addL2Debugging(self, *args):
         """Add L2 Debugging to the Dashboard"""
-        out = []
+        out = self._t_addMacSummary()
         row = self.t_addRow(*args, title="L2 Debugging:")
         # For each host if available:
         refID = 0

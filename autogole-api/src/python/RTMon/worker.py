@@ -383,6 +383,44 @@ class RTMonWorker(
             if os.path.exists(candidate):
                 os.remove(candidate)
 
+    def _retentionNumber(self, value, name, fallback):
+        """One dashboard_retention setting as a number, or the fallback."""
+        try:
+            value = float(value)
+        except (TypeError, ValueError):
+            self.logger.error("dashboard_retention.%s is not a number: %r. Using %s.", name, value, fallback)
+            return float(fallback)
+        if not math.isfinite(value):
+            self.logger.error("dashboard_retention.%s is not finite: %r. Using %s.", name, value, fallback)
+            return float(fallback)
+        return value
+
+    def s_actionDefaults(self):
+        """Advertise the operator's configured defaults, so tasks carry them.
+
+        dashboard_retention.default_days was unreachable before this. The
+        SENSE-O UI submits every declared option at its declared default, so
+        retention.days is always present in a task's settings, and the fallback
+        _retentionSeconds passes to getTaskNumber is only used when the option is
+        absent. Setting default_days therefore did nothing and nothing said why:
+        the effective default was the 0 declared on supported_actions.
+
+        The advertised number is the one that will actually be honoured, clamped
+        and filtered the same way _retentionSeconds would, so the UI cannot show
+        a default that silently turns into something else.
+        """
+        retention = self.config.get("dashboard_retention", {}) or {}
+        days = self._retentionNumber(retention.get("default_days", self.retentionDefaultDays), "default_days", self.retentionDefaultDays)
+        if days < 0 and not valtoboolean(retention.get("allow_perpetual", False)):
+            # _retentionSeconds falls back rather than honouring this, so
+            # advertising it would put a number in the UI that cannot happen.
+            self.logger.info("default_days is negative but allow_perpetual is off. Advertising %s instead.", self.retentionDefaultDays)
+            days = float(self.retentionDefaultDays)
+        if days > 0:
+            days = min(days, self._retentionNumber(retention.get("max_days", self.retentionMaxDays), "max_days", self.retentionMaxDays))
+        # Whole numbers as int, so the UI field reads 1 rather than 1.0.
+        return {"retention": {"days": int(days) if days.is_integer() else days}}
+
     def _cacheRetentionRequest(self, fout, task):
         """Remember what a task asked to retain, while there is still a task to ask.
 

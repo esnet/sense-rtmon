@@ -48,6 +48,11 @@ senseo_state_retire: false
 # that should be the operator's decision rather than any requester's.
 # expire_per_cycle caps how many are removed per cycle, so a batch retired
 # together does not all expire in one pass.
+# default_days is what RTMon advertises to SENSE-O as the retention field's
+# default, so the UI shows it and submits it. It has to be: the UI submits every
+# option it was told about at the default it was told about, so a default RTMon
+# keeps to itself is one no task ever carries. The advertised number is already
+# clamped to max_days, so what the field shows is what a cancellation gets.
 dashboard_retention:
   default_days: 0
   max_days: 90

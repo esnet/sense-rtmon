@@ -157,15 +157,32 @@ class SenseAPI:
         """Whether one supported_actions key is currently held off"""
         return action.startswith(self.sitermActionPrefix) and not self.s_sitermActionsEnabled()
 
+    def s_actionDefaults(self):
+        """Option defaults this deployment advertises, as {action: {option: value}}.
+
+        supported_actions carries the defaults that are properties of the action
+        itself. Anything an operator configures is a property of the deployment
+        and belongs here instead, because the SENSE-O UI submits every declared
+        option at its declared default: an option is therefore always present in
+        a task's settings, and a default the UI was never told about can never be
+        the one a task carries.
+
+        Empty here. The values live on the worker, which overrides this."""
+        return {}
+
     def s_advertisedActions(self):
         """supported_actions as advertised to SENSE-O, marking the held off ones.
 
-        Built from a copy: the marking is not a property of the action, and
-        mutating the class attribute in place would leak one deployment's
-        configuration into every instance of the worker."""
+        Built from a copy: neither the marking nor the deployment defaults are
+        properties of the action, and mutating the class attribute in place would
+        leak one deployment's configuration into every instance of the worker."""
+        defaults = self.s_actionDefaults()
         actions = []
         for key, action in self.supported_actions.items():
             action = copy.deepcopy(action)
+            for option in action.get("options", []):
+                if option.get("key") in defaults.get(key, {}):
+                    option["default"] = defaults[key][option["key"]]
             if self.s_actionDisabled(key):
                 # SENSE-O picks one of name/label to render and RTMon does not
                 # control which, so both carry the marker.

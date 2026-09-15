@@ -17,6 +17,7 @@ from sense.client.metadata_api import MetadataApi
 from RTMonLibs.GeneralLibs import loadJson, dumpJson
 from RTMonLibs.GeneralLibs import SENSEOFailure
 from RTMonLibs.GeneralLibs import getUTCnow
+from RTMonLibs.GeneralLibs import valtoboolean
 
 
 class SenseAPI:
@@ -131,6 +132,50 @@ class SenseAPI:
         },
     }
 
+    # RTMon submits these actions straight to a SiteRM, which needs a token
+    # exchange RTMon cannot currently complete, so they are held off until they
+    # are re-implemented through the Orchestrator instead (#257, #258).
+    # The test is the one the dispatcher already uses - an action key prefixed
+    # with "execute" is submitted to a SiteRM, anything else only shapes the
+    # dashboard - so an action added later is covered without being named here.
+    sitermActionPrefix = "execute"
+
+    # Appended to what SENSE-O renders for a held off action, so a user sees the
+    # option is parked instead of selecting a test that silently never runs.
+    disabledActionSuffix = "(temporarily off)"
+    disabledActionNote = "TEMPORARILY OFF: this test is submitted directly to a SiteRM, which needs a token exchange that is not available yet, so selecting it has no effect. It is being re-implemented to go through the Orchestrator."
+
+    def s_sitermActionsEnabled(self):
+        """Whether actions that reach a SiteRM directly are allowed to run.
+
+        Off by default, and turned back on from the config rather than by
+        editing code, so the freeze lifts in a single deployment change once
+        the Orchestrator path exists."""
+        return valtoboolean((self.config or {}).get("siterm_actions_enabled", False))
+
+    def s_actionDisabled(self, action):
+        """Whether one supported_actions key is currently held off"""
+        return action.startswith(self.sitermActionPrefix) and not self.s_sitermActionsEnabled()
+
+    def s_advertisedActions(self):
+        """supported_actions as advertised to SENSE-O, marking the held off ones.
+
+        Built from a copy: the marking is not a property of the action, and
+        mutating the class attribute in place would leak one deployment's
+        configuration into every instance of the worker."""
+        actions = []
+        for key, action in self.supported_actions.items():
+            action = copy.deepcopy(action)
+            if self.s_actionDisabled(key):
+                # SENSE-O picks one of name/label to render and RTMon does not
+                # control which, so both carry the marker.
+                for field in ("name", "label"):
+                    if action.get(field):
+                        action[field] = f"{action[field]} {self.disabledActionSuffix}"
+                action["description"] = f"{self.disabledActionNote} {action.get('description', '')}".strip()
+            actions.append(action)
+        return actions
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.config = kwargs.get("config")
@@ -210,7 +255,7 @@ class SenseAPI:
         data["description"].append("It manages lifecycle events by submitting and removing monitoring actions, syncing dashboard state, and triggering diagnostics (e.g., ping) via SiteRM.\n")
         data["description"].append("RTMon loops every 30s, updating visualizations and annotations in real-time, providing end-to-end visibility of cross-domain, intent-driven network services.")
         # Add also supported actions
-        data["supported_actions"] = list(self.supported_actions.values())
+        data["supported_actions"] = self.s_advertisedActions()
         return data
 
     def s_getMetadata(self):

@@ -107,6 +107,17 @@ prometheus_password: REPLACEME
 # like having no work to do; RTMon logs the tag it asked for at debug level.
 senseo_assignee: "rtmon.instance-manager"
 
+# Debug actions RTMon submits straight to a SiteRM (ping from hosts, ping from
+# network endpoints, and the iperf/fdt/ethr performance tests). They need a
+# token exchange RTMon cannot currently complete, so they are off by default and
+# advertised to SENSE-O as "(temporarily off)": a user sees the option is parked
+# rather than selecting a test that silently never runs. Actions already
+# submitted are still cancelled normally, and everything that only shapes the
+# dashboard (retention, allmacs, debugmode) is unaffected.
+# Set to true once the actions run through the Orchestrator instead, which
+# re-enables them with no code change.
+siterm_actions_enabled: false
+
 # Sense endpoints and their auth files.
 sense_endpoints:
   "sense-o.es.net": "/etc/sense-o-auth-prod.yaml"

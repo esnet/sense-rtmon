@@ -862,7 +862,14 @@ class RTMonWorker(
         for action in self.supported_actions:
             # Any action that starts with execute is a SiteRM action
             # All other actions are for dashboard generation.
-            if not action.startswith("execute"):
+            if not action.startswith(self.sitermActionPrefix):
+                continue
+            if self.s_actionDisabled(action):
+                # Advertised as "(temporarily off)", but a task can still arrive
+                # with one enabled: it was accepted before the freeze, or the
+                # user asked for it anyway. Neither submits anything.
+                if self.getTaskEnabled(fout.get("taskinfo"), action):
+                    self.logger.info("Action %s is enabled on this task but held off: it needs a SiteRM token exchange. Not submitting it.", action)
                 continue
             if not self.getTaskEnabled(fout.get("taskinfo"), action):
                 continue

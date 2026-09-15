@@ -363,6 +363,33 @@ class RTMonWorker(
             if os.path.exists(candidate):
                 os.remove(candidate)
 
+    def _cacheRetentionRequest(self, fout, task):
+        """Remember what a task asked to retain, while there is still a task to ask.
+
+        SENSE-O creates the cancel task with an empty config and nothing copies
+        the enable task's settings into it, so by the time teardown needs the
+        number the task carrying it is gone. The state file is the only thing
+        that survives the exchange, so the choice is written there as it
+        arrives.
+
+        Only a task that carries the setting updates the cache. A task without
+        it is not a request for the default, it is a task that was never asked
+        the question, and treating the two alike is what loses the value on the
+        next renew.
+        """
+        settings = (task or {}).get("config", {}).get("settings", {}) or {}
+        if "retention.days" not in settings:
+            return fout
+        # None as the default, so an unusable value is left uncached and falls
+        # through to the operator default the same way it always has.
+        requested = self.getTaskNumber(task, "retention", "days", None)
+        if requested is None:
+            return fout
+        if fout.get("retention_days") != requested:
+            self.logger.info("Task asked to retain this dashboard for %s days. Caching it for teardown.", requested)
+        fout["retention_days"] = requested
+        return fout
+
     def _retentionSeconds(self, fout):
         """How long this entry's dashboard should outlive its instance.
 
@@ -374,7 +401,13 @@ class RTMonWorker(
         retention = self.config.get("dashboard_retention", {}) or {}
         default = retention.get("default_days", self.retentionDefaultDays)
         maxdays = retention.get("max_days", self.retentionMaxDays)
-        requested = self.getTaskNumber(fout.get("taskinfo"), "retention", "days", default)
+        requested = fout.get("retention_days")
+        if isinstance(requested, bool) or not isinstance(requested, (int, float)):
+            # Nothing cached, so this is an entry from before the cache existed.
+            # The live task here is the cancel task and its settings are empty,
+            # which is exactly the bug, but reading it is still right for an
+            # entry whose enable task is somehow still attached.
+            requested = self.getTaskNumber(fout.get("taskinfo"), "retention", "days", default)
         if requested < 0 and valtoboolean(retention.get("allow_perpetual", False)):
             self.logger.info("Retention is perpetual for this entry, as the task asked and the operator allows.")
             return None
@@ -735,6 +768,10 @@ class RTMonWorker(
         if not fout or fout.get("state", "") != "retained":
             return fout
         self.logger.info("Instance behind retained entry %s is provisioned again. Adopting the dashboard back.", filename)
+        # retention_days is deliberately not cleared. The deadline is dropped
+        # because the dashboard is live again and has nothing to expire, but the
+        # value the user chose is still their choice for the next cancellation,
+        # and the accept that follows overwrites it if they picked a new one.
         for key in ["retain_until", "retain_forever", "teardown_done", "instance", "manifest"]:
             fout.pop(key, None)
         fout["referenceUUID"] = instance.get("referenceUUID", fout.get("referenceUUID", ""))
@@ -778,6 +815,9 @@ class RTMonWorker(
             fout = self._adoptRetained(filename, fout, out)
             fout["state"] = "renew"
             fout["taskinfo"] = task
+            # Every accept, not just the first: a user editing retention in the
+            # UI arrives as another task on an entry that is already running.
+            fout = self._cacheRetentionRequest(fout, task)
             self._updateState(filename, fout)
         else:
             msg = f'Instance not in correct state: {out["referenceUUID"]}, {out["state"]}'

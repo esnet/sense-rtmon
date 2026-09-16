@@ -111,7 +111,7 @@ class Prometheus:
         query = (
             f'count(bgp_session_state{{sitename="{kwargs["sitename"]}", '
             f'hostname="{kwargs["hostname"]}", '
-            'bgp_session_state=~"idle|active|connect|opensent|openconfirm|established"}}) '
+            'bgp_session_state=~"idle|active|connect|opensent|openconfirm|established"}) '
             "or on() vector(0)"
         )
         return self.p_get_query(query)

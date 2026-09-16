@@ -671,6 +671,23 @@ class Template:  # pylint: disable=too-many-instance-attributes
         panels = panels.replace("REPLACEME_VLANS", escape(vlans))
         return loadJson(panels, self.logger)
 
+    def _t_createBgpPanel(self, sitehost, sitename, hostname):
+        """BGP peer status panel for one switch, when the FE exports BGP data.
+
+        The SiteRM FE exports bgp_session_state (and bgp_prefixes_*) to
+        Prometheus with a ``sense`` label that is set true for SENSE-managed
+        sessions. This shows one state timeline per peer of the switch the
+        path crosses, so the legend answers "was the SENSE path used" at a
+        glance: `SENSE:true` peers are the SENSE fabric sessions.
+        """
+        if self.t_bgpAvailable(sitehost, sitename, hostname) is False and not self.debugmode:
+            return []
+        panels = dumpJson(self._t_loadTemplate("bgp.json"), self.logger)
+        panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
+        panels = panels.replace("REPLACEME_SITENAME", sitename)
+        panels = panels.replace("REPLACEME_HOSTNAME", hostname)
+        return loadJson(panels, self.logger)
+
     def _t_createESnetSwitchFlow(self, sitehost, num, *args):
         """Create ESnet Switch Flow Template to query stardust directly"""
         out = []
@@ -806,6 +823,10 @@ class Template:  # pylint: disable=too-many-instance-attributes
             # ESnet never reaches here, it returns above through
             # _t_createESnetSwitchFlow. Stardust does not export qos_status.
             panels += self._t_createQoSPanel(sitehost, sitename, hostname, interfaces)
+            # BGP session state comes from the SiteRM FE exporter, so it is
+            # grounded the same way as QoS: show nothing when the FE reports no
+            # sessions for this switch.
+            panels += self._t_createBgpPanel(sitehost, sitename, hostname)
             out += self.addRowPanel(row, panels, True)
         return out
 

@@ -101,6 +101,21 @@ class Prometheus:
         query = f'count(qos_status{{sitename="{kwargs["sitename"]}", key1="{kwargs["hostname"]}", vlan=~"{kwargs["vlans"]}"}}) or on() vector(0)'
         return self.p_get_query(query)
 
+    def p_count_bgp_sessions(self, **kwargs):
+        """
+        Constructs and executes a query to count the BGP session series the
+        SiteRM FE exports for a device. Selected on sitename, hostname and the
+        known session states (excluding unknown), so a zero here means the BGP
+        panel would render empty.
+        """
+        query = (
+            f'count(bgp_session_state{{sitename="{kwargs["sitename"]}", '
+            f'hostname="{kwargs["hostname"]}", '
+            'bgp_session_state=~"idle|active|connect|opensent|openconfirm|established"}}) '
+            "or on() vector(0)"
+        )
+        return self.p_get_query(query)
+
     def _p_safe_count(self, func, **kwargs):
         """Run one of the count helpers and fold every failure into None.
 
@@ -145,6 +160,18 @@ class Prometheus:
     def p_check_qos_available(self, **kwargs):
         """Returns the tri-state availability of QoS reservation data."""
         count = self._p_safe_count(self.p_count_qos_status, **kwargs)
+        if count is None:
+            return None
+        return count != "0"
+
+    def p_check_bgp_available(self, **kwargs):
+        """Returns the tri-state availability of BGP session state data.
+
+        The bgp_session_state metric is exported by the SiteRM FE itself and
+        scraped by Prometheus, so its presence is what decides whether a path
+        dashboard should carry a BGP panel: no sessions, no panel.
+        """
+        count = self._p_safe_count(self.p_count_bgp_sessions, **kwargs)
         if count is None:
             return None
         return count != "0"

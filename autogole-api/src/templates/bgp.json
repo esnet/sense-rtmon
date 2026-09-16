@@ -1,0 +1,77 @@
+[
+  {
+    "datasource": {
+      "type": "prometheus",
+      "uid": "REPLACEME_DATASOURCE"
+    },
+    "description": "BGP session state for every peer this switch is configured with. The SENSE:{{sense}} legend tells whether the session is part of the SENSE fabric (true = a SENSE-managed BGP session, false = an external/DOMESTIC peer). Established peers are green, anything else is red. Only non-unknown states are shown.",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "thresholds"
+        },
+        "custom": {
+          "fillOpacity": 70,
+          "lineWidth": 0,
+          "spanNulls": false
+        },
+        "decimals": 2,
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green"
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        },
+        "unit": "short"
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 20,
+      "x": 4,
+      "y": 0
+    },
+    "id": 0,
+    "options": {
+      "alignValue": "left",
+      "legend": {
+        "displayMode": "list",
+        "placement": "bottom",
+        "showLegend": true
+      },
+      "mergeValues": true,
+      "rowHeight": 0.9,
+      "showValue": "auto",
+      "tooltip": {
+        "mode": "single",
+        "sort": "none"
+      }
+    },
+    "pluginVersion": "8.5.27",
+    "targets": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "REPLACEME_DATASOURCE"
+        },
+        "editorMode": "code",
+        "exemplar": true,
+        "expr": "bgp_session_state{hostname=\"REPLACEME_HOSTNAME\", sitename=\"REPLACEME_SITENAME\", bgp_session_state!=\"unknown\"} > 0",
+        "interval": "",
+        "legendFormat": "{{peer}} {{iptype}} {{bgp_session_state}} SENSE:{{sense}}",
+        "range": true,
+        "refId": "A"
+      }
+    ],
+    "title": "BGP Peer Status",
+    "type": "state-timeline"
+  }
+]

@@ -81,6 +81,27 @@ class DataWarnings:
             self.t_recordWarning(f"No QoS reservation data in Prometheus for switch {sitehost}. Its QoS panel is not shown.")
         return available
 
+    def t_bgpAvailable(self, sitehost, sitename, hostname):
+        """Tri-state check of whether BGP session data backs this switch.
+
+        The bgp_session_state metric is exported by the SiteRM FE and scraped
+        by Prometheus, so for Prometheus-backed switches this asks the same
+        question the BGP panel itself would. Kept apart from t_dataAvailable
+        because a switch that reports SNMP counters may report no BGP sessions.
+        """
+        if not self.t_prometheusBacked(sitehost):
+            return None
+        available = self.p_check_bgp_available(sitename=sitename, hostname=hostname)
+        if available is True:
+            return available
+        if available is None:
+            self.t_recordWarning(f"Could not determine whether BGP session data exists for switch {sitehost}. Prometheus did not answer the check, so the panel is left in place.")
+        elif self.debugmode:
+            self.t_recordWarning(f"No BGP session data in Prometheus for switch {sitehost}. The panel is shown anyway because debugmode is enabled, and it is expected to be empty.")
+        else:
+            self.t_recordWarning(f"No BGP session data in Prometheus for switch {sitehost}. Its BGP panel is not shown.")
+        return available
+
     def t_skipMonitoring(self, dtype, sitehost):
         """Decide whether to leave this device out of the dashboard."""
         if self.debugmode or not self.t_prometheusBacked(sitehost):

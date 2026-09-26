@@ -4,28 +4,61 @@
       "type": "prometheus",
       "uid": "REPLACEME_DATASOURCE"
     },
-    "description": "BGP session state for every peer this switch is configured with. The SENSE:{{sense}} legend tells whether the session is part of the SENSE fabric (true = a SENSE-managed BGP session, false = an external/DOMESTIC peer). Established peers are green, anything else is red. Only non-unknown states are shown.",
+    "description": "BGP session state for every peer this switch is configured with, one row per peer. The SENSE:{{sense}} legend tells whether the session is part of the SENSE fabric (true = a SENSE-managed BGP session, false = an external/DOMESTIC peer). Established is green, OpenSent/OpenConfirm yellow, Connect/Active orange and Idle red. Peers the FE reports as unknown are not shown.",
     "fieldConfig": {
       "defaults": {
         "color": {
-          "mode": "thresholds"
+          "fixedColor": "text",
+          "mode": "fixed"
         },
         "custom": {
           "fillOpacity": 70,
           "lineWidth": 0,
           "spanNulls": false
         },
-        "decimals": 2,
-        "mappings": [],
+        "decimals": 0,
+        "mappings": [
+          {
+            "options": {
+              "1": {
+                "color": "red",
+                "index": 0,
+                "text": "Idle"
+              },
+              "2": {
+                "color": "orange",
+                "index": 1,
+                "text": "Connect"
+              },
+              "3": {
+                "color": "orange",
+                "index": 2,
+                "text": "Active"
+              },
+              "4": {
+                "color": "yellow",
+                "index": 3,
+                "text": "OpenSent"
+              },
+              "5": {
+                "color": "yellow",
+                "index": 4,
+                "text": "OpenConfirm"
+              },
+              "6": {
+                "color": "green",
+                "index": 5,
+                "text": "Established"
+              }
+            },
+            "type": "value"
+          }
+        ],
         "thresholds": {
           "mode": "absolute",
           "steps": [
             {
-              "color": "green"
-            },
-            {
-              "color": "red",
-              "value": 80
+              "color": "text"
             }
           ]
         },
@@ -64,9 +97,9 @@
         },
         "editorMode": "code",
         "exemplar": true,
-        "expr": "bgp_session_state{hostname=\"REPLACEME_HOSTNAME\", sitename=\"REPLACEME_SITENAME\", bgp_session_state!=\"unknown\"} > 0",
+        "expr": "(sum by (hostname, peer, iptype, sense) (bgp_session_state{hostname=\"REPLACEME_HOSTNAME\", sitename=\"REPLACEME_SITENAME\", bgp_session_state=\"established\"}) > 0) * 6\nor (sum by (hostname, peer, iptype, sense) (bgp_session_state{hostname=\"REPLACEME_HOSTNAME\", sitename=\"REPLACEME_SITENAME\", bgp_session_state=\"openconfirm\"}) > 0) * 5\nor (sum by (hostname, peer, iptype, sense) (bgp_session_state{hostname=\"REPLACEME_HOSTNAME\", sitename=\"REPLACEME_SITENAME\", bgp_session_state=\"opensent\"}) > 0) * 4\nor (sum by (hostname, peer, iptype, sense) (bgp_session_state{hostname=\"REPLACEME_HOSTNAME\", sitename=\"REPLACEME_SITENAME\", bgp_session_state=\"active\"}) > 0) * 3\nor (sum by (hostname, peer, iptype, sense) (bgp_session_state{hostname=\"REPLACEME_HOSTNAME\", sitename=\"REPLACEME_SITENAME\", bgp_session_state=\"connect\"}) > 0) * 2\nor (sum by (hostname, peer, iptype, sense) (bgp_session_state{hostname=\"REPLACEME_HOSTNAME\", sitename=\"REPLACEME_SITENAME\", bgp_session_state=\"idle\"}) > 0) * 1",
         "interval": "",
-        "legendFormat": "{{peer}} {{iptype}} {{bgp_session_state}} SENSE:{{sense}}",
+        "legendFormat": "{{peer}} {{iptype}} SENSE:{{sense}}",
         "range": true,
         "refId": "A"
       }

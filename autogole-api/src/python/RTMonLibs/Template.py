@@ -803,7 +803,13 @@ class Template:  # pylint: disable=too-many-instance-attributes
         # This is the default switch flow template for everything else
         templateType, available = self.p_get_switch_template_state(sitename=sitename, hostname=hostname)
         self.t_recordAvailability("Switch", sitehost, available)
+        # BGP session state comes from the SiteRM FE exporter, not from SNMP, so
+        # it survives a switch that exports no interface statistics.
+        bgppanels = self._t_createBgpPanel(sitehost, sitename, hostname)
         if self.t_skipMonitoring("Switch", sitehost):
+            if bgppanels:
+                row = self.t_addRow(*args, title=f"{num}. Switch BGP Summary: {sitehost}")
+                out += self.addRowPanel(row, bgppanels, True)
             return out
         if not templateType:
             if self.debugmode:
@@ -811,22 +817,18 @@ class Template:  # pylint: disable=too-many-instance-attributes
                 templateType = "default"
             else:
                 self.t_recordWarning(f"Could not select a switch flow template for {sitehost}. The flow row is omitted.")
-        intfline = self.__t_findIntf(interfaces)
         row = self.t_addRow(*args, title=f"{num}. Switch Flow Summary: {sitehost}")
         if templateType:
             panels = dumpJson(self._t_loadTemplate(f"switchflow-{templateType}.json"), self.logger)
             panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
             panels = panels.replace("REPLACEME_SITENAME", sitename)
             panels = panels.replace("REPLACEME_HOSTNAME", hostname)
-            panels = panels.replace("REPLACEME_INTERFACE", escape(intfline))
+            panels = panels.replace("REPLACEME_INTERFACE", escape(self.__t_findIntf(interfaces)))
             panels = loadJson(panels, self.logger)
             # ESnet never reaches here, it returns above through
             # _t_createESnetSwitchFlow. Stardust does not export qos_status.
             panels += self._t_createQoSPanel(sitehost, sitename, hostname, interfaces)
-            # BGP session state comes from the SiteRM FE exporter, so it is
-            # grounded the same way as QoS: show nothing when the FE reports no
-            # sessions for this switch.
-            panels += self._t_createBgpPanel(sitehost, sitename, hostname)
+            panels += bgppanels
             out += self.addRowPanel(row, panels, True)
         return out
 

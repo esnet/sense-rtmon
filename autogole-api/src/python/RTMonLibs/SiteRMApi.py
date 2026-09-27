@@ -342,9 +342,10 @@ class SiteRMApi:
         if not tractions or len(tractions) != 2:
             self.logger.info("No overlapping ranges found for both Sites IPs, cannot submit traceroute from L3 host")
             return trout, all_annotations, actionsuffix
-        for indx, item in enumerate(tractions):
-            remsiteid = 1 if indx == 0 else 0
-            self.logger.info(f"Found overlapping range for {item['sitename']} {item['iptype']} {item['dynamicfrom']}, can submit traceroute from L3 host")
+        for idx, item in enumerate(tractions):
+            remsiteid = 1 if idx == 0 else 0
+            self.logger.info(f"Found overlapping range for {item['sitename']} {item['iptype']} "
+                             f"{item['dynamicfrom']}, can traceroute from L3 host")
             # traceroute takes no packetsize/interval/count: see the FE
             # debugactioninfo schema. Sending ping's keys would be rejected.
             newaction = {
@@ -359,18 +360,20 @@ class SiteRMApi:
             allDebugActions = self.sr_get_debug_actions(**{"sitename": item["sitename"], "action": actionname})
             for action in allDebugActions:
                 # hostname is undefined here and the RM rewrites it, so it is not matched on.
-                if self._sr_all_keys_match(action.get("requestdict"), newaction, ["type", "sitename", "dynamicfrom", "ip", "runtime", "onetime"]):
+                if self._sr_all_keys_match(action.get("requestdict"), newaction,
+                                           ["type", "sitename", "dynamicfrom", "ip", "runtime", "onetime"]):
                     actionPresent = True
                     newaction["submit_time"] = action.get("insertdate")
                     newaction["submit_out"] = {"ID": action.get("id"), "Status": action.get("state")}
-                    self.logger.info(f"{actionname} test already present for {newaction}: {newaction['submit_out']}")
+                    self.logger.info(f"{actionname} already present for {newaction}: {newaction['submit_out']}")
                     trout.append(newaction)
                     break
             if not actionPresent:
                 self.logger.info(f"Submitting {actionname} test for {newaction}")
                 newaction = self._sr_submitsiterm(actionname, newaction)
                 trout.append(newaction)
-                all_annotations.append({"submitout": newaction, "dashbInfo": kwargs["fout"]["dashbInfo"], "timespan": False})
+                all_annotations.append({"submitout": newaction,
+                                        "dashbInfo": kwargs["fout"]["dashbInfo"], "timespan": False})
         return trout, all_annotations, actionsuffix
 
     def _sr_submit_traceroute(self, actions, actionsuffix, **kwargs):
@@ -406,18 +409,20 @@ class SiteRMApi:
                         "runtime": kwargs.get("runtime", 600),
                         "onetime": False,
                     }
-                    for action in self.sr_get_debug_actions(**{"sitename": hostspl[0], "hostname": hostspl[1], "action": actionname}):
+                    for action in self.sr_get_debug_actions(**{"sitename": hostspl[0],
+                                                               "hostname": hostspl[1], "action": actionname}):
                         if self._sr_all_keys_match(action.get("requestdict"), newaction):
                             newaction["submit_time"] = action.get("insertdate")
                             newaction["submit_out"] = {"ID": action.get("id"), "Status": action.get("state")}
-                            self.logger.info(f"{actionname} test already present for {newaction}: {newaction['submit_out']}")
+                            self.logger.info(f"{actionname} already present for {newaction}: {newaction['submit_out']}")
                             trout.append(newaction)
                             break
                     else:
                         self.logger.info(f"Submitting {actionname} test for {newaction}")
                         newaction = self._sr_submitsiterm(actionname, newaction)
                         trout.append(newaction)
-                        all_annotations.append({"submitout": newaction, "dashbInfo": kwargs["fout"]["dashbInfo"], "timespan": False})
+                        all_annotations.append({"submitout": newaction,
+                                                "dashbInfo": kwargs["fout"]["dashbInfo"], "timespan": False})
         return trout, all_annotations, actionsuffix
 
     def _sr_wait_active(self, sitename, actionid, maxtime=120):

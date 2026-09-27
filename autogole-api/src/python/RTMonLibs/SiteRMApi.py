@@ -231,15 +231,15 @@ class SiteRMApi:
         # Implementation for submitting a ping from an L3 host
         # Once we get dynamicfrom, we need to get for each site, if Site has a range
         # that listens on it. If it does, then we submit a new action with host undefined;
-        # Also check - should only look for dynamicfrom, ip as overlaping check
+        # Also check - should only look for dynamicfrom, ip as overlapping check
         ping_out = []
         all_annotations = []
         actionname = actions[0]
         pingactions = self._sr_findsitermips(**kwargs)
         if not pingactions or len(pingactions) != 2:
             self.logger.info("No overlapping ranges found for both Sites IPs, cannot submit ping from L3 host")
-        for indx, item in enumerate(pingactions):
-            remsiteid = 1 if indx == 0 else 0
+        for idx, item in enumerate(pingactions):
+            remsiteid = 1 if idx == 0 else 0
             self.logger.info(f"Found overlapping range for {item['sitename']} {item['iptype']} {item['dynamicfrom']}, can submit ping from L3 host")
             # We have a range that overlaps, we can submit a ping from this site
             if not pingactions:
@@ -261,7 +261,7 @@ class SiteRMApi:
             actionPresent = False
             allDebugActions = self.sr_get_debug_actions(**{"sitename": item["sitename"], "action": actionname})
             for action in allDebugActions:
-                # debug needs to check everything, execpt hostname. Hostname is undefined and that is changed by RM;
+                # debug needs to check everything, except hostname. Hostname is undefined and that is changed by RM;
                 if self._sr_all_keys_match(action.get("requestdict"), newaction, ["type", "sitename", "dynamicfrom", "ip", "timeout", "count", "time", "onetime"]):
                     actionPresent = True
                     newaction["submit_time"] = action.get("insertdate")

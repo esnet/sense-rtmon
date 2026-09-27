@@ -41,6 +41,19 @@ class RTMonWorker(
     # Constant rather than an instance attribute: it never varies per worker.
     goodStates = ["CREATE - READY", "REINSTATE - READY", "MODIFY - READY"]
 
+    # The provisioning phases those states belong to, derived so the two cannot
+    # drift. A SENSE-O instance state reads "<PHASE> - <SUBSTATE>", and an
+    # instance in one of these phases is on its way to a state RTMon monitors.
+    # One in any other phase, CANCEL above all, is not and never will be.
+    monitorPhases = {state.split(" - ")[0] for state in goodStates}
+
+    # How many cycles a task may wait for its instance to finish provisioning
+    # before RTMon gives up and refuses it. At the 30 second loop this is about
+    # twenty minutes, which is far longer than a commit takes and short enough
+    # that a task for an instance that never becomes ready does not sit in the
+    # poll forever.
+    instanceWaitCycles = 40
+
     # The states main() acts on, in the order it acts on them. Submitted runs
     # first so a new dashboard exists before anything else looks for it. Every
     # entry here needs a handler in main(), which checks the two agree.
@@ -100,6 +113,13 @@ class RTMonWorker(
         self.auth_instances = {}
         self.devname = self.config.get("grafana_dev", None)
         self.active_orchestrators = set()
+        # Tasks this process has already given a final no to, and tasks whose
+        # instance is still provisioning, by task uuid. SENSE-O keeps returning
+        # a task after RTMon has answered it, so without the first of these a
+        # refusal is contradicted on the next cycle by acting on the task
+        # anyway. Neither survives a restart; see _refuseTask.
+        self.refused_tasks = set()
+        self.waiting_tasks = {}
         # Rebuilds and expiries done in the current cycle. main() resets both.
         self.rerendered = 0
         self.expired = 0
@@ -363,6 +383,71 @@ class RTMonWorker(
             if os.path.exists(candidate):
                 os.remove(candidate)
 
+    def _retentionNumber(self, value, name, fallback):
+        """One dashboard_retention setting as a number, or the fallback."""
+        try:
+            value = float(value)
+        except (TypeError, ValueError):
+            self.logger.error("dashboard_retention.%s is not a number: %r. Using %s.", name, value, fallback)
+            return float(fallback)
+        if not math.isfinite(value):
+            self.logger.error("dashboard_retention.%s is not finite: %r. Using %s.", name, value, fallback)
+            return float(fallback)
+        return value
+
+    def s_actionDefaults(self):
+        """Advertise the operator's configured defaults, so tasks carry them.
+
+        dashboard_retention.default_days was unreachable before this. The
+        SENSE-O UI submits every declared option at its declared default, so
+        retention.days is always present in a task's settings, and the fallback
+        _retentionSeconds passes to getTaskNumber is only used when the option is
+        absent. Setting default_days therefore did nothing and nothing said why:
+        the effective default was the 0 declared on supported_actions.
+
+        The advertised number is the one that will actually be honoured, clamped
+        and filtered the same way _retentionSeconds would, so the UI cannot show
+        a default that silently turns into something else.
+        """
+        retention = self.config.get("dashboard_retention", {}) or {}
+        days = self._retentionNumber(retention.get("default_days", self.retentionDefaultDays), "default_days", self.retentionDefaultDays)
+        if days < 0 and not valtoboolean(retention.get("allow_perpetual", False)):
+            # _retentionSeconds falls back rather than honouring this, so
+            # advertising it would put a number in the UI that cannot happen.
+            self.logger.info("default_days is negative but allow_perpetual is off. Advertising %s instead.", self.retentionDefaultDays)
+            days = float(self.retentionDefaultDays)
+        if days > 0:
+            days = min(days, self._retentionNumber(retention.get("max_days", self.retentionMaxDays), "max_days", self.retentionMaxDays))
+        # Whole numbers as int, so the UI field reads 1 rather than 1.0.
+        return {"retention": {"days": int(days) if days.is_integer() else days}}
+
+    def _cacheRetentionRequest(self, fout, task):
+        """Remember what a task asked to retain, while there is still a task to ask.
+
+        SENSE-O creates the cancel task with an empty config and nothing copies
+        the enable task's settings into it, so by the time teardown needs the
+        number the task carrying it is gone. The state file is the only thing
+        that survives the exchange, so the choice is written there as it
+        arrives.
+
+        Only a task that carries the setting updates the cache. A task without
+        it is not a request for the default, it is a task that was never asked
+        the question, and treating the two alike is what loses the value on the
+        next renew.
+        """
+        settings = (task or {}).get("config", {}).get("settings", {}) or {}
+        if "retention.days" not in settings:
+            return fout
+        # None as the default, so an unusable value is left uncached and falls
+        # through to the operator default the same way it always has.
+        requested = self.getTaskNumber(task, "retention", "days", None)
+        if requested is None:
+            return fout
+        if fout.get("retention_days") != requested:
+            self.logger.info("Task asked to retain this dashboard for %s days. Caching it for teardown.", requested)
+        fout["retention_days"] = requested
+        return fout
+
     def _retentionSeconds(self, fout):
         """How long this entry's dashboard should outlive its instance.
 
@@ -374,7 +459,13 @@ class RTMonWorker(
         retention = self.config.get("dashboard_retention", {}) or {}
         default = retention.get("default_days", self.retentionDefaultDays)
         maxdays = retention.get("max_days", self.retentionMaxDays)
-        requested = self.getTaskNumber(fout.get("taskinfo"), "retention", "days", default)
+        requested = fout.get("retention_days")
+        if isinstance(requested, bool) or not isinstance(requested, (int, float)):
+            # Nothing cached, so this is an entry from before the cache existed.
+            # The live task here is the cancel task and its settings are empty,
+            # which is exactly the bug, but reading it is still right for an
+            # entry whose enable task is somehow still attached.
+            requested = self.getTaskNumber(fout.get("taskinfo"), "retention", "days", default)
         if requested < 0 and valtoboolean(retention.get("allow_perpetual", False)):
             self.logger.info("Retention is perpetual for this entry, as the task asked and the operator allows.")
             return None
@@ -735,11 +826,57 @@ class RTMonWorker(
         if not fout or fout.get("state", "") != "retained":
             return fout
         self.logger.info("Instance behind retained entry %s is provisioned again. Adopting the dashboard back.", filename)
+        # retention_days is deliberately not cleared. The deadline is dropped
+        # because the dashboard is live again and has nothing to expire, but the
+        # value the user chose is still their choice for the next cancellation,
+        # and the accept that follows overwrites it if they picked a new one.
         for key in ["retain_until", "retain_forever", "teardown_done", "instance", "manifest"]:
             fout.pop(key, None)
         fout["referenceUUID"] = instance.get("referenceUUID", fout.get("referenceUUID", ""))
         self._clearRetryState(fout)
         return fout
+
+    def _instanceVerdict(self, state):
+        """What a registration task should be told about an instance in this state.
+
+        "monitor" and "refuse" are answers. "wait" is the deliberate absence of
+        one: a SENSE-O instance state reads "<PHASE> - <SUBSTATE>", and an
+        instance still working through a phase RTMon monitors is on its way to a
+        state RTMon monitors. Refusing it, as RTMon used to, spends a final
+        answer on a condition that resolves itself a few seconds later.
+
+        A substate naming a failure, or any other phase, cannot become good and
+        is refused. CANCEL is the phase that matters there: an instance being
+        torn down is not going to be ready.
+        """
+        if state in self.goodStates:
+            return "monitor"
+        phase, _, substate = state.partition(" - ")
+        if "FAILED" in substate.upper() or phase.upper() not in self.monitorPhases:
+            return "refuse"
+        return "wait"
+
+    def _refuseTask(self, task, msg):
+        """Tell SENSE-O no, and remember having said it.
+
+        SENSE-O goes on returning a task after RTMon has answered it, and the
+        answer does not come back in a shape RTMon can read: a refusal and a
+        successful registration both end FINISHED and differ only inside an
+        undocumented statusMessage payload. So the record of having refused is
+        kept here rather than inferred from the task.
+
+        It is process local on purpose. Reading the refusal back off the task
+        would mean depending on that payload shape, and writing it to disk would
+        mean a state file for an entry that deliberately has none. A restart
+        therefore re-asks SENSE-O once, which re-refuses if the instance is
+        still in the state that caused it.
+        """
+        # At error level because every path here means a user asked for
+        # monitoring and is not going to get it.
+        self.logger.error(msg)
+        self.waiting_tasks.pop(task.get("uuid", ""), None)
+        self.refused_tasks.add(task.get("uuid", ""))
+        self.s_setTaskState(task["uuid"], "REJECTED", {"error": msg})
 
     def _taskAccept(self, task, filename):
         """Accept task"""
@@ -755,9 +892,7 @@ class RTMonWorker(
             del self.auth_instances[os.environ["SENSE_AUTH_OVERRIDE_NAME"]]
         self.auth_instances.setdefault(os.environ["SENSE_AUTH_OVERRIDE_NAME"], [])
         if not out:
-            msg = f'Instance {instanceuuid} not found in Orchestrator. Task UUID {task["uuid"]}. Reporting task as failed'
-            self.logger.error(msg)
-            self.s_setTaskState(task["uuid"], "REJECTED", {"error": msg})
+            self._refuseTask(task, f'Instance {instanceuuid} not found in Orchestrator. Task UUID {task["uuid"]}. Reporting task as failed')
             return
         if not os.path.exists(fullpathfilename) and out["state"] in self.goodStates:
             fout = {
@@ -770,6 +905,7 @@ class RTMonWorker(
             with open(fullpathfilename, "w", encoding="utf-8") as fd:
                 fd.write(dumpJson(fout, self.logger))
         if out["state"] in self.goodStates:
+            self.waiting_tasks.pop(task.get("uuid", ""), None)
             self.auth_instances[os.environ["SENSE_AUTH_OVERRIDE_NAME"]].append(out["referenceUUID"])
             self.s_setTaskState(task["uuid"], "WAITING")
             # In this case task remained in ACCEPTED state (or means dashboard already present).
@@ -778,11 +914,26 @@ class RTMonWorker(
             fout = self._adoptRetained(filename, fout, out)
             fout["state"] = "renew"
             fout["taskinfo"] = task
+            # Every accept, not just the first: a user editing retention in the
+            # UI arrives as another task on an entry that is already running.
+            fout = self._cacheRetentionRequest(fout, task)
             self._updateState(filename, fout)
-        else:
-            msg = f'Instance not in correct state: {out["referenceUUID"]}, {out["state"]}'
-            self.logger.info(msg)
-            self.s_setTaskState(task["uuid"], "REJECTED", {"error": msg})
+            return
+        verdict = self._instanceVerdict(out["state"])
+        if verdict == "refuse":
+            self._refuseTask(task, f'Instance not in correct state: {out["referenceUUID"]}, {out["state"]}')
+            return
+        # Still provisioning. The task is left exactly as SENSE-O has it, so the
+        # next cycle picks it up again and registers monitoring the moment the
+        # instance is ready, rather than refusing now and contradicting that
+        # refusal a cycle later by building the dashboard anyway.
+        taskuuid = task.get("uuid", "")
+        waited = self.waiting_tasks.get(taskuuid, 0) + 1
+        self.waiting_tasks[taskuuid] = waited
+        if waited > self.instanceWaitCycles:
+            self._refuseTask(task, f'Instance {out["referenceUUID"]} has been in state {out["state"]} for {waited} cycles and is still not ready. Giving up on task {taskuuid}.')
+            return
+        self.logger.info("Instance %s is %s, not ready yet. Waiting (%s of %s cycles).", out["referenceUUID"], out["state"], waited, self.instanceWaitCycles)
 
     def getTaskEnabled(self, taskinfo, parameter):
         """Get Task Enabled - returns True/False.
@@ -862,7 +1013,14 @@ class RTMonWorker(
         for action in self.supported_actions:
             # Any action that starts with execute is a SiteRM action
             # All other actions are for dashboard generation.
-            if not action.startswith("execute"):
+            if not action.startswith(self.sitermActionPrefix):
+                continue
+            if self.s_actionDisabled(action):
+                # Advertised as "(temporarily off)", but a task can still arrive
+                # with one enabled: it was accepted before the freeze, or the
+                # user asked for it anyway. Neither submits anything.
+                if self.getTaskEnabled(fout.get("taskinfo"), action):
+                    self.logger.info("Action %s is enabled on this task but held off: it needs a SiteRM token exchange. Not submitting it.", action)
                 continue
             if not self.getTaskEnabled(fout.get("taskinfo"), action):
                 continue
@@ -904,23 +1062,29 @@ class RTMonWorker(
         # Get tasks here, and for each write new entry
         newtasks = self.s_getassignedTasks()
         for task in newtasks:
+            register = task.get("config", {}).get("register", None)
+            if task.get("uuid", "") in self.refused_tasks and register is not False:
+                # SENSE-O goes on offering this task, and goes on offering the
+                # user an Enable button for it, because RTMon refused it. Acting
+                # on it now is how the two sides came to disagree about whether
+                # monitoring is on.
+                # A cancellation is exempt: refusing to register monitoring is
+                # not a reason to ignore a request to stop it.
+                self.logger.debug("Task %s was refused by this instance. Not acting on it again.", task.get("uuid", ""))
+                continue
             instanceuuid = task.get("config", {}).get("uuid", "")
             if not instanceuuid:
-                msg = f"Instance UUID not found in task provided by SENSE-O. Task: {task}"
-                self.logger.error(msg)
-                self.s_setTaskState(task["uuid"], "REJECTED", {"error": msg})
+                self._refuseTask(task, f"Instance UUID not found in task provided by SENSE-O. Task: {task}")
                 continue
             filename = f'rtmon-debug-{os.environ["SENSE_AUTH_OVERRIDE_NAME"]}-{instanceuuid}'
             # In case "register": false, we need to update the task to delete and task status to accepted;
-            if task.get("config", {}).get("register", None) is False:
+            if register is False:
                 self._taskCancel(task, filename)
                 continue
-            if task.get("config", {}).get("register", None) is True:
+            if register is True:
                 self._taskAccept(task, filename)
             else:
-                msg = f"Register flag not found in task provided by SENSE-O. Task: {task}"
-                self.logger.error(msg)
-                self.s_setTaskState(task["uuid"], "REJECTED", {"error": msg})
+                self._refuseTask(task, f"Register flag not found in task provided by SENSE-O. Task: {task}")
 
     def _collectStateFiles(self):
         """Load every state file this instance owns, grouped by state.

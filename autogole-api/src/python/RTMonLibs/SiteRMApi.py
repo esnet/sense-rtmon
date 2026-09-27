@@ -135,6 +135,8 @@ class SiteRMApi:
             out = self.siterm_debug.submit_ping(**newaction)
         elif callaction == "rapid-pingnet":
             out = self.siterm_debug.submit_pingnet(**newaction)
+        elif callaction == "traceroute":
+            out = self.siterm_debug.submit_traceroute(**newaction)
         else:
             self.logger.error(f"Unknown action {callaction} for {newaction}")
             return None
@@ -328,6 +330,95 @@ class SiteRMApi:
                             ping_out.append(newaction)
                             all_annotations.append({"submitout": newaction, "dashbInfo": kwargs["fout"]["dashbInfo"], "timespan": False})
         return ping_out, all_annotations, actionsuffix
+
+    def _sr_submit_traceroutel3(self, actions, actionsuffix, **kwargs):
+        """Submit a traceroute from an L3 endpoint towards the remote site"""
+        # Same overlapping-range handling as the L3 ping: an L3 path has no host
+        # to run from, so the source is a dynamic range the site listens on.
+        trout = []
+        all_annotations = []
+        actionname = actions[0]
+        tractions = self._sr_findsitermips(**kwargs)
+        if not tractions or len(tractions) != 2:
+            self.logger.info("No overlapping ranges found for both Sites IPs, cannot submit traceroute from L3 host")
+            return trout, all_annotations, actionsuffix
+        for indx, item in enumerate(tractions):
+            remsiteid = 1 if indx == 0 else 0
+            self.logger.info(f"Found overlapping range for {item['sitename']} {item['iptype']} {item['dynamicfrom']}, can submit traceroute from L3 host")
+            # traceroute takes no packetsize/interval/count: see the FE
+            # debugactioninfo schema. Sending ping's keys would be rejected.
+            newaction = {
+                "type": actionname,
+                "sitename": item["sitename"],
+                "dynamicfrom": item["dynamicfrom"],
+                "ip": random.choice(tractions[remsiteid]["allips"]),
+                "runtime": kwargs.get("runtime", 600),
+                "onetime": True,
+            }
+            actionPresent = False
+            allDebugActions = self.sr_get_debug_actions(**{"sitename": item["sitename"], "action": actionname})
+            for action in allDebugActions:
+                # hostname is undefined here and the RM rewrites it, so it is not matched on.
+                if self._sr_all_keys_match(action.get("requestdict"), newaction, ["type", "sitename", "dynamicfrom", "ip", "runtime", "onetime"]):
+                    actionPresent = True
+                    newaction["submit_time"] = action.get("insertdate")
+                    newaction["submit_out"] = {"ID": action.get("id"), "Status": action.get("state")}
+                    self.logger.info(f"{actionname} test already present for {newaction}: {newaction['submit_out']}")
+                    trout.append(newaction)
+                    break
+            if not actionPresent:
+                self.logger.info(f"Submitting {actionname} test for {newaction}")
+                newaction = self._sr_submitsiterm(actionname, newaction)
+                trout.append(newaction)
+                all_annotations.append({"submitout": newaction, "dashbInfo": kwargs["fout"]["dashbInfo"], "timespan": False})
+        return trout, all_annotations, actionsuffix
+
+    def _sr_submit_traceroute(self, actions, actionsuffix, **kwargs):
+        """Submit a traceroute from every host of the path to every remote IP"""
+        actionname = actions[0]
+        self.logger.info(f"Start check for {actionname} test if needed")
+        manInfo = self._sr_get_all_hosts(**kwargs)
+        trout = []
+        all_annotations = []
+        # L3 paths have no host to traceroute from, only dynamic ranges.
+        if manInfo.get("dynamicranges", {}):
+            kwargs["dynamicranges"] = manInfo.get("dynamicranges", {})
+            self.logger.info(f"Submitting {actionname} test from L3 hosts")
+            return self._sr_submit_traceroutel3(actions, actionsuffix, **kwargs)
+        for host in manInfo.get("hosts", []):
+            for key in ("IPv4", "IPv6"):
+                # The manifest leaves ?ipv4?/?ipv6? in place when a host has no address.
+                if not host.get(key) or host[key] == f"?{key.lower()}?":
+                    continue
+                hostspl = host.get("Name").split(":")
+                for ip in manInfo.get("ips", {}).get(key, []):
+                    if host[key].split("/")[0] == ip:
+                        # No point tracerouting ourselves.
+                        continue
+                    # traceroute names the source interface from_interface,
+                    # unlike rapid-ping which calls it interface.
+                    newaction = {
+                        "hostname": hostspl[1],
+                        "type": actionname,
+                        "sitename": hostspl[0],
+                        "ip": ip,
+                        "from_interface": host["Interface"] if not host.get("vlan") else host["vlan"],
+                        "runtime": kwargs.get("runtime", 600),
+                        "onetime": False,
+                    }
+                    for action in self.sr_get_debug_actions(**{"sitename": hostspl[0], "hostname": hostspl[1], "action": actionname}):
+                        if self._sr_all_keys_match(action.get("requestdict"), newaction):
+                            newaction["submit_time"] = action.get("insertdate")
+                            newaction["submit_out"] = {"ID": action.get("id"), "Status": action.get("state")}
+                            self.logger.info(f"{actionname} test already present for {newaction}: {newaction['submit_out']}")
+                            trout.append(newaction)
+                            break
+                    else:
+                        self.logger.info(f"Submitting {actionname} test for {newaction}")
+                        newaction = self._sr_submitsiterm(actionname, newaction)
+                        trout.append(newaction)
+                        all_annotations.append({"submitout": newaction, "dashbInfo": kwargs["fout"]["dashbInfo"], "timespan": False})
+        return trout, all_annotations, actionsuffix
 
     def _sr_wait_active(self, sitename, actionid, maxtime=120):
         """Wait for an action to become active"""
@@ -526,6 +617,10 @@ class SiteRMApi:
     def sr_submit_pingnet(self, **kwargs):
         """Submit a ping test to the SENSE-SiteRM API (for network endpoints)"""
         return self._sr_submit_pingnet(["rapid-pingnet"], "pingnet", **kwargs)
+
+    def sr_submit_traceroute(self, **kwargs):
+        """Submit a traceroute test to the SENSE-SiteRM API (for hosts)"""
+        return self._sr_submit_traceroute(["traceroute"], "traceroute", **kwargs)
 
     def sr_submit_perf(self, **kwargs):
         """Submit a performance test to the SENSE-SiteRM API"""

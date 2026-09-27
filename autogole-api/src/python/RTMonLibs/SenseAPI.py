@@ -42,6 +42,14 @@ class SenseAPI:
             "type": "complex",
             "options": [{"key": "enabled", "name": "Enable flag", "type": "boolean", "default": False, "description": "Enable ping between hosts. Done continuously and repeated every 5 minutes."}],
         },
+        "executetraceroute": {
+            "name": "Issue Traceroute from Hosts",
+            "key": "executetraceroute",
+            "label": "Traceroute from Hosts",
+            "description": "Issue traceroute automatically between endpoints (Default false)",
+            "type": "complex",
+            "options": [{"key": "enabled", "name": "Enable flag", "type": "boolean", "default": False, "description": "Enable traceroute between hosts. Done continuously and repeated every 5 minutes."}],
+        },
         "executepingnet": {
             "name": "Issue Ping from Network endpoints",
             "key": "executepingnet",

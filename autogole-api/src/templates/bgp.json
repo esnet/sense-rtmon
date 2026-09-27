@@ -106,5 +106,235 @@
     ],
     "title": "BGP Peer Status",
     "type": "state-timeline"
+  },
+  {
+    "datasource": {
+      "type": "prometheus",
+      "uid": "REPLACEME_DATASOURCE"
+    },
+    "description": "When BGPMonitoring on the SiteRM FE last scanned this switch. Shown as age, because a timestamp that stops advancing means the BGP panels above are stale rather than stable.",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "thresholds"
+        },
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green"
+            }
+          ]
+        },
+        "unit": "dateTimeFromNow"
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 6,
+      "w": 4,
+      "x": 0,
+      "y": 0
+    },
+    "id": 0,
+    "options": {
+      "colorMode": "value",
+      "graphMode": "none",
+      "justifyMode": "auto",
+      "orientation": "auto",
+      "reduceOptions": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "fields": "",
+        "values": false
+      },
+      "textMode": "auto"
+    },
+    "pluginVersion": "8.5.27",
+    "targets": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "REPLACEME_DATASOURCE"
+        },
+        "editorMode": "code",
+        "exemplar": true,
+        "expr": "bgp_last_scan_timestamp{hostname=\"REPLACEME_HOSTNAME\", sitename=\"REPLACEME_SITENAME\"} * 1000",
+        "interval": "",
+        "legendFormat": "{{hostname}}",
+        "range": true,
+        "refId": "A"
+      }
+    ],
+    "title": "BGP Last Updated",
+    "type": "stat"
+  },
+  {
+    "datasource": {
+      "type": "prometheus",
+      "uid": "REPLACEME_DATASOURCE"
+    },
+    "description": "Prefixes received from each BGP peer of this switch. The SENSE:{{sense}} peer is the SENSE fabric session; a SENSE session sitting at zero received prefixes is established but carrying nothing.",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "axisLabel": "",
+          "axisPlacement": "auto",
+          "drawStyle": "line",
+          "fillOpacity": 10,
+          "gradientMode": "none",
+          "lineInterpolation": "linear",
+          "lineWidth": 1,
+          "pointSize": 5,
+          "showPoints": "never",
+          "spanNulls": false,
+          "stacking": {
+            "group": "A",
+            "mode": "none"
+          },
+          "thresholdsStyle": {
+            "mode": "off"
+          }
+        },
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green"
+            }
+          ]
+        },
+        "unit": "short"
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 8,
+      "w": 12,
+      "x": 0,
+      "y": 6
+    },
+    "id": 0,
+    "options": {
+      "legend": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "displayMode": "table",
+        "placement": "bottom",
+        "showLegend": true
+      },
+      "tooltip": {
+        "mode": "multi",
+        "sort": "none"
+      }
+    },
+    "pluginVersion": "8.5.27",
+    "targets": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "REPLACEME_DATASOURCE"
+        },
+        "editorMode": "code",
+        "exemplar": true,
+        "expr": "bgp_prefixes_received{hostname=\"REPLACEME_HOSTNAME\", sitename=\"REPLACEME_SITENAME\"}",
+        "interval": "",
+        "legendFormat": "{{peer}} {{iptype}} SENSE:{{sense}}",
+        "range": true,
+        "refId": "A"
+      }
+    ],
+    "title": "BGP Prefixes Received",
+    "type": "timeseries"
+  },
+  {
+    "datasource": {
+      "type": "prometheus",
+      "uid": "REPLACEME_DATASOURCE"
+    },
+    "description": "Prefixes advertised to each BGP peer of this switch. The SENSE:{{sense}} peer is the SENSE fabric session.",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "palette-classic"
+        },
+        "custom": {
+          "axisLabel": "",
+          "axisPlacement": "auto",
+          "drawStyle": "line",
+          "fillOpacity": 10,
+          "gradientMode": "none",
+          "lineInterpolation": "linear",
+          "lineWidth": 1,
+          "pointSize": 5,
+          "showPoints": "never",
+          "spanNulls": false,
+          "stacking": {
+            "group": "A",
+            "mode": "none"
+          },
+          "thresholdsStyle": {
+            "mode": "off"
+          }
+        },
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green"
+            }
+          ]
+        },
+        "unit": "short"
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 8,
+      "w": 12,
+      "x": 12,
+      "y": 6
+    },
+    "id": 0,
+    "options": {
+      "legend": {
+        "calcs": [
+          "lastNotNull"
+        ],
+        "displayMode": "table",
+        "placement": "bottom",
+        "showLegend": true
+      },
+      "tooltip": {
+        "mode": "multi",
+        "sort": "none"
+      }
+    },
+    "pluginVersion": "8.5.27",
+    "targets": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "REPLACEME_DATASOURCE"
+        },
+        "editorMode": "code",
+        "exemplar": true,
+        "expr": "bgp_prefixes_advertised{hostname=\"REPLACEME_HOSTNAME\", sitename=\"REPLACEME_SITENAME\"}",
+        "interval": "",
+        "legendFormat": "{{peer}} {{iptype}} SENSE:{{sense}}",
+        "range": true,
+        "refId": "A"
+      }
+    ],
+    "title": "BGP Prefixes Advertised",
+    "type": "timeseries"
   }
 ]

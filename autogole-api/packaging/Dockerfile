@@ -43,6 +43,7 @@ RUN wget --progress=dot:giga https://raw.githubusercontent.com/sdn-sense/rm-conf
 
 # Copy necessary files
 COPY files/etc/supervisord.d/10-server.conf /etc/supervisord.d/10-server.conf
+COPY files/etc/supervisord.d/20-http.conf /etc/supervisord.d/20-http.conf
 COPY icons/host.png /opt/icons/host.png
 COPY icons/switch.png /opt/icons/switch.png
 COPY icons/BGP.png /opt/icons/BGP.png

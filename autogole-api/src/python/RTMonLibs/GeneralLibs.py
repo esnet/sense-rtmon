@@ -14,6 +14,13 @@ from yaml import safe_load as yload
 from yaml import safe_dump as ydump
 
 
+# The Grafana datasource the debug action result panels query. GrafanaAPI
+# creates it and Template looks it up, and two halves of one feature
+# disagreeing about a string would silently drop the panels.
+RESULTS_DATASOURCE_NAME = "RTMon Results"
+RESULTS_DATASOURCE_TYPE = "yesoreyeram-infinity-datasource"
+
+
 def valtoboolean(value):
     """Convert value to boolean"""
     if isinstance(value, bool):

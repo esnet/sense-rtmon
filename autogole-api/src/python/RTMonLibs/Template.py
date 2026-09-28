@@ -9,6 +9,7 @@ import os.path
 import re
 from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, escapeES
 from RTMonLibs.GeneralLibs import _processName, encodebase64, generateUUID
+from RTMonLibs.GeneralLibs import RESULTS_DATASOURCE_NAME
 
 
 def clamp(n, minn, maxn):
@@ -724,6 +725,64 @@ class Template:  # pylint: disable=too-many-instance-attributes
         panels = panels.replace("REPLACEME_HOSTNAME", hostname)
         return loadJson(panels, self.logger)
 
+    # The advertised action, the fout key its results land under, and the panel
+    # title. executeperf is absent on purpose: it is one action and three
+    # applications, and which one ran is only known from the task settings.
+    actionResultPanels = {
+        "executepinghost": ("pinghost", "Ping from Hosts"),
+        "executepingnet": ("pingnet", "Ping from Network"),
+        "executetraceroute": ("traceroute", "Traceroute from Hosts"),
+        "executetraceroutenet": ("traceroutenet", "Traceroute from Network"),
+    }
+
+    def _t_actionResultPanel(self, dsuid, uuid, key, label):
+        """One table of what a single action returned."""
+        panels = dumpJson(self._t_loadTemplate("actionresults.json"), self.logger)
+        panels = panels.replace("REPLACEME_RESULTS_DATASOURCE", str(dsuid))
+        panels = panels.replace("REPLACEME_INSTANCEUUID", uuid)
+        panels = panels.replace("REPLACEME_ACTIONKEY", key)
+        panels = panels.replace("REPLACEME_ACTIONLABEL", label)
+        return loadJson(panels, self.logger)
+
+    def _t_wantedActionResults(self, taskinfo):
+        """(fout key, title) for every action this task asked RTMon to run."""
+        wanted = []
+        for action, (key, label) in self.actionResultPanels.items():
+            if self.getTaskEnabled(taskinfo, action):
+                wanted.append((key, label))
+        if self.getTaskEnabled(taskinfo, "executeperf"):
+            app = taskinfo.get("config", {}).get("settings", {}).get("executeperf.perfapp", "")
+            if app in ("iperf", "fdt", "ethr"):
+                wanted.append((app, f"Performance Test ({app})"))
+        return wanted
+
+    def t_addActionResults(self, *args, **kwargs):
+        """Panels showing what the submitted SiteRM actions returned.
+
+        Driven by what the task enabled rather than by what is already cached:
+        the dashboard is built before the first action is submitted, so a panel
+        keyed off existing results would never appear until the next rebuild.
+        An empty table until the first run lands is the honest state.
+        """
+        if not self.config.get("http_api_enabled", False):
+            return []
+        uuid = kwargs.get("referenceUUID", "")
+        wanted = self._t_wantedActionResults(kwargs.get("taskinfo") or {})
+        if not uuid or not wanted:
+            return []
+        dsuid = self._t_getDataSource(RESULTS_DATASOURCE_NAME, default=None)
+        if not dsuid:
+            # g_ensureResultsDataSource already logged why it is missing.
+            # Panels bound to a datasource that does not exist render a wall of
+            # "datasource not found" where the dashboard should be.
+            self.t_recordWarning("The results datasource is missing from Grafana, so the debug action result panels are not shown.")
+            return []
+        panels = []
+        for key, label in wanted:
+            panels += self._t_actionResultPanel(dsuid, uuid, key, label)
+        row = self.t_addRow(*args, title="Debug Action Results")
+        return self.addRowPanel(row, panels)
+
     def _t_createESnetSwitchFlow(self, sitehost, num, *args):
         """Create ESnet Switch Flow Template to query stardust directly"""
         out = []
@@ -1176,6 +1235,8 @@ class Template:  # pylint: disable=too-many-instance-attributes
                 self.logger.error(f"Unknown Type: {item['Type']}. Skipping... {item}")
         # Add L2 Debugging
         self.generated["panels"] += self.t_addL2Debugging(*args)
+        # Add the output of whatever SiteRM actions this task asked for
+        self.generated["panels"] += self.t_addActionResults(*args, **kwargs)
         if self.debugmode:
             if len(diagrams) > 1:
                 self.generated["panels"] += diagrams[1]

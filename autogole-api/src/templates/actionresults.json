@@ -1,0 +1,126 @@
+[
+  {
+    "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "REPLACEME_RESULTS_DATASOURCE"
+    },
+    "description": "Output of the REPLACEME_ACTIONLABEL runs RTMon submitted for this path. Refreshed by RTMon from the site frontends, so it keeps the last result while a site is unreachable.",
+    "fieldConfig": {
+      "defaults": {
+        "custom": {
+          "align": "auto",
+          "cellOptions": {
+            "type": "auto",
+            "wrapText": true
+          },
+          "filterable": true,
+          "inspect": true
+        },
+        "mappings": []
+      },
+      "overrides": [
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "updated"
+          },
+          "properties": [
+            {
+              "id": "unit",
+              "value": "dateTimeAsIso"
+            }
+          ]
+        },
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "output"
+          },
+          "properties": [
+            {
+              "id": "custom.width",
+              "value": 700
+            }
+          ]
+        }
+      ]
+    },
+    "gridPos": {
+      "h": 10,
+      "w": 24,
+      "x": 0,
+      "y": 0
+    },
+    "options": {
+      "cellHeight": "sm",
+      "footer": {
+        "countRows": false,
+        "fields": "",
+        "reducer": ["sum"],
+        "show": false
+      },
+      "showHeader": true
+    },
+    "targets": [
+      {
+        "columns": [
+          {
+            "selector": "sitename",
+            "text": "site",
+            "type": "string"
+          },
+          {
+            "selector": "hostname",
+            "text": "host",
+            "type": "string"
+          },
+          {
+            "selector": "type",
+            "text": "action",
+            "type": "string"
+          },
+          {
+            "selector": "state",
+            "text": "state",
+            "type": "string"
+          },
+          {
+            "selector": "exitcode",
+            "text": "exit",
+            "type": "number"
+          },
+          {
+            "selector": "updated",
+            "text": "updated",
+            "type": "number"
+          },
+          {
+            "selector": "truncated",
+            "text": "truncated",
+            "type": "string"
+          },
+          {
+            "selector": "output",
+            "text": "output",
+            "type": "string"
+          }
+        ],
+        "filters": [],
+        "format": "table",
+        "global_query_id": "",
+        "parser": "backend",
+        "refId": "A",
+        "root_selector": "",
+        "source": "url",
+        "type": "json",
+        "url": "/api/v1/results?instance=REPLACEME_INSTANCEUUID&action=REPLACEME_ACTIONKEY",
+        "url_options": {
+          "data": "",
+          "method": "GET"
+        }
+      }
+    ],
+    "title": "REPLACEME_ACTIONLABEL",
+    "type": "table"
+  }
+]

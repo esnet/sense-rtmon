@@ -7,4 +7,5 @@ prometheus_api_client
 pillow>=10.3.0
 fonttools>=4.43.0
 numpy>=1.22.2
+PyJWT>=2.8.0 # results API validates Keycloak tokens; RS256 needs cryptography, already present
 urllib3>=2.5.0 # not directly required, pinned by Snyk to avoid a vulnerability

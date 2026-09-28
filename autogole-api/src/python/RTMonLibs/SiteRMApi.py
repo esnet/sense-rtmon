@@ -12,6 +12,15 @@ from sense.client.siterm.debug_api import DebugApi
 class SiteRMApi:
     """Class for interacting with SENSE-0 API"""
 
+    # Once an action reaches one of these its output stops changing, so the
+    # cached copy is final and the site is not asked for it again.
+    resultTerminalStates = ("finished", "failed", "cancelled")
+
+    # A ping is a few dozen lines; a long fdt run is not. The cache is written
+    # back into the state file every cycle, so it is capped - and it records
+    # that it was capped, because a silently trimmed log reads as a complete one.
+    resultMaxLines = 200
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.config = kwargs.get("config")
@@ -116,6 +125,93 @@ class SiteRMApi:
                 continue
         return allDebugActions
 
+    @classmethod
+    def _sr_trimlines(cls, lines):
+        """Cap a command's output, reporting the cap instead of hiding it."""
+        if not isinstance(lines, list):
+            lines = [str(lines)] if lines else []
+        total = len(lines)
+        if total <= cls.resultMaxLines:
+            return lines, False, total
+        return lines[-cls.resultMaxLines :], True, total
+
+    def _sr_fetch_result(self, item, actionid):
+        """One action's current state and output, or None if the site did not answer."""
+        sitename = item.get("sitename")
+        try:
+            out = self.sr_get_debug_action_info(sitename=sitename, id=actionid, details=True)
+        except Exception as ex:  # pylint: disable=broad-exception-caught
+            # Deliberately broad. One unreachable frontend must not stop the
+            # cycle from refreshing every other site's results.
+            self.logger.error(f"Failed to get output for {sitename} action {actionid}: {ex}")
+            self.logger.error(traceback.format_exc())
+            return None
+        if not out or not out[1] or not out[0]:
+            self.logger.warning(f"No output returned for {sitename} action {actionid}: {out}")
+            return None
+        row = out[0][0] if isinstance(out[0], list) else out[0]
+        if not isinstance(row, dict):
+            self.logger.warning(f"Unexpected output shape for {sitename} action {actionid}: {type(row)}")
+            return None
+        output = row.get("output") if isinstance(row.get("output"), dict) else {}
+        lines, truncated, total = self._sr_trimlines(output.get("processOut", []))
+        return {
+            "id": actionid,
+            "sitename": sitename,
+            "hostname": item.get("hostname", row.get("hostname", "")),
+            "action": row.get("action", item.get("type", "")),
+            "state": row.get("state", "unknown"),
+            "inserted": row.get("insertdate"),
+            "updated": row.get("updatedate"),
+            "exitcode": output.get("exitCode"),
+            "lines": lines,
+            "truncated": truncated,
+            "totallines": total,
+            "jsonout": output.get("jsonout", {}),
+            "fetched": getUTCnow(),
+        }
+
+    def sr_refresh_results(self, fout, suffixes):
+        """Cache the SiteRM output of every action submitted for this path.
+
+        The submission records in fout carry an ID and the state at submit time,
+        nothing more; the output itself stays at the site. Fetching it here is
+        one call per running action per cycle, and none once the action is over.
+        Serving it from the endpoint instead would put a Grafana refresh on the
+        critical path of every site frontend.
+        """
+        results = fout.setdefault("action_results", {})
+        for suffix in suffixes:
+            submitted = fout.get(suffix)
+            if not isinstance(submitted, list):
+                continue
+            cached = {str(entry.get("id")): entry for entry in results.get(suffix, [])}
+            fresh = []
+            for item in submitted:
+                actionid = item.get("submit_out", {}).get("ID")
+                if not actionid:
+                    continue
+                have = cached.get(str(actionid))
+                if have and have.get("state") in self.resultTerminalStates:
+                    fresh.append(have)
+                    continue
+                # Keep the previous copy when the site does not answer. An
+                # outage should leave the last known output on the dashboard,
+                # not blank it.
+                fresh.append(self._sr_fetch_result(item, actionid) or have)
+            fresh = [entry for entry in fresh if entry]
+            if fresh:
+                results[suffix] = fresh
+            else:
+                results.pop(suffix, None)
+        # A cancelled action is removed from fout but its cache would survive,
+        # and the endpoint would go on serving a result for something that is
+        # no longer part of this path.
+        for suffix in list(results):
+            if suffix not in suffixes or not isinstance(fout.get(suffix), list):
+                del results[suffix]
+        return fout
+
     def _sr_submitsiterm(self, callaction, newaction):
         """Submit action to SiteRM"""
         out = None
@@ -137,6 +233,11 @@ class SiteRMApi:
             out = self.siterm_debug.submit_pingnet(**newaction)
         elif callaction == "traceroute":
             out = self.siterm_debug.submit_traceroute(**newaction)
+        elif callaction == "traceroutenet":
+            # The vendored client has no submit_traceroutenet. Its generic
+            # submit runs the same capability check and POST, so there is no
+            # need to wait on a client release for this one.
+            out = self.siterm_debug.submit(**dict(newaction, action=callaction))
         else:
             self.logger.error(f"Unknown action {callaction} for {newaction}")
             return None
@@ -149,8 +250,13 @@ class SiteRMApi:
         self.logger.info(f"Submitted {callaction} test for {newaction}: {out}")
         return newaction
 
-    def _sr_submit_pingnet(self, actions, actionsuffix, **kwargs):
-        """Submit a host/net ping test to the SENSE-SiteRM API"""
+    def _sr_submit_netaction(self, actions, actionsuffix, params, **kwargs):
+        """Submit a test from every addressed switch of the path to every remote IP.
+
+        Shared by rapid-pingnet and traceroutenet: both run on a network device
+        rather than a host, both are one-shot, and they differ only in the
+        parameters the frontend takes, which arrive in params.
+        """
         # There are no parameters for ping test, that we allow to control for users;
         # So there is only one action (and this is already tested that it is enabled)
         actionname = actions[0]
@@ -184,11 +290,8 @@ class SiteRMApi:
                             "type": actionname,
                             "sitename": hostspl[0],
                             "ip": ip,
-                            "timeout": kwargs.get("timeout", 5),
-                            "count": kwargs.get("count", 10),
-                            "time": kwargs.get("time", 600),
-                            "onetime": True,
                         }
+                        newaction.update(params)
                         actionPresent = False
                         allDebugActions = self.sr_get_debug_actions(**{"sitename": hostspl[0], "hostname": hostspl[1], "action": actionname})
                         for action in allDebugActions:
@@ -624,7 +727,19 @@ class SiteRMApi:
 
     def sr_submit_pingnet(self, **kwargs):
         """Submit a ping test to the SENSE-SiteRM API (for network endpoints)"""
-        return self._sr_submit_pingnet(["rapid-pingnet"], "pingnet", **kwargs)
+        params = {
+            "timeout": kwargs.get("timeout", 5),
+            "count": kwargs.get("count", 10),
+            "time": kwargs.get("time", 600),
+            "onetime": True,
+        }
+        return self._sr_submit_netaction(["rapid-pingnet"], "pingnet", params, **kwargs)
+
+    def sr_submit_traceroutenet(self, **kwargs):
+        """Submit a traceroute test to the SENSE-SiteRM API (for network endpoints)"""
+        # traceroutenet takes only the target ip; the frontend fills in onetime
+        # and runtime itself, and rejects anything else it was not given.
+        return self._sr_submit_netaction(["traceroutenet"], "traceroutenet", {}, **kwargs)
 
     def sr_submit_traceroute(self, **kwargs):
         """Submit a traceroute test to the SENSE-SiteRM API (for hosts)"""

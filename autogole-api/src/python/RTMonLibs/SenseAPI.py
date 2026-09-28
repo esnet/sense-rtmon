@@ -66,6 +66,22 @@ class SenseAPI:
                 }
             ],
         },
+        "executetraceroutenet": {
+            "name": "Issue Traceroute from Network endpoints",
+            "key": "executetraceroutenet",
+            "label": "Traceroute from Network",
+            "description": "Issue traceroute automatically from network endpoints (Default false)",
+            "type": "complex",
+            "options": [
+                {
+                    "key": "enabled",
+                    "name": "Enable flag",
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Enable traceroute from network endpoints. Only done once, when enabled. To re-enable - disable and enable again.",
+                }
+            ],
+        },
         "retention": {
             "name": "Keep Dashboard After Cancellation",
             "key": "retention",
@@ -141,8 +157,8 @@ class SenseAPI:
     }
 
     # RTMon submits these actions straight to a SiteRM, which needs a token
-    # exchange RTMon cannot currently complete, so they are held off until they
-    # are re-implemented through the Orchestrator instead (#257, #258).
+    # exchange against a client certificate the frontends trust. They can be
+    # held off with siterm_actions_enabled when that is not the case.
     # The test is the one the dispatcher already uses - an action key prefixed
     # with "execute" is submitted to a SiteRM, anything else only shapes the
     # dashboard - so an action added later is covered without being named here.

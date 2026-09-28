@@ -166,9 +166,12 @@ class SiteRMApi:
         ping_out = []
         all_annotations = []
         for host in manInfo.get("switches", []):
-            # Check if IPv6 or IPv4 is defined
-            for key, defval in [("IPv4", "?ipv4?"), ("IPv6", "?ipv6?")]:
-                if host.get(key) and host[key] != defval:
+            # These are manifest Ports, so an absent address is left as
+            # ?port_ipv4?/?port_ipv6?, not the host-level ?ipv4?/?ipv6?.
+            # Checking only the host spelling let an addressless switch past,
+            # and it then pinged every other address on the path.
+            for key, defval in [("IPv4", ("?ipv4?", "?port_ipv4?")), ("IPv6", ("?ipv6?", "?port_ipv6?"))]:
+                if host.get(key) and host[key] not in defval:
                     hostspl = host.get("Node").split(":")
                     for ip in manInfo.get("ips", {}).get(key, []):
                         hostip = host[key].split("/")[0]

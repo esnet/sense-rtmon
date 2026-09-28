@@ -6,6 +6,7 @@
 import copy
 import html
 import os.path
+import re
 from RTMonLibs.GeneralLibs import loadJson, dumpJson, dumpYaml, escape, escapeES
 from RTMonLibs.GeneralLibs import _processName, encodebase64, generateUUID
 
@@ -600,6 +601,37 @@ class Template:  # pylint: disable=too-many-instance-attributes
         return out
 
     @staticmethod
+    def __t_vppNames(intfname, vlan):
+        """VPP spellings of a manifest port name, or [] when it is not one.
+
+        The manifest carries the short form the model uses, "e2". VPP exports
+        the same port to Prometheus as "Ethernet2_0_0", and its sub-interface
+        as "Ethernet2_0_0.<vlan>", so neither spelling matches the manifest.
+        """
+        match = re.match(r"^e(\d+)$", intfname.strip())
+        if not match:
+            return []
+        base = f"Ethernet{match.group(1)}_0_0"
+        return [base, f"{base}.{vlan}"] if vlan else [base]
+
+    def __t_intfFilter(self, interfaces, templateType):
+        """Interface regex for a switch flow template.
+
+        The vpp template used to graph every interface the site exports,
+        because VPP metrics carry no hostname label to narrow them with. The
+        port names do narrow them, but only in their VPP spelling, so a switch
+        whose ports yield none falls back to matching everything rather than
+        silently graphing an empty panel.
+        """
+        intfline = self.__t_findIntf(interfaces)
+        if templateType != "vpp":
+            return intfline
+        if not re.search(r"Ethernet\d+_0_0", intfline):
+            self.t_recordWarning("No VPP interface name could be derived for this switch, so its flow panel shows every interface the site exports.")
+            return ".*"
+        return intfline
+
+    @staticmethod
     def __t_findIntf(interfaces, maininc=True):
         """Find Interface"""
         intfs = []
@@ -624,13 +656,17 @@ class Template:  # pylint: disable=too-many-instance-attributes
                 intfs.append(intfname.lower())
                 intfs.append(intfname.replace(" ", ""))
                 intfs.append(intfname.lower().replace(" ", ""))
+                intfs += Template.__t_vppNames(intfname, intfdata.get("Vlan"))
             # If we have a Vlan, add it to the interface
             if "Vlan" in intfdata and intfdata["Vlan"]:
                 for key in ["Vlan", "Vlan."]:
                     intfs.append(f"{key}{intfdata['Vlan']}")
                     intfs.append(f"{key.lower()}{intfdata['Vlan']}")
                     intfs.append(f"{key.upper()}{intfdata['Vlan']}")
-        intfline = "|".join(intfs)
+        # The case and space variants collapse onto each other for most port
+        # names, so the alternation repeats itself. Identical branches match
+        # nothing extra, they just make the query harder to read.
+        intfline = "|".join(dict.fromkeys(intfs))
         return intfline
 
     @staticmethod
@@ -823,7 +859,7 @@ class Template:  # pylint: disable=too-many-instance-attributes
             panels = panels.replace("REPLACEME_DATASOURCE", str(self.t_dsourceuid))
             panels = panels.replace("REPLACEME_SITENAME", sitename)
             panels = panels.replace("REPLACEME_HOSTNAME", hostname)
-            panels = panels.replace("REPLACEME_INTERFACE", escape(self.__t_findIntf(interfaces)))
+            panels = panels.replace("REPLACEME_INTERFACE", escape(self.__t_intfFilter(interfaces, templateType)))
             panels = loadJson(panels, self.logger)
             # ESnet never reaches here, it returns above through
             # _t_createESnetSwitchFlow. Stardust does not export qos_status.

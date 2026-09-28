@@ -960,6 +960,10 @@ class Template:  # pylint: disable=too-many-instance-attributes
         )
         panel = self._t_loadTemplate("mermaid.json")
         mermaid = self.m_getMermaidContent(*args)
+        # Colour any switch that has not learned the far end of the path (#208).
+        # Appended after the walk, because the MAC addresses it compares against
+        # are only all known once every port has been visited.
+        mermaid += self.t_macLearningStyles()
         panel["options"]["content"] = "\n".join(mermaid)
         # Need to add correct size for the panel
         totalHeight = 12 + len(self.m_groups["Hosts"]) + len(self.m_groups["Switches"])

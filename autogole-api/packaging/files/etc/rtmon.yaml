@@ -59,6 +59,28 @@ dashboard_retention:
   allow_perpetual: false
   expire_per_cycle: 10
 
+# Read-only HTTP API serving the SiteRM debug action results RTMon caches, so
+# Grafana can chart them through the Infinity datasource and, in time, the SENSE
+# dashboard can read them without talking to every site itself.
+# Off unless http_api_enabled is true: an upgrade should not open a port.
+# With neither http_api_token nor http_api_oidc_issuer set, every request is
+# refused - being unreachable from outside the cluster is not authentication.
+# http_api_enabled: true
+# http_api_port: 8080
+# http_api_bind: '0.0.0.0'
+# How Grafana reaches this endpoint. Grafana and RTMon share a namespace, so
+# this is a Service name and needs no ingress. Without it RTMon does not create
+# the datasource and the result panels are left out rather than rendered broken.
+# http_api_url: 'http://sense-rtmon.opennsa.svc.cluster.local:8080'
+# Static bearer, for the Grafana Infinity datasource, which can hold nothing else.
+# http_api_token: 'set-me-in-the-secret'
+# Keycloak realm, for people and for the SENSE dashboard, which already log into it.
+# http_api_oidc_issuer: 'https://sense-o.es.net:8543/realms/StackV'
+# http_api_oidc_audience: ''
+# Any one of these roles admits. Empty means any valid token from the realm.
+# http_api_oidc_roles:
+#   - W_Approved
+
 # FOR DEVELOPMEENT ONLY
 # Enable grafana_dev parameter (can be any string, and will be used as name to create directory inside Grafana)
 # Additionally - all dashboards will have this added to name.

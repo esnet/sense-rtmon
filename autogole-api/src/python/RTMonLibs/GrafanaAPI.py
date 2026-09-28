@@ -9,7 +9,7 @@ import time
 import random
 from urllib.parse import urlparse
 from grafana_client import GrafanaApi
-from RTMonLibs.GeneralLibs import GrafanaFailure
+from RTMonLibs.GeneralLibs import GrafanaFailure, RESULTS_DATASOURCE_NAME, RESULTS_DATASOURCE_TYPE
 
 
 class GrafanaAPI:
@@ -63,6 +63,7 @@ class GrafanaAPI:
         self.g_getDashboards()
         self.g_getFolders()
         self.g_getDataSources()
+        self.g_ensureResultsDataSource()
 
     def _g_searchAllDashboards(self):
         """Every dashboard Grafana will return, following its paging.
@@ -149,6 +150,41 @@ class GrafanaAPI:
                 self.logger.error(traceback.format_exc())
                 time.sleep(1)
         raise GrafanaFailure("Failed to get datasources after 3 retries")
+
+    def g_ensureResultsDataSource(self):
+        """Create the results datasource in Grafana, once, if it is configured.
+
+        The bearer lives on the datasource rather than in every panel URL, so a
+        dashboard export carries no credential and a token rotation is one
+        Grafana object rather than every dashboard RTMon has ever built.
+        """
+        if not self.config.get("http_api_enabled", False):
+            return
+        url = self.config.get("http_api_url", "")
+        token = self.config.get("http_api_token", "")
+        if not url or not token:
+            self.logger.error("http_api_enabled is set but http_api_url or http_api_token is not. The result panels have no datasource and will not be added.")
+            return
+        if RESULTS_DATASOURCE_NAME in self.datasources:
+            return
+        payload = {
+            "name": RESULTS_DATASOURCE_NAME,
+            "type": RESULTS_DATASOURCE_TYPE,
+            "access": "proxy",
+            "url": url.rstrip("/"),
+            "jsonData": {"httpHeaderName1": "Authorization"},
+            "secureJsonData": {"httpHeaderValue1": f"Bearer {token}"},
+        }
+        try:
+            self.grafanaapi.datasource.create_datasource(payload)
+            self.logger.info("Created the %s datasource pointing at %s", RESULTS_DATASOURCE_NAME, url)
+        except Exception as ex:  # pylint: disable=broad-exception-caught
+            # Not fatal. Without it the result panels are skipped and every
+            # other panel on every dashboard is still built.
+            self.logger.error(f"Failed to create the {RESULTS_DATASOURCE_NAME} datasource: {ex}")
+            self.logger.error(traceback.format_exc())
+            return
+        self.g_getDataSources()
 
     def g_addNewDashboard(self, dashbJson):
         """Add new dashboard"""

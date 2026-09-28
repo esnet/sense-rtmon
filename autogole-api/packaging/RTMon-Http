@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+"""
+Serve the RTMon results API.
+
+A separate process from the daemon on purpose. The daemon's cycle is the only
+thing that writes state files, and keeping the reader out of it means a slow or
+wedged HTTP client cannot delay a dashboard refresh, and a crash here cannot
+take monitoring down with it. Supervisor restarts whichever one died.
+
+Disabled unless http_api_enabled is set, so an upgrade does not open a port
+nobody asked for.
+"""
+import sys
+import time
+
+from RTMonLibs.GeneralLibs import getConfig, valtoboolean
+from RTMonLibs.LogLib import getLoggingObject
+from RTMonLibs.ResultsApi import serve
+
+COMPONENT = "RTMon-Http"
+
+
+if __name__ == "__main__":
+    CONFIG = getConfig()
+    LOGGER = getLoggingObject(config=CONFIG, service=COMPONENT)
+    if not valtoboolean(CONFIG.get("http_api_enabled", False)):
+        LOGGER.info("http_api_enabled is not set. Results API will not start.")
+        # Exiting 0 would have supervisor treat this as a crash loop and keep
+        # restarting it. Idle instead, and say so once.
+        while True:
+            time.sleep(3600)
+    try:
+        serve(CONFIG, LOGGER)
+    except KeyboardInterrupt:
+        sys.exit(0)

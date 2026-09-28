@@ -736,6 +736,9 @@ class RTMonWorker(
             self._updateDashboardPermissions(fout)
             # Check if we need to execute any SiteRM actions
             self._executeSiteRMActions(fout, fout.get("instance", {}), fout.get("manifest", {}))
+            # And cache what they produced, so the results endpoint serves the
+            # state file instead of calling every site frontend per request.
+            self.sr_refresh_results(fout, self._sitermActionSuffixes())
             # Seeing the dashboard is the definition of this entry being
             # healthy, so the misses that got it here are forgotten. They
             # used to accumulate for the lifetime of the entry, which
@@ -1006,6 +1009,23 @@ class RTMonWorker(
                 # remaining annotations or the actions that follow.
                 self.logger.error(f"Error submitting annotation: {e}")
         return annotation_results
+
+    def _sitermActionSuffixes(self):
+        """The fout keys SiteRM submissions are stored under.
+
+        executeperf is one advertised action but three applications, and the
+        submissions land under whichever one the task selected, so all three
+        are named here.
+        """
+        suffixes = []
+        for action in self.supported_actions:
+            if not action.startswith(self.sitermActionPrefix):
+                continue
+            if action == "executeperf":
+                suffixes += ["iperf", "ethr", "fdt"]
+            else:
+                suffixes.append(action[len(self.sitermActionPrefix) :])
+        return suffixes
 
     def _executeSiteRMActions(self, fout, instance, manifest):
         """Execute SiteRM Actions"""

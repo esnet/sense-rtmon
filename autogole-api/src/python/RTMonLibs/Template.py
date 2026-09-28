@@ -783,6 +783,28 @@ class Template:  # pylint: disable=too-many-instance-attributes
         row = self.t_addRow(*args, title="Debug Action Results")
         return self.addRowPanel(row, panels)
 
+    def t_addSitermWarnings(self, *args, **kwargs):
+        """Panel of what each SiteRM on this path says about its own services.
+
+        Not gated on any action being enabled, unlike the result panels: a site
+        whose LookUpService or ValidatorService is complaining is worth seeing on
+        every path that crosses it, whether or not anybody asked for a ping.
+        """
+        if not self.config.get("http_api_enabled", False):
+            return []
+        uuid = kwargs.get("referenceUUID", "")
+        if not uuid:
+            return []
+        dsuid = self._t_getDataSource(RESULTS_DATASOURCE_NAME, default=None)
+        if not dsuid:
+            self.t_recordWarning("The results datasource is missing from Grafana, so the SiteRM service warnings panel is not shown.")
+            return []
+        panels = dumpJson(self._t_loadTemplate("sitermwarnings.json"), self.logger)
+        panels = panels.replace("REPLACEME_RESULTS_DATASOURCE", str(dsuid))
+        panels = panels.replace("REPLACEME_INSTANCEUUID", uuid)
+        row = self.t_addRow(*args, title="SiteRM Service Warnings")
+        return self.addRowPanel(row, loadJson(panels, self.logger))
+
     def _t_createESnetSwitchFlow(self, sitehost, num, *args):
         """Create ESnet Switch Flow Template to query stardust directly"""
         out = []
@@ -938,6 +960,10 @@ class Template:  # pylint: disable=too-many-instance-attributes
         )
         panel = self._t_loadTemplate("mermaid.json")
         mermaid = self.m_getMermaidContent(*args)
+        # Colour any switch that has not learned the far end of the path (#208).
+        # Appended after the walk, because the MAC addresses it compares against
+        # are only all known once every port has been visited.
+        mermaid += self.t_macLearningStyles()
         panel["options"]["content"] = "\n".join(mermaid)
         # Need to add correct size for the panel
         totalHeight = 12 + len(self.m_groups["Hosts"]) + len(self.m_groups["Switches"])
@@ -1237,6 +1263,8 @@ class Template:  # pylint: disable=too-many-instance-attributes
         self.generated["panels"] += self.t_addL2Debugging(*args)
         # Add the output of whatever SiteRM actions this task asked for
         self.generated["panels"] += self.t_addActionResults(*args, **kwargs)
+        # And what the sites say about their own health
+        self.generated["panels"] += self.t_addSitermWarnings(*args, **kwargs)
         if self.debugmode:
             if len(diagrams) > 1:
                 self.generated["panels"] += diagrams[1]

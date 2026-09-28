@@ -116,6 +116,37 @@ class Prometheus:
         )
         return self.p_get_query(query)
 
+    def p_count_mac_table_all(self, **kwargs):
+        """
+        Counts every mac table entry a switch reports, for any MAC and VLAN.
+
+        Asked before any per-MAC question. Most devices export no mac table at
+        all - at the time of writing five site/host pairs in the whole of
+        Prometheus do - and for those a per-MAC count of zero means "nothing to
+        look in", not "the far end was not learned". Treating the two alike
+        would mark every switch on every production path as having lost the path.
+        """
+        query = f'count(mac_table_info{{sitename="{kwargs["sitename"]}", hostname="{kwargs["hostname"]}"}}) or on() vector(0)'
+        return self.p_get_query(query)
+
+    def p_count_mac_table(self, **kwargs):
+        """
+        Counts the mac table entries a switch reports for one MAC on one VLAN.
+
+        The same selection the L2 debugging panel graphs, so a zero here is the
+        same zero that panel's line for this MAC would sit at: the device has
+        not learned the far end of the path. Only meaningful once
+        p_count_mac_table_all has established the device reports a table.
+        """
+        query = (
+            f'count(mac_table_info{{sitename="{kwargs["sitename"]}", '
+            f'hostname="{kwargs["hostname"]}", '
+            f'macaddress="{kwargs["macaddress"]}", '
+            f'vlan="{kwargs["vlan"]}"}}) '
+            "or on() vector(0)"
+        )
+        return self.p_get_query(query)
+
     def _p_safe_count(self, func, **kwargs):
         """Run one of the count helpers and fold every failure into None.
 
@@ -160,6 +191,20 @@ class Prometheus:
     def p_check_qos_available(self, **kwargs):
         """Returns the tri-state availability of QoS reservation data."""
         count = self._p_safe_count(self.p_count_qos_status, **kwargs)
+        if count is None:
+            return None
+        return count != "0"
+
+    def p_check_mac_table_available(self, **kwargs):
+        """Tri-state: does this switch report a mac table at all?"""
+        count = self._p_safe_count(self.p_count_mac_table_all, **kwargs)
+        if count is None:
+            return None
+        return count != "0"
+
+    def p_check_mac_learned(self, **kwargs):
+        """Tri-state: has this switch learned one MAC address on one VLAN?"""
+        count = self._p_safe_count(self.p_count_mac_table, **kwargs)
         if count is None:
             return None
         return count != "0"

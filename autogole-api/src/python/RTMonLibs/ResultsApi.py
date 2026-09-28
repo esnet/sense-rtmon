@@ -204,6 +204,36 @@ class ResultsStore:
                     out.append(row)
         return sorted(out, key=lambda item: (item.get("updated") or 0), reverse=True)
 
+    def sitermwarnings(self, filters):
+        """Flat rows of what each site says about its own services (#261).
+
+        A site that could not be asked gets a row of its own rather than no rows.
+        "nothing is wrong" and "nobody checked" are the two answers an operator
+        must not have to tell apart by absence.
+        """
+        out = []
+        for _, fout in self._statefiles():
+            base = self._describe(fout)
+            if filters.get("instance") and filters["instance"] != base["instance"]:
+                continue
+            for sitename, state in fout.get("siterm_states", {}).items():
+                if filters.get("sitename") and filters["sitename"] != sitename:
+                    continue
+                rows = [dict(base, sitename=sitename, checked=state.get("checked"),
+                             services=state.get("total"), **warn)
+                        for warn in state.get("warnings", [])]
+                if not rows and state.get("reason"):
+                    rows = [dict(base, sitename=sitename, checked=state.get("checked"),
+                                 services=state.get("total"), hostname="", servicename="",
+                                 servicestate="NOT CHECKED" if state.get("managed") else "NOT MANAGED",
+                                 version="", runtime=None, exccode=None,
+                                 exc=state.get("reason"), updated=state.get("checked"))]
+                for row in rows:
+                    if filters.get("state") and filters["state"] != row["servicestate"]:
+                        continue
+                    out.append(row)
+        return sorted(out, key=lambda item: (item.get("updated") or 0), reverse=True)
+
 
 def makeHandler(store, auth, logger):
     """Build the request handler bound to one store and one authenticator."""
@@ -269,12 +299,14 @@ def makeHandler(store, auth, logger):
             if path == "/api/v1/instances":
                 self._respond(200, store.instances())
                 return
-            if path == "/api/v1/results":
+            served = {"/api/v1/results": store.results,
+                      "/api/v1/sitermwarnings": store.sitermwarnings}
+            if path in served:
                 filters, unknown = self._filters(query)
                 if unknown:
                     self._respond(400, {"error": "unknown filters", "filters": sorted(set(unknown))})
                     return
-                self._respond(200, store.results(filters))
+                self._respond(200, served[path](filters))
                 return
             self._respond(404, {"error": "not found", "path": path})
 

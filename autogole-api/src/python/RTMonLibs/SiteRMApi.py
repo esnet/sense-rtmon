@@ -7,6 +7,7 @@ import time
 import random
 from RTMonLibs.GeneralLibs import loadJson, getUTCnow, valtoboolean
 from sense.client.siterm.debug_api import DebugApi
+from sense.client.siterm.services_api import ServicesApi
 
 
 class SiteRMApi:
@@ -21,11 +22,23 @@ class SiteRMApi:
     # that it was capped, because a silently trimmed log reads as a complete one.
     resultMaxLines = 200
 
+    # Service states change on the site's own schedule, and several monitored
+    # paths usually cross the same site. One fetch per site per this many
+    # seconds keeps a six instance cycle from making thirty identical calls.
+    serviceStateTTL = 60
+
+    # What getSitename says when a URN belongs to a domain no SiteRM manages -
+    # OASIS and the ESnet transit domains, for instance. Not a fault, and not
+    # something to warn about: there is no frontend there to ask.
+    notSiteRMManaged = "not found in SiteRM configs"
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.config = kwargs.get("config")
         self.logger = kwargs.get("logger")
         self.siterm_debug = DebugApi()
+        self.siterm_services = ServicesApi()
+        self.servicestates = {}
 
     @staticmethod
     def _sr_all_keys_match(action, newaction, matchkeys=None):
@@ -170,6 +183,95 @@ class SiteRMApi:
             "jsonout": output.get("jsonout", {}),
             "fetched": getUTCnow(),
         }
+
+    @staticmethod
+    def sr_manifest_sites(manifest):
+        """Every site the path crosses, from the manifest's own naming.
+
+        Ports carry Node as ``SITE:device`` and hosts carry Name the same way,
+        so the site is the part before the colon. Ordered and deduplicated, so
+        the warnings panel lists sites in path order rather than at random.
+        """
+        sites = []
+        for port in manifest.get("Ports", []):
+            for key, item in [("Node", port)] + [("Name", host) for host in port.get("Host", [])]:
+                value = str(item.get(key, ""))
+                site = value.split(":", maxsplit=1)[0]
+                if site and site != value and site not in sites:
+                    sites.append(site)
+        return sites
+
+    def sr_get_service_states(self, sitename):
+        """(rows, reason) for one site's services, cached for serviceStateTTL.
+
+        reason is empty when the site answered. It is set when it could not be
+        asked, and the caller reports that rather than showing an empty list:
+        "no warnings" and "never checked" look identical otherwise, and they are
+        the two answers an operator must not confuse.
+        """
+        cached = self.servicestates.get(sitename)
+        if cached and (getUTCnow() - cached["at"]) < self.serviceStateTTL:
+            return cached["rows"], cached["reason"]
+        rows, reason = [], ""
+        try:
+            # Built by hand rather than through ServicesApi.get_servicestates:
+            # that method asks for /servicesstates, with the extra s, and every
+            # frontend answers it with a 404. The endpoint is /servicestates.
+            out = self.siterm_services.client.makeRequest(
+                sitename=sitename,
+                url=f"/api/{sitename}/servicestates",
+                **{"verb": "GET", "data": {}, "urlparams": None},
+            )
+            if not out or not out[1]:
+                reason = f"frontend returned {str(out[0])[:120] if out else 'nothing'}"
+            elif isinstance(out[0], list):
+                rows = out[0]
+            else:
+                reason = f"unexpected reply shape {type(out[0]).__name__}"
+        except Exception as ex:  # pylint: disable=broad-exception-caught
+            # Deliberately broad. One site with no frontend, an expired cert or
+            # a refused connection must not stop the other sites being checked.
+            if self.notSiteRMManaged in str(ex):
+                reason = "no SiteRM frontend for this domain"
+            else:
+                reason = f"{type(ex).__name__}: {str(ex)[:120]}"
+                self.logger.error(f"Failed to get service states for {sitename}: {ex}")
+        self.servicestates[sitename] = {"at": getUTCnow(), "rows": rows, "reason": reason}
+        return rows, reason
+
+    def sr_refresh_warnings(self, fout, manifest):
+        """Cache each site's non-OK service states for the warnings endpoint.
+
+        Only the services that are complaining are kept. The OK ones are counted
+        and dropped: this is written back into the state file every cycle, and
+        170 rows of "OK" per path is a lot of disk to say nothing.
+        """
+        out = {}
+        for sitename in self.sr_manifest_sites(manifest):
+            rows, reason = self.sr_get_service_states(sitename)
+            managed = reason != "no SiteRM frontend for this domain"
+            out[sitename] = {
+                "checked": getUTCnow(),
+                "reason": reason,
+                "managed": managed,
+                "total": len(rows),
+                "warnings": [
+                    {
+                        "hostname": row.get("hostname", ""),
+                        "servicename": row.get("servicename", ""),
+                        "servicestate": row.get("servicestate", ""),
+                        "version": row.get("version", ""),
+                        "runtime": row.get("runtime"),
+                        "exccode": row.get("exccode"),
+                        "exc": str(row.get("exc", ""))[:500],
+                        "updated": row.get("updatedate"),
+                    }
+                    for row in rows
+                    if row.get("servicestate") != "OK"
+                ],
+            }
+        fout["siterm_states"] = out
+        return fout
 
     def sr_refresh_results(self, fout, suffixes):
         """Cache the SiteRM output of every action submitted for this path.

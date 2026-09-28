@@ -1,0 +1,168 @@
+[
+  {
+    "datasource": {
+      "type": "yesoreyeram-infinity-datasource",
+      "uid": "REPLACEME_RESULTS_DATASOURCE"
+    },
+    "description": "What each SiteRM on this path says about its own services. Only services that are not OK are listed, so an empty table means every service reported OK. A site with no frontend to ask shows as NOT MANAGED, and one that could not be reached as NOT CHECKED, because neither is the same as having no warnings.",
+    "fieldConfig": {
+      "defaults": {
+        "color": {
+          "mode": "fixed"
+        },
+        "custom": {
+          "align": "auto",
+          "cellOptions": {
+            "type": "auto",
+            "wrapText": true
+          },
+          "filterable": true,
+          "inspect": true
+        },
+        "mappings": []
+      },
+      "overrides": [
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "state"
+          },
+          "properties": [
+            {
+              "id": "custom.cellOptions",
+              "value": {
+                "type": "color-text"
+              }
+            },
+            {
+              "id": "mappings",
+              "value": [
+                {
+                  "options": {
+                    "WARNING": {
+                      "color": "orange",
+                      "index": 0
+                    },
+                    "FAILED": {
+                      "color": "red",
+                      "index": 1
+                    },
+                    "UNKNOWN": {
+                      "color": "yellow",
+                      "index": 2
+                    },
+                    "NOT CHECKED": {
+                      "color": "yellow",
+                      "index": 3
+                    },
+                    "NOT MANAGED": {
+                      "color": "text",
+                      "index": 4
+                    }
+                  },
+                  "type": "value"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "updated"
+          },
+          "properties": [
+            {
+              "id": "unit",
+              "value": "dateTimeAsIso"
+            }
+          ]
+        },
+        {
+          "matcher": {
+            "id": "byName",
+            "options": "detail"
+          },
+          "properties": [
+            {
+              "id": "custom.width",
+              "value": 620
+            }
+          ]
+        }
+      ]
+    },
+    "gridPos": {
+      "h": 9,
+      "w": 24,
+      "x": 0,
+      "y": 0
+    },
+    "options": {
+      "cellHeight": "sm",
+      "footer": {
+        "countRows": false,
+        "fields": "",
+        "reducer": ["sum"],
+        "show": false
+      },
+      "showHeader": true
+    },
+    "targets": [
+      {
+        "columns": [
+          {
+            "selector": "sitename",
+            "text": "site",
+            "type": "string"
+          },
+          {
+            "selector": "hostname",
+            "text": "host",
+            "type": "string"
+          },
+          {
+            "selector": "servicename",
+            "text": "service",
+            "type": "string"
+          },
+          {
+            "selector": "servicestate",
+            "text": "state",
+            "type": "string"
+          },
+          {
+            "selector": "exccode",
+            "text": "code",
+            "type": "number"
+          },
+          {
+            "selector": "exc",
+            "text": "detail",
+            "type": "string"
+          },
+          {
+            "selector": "updated",
+            "text": "updated",
+            "type": "number"
+          }
+        ],
+        "filters": [],
+        "format": "table",
+        "global_query_id": "",
+        "parser": "backend",
+        "refId": "A",
+        "root_selector": "",
+        "source": "url",
+        "type": "json",
+        "url": "/api/v1/sitermwarnings?instance=REPLACEME_INSTANCEUUID",
+        "url_options": {
+          "data": "",
+          "method": "GET"
+        }
+      }
+    ],
+    "title": "SiteRM Service Warnings",
+    "type": "table"
+  }
+]

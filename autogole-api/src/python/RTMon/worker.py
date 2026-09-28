@@ -739,6 +739,10 @@ class RTMonWorker(
             # And cache what they produced, so the results endpoint serves the
             # state file instead of calling every site frontend per request.
             self.sr_refresh_results(fout, self._sitermActionSuffixes())
+            # Same for what each site says about its own services (#261). Not
+            # gated on actions being enabled: a site whose LookUpService is
+            # complaining is worth seeing on every path that crosses it.
+            self.sr_refresh_warnings(fout, fout.get("manifest", {}))
             # Seeing the dashboard is the definition of this entry being
             # healthy, so the misses that got it here are forgotten. They
             # used to accumulate for the lifetime of the entry, which

@@ -151,37 +151,59 @@ class GrafanaAPI:
                 time.sleep(1)
         raise GrafanaFailure("Failed to get datasources after 3 retries")
 
+    def _g_resultsDataSourcePayload(self, url, token):
+        """The datasource body, built in one place so create and update agree.
+
+        allowedHosts is not optional. The Infinity plugin refuses any URL query
+        with "datasource is missing allowed hosts/URLs" until the host is listed,
+        so without it every result panel renders that error instead of data.
+        """
+        return {
+            "name": RESULTS_DATASOURCE_NAME,
+            "type": RESULTS_DATASOURCE_TYPE,
+            "access": "proxy",
+            "url": url,
+            "jsonData": {"httpHeaderName1": "Authorization", "allowedHosts": [url]},
+            "secureJsonData": {"httpHeaderValue1": f"Bearer {token}"},
+        }
+
     def g_ensureResultsDataSource(self):
-        """Create the results datasource in Grafana, once, if it is configured.
+        """Create or repair the results datasource in Grafana, if it is configured.
 
         The bearer lives on the datasource rather than in every panel URL, so a
         dashboard export carries no credential and a token rotation is one
         Grafana object rather than every dashboard RTMon has ever built.
+
+        An existing datasource is repaired rather than left alone. One built by
+        an earlier release has no allowedHosts and so answers every panel with
+        an error, and one built before http_api_url changed points at the wrong
+        place; in both cases the name exists and nothing would ever fix it.
         """
         if not self.config.get("http_api_enabled", False):
             return
-        url = self.config.get("http_api_url", "")
+        url = str(self.config.get("http_api_url", "")).rstrip("/")
         token = self.config.get("http_api_token", "")
         if not url or not token:
             self.logger.error("http_api_enabled is set but http_api_url or http_api_token is not. The result panels have no datasource and will not be added.")
             return
-        if RESULTS_DATASOURCE_NAME in self.datasources:
-            return
-        payload = {
-            "name": RESULTS_DATASOURCE_NAME,
-            "type": RESULTS_DATASOURCE_TYPE,
-            "access": "proxy",
-            "url": url.rstrip("/"),
-            "jsonData": {"httpHeaderName1": "Authorization"},
-            "secureJsonData": {"httpHeaderValue1": f"Bearer {token}"},
-        }
+        payload = self._g_resultsDataSourcePayload(url, token)
+        existing = self.datasources.get(RESULTS_DATASOURCE_NAME)
         try:
-            self.grafanaapi.datasource.create_datasource(payload)
-            self.logger.info("Created the %s datasource pointing at %s", RESULTS_DATASOURCE_NAME, url)
+            if not existing:
+                self.grafanaapi.datasource.create_datasource(payload)
+                self.logger.info("Created the %s datasource pointing at %s", RESULTS_DATASOURCE_NAME, url)
+            else:
+                jsondata = existing.get("jsonData") or {}
+                if existing.get("url") == url and url in (jsondata.get("allowedHosts") or []):
+                    return
+                # The token is resent because Grafana keeps secure fields it is
+                # not given, and resending is what makes a rotated token take.
+                self.grafanaapi.datasource.update_datasource(existing["id"], payload)
+                self.logger.info("Updated the %s datasource: url %s, allowedHosts %s", RESULTS_DATASOURCE_NAME, existing.get("url"), jsondata.get("allowedHosts"))
         except Exception as ex:  # pylint: disable=broad-exception-caught
             # Not fatal. Without it the result panels are skipped and every
             # other panel on every dashboard is still built.
-            self.logger.error(f"Failed to create the {RESULTS_DATASOURCE_NAME} datasource: {ex}")
+            self.logger.error(f"Failed to write the {RESULTS_DATASOURCE_NAME} datasource: {ex}")
             self.logger.error(traceback.format_exc())
             return
         self.g_getDataSources()

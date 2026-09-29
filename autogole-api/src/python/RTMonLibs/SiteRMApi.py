@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+# pylint: disable=line-too-long
 """
 Class for interacting with SENSE SiteRMs
 """
 import traceback
 import time
 import random
+import ipaddress
 from RTMonLibs.GeneralLibs import loadJson, getUTCnow, valtoboolean
 from sense.client.siterm.debug_api import DebugApi
 from sense.client.siterm.services_api import ServicesApi
@@ -46,6 +48,67 @@ class SiteRMApi:
         if matchkeys:
             return all(action.get(key) == newaction.get(key) for key in matchkeys)
         return all(newaction.get(key) == action.get(key) for key in newaction if key != "runtime")
+
+    @staticmethod
+    def _sr_subnetof(address):
+        """The network an endpoint address sits in, or None if it is not one.
+
+        SiteRM keys its dynamic ranges by network, so fc00:0:200::2/64 has to
+        become fc00:0:200::/64 before it can be matched against them. A bare
+        address with no prefix length is not a range and returns None rather
+        than a /128 no site will ever advertise.
+        """
+        if not address or "/" not in str(address):
+            return None
+        try:
+            return str(ipaddress.ip_interface(address).network)
+        except ValueError:
+            return None
+
+    def _sr_hostsource(self, host, key):
+        """Name the endpoint an action runs from, the way SiteRM wants it.
+
+        Every debug action takes the source in one of two spellings: a
+        hostname, or "undefined" plus a dynamicfrom range that the frontend
+        resolves to whichever host currently holds an address in it. A named
+        host is the precise choice, so it wins whenever the manifest has one.
+
+        Host name and host address come from two separate OPTIONAL clauses of
+        the manifest query, so a model can carry the address and not the name.
+        That used to walk into "?host_name?".split(":")[1] and raise; now it
+        falls back to the range derived from the address, which is the same
+        thing the L3 paths already submit.
+
+        Returns None when neither spelling can be built, so the caller skips
+        the endpoint instead of submitting something the frontend rejects.
+        """
+        name = host.get("Name") or ""
+        if not name.startswith("?") and ":" in name:
+            sitename, hostname = name.split(":", 1)
+            return {"sitename": sitename, "hostname": hostname}
+        subnet = self._sr_subnetof(host.get(key))
+        if host.get("Site") and subnet:
+            return {"sitename": host["Site"], "hostname": "undefined", "dynamicfrom": subnet}
+        return None
+
+    def _sr_findaction(self, newaction, actionname):
+        """Return an already-submitted action equal to this one, else None.
+
+        A dynamicfrom submission goes in with hostname "undefined" and the
+        frontend rewrites it to the host it picked, so the stored request never
+        matches on hostname and it has to be left out of the comparison and out
+        of the lookup. Without that, every cycle would read as a new test and
+        submit it again.
+        """
+        matchkeys = None
+        hostname = newaction.get("hostname")
+        if newaction.get("dynamicfrom"):
+            matchkeys = [key for key in newaction if key != "hostname"]
+            hostname = None
+        for action in self.sr_get_debug_actions(**{"sitename": newaction["sitename"], "hostname": hostname, "action": actionname}):
+            if self._sr_all_keys_match(action.get("requestdict"), newaction, matchkeys):
+                return action
+        return None
 
     def _sr_get_l3_info(self, **kwargs):
         """Get L3 information from instance"""
@@ -94,6 +157,12 @@ class SiteRMApi:
             for hostdata in item.get("Host", []):
                 if item.get("Vlan"):
                     hostdata["vlan"] = f"vlan.{item['Vlan']}"
+                # The switch Node is spelled site:device, and it is the only
+                # place the site survives once hosts are flattened out of their
+                # ports. A host that has no name of its own still needs it to
+                # be addressable as a dynamicfrom range.
+                if ":" in (item.get("Node") or ""):
+                    hostdata.setdefault("Site", item["Node"].split(":", 1)[0])
                 if hostdata not in output["hosts"]:
                     output["hosts"].append(hostdata)
                 # Check if IPv6 or IPv4 is defined
@@ -504,7 +573,10 @@ class SiteRMApi:
             # Check if IPv6 or IPv4 is defined
             for key, defval in [("IPv4", "?ipv4?"), ("IPv6", "?ipv6?")]:
                 if host.get(key) and host[key] != defval:
-                    hostspl = host.get("Name").split(":")
+                    source = self._sr_hostsource(host, key)
+                    if not source:
+                        self.logger.info(f"No hostname and no usable range for {host}. Cannot submit {actionname} from it.")
+                        continue
                     for ip in manInfo.get("ips", {}).get(key, []):
                         hostip = host[key].split("/")[0]
                         if hostip == ip:
@@ -512,9 +584,7 @@ class SiteRMApi:
                             continue
                         # Loop all debug actions and check if the action is already in the list of actions
                         newaction = {
-                            "hostname": hostspl[1],
                             "type": actionname,
-                            "sitename": hostspl[0],
                             "ip": ip,
                             "packetsize": kwargs.get("packetsize", 56),
                             "interval": kwargs.get("interval", 5),
@@ -522,21 +592,18 @@ class SiteRMApi:
                             "time": kwargs.get("time", 600),
                             "onetime": False,
                         }
-                        actionPresent = False
-                        allDebugActions = self.sr_get_debug_actions(**{"sitename": hostspl[0], "hostname": hostspl[1], "action": actionname})
-                        for action in allDebugActions:
-                            if self._sr_all_keys_match(action.get("requestdict"), newaction):
-                                actionPresent = True
-                                newaction["submit_time"] = action.get("insertdate")
-                                newaction["submit_out"] = {"ID": action.get("id"), "Status": action.get("state")}
-                                self.logger.info(f"{actionname} test already present for {newaction}: {newaction['submit_out']}")
-                                ping_out.append(newaction)
-                                break
-                        if not actionPresent:
-                            self.logger.info(f"Submitting {actionname} test for {newaction}")
-                            newaction = self._sr_submitsiterm(actionname, newaction)
+                        newaction.update(source)
+                        action = self._sr_findaction(newaction, actionname)
+                        if action:
+                            newaction["submit_time"] = action.get("insertdate")
+                            newaction["submit_out"] = {"ID": action.get("id"), "Status": action.get("state")}
+                            self.logger.info(f"{actionname} test already present for {newaction}: {newaction['submit_out']}")
                             ping_out.append(newaction)
-                            all_annotations.append({"submitout": newaction, "dashbInfo": kwargs["fout"]["dashbInfo"], "timespan": False})
+                            continue
+                        self.logger.info(f"Submitting {actionname} test for {newaction}")
+                        newaction = self._sr_submitsiterm(actionname, newaction)
+                        ping_out.append(newaction)
+                        all_annotations.append({"submitout": newaction, "dashbInfo": kwargs["fout"]["dashbInfo"], "timespan": False})
         return ping_out, all_annotations, actionsuffix
 
     def _sr_submit_traceroutel3(self, actions, actionsuffix, **kwargs):
@@ -601,7 +668,10 @@ class SiteRMApi:
                 # The manifest leaves ?ipv4?/?ipv6? in place when a host has no address.
                 if not host.get(key) or host[key] == f"?{key.lower()}?":
                     continue
-                hostspl = host.get("Name").split(":")
+                source = self._sr_hostsource(host, key)
+                if not source:
+                    self.logger.info(f"No hostname and no usable range for {host}. Cannot submit {actionname} from it.")
+                    continue
                 for ip in manInfo.get("ips", {}).get(key, []):
                     if host[key].split("/")[0] == ip:
                         # No point tracerouting ourselves.
@@ -609,28 +679,25 @@ class SiteRMApi:
                     # traceroute names the source interface from_interface,
                     # unlike rapid-ping which calls it interface.
                     newaction = {
-                        "hostname": hostspl[1],
                         "type": actionname,
-                        "sitename": hostspl[0],
                         "ip": ip,
                         "from_interface": host["Interface"] if not host.get("vlan") else host["vlan"],
                         "runtime": kwargs.get("runtime", 600),
                         "onetime": False,
                     }
-                    for action in self.sr_get_debug_actions(**{"sitename": hostspl[0],
-                                                               "hostname": hostspl[1], "action": actionname}):
-                        if self._sr_all_keys_match(action.get("requestdict"), newaction):
-                            newaction["submit_time"] = action.get("insertdate")
-                            newaction["submit_out"] = {"ID": action.get("id"), "Status": action.get("state")}
-                            self.logger.info(f"{actionname} already present for {newaction}: {newaction['submit_out']}")
-                            trout.append(newaction)
-                            break
-                    else:
-                        self.logger.info(f"Submitting {actionname} test for {newaction}")
-                        newaction = self._sr_submitsiterm(actionname, newaction)
+                    newaction.update(source)
+                    action = self._sr_findaction(newaction, actionname)
+                    if action:
+                        newaction["submit_time"] = action.get("insertdate")
+                        newaction["submit_out"] = {"ID": action.get("id"), "Status": action.get("state")}
+                        self.logger.info(f"{actionname} already present for {newaction}: {newaction['submit_out']}")
                         trout.append(newaction)
-                        all_annotations.append({"submitout": newaction,
-                                                "dashbInfo": kwargs["fout"]["dashbInfo"], "timespan": False})
+                        continue
+                    self.logger.info(f"Submitting {actionname} test for {newaction}")
+                    newaction = self._sr_submitsiterm(actionname, newaction)
+                    trout.append(newaction)
+                    all_annotations.append({"submitout": newaction,
+                                            "dashbInfo": kwargs["fout"]["dashbInfo"], "timespan": False})
         return trout, all_annotations, actionsuffix
 
     def _sr_wait_active(self, sitename, actionid, maxtime=120):
@@ -766,10 +833,14 @@ class SiteRMApi:
                 # Check if IPv6 or IPv4 is defined
                 for key, defval in [("IPv4", "?ipv4?"), ("IPv6", "?ipv6?")]:
                     if host.get(key) and host[key] != defval:
-                        hostspl = host.get("Name").split(":")
+                        source = self._sr_hostsource(host, key)
+                        if not source:
+                            self.logger.info(f"No hostname and no usable range for {host}. Cannot submit {callaction} from it.")
+                            continue
                         totaltime = kwargs["transferparams"]["runtime"]
                         totaltime = 660 if totaltime < 660 else totaltime  # Give it 1 min headroom to start
-                        newaction = {"hostname": hostspl[1], "type": callaction, "sitename": hostspl[0], "ip": host[key].split("/")[0], "time": totaltime}
+                        newaction = {"type": callaction, "ip": host[key].split("/")[0], "time": totaltime}
+                        newaction.update(source)
                         # If action is client, then we need to add streams
                         if callaction.endswith("client"):
                             # Need to tell the correct IP
@@ -781,34 +852,36 @@ class SiteRMApi:
                             if not newaction["port"]:
                                 self.logger.error(f"Port for {newaction} is not available, cannot submit client test")
                                 continue
-                        actionPresent = False
                         # Loop all debug actions and check if the action is already in the list of actions
-                        allDebugActions = self.sr_get_debug_actions(**{"sitename": hostspl[0], "hostname": hostspl[1], "action": callaction})
-                        for findactions in allDebugActions:
-                            if self._sr_all_keys_match(findactions.get("requestdict"), newaction):
-                                actionPresent = True
-                                newaction["submit_time"] = findactions.get("insertdate")
-                                newaction["submit_out"] = {"ID": findactions.get("id"), "Status": findactions.get("state")}
-                                self.logger.info(f"{callaction} test already present for {newaction}: {newaction['submit_out']}")
-                                submitout.append(newaction)
-                                break
-                        if not actionPresent:
+                        findactions = self._sr_findaction(newaction, callaction)
+                        if findactions:
+                            newaction["submit_time"] = findactions.get("insertdate")
+                            newaction["submit_out"] = {"ID": findactions.get("id"), "Status": findactions.get("state")}
+                            self.logger.info(f"{callaction} test already present for {newaction}: {newaction['submit_out']}")
+                            submitout.append(newaction)
+                        else:
                             self.logger.info(f"Submitting {callaction} test for {newaction}")
                             out = self._sr_submitsiterm(callaction, newaction)
                             # Submit annotation should be done if return code is OK and there is an ID
                             # Also we need to get back the submitted information, so that we know the port (if that is server)
                             if out and out.get("submit_out", {}).get("ID") and callaction.endswith("server"):
-                                dbout = self.sr_get_debug_action_info(sitename=hostspl[0], id=out["submit_out"]["ID"])
+                                dbout = self.sr_get_debug_action_info(sitename=source["sitename"], id=out["submit_out"]["ID"])
                                 # Lets find out the port number
                                 if dbout and dbout[0] and dbout[0][0] and dbout[0][0].get("requestdict"):
                                     dbout[0][0]["requestdict"] = loadJson(dbout[0][0]["requestdict"], self.logger)
                                     serverports.append(dbout[0][0]["requestdict"].get("port"))
                                     # Now we can submit annotation
-                                all_annotations.append({"submitout": out, "dashbInfo": kwargs["fout"]["dashbInfo"], "storeresults": [hostspl[0], hostspl[1], callaction]})
+                                # The results key has to be the host the test actually ran on. A
+                                # dynamicfrom submission does not know that until the frontend
+                                # picks one, so it is read back off the stored request.
+                                ranon = newaction["hostname"]
+                                if newaction.get("dynamicfrom") and dbout and dbout[0] and dbout[0][0]:
+                                    ranon = dbout[0][0]["requestdict"].get("hostname", ranon)
+                                all_annotations.append({"submitout": out, "dashbInfo": kwargs["fout"]["dashbInfo"], "storeresults": [source["sitename"], ranon, callaction]})
                             submitout.append(out)
                             # If the action is a server action, we need to wait for it to become active
                             if callaction.endswith("server"):
-                                self._sr_wait_active(hostspl[0], out["submit_out"]["ID"])
+                                self._sr_wait_active(source["sitename"], out["submit_out"]["ID"])
         return submitout, all_annotations, actionsuffix
 
     def sr_submit_fdt(self, **kwargs):

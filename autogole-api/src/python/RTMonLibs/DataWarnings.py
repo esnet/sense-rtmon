@@ -117,9 +117,13 @@ class DataWarnings:
         far end, and returns the ones that came back zero. A None anywhere is
         left out: an unanswered Prometheus must not paint a working switch red.
 
-        Gated on the device reporting a mac table in the first place. Almost
-        none do, so without that gate every switch on every path would come back
-        as having lost the far end, and the colour would mean nothing.
+        Gated per VLAN on the device reporting a mac table for that VLAN in the
+        first place. Almost none do, so without that gate every switch on every
+        path would come back as having lost the far end, and the colour would
+        mean nothing. The gate has to carry the VLAN because the check does: a
+        device-wide count let entries on an unrelated VLAN stand in for this
+        one, and entries age out once a VLAN goes quiet, so an idle circuit read
+        as a lost one.
 
         Reports a partial failure, not only a total one. A switch that learned
         one end of the path and not the other is the case worth finding, and
@@ -128,19 +132,19 @@ class DataWarnings:
         missing = []
         if not self.t_prometheusBacked(sitehost):
             return missing
-        if self.p_check_mac_table_available(sitename=sitename, hostname=hostname) is not True:
-            # No table, or Prometheus did not say. Either way there is nothing
-            # here to call missing. Only worth a line when debugging, since this
-            # is the normal case rather than a fault.
-            if self.debugmode:
-                self.t_recordWarning(f"Switch {sitehost} reports no MAC table to Prometheus, so its MAC learning is not checked in the flow diagram.")
-            return missing
         vlans = []
         for intfdata in self.m_groups["Switches"].get(sitehost, {}).values():
             vlan = intfdata.get("Vlan") if isinstance(intfdata, dict) else None
             if vlan and str(vlan) not in vlans:
                 vlans.append(str(vlan))
         for vlan in vlans:
+            if self.p_check_mac_table_available(sitename=sitename, hostname=hostname, vlan=vlan) is not True:
+                # No table for this VLAN, or Prometheus did not say. Either way
+                # there is nothing here to call missing. Only worth a line when
+                # debugging, since this is the normal case rather than a fault.
+                if self.debugmode:
+                    self.t_recordWarning(f"Switch {sitehost} reports no MAC table entry on VLAN {vlan}, so its MAC learning is not checked in the flow diagram.")
+                continue
             for ssite, sdata in self.mac_addresses.items():
                 for mhost, macaddr in sdata.items():
                     if not macaddr or sitehost == ssite:

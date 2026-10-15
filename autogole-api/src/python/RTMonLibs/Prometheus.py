@@ -118,15 +118,28 @@ class Prometheus:
 
     def p_count_mac_table_all(self, **kwargs):
         """
-        Counts every mac table entry a switch reports, for any MAC and VLAN.
+        Counts every mac table entry a switch reports on one VLAN, for any MAC.
 
         Asked before any per-MAC question. Most devices export no mac table at
         all - at the time of writing five site/host pairs in the whole of
         Prometheus do - and for those a per-MAC count of zero means "nothing to
         look in", not "the far end was not learned". Treating the two alike
         would mark every switch on every production path as having lost the path.
+
+        Scoped to the VLAN the per-MAC query will use, so the gate and the check
+        ask about the same table. Counting the device's entries across every
+        VLAN let an unrelated VLAN answer for this one: a switch exporting five
+        entries on one VLAN passed the gate for a circuit on another, whose
+        per-MAC count was then zero for want of any entry at all. Entries also
+        age out once a VLAN goes quiet, so the same scoping keeps an idle
+        circuit from reading as a lost one.
         """
-        query = f'count(mac_table_info{{sitename="{kwargs["sitename"]}", hostname="{kwargs["hostname"]}"}}) or on() vector(0)'
+        query = (
+            f'count(mac_table_info{{sitename="{kwargs["sitename"]}", '
+            f'hostname="{kwargs["hostname"]}", '
+            f'vlan="{kwargs["vlan"]}"}}) '
+            "or on() vector(0)"
+        )
         return self.p_get_query(query)
 
     def p_count_mac_table(self, **kwargs):
@@ -136,7 +149,8 @@ class Prometheus:
         The same selection the L2 debugging panel graphs, so a zero here is the
         same zero that panel's line for this MAC would sit at: the device has
         not learned the far end of the path. Only meaningful once
-        p_count_mac_table_all has established the device reports a table.
+        p_count_mac_table_all has established the device reports a table for
+        that VLAN.
         """
         query = (
             f'count(mac_table_info{{sitename="{kwargs["sitename"]}", '
@@ -196,7 +210,7 @@ class Prometheus:
         return count != "0"
 
     def p_check_mac_table_available(self, **kwargs):
-        """Tri-state: does this switch report a mac table at all?"""
+        """Tri-state: does this switch report any mac table entry on this VLAN?"""
         count = self._p_safe_count(self.p_count_mac_table_all, **kwargs)
         if count is None:
             return None

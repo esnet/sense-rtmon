@@ -47,6 +47,60 @@ Keys worth reading before a first deployment:
 | `hostcert`, `hostkey` | Client certificate for SiteRM. It has to be authorized by every frontend on the path |
 | `siterm_actions_enabled` | Debug actions submitted straight to a SiteRM. When false they are advertised to SENSE-O as `(temporarily off)`, rather than accepting a test that never runs |
 
+## Topology diagrams
+
+Every dashboard opens with a topology view of the provisioned path. `topdiagrams` in `rtmon.yaml` selects which of the
+two are drawn — `Mermaid`, `Archify`, or `Both`.
+
+| | |
+| --- | --- |
+| **Mermaid** | The complete graph: every port, VLAN, address and BGP peer. Rendered inline by the `jdbranham-diagram-panel` plugin |
+| **Archify** | The same path at device level, with that detail moved into cards beside it, and interactive — focus views, trace, PNG export |
+
+They answer different questions, so neither replaces the other. Whatever `topdiagrams` is set to, **the Mermaid walk
+always runs**: `findorder()` consumes `manifest["Ports"]` as it goes, so there is exactly one walk available, and it is
+what fills `orderlist`. Archify draws from the model that walk leaves behind rather than taking a second one, which is
+also why the two panels cannot disagree about the topology.
+
+Archify is **opt-in and off by default.** The renderer is not in this repository and not in the image: it runs in a
+sidecar container that RTMon is only an HTTP client of. Uncommenting the `archify` block in `rtmon.yaml` and deploying
+a sidecar is what turns it on. Until then RTMon draws Mermaid and says nothing — an install that has never been pointed
+at a sidecar is not a misconfigured one.
+
+Keeping the renderer out of this image is deliberate. It is a Node runtime and a large vendored JavaScript tree, and
+folding it in would put both in every RTMon image whether or not the operator draws this panel. As a sidecar the cost
+falls only on deployments that opt in; nothing here changes for anyone else.
+
+### The sidecar contract
+
+RTMon depends on this interface, not on any particular implementation. Three endpoints, and only the first two are
+needed to render a dashboard:
+
+| | |
+| --- | --- |
+| `POST /v1/render` | `{uid, ir, quality}` with `Authorization: Bearer <archify.token>`. Renders and stores the artifact |
+| `GET /diagrams/<uid>.html` | What the panel's iframe fetches. Public, read-only — it carries no secret |
+| `POST /api/v1/sweep`, `DELETE /api/v1/artifacts/<uid>` | Teardown, so artifacts do not outlive their dashboards |
+
+`ir` is the Archify architecture IR built by `RTMonLibs/ArchifyIR.py`, which is a pure function of the path model and is
+covered by `test/test_archify.py` without any sidecar running. Anything that accepts that IR and serves the result at
+that URL will work.
+
+The reference implementation is [rtmon-archify](https://github.com/groundsada/rtmon-archify). It is a personal
+repository today; a deployment that wants this feature should expect to run an image it controls, so taking ownership
+of that repository, or writing another implementation of the three endpoints above, are both reasonable paths.
+
+Being *half*-configured is different and is reported on the dashboard, because setting one of `archify.sidecar_url` and
+`archify.diagram_url_base` and not the other is someone who meant to turn this on. So is `topdiagrams: Archify` with no
+sidecar configured, which would otherwise leave a dashboard with no topology diagram and no reason given.
+
+Nothing about this is allowed to fail a dashboard. A sidecar that is down, a renderer that rejects the layout, a render
+that hangs — each ends the same way, with a line in the dashboard's own *Graph Generation Warnings* row and no Archify
+panel. The Mermaid panel is right there and still complete.
+
+Grafana must set `disable_sanitize_html = true` (or `GF_PANELS_DISABLE_SANITIZE_HTML=true`) for the panel's iframe to
+survive; without it the panel renders empty.
+
 ## Building
 
 The Dockerfile clones the source from GitHub rather than copying the build context, so a change has to be pushed before

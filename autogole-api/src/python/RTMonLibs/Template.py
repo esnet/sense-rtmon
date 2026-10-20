@@ -3,6 +3,7 @@
 # too-many-lines. The real fix is moving Mermaid into its own module.
 # pylint: disable=E1101,line-too-long,too-many-lines
 """Grafana Template Generation"""
+
 import copy
 import html
 import os.path
@@ -1181,11 +1182,26 @@ class Template:  # pylint: disable=too-many-instance-attributes
         return self.addRowPanel(row, out, True)
 
     def __createDiagrams(self, *args, **_kwargs):
-        """Create diagrams from the mermaid code"""
+        """Create the top of dashboard diagrams, in the order they are shown.
+
+        Mermaid runs first and is not optional: findorder() consumes
+        manifest["Ports"] as it walks, so there is exactly one walk available
+        and it is the one that fills orderlist and m_groups. Archify then draws
+        the same path from that model rather than taking a second walk, which
+        also means the two panels can never disagree about the topology.
+
+        Which of them appear is topdiagrams: Mermaid, Archify or Both.
+        """
         self.logger.info("Creating diagrams")
         # Generate Mermaid (Send copy of args, as t_createMermaid will modify it by del items)
         orig_args = copy.deepcopy(args)
-        return [self.t_createMermaid(*orig_args, **{"collapsed": False})]
+        out = [self.t_createMermaid(*orig_args, **{"collapsed": False})]
+        if str(self.config.get("topdiagrams", "Both")).lower() == "archify":
+            # Archify only: the Mermaid walk still had to happen, its panel is
+            # just not shown.
+            out[0] = []
+        out.append(self.t_createArchify(*args, **{"collapsed": False}))
+        return out
 
     def t_addAllMacs(self, *args, **_kwargs):
         """Add AllMacs to the Dashboard"""
@@ -1236,9 +1252,13 @@ class Template:  # pylint: disable=too-many-instance-attributes
         # availability checks are allowed to hide anything.
         self.debugmode = self.getTaskEnabled(kwargs.get("taskinfo"), "debugmode")
         self.generated = self.t_createDashboard(*args, **kwargs)
-        diagrams = self.__createDiagrams(*args, **kwargs)
-        if diagrams:
-            self.generated["panels"] += diagrams[0]
+        # Every diagram group goes at the top, in the order __createDiagrams
+        # returned them. This used to place the first group only and hold the
+        # second back for debug mode, from when the second group was a debug
+        # aid; the second group is now the Archify panel, which belongs beside
+        # the Mermaid one on every dashboard.
+        for group in self.__createDiagrams(*args, **kwargs):
+            self.generated["panels"] += group
 
         # Add Links on top of the page
         self.generated["links"] = self.t_addLinks(*args, **kwargs)
@@ -1266,8 +1286,6 @@ class Template:  # pylint: disable=too-many-instance-attributes
         # And what the sites say about their own health
         self.generated["panels"] += self.t_addSitermWarnings(*args, **kwargs)
         if self.debugmode:
-            if len(diagrams) > 1:
-                self.generated["panels"] += diagrams[1]
             # Add Debug Info (manifest, instance)
             self.generated["panels"] += self.t_addDebug(*args)
         # Add AllMacs panels if allmacs true (In case debug is True, we still want to add AllMacs)

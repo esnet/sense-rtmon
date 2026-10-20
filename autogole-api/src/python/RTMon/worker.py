@@ -240,8 +240,15 @@ class RTMonWorker(
 
     def renew_exe(self, filename, fout):
         """Renew instance mainly if new information received"""
-        if "instance" not in fout or "manifest" not in fout:
-            self.logger.error("Instance or Manifest not found in renew. Call back submit: %s", fout)
+        # Truthiness, not key presence. s_getManifest returns {} when SENSE-O
+        # cannot answer, submit_exe persists that, and _taskAccept then flips
+        # the entry to renew because the instance itself reads READY. A present
+        # but empty manifest has to send us back to submit, which re-fetches;
+        # accepting it builds the dashboard from nothing and the path walk dies
+        # on manifest["Ports"] every cycle, with nothing in the loop that would
+        # ever fetch again.
+        if not fout.get("instance") or not fout.get("manifest"):
+            self.logger.error("Instance or Manifest missing or empty in renew. Call back submit: %s", fout)
             self.submit_exe(filename, fout)
             return
         instance = fout["instance"]

@@ -2,8 +2,11 @@
 # Over the 1000 line limit since retention split the teardown path in two. The
 # module is one class and splitting it would mean splitting RTMonWorker, which is
 # the thing the mixins are composed into.
-# pylint: disable=line-too-long,too-many-lines
+# too-many-ancestors for the same reason: each mixin is one axis of the worker,
+# so the count only grows when a feature is added, and the tree stays flat.
+# pylint: disable=line-too-long,too-many-lines,too-many-ancestors
 """Main Worker for RTMon."""
+
 import os
 import math
 import time
@@ -14,6 +17,7 @@ from RTMonLibs.SenseAPI import SenseAPI
 from RTMonLibs.GrafanaAPI import GrafanaAPI
 from RTMonLibs.Template import Template
 from RTMonLibs.Template import Mermaid
+from RTMonLibs.Archify import Archify
 from RTMonLibs.SiteOverride import SiteOverride
 from RTMonLibs.SiteRMApi import SiteRMApi
 from RTMonLibs.ExternalAPI import ExternalAPI
@@ -32,6 +36,7 @@ class RTMonWorker(
     SiteRMApi,
     ExternalAPI,
     Mermaid,
+    Archify,
     Prometheus,
     DataWarnings,
 ):
@@ -508,10 +513,18 @@ class RTMonWorker(
 
     def _removeDashboard(self, filename, fout):
         """Delete the dashboard and forget the entry. Local only, no orchestrator."""
-        dashbName, _ = self._findDashboard(fout, retained=True)
+        dashbName, dashbVals = self._findDashboard(fout, retained=True)
         if dashbName:
             self.logger.info("Deleting Dashboard: %s", dashbName)
             self.g_deleteDashboard(dashbName, self._getFolderName())
+        # The Archify artifact on the sidecar outlives the dashboard unless it
+        # is removed here. Taken from both places a uid can be found, because
+        # the state file is authoritative but a dashboard adopted from an
+        # earlier run may only be known through Grafana. A missing uid is an
+        # empty string, which a_removeArtifact rejects rather than removing
+        # anything.
+        for uid in (fout.get("dashbInfo", {}).get("uid", ""), (dashbVals or {}).get("uid", "")):
+            self.a_removeArtifact(uid)
         self._deleteStateFile(filename)
 
     def delete_exe(self, filename, fout):
@@ -658,6 +671,10 @@ class RTMonWorker(
             return
         self.logger.info("Deleting superseded dashboard %s, replaced by %s", dashbVals["title"], newtitle)
         self.g_deleteDashboard(dashbVals["title"], self._getFolderName())
+        # Only now, once the replacement is confirmed in Grafana. The rebuild
+        # wrote its own artifact under the new uid, so removing the old one is
+        # the last thing the superseded dashboard still owns.
+        self.a_removeArtifact(dashbVals.get("uid", ""))
 
     def _rerenderDashboard(self, filename, fout, dashbVals):
         """Rebuild a dashboard whose template_tag is behind the configured one.
@@ -1148,6 +1165,49 @@ class RTMonWorker(
             self.logger.error("State files in states this build does not handle: %s. They are not being processed.", unknown)
         return stateInfo, skipped
 
+    def _allKnownUids(self):
+        """Every dashboard uid any state file on disk refers to.
+
+        Returns (uids, complete). Deliberately not built from the grouping
+        _collectStateFiles returns: that one drops entries owned by another
+        RTMon instance and entries in states this build does not handle, and
+        those are exactly the entries whose artifacts must not be swept. The
+        workdir can be shared, so "not mine" is not the same as "not anyone's".
+
+        complete is False when any file could not be read. The caller must not
+        sweep on a partial answer - the cost of keeping an orphan for another
+        cycle is disk, and the cost of deleting a live artifact is a dashboard
+        that renders an empty panel until it is next rebuilt.
+        """
+        uids = set()
+        complete = True
+        for root, _, files in os.walk(self.config.get("workdir", "/srv")):
+            for filename in files:
+                if not filename.startswith("rtmon-debug-") or filename.endswith(".tmp"):
+                    continue
+                try:
+                    fout = loadFileJson(os.path.join(root, filename), self.logger)
+                except OSError as ex:
+                    self.logger.error("Could not read %s while collecting uids: %s", filename, ex)
+                    complete = False
+                    continue
+                if not fout:
+                    # Unparsable, so whatever it referred to is unknown.
+                    complete = False
+                    continue
+                uid = fout.get("dashbInfo", {}).get("uid", "")
+                if uid:
+                    uids.add(uid)
+        return uids, complete
+
+    def _sweepArtifactsIfSafe(self):
+        """Remove orphaned Archify artifacts, but only on a complete answer."""
+        knownuids, complete = self._allKnownUids()
+        if not complete:
+            self.logger.info("Not sweeping Archify artifacts this cycle: some state files could not be read.")
+            return
+        self.a_sweepArtifacts(knownuids)
+
     def main(self):
         """Process every state file this instance owns.
 
@@ -1168,6 +1228,9 @@ class RTMonWorker(
         if skipped:
             self.logger.info("Skipped files for orchestrators not owned by this instance: %s", skipped)
         if not stateInfo:
+            # Still sweep. Having nothing to process is precisely the state a
+            # folder of orphaned artifacts would sit in forever otherwise.
+            self._sweepArtifactsIfSafe()
             return {}
         handlers = {
             "submitted": self.submit_exe,
@@ -1181,7 +1244,9 @@ class RTMonWorker(
         # stateOrder with no handler raises KeyError mid cycle; a handler with no
         # state in stateOrder is never reached and its entries pile up unseen.
         if set(handlers) != set(self.stateOrder):
-            self.logger.error("stateOrder and handlers disagree. Only in stateOrder: %s. Only in handlers: %s.", sorted(set(self.stateOrder) - set(handlers)), sorted(set(handlers) - set(self.stateOrder)))
+            self.logger.error(
+                "stateOrder and handlers disagree. Only in stateOrder: %s. Only in handlers: %s.", sorted(set(self.stateOrder) - set(handlers)), sorted(set(handlers) - set(self.stateOrder))
+            )
         failedentries = {}
         for state in self.stateOrder:
             self.logger.info("State: %s, Files: %s", state, len(stateInfo.get(state, {})))
@@ -1210,6 +1275,9 @@ class RTMonWorker(
                     except OSError as writeex:
                         self.logger.error("Could not record backoff for %s: %s", filename, writeex)
             self.logger.info("-" * 80)
+        # Last, so artifacts written by the handlers above are already recorded
+        # in their state files and are not mistaken for orphans.
+        self._sweepArtifactsIfSafe()
         if failedentries:
             self.logger.error("Entries that failed this run: %s", sorted(failedentries))
         return failedentries

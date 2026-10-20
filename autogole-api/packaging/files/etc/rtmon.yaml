@@ -96,8 +96,59 @@ dashboard_retention:
 # Default debug is False (mainly used for development), If set to True Dashboard will be generated with Memaid and Debug Info
 # Debug:
 
-# Default topdiagrams is Mermaid
-topdiagrams: Mermaid
+# Which diagrams appear at the top of every dashboard: Mermaid, Archify or Both.
+# Mermaid draws the complete graph - every port, VLAN, address and BGP peer.
+# Archify draws the same path at device level, with that detail moved into cards
+# beside it, and is interactive (focus views, trace, PNG export).
+# They answer different questions, so this shows both - but Archify needs a
+# sidecar that an upgrade does not bring with it, so Both means "Mermaid, and
+# Archify too once it is configured" rather than a promise of two panels. An
+# RTMon that has never been pointed at a sidecar draws Mermaid and says nothing.
+# Whatever this is set to, the Mermaid walk still runs: it is what builds the
+# path model both diagrams are drawn from.
+topdiagrams: Both
+
+# Archify topology panel. OFF until archify.sidecar_url and
+# archify.diagram_url_base are both set to something real - the block below is
+# commented out, and uncommenting it is what turns the feature on. The archify
+# runtime lives in a sidecar container (render + serve), not this repo, so
+# this is also a deployment change and not only a config one; the README's
+# topology section writes out the endpoints a sidecar has to implement.
+#
+# Half-configured is not the same as unconfigured and does warn on the
+# dashboard: setting one of the two URLs and not the other is a mistake worth
+# reporting, where setting neither is simply not using this.
+#
+# archify:
+#   # Where the sidecar lives, and the bearer token both sides share. The token
+#   # is what keeps an anonymous POST from rendering on the application pod; an
+#   # unconfigured sidecar_url means no panel, never a guess.
+#   #
+#   # 8081, not 8080: http_api_port above defaults to 8080, and containers in one
+#   # pod share a network namespace, so the results API and the sidecar cannot
+#   # both have it. Change both sides together if this moves.
+#   sidecar_url: "http://127.0.0.1:8081"
+#   token: REPLACEME
+#   # The URL a *browser* reaches the sidecar on, which is whatever Service,
+#   # Ingress and TLS the deployment puts in front of it. There is no sensible
+#   # default, so there is none: the panel is skipped until this is set.
+#   #
+#   # Keep the trailing /diagrams. Only "<uid>.html" is appended, and the sidecar
+#   # serves nothing at its root, so dropping the segment gives an iframe that
+#   # 404s while the render still reports success - an empty panel and a clean
+#   # log, which is the slowest kind of misconfiguration to notice.
+#   diagram_url_base: "https://REPLACEME/diagrams"
+#   # standard or showcase. showcase turns on the renderer's stricter geometry
+#   # gates, which hand-authored diagrams can meet and generated ones often
+#   # cannot - a rejection here costs the panel, so the looser profile is the
+#   # default.
+#   quality: "standard"
+#   # How many times to retry with a simpler diagram when the renderer rejects a
+#   # layout. Each attempt strips one tier - shorter text, then no connection
+#   # labels, then no boundaries or focus views - so the ladder terminates. 0
+#   # disables the fallback and takes the first answer.
+#   max_fix_rounds: 3
+#   render_timeout: 60
 # ==================================
 
 # Template path and tags. The tag is written onto every dashboard RTMon

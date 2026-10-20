@@ -969,14 +969,21 @@ class SiteRMApi:
                 # Get item information;
                 cancelpossible = True
                 dbinfo = self.sr_get_debug_action_info(sitename=item["sitename"], id=item["submit_out"]["ID"], details=False)
-                if not dbinfo or not dbinfo[0] or not dbinfo[0][0]:
+                # An action the site no longer has comes back as ok False with a
+                # dict body ({"detail": "... not found"}), so the flag has to be
+                # checked before the payload is indexed, the same way
+                # _sr_fetch_result does it. Indexing it blind raised KeyError on
+                # every cycle and left the entry unable to finish teardown.
+                row = None
+                if dbinfo and dbinfo[1] and dbinfo[0]:
+                    row = dbinfo[0][0] if isinstance(dbinfo[0], list) else dbinfo[0]
+                if not isinstance(row, dict):
                     self.logger.warning(f"Cannot get info for {item}, cannot cancel")
                     cancelpossible = False
                 if cancelpossible:
-                    dbinfo = dbinfo[0][0]
                     # And based on info received, if it is in new or active state, we can cancel it
-                    if dbinfo.get("state") not in ["new", "active", "failed"]:
-                        self.logger.warning(f"Cannot cancel {item}, state is {dbinfo.get('state')}")
+                    if row.get("state") not in ["new", "active", "failed"]:
+                        self.logger.warning(f"Cannot cancel {item}, state is {row.get('state')}")
                         cancelpossible = False
                 if cancelpossible:
                     updateentry = {"id": item["submit_out"]["ID"], "sitename": item["sitename"], "state": "cancel"}

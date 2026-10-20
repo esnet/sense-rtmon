@@ -395,6 +395,27 @@ class RTMonWorker(
             return float(fallback)
         return value
 
+    def _retentionSettings(self, orchestrator):
+        """The dashboard_retention settings in force for one orchestrator.
+
+        dashboard_retention.per_orchestrator is keyed by the names in
+        sense_endpoints, so a deployment can keep every dashboard under one
+        orchestrator for seven days without restating the global block. A key
+        with no entry, or with only some of the settings, falls back to the
+        global values, so the block never has to repeat itself.
+
+        Returns (default_days, max_days, allow_perpetual) already merged, with
+        allow_perpetual reduced to a bool. Callers clamp and validate the
+        numbers themselves, since config is not trusted to hold numbers.
+        """
+        retention = self.config.get("dashboard_retention", {}) or {}
+        per = (retention.get("per_orchestrator", {}) or {}).get(orchestrator, {}) or {}
+        return (
+            per.get("default_days", retention.get("default_days", self.retentionDefaultDays)),
+            per.get("max_days", retention.get("max_days", self.retentionMaxDays)),
+            valtoboolean(per.get("allow_perpetual", retention.get("allow_perpetual", False))),
+        )
+
     def s_actionDefaults(self):
         """Advertise the operator's configured defaults, so tasks carry them.
 
@@ -408,16 +429,21 @@ class RTMonWorker(
         The advertised number is the one that will actually be honoured, clamped
         and filtered the same way _retentionSeconds would, so the UI cannot show
         a default that silently turns into something else.
+
+        Metadata is registered once per orchestrator (the endpoint loop sets
+        SENSE_AUTH_OVERRIDE_NAME before calling s_updateMetadata), so the
+        per_orchestrator block lets each SENSE-O's UI show its own default.
         """
-        retention = self.config.get("dashboard_retention", {}) or {}
-        days = self._retentionNumber(retention.get("default_days", self.retentionDefaultDays), "default_days", self.retentionDefaultDays)
-        if days < 0 and not valtoboolean(retention.get("allow_perpetual", False)):
+        orchestrator = os.environ.get("SENSE_AUTH_OVERRIDE_NAME", "")
+        default, maxdays, allow_perpetual = self._retentionSettings(orchestrator)
+        days = self._retentionNumber(default, "default_days", self.retentionDefaultDays)
+        if days < 0 and not allow_perpetual:
             # _retentionSeconds falls back rather than honouring this, so
             # advertising it would put a number in the UI that cannot happen.
             self.logger.info("default_days is negative but allow_perpetual is off. Advertising %s instead.", self.retentionDefaultDays)
             days = float(self.retentionDefaultDays)
         if days > 0:
-            days = min(days, self._retentionNumber(retention.get("max_days", self.retentionMaxDays), "max_days", self.retentionMaxDays))
+            days = min(days, self._retentionNumber(maxdays, "max_days", self.retentionMaxDays))
         # Whole numbers as int, so the UI field reads 1 rather than 1.0.
         return {"retention": {"days": int(days) if days.is_integer() else days}}
 
@@ -455,10 +481,13 @@ class RTMonWorker(
         default and the ceiling; a task can only ask for less than the ceiling,
         never more, and a request that is not a usable number falls back to the
         operator default rather than being read as an instruction to remove now.
+
+        The defaults are the ones for the entry's orchestrator, so a deployment
+        using dashboard_retention.per_orchestrator keeps every dashboard under
+        one SENSE-O for seven days while another stays at zero.
         """
-        retention = self.config.get("dashboard_retention", {}) or {}
-        default = retention.get("default_days", self.retentionDefaultDays)
-        maxdays = retention.get("max_days", self.retentionMaxDays)
+        orchestrator = fout.get("orchestrator", "")
+        default, maxdays, allow_perpetual = self._retentionSettings(orchestrator)
         requested = fout.get("retention_days")
         if isinstance(requested, bool) or not isinstance(requested, (int, float)):
             # Nothing cached, so this is an entry from before the cache existed.
@@ -466,7 +495,7 @@ class RTMonWorker(
             # which is exactly the bug, but reading it is still right for an
             # entry whose enable task is somehow still attached.
             requested = self.getTaskNumber(fout.get("taskinfo"), "retention", "days", default)
-        if requested < 0 and valtoboolean(retention.get("allow_perpetual", False)):
+        if requested < 0 and allow_perpetual:
             self.logger.info("Retention is perpetual for this entry, as the task asked and the operator allows.")
             return None
         if requested <= 0:

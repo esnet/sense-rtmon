@@ -53,11 +53,23 @@ senseo_state_retire: false
 # option it was told about at the default it was told about, so a default RTMon
 # keeps to itself is one no task ever carries. The advertised number is already
 # clamped to max_days, so what the field shows is what a cancellation gets.
+# per_orchestrator overrides the same settings for one orchestrator by name, the
+# keys being those of sense_endpoints. A task's own retention.days always wins,
+# so this only sets what an instance with no say in the matter gets. A key with
+# no entry, or with only some of the settings, falls back to the global block.
+# Uncomment once a deployment wants different retention per SENSE-O, e.g. keep
+# everything off prod and pilot for seven days while dev stays at the global 0:
+#   per_orchestrator:
+#     "sense-o.es.net":
+#       default_days: 7
+#     "sense-o-pilot.es.net":
+#       default_days: 7
 dashboard_retention:
   default_days: 0
   max_days: 90
   allow_perpetual: false
   expire_per_cycle: 10
+  # per_orchestrator: {}
 
 # Read-only HTTP API serving the SiteRM debug action results RTMon caches, so
 # Grafana can chart them through the Infinity datasource and, in time, the SENSE

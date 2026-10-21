@@ -64,6 +64,16 @@ jobs:
           VALIDATE_BIOME_FORMAT: false
           # Matched against the in-container absolute path, so it needs the
           # leading wildcard.
-          FILTER_REGEX_EXCLUDE: .*/autogole-api/src/templates/.*
+          #
+          # archify-sidecar/archify-cli is vendored upstream Archify, pinned by
+          # its own VERSION file. Reformatting it would make the next version
+          # bump a merge conflict against code this repository does not own,
+          # and its licence travels with it unmodified.
+          #
+          # Biome is excluded through ./biome.json instead, not here: it is one
+          # of the tools super-linter hands the whole workspace to, so it never
+          # sees this variable. Keeping the path in both is deliberate - this
+          # one covers the linters that do take a file list.
+          FILTER_REGEX_EXCLUDE: .*/(autogole-api/src/templates|archify-sidecar/archify-cli)/.*
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -229,9 +229,9 @@ def test_disconnected_runs_stay_apart():
     """A path with an unreported transit hop keeps its two runs separate.
 
     BGP crosses ESnet, which does not expose its internals, so the manifest
-    holds two runs joined by nothing. The layout must not invent an edge, and
-    it should bring the two ESnet routers together so the region wrapping them
-    is one box rather than one that spans every site in between.
+    holds two runs joined by nothing. The layout keeps the gap column and
+    brings the two ESnet routers together, so the region wrapping them is one
+    box rather than one that spans every site in between.
     """
     print("Disconnected runs:")
     model = DeviceModel(fixture("BGP"))
@@ -243,6 +243,61 @@ def test_disconnected_runs_stay_apart():
     ir, _ = buildIR(fixture("BGP"), {}, title="x", output="x.html")
     labels = [b["label"] for b in ir["boundaries"]]
     check(labels.count("ESnet") == 1, f"they share a single ESnet region (got {labels})")
+
+
+def test_unreported_transit_is_bridged_and_marked():
+    """The gap is crossed by a dashed edge, not by a silent one.
+
+    The manifest never reported the hop between the two ESnet routers, so the
+    path would otherwise read as a circuit that stops halfway - which is what
+    made an Archify panel look broken beside a Mermaid one, where same-named
+    subgraphs merge and supply the continuity for free. The edge is drawn and
+    marked: dashed, labelled "transit", and carrying no VLAN it was not told.
+    """
+    print("Unreported transit:")
+    ir, report = buildIR(fixture("BGP"), {}, title="x", output="x.html")
+    transit = [c for c in ir["connections"] if c.get("variant") == "dashed"]
+    check(len(transit) == 1, f"exactly one inferred edge (got {len(transit)})")
+    check(report.get("transit") == 1, f"and it is reported as inferred (got {report.get('transit')})")
+    if transit:
+        check(transit[0].get("label") == "transit", f'labelled "transit" (got {transit[0].get("label")!r})')
+        check("VLAN" not in str(transit[0].get("label", "")), "and claims no VLAN")
+        ends = {transit[0]["from"], transit[0]["to"]}
+        check(all("ESnet" in e for e in ends), f"between the two ESnet routers (got {sorted(ends)})")
+
+    # The spine is now one connected chain, which is the whole point.
+    ids = {c["id"] for c in ir["components"]}
+    adj = {i: set() for i in ids}
+    for conn in ir["connections"]:
+        if conn["from"] in adj and conn["to"] in adj:
+            adj[conn["from"]].add(conn["to"])
+            adj[conn["to"]].add(conn["from"])
+    seen, stack = set(), [next(iter(ids))]
+    while stack:
+        node = stack.pop()
+        if node in seen:
+            continue
+        seen.add(node)
+        stack.extend(adj[node] - seen)
+    check(len(seen) == len(ids), f"every device is reachable from every other ({len(seen)}/{len(ids)})")
+
+
+def test_transit_is_never_invented_across_sites():
+    """Two different sites either side of a gap are left unjoined.
+
+    The bridge exists because a domain's own two routers are the same domain.
+    Two runs that end on different sites are genuinely separate pieces of the
+    path, and joining them would assert a peering the manifest never mentioned.
+    """
+    print("Cross-site gaps:")
+    ir, report = buildIR(fixture("multipoint"), {}, title="x", output="x.html")
+    for conn in ir["connections"]:
+        if conn.get("variant") != "dashed":
+            continue
+        left = conn["from"].rsplit("_", 1)[0]
+        right = conn["to"].rsplit("_", 1)[0]
+        check(left == right, f"inferred edge stays within one site ({conn['from']} -> {conn['to']})")
+    check(report.get("transit", 0) >= 0, "multipoint reports its inferred count")
 
 
 def test_long_names_are_fitted():
@@ -612,6 +667,8 @@ def main():
             test_device_collapse()
             test_no_self_links()
             test_disconnected_runs_stay_apart()
+            test_unreported_transit_is_bridged_and_marked()
+            test_transit_is_never_invented_across_sites()
             test_long_names_are_fitted()
             test_pathological_names_degrade()
             test_empty_input()

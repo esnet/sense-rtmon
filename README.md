@@ -15,6 +15,7 @@ exporters, the SiteRM frontend of each site on the path, and the manifest.
 | `autogole-api/src/python/RTMonLibs/`      | SENSE-O, SiteRM, Grafana and Prometheus clients, template rendering, warnings |
 | `autogole-api/src/templates/`             | Exported Grafana panel and dashboard JSON, with `REPLACEME` placeholders      |
 | `autogole-api/packaging/`                 | Dockerfile, the three entry points, and the default `/etc` files              |
+| `archify-sidecar/`                        | The Archify render/serve sidecar: its own image, `ghcr.io/esnet/rtmon`        |
 | `standarts/`                              | pylint and codespell configuration, used by CI and by `linter.sh`             |
 | `test/`                                   | Standalone diagram and topology fixtures                                      |
 
@@ -62,14 +63,26 @@ always runs**: `findorder()` consumes `manifest["Ports"]` as it goes, so there i
 what fills `orderlist`. Archify draws from the model that walk leaves behind rather than taking a second one, which is
 also why the two panels cannot disagree about the topology.
 
-Archify is **opt-in and off by default.** The renderer is not in this repository and not in the image: it runs in a
-sidecar container that RTMon is only an HTTP client of. Uncommenting the `archify` block in `rtmon.yaml` and deploying
-a sidecar is what turns it on. Until then RTMon draws Mermaid and says nothing — an install that has never been pointed
-at a sidecar is not a misconfigured one.
+Archify is **opt-in and off by default.** The renderer is not in the RTMon image: it runs in a sidecar container that
+RTMon is only an HTTP client of. Uncommenting the `archify` block in `rtmon.yaml` and deploying a sidecar is what turns
+it on. Until then RTMon draws Mermaid and says nothing — an install that has never been pointed at a sidecar is not a
+misconfigured one.
 
-Keeping the renderer out of this image is deliberate. It is a Node runtime and a large vendored JavaScript tree, and
-folding it in would put both in every RTMon image whether or not the operator draws this panel. As a sidecar the cost
-falls only on deployments that opt in; nothing here changes for anyone else.
+The sidecar's source is `archify-sidecar/` in this repository and its image is `ghcr.io/esnet/rtmon`, built by
+`.github/workflows/archify-image.yaml`. Two images out of one repository, deliberately: the sidecar is a Node runtime
+plus a vendored Archify render tree, and folding that into the RTMon image would put both in every RTMon deployment
+whether or not the operator draws this panel. As a separate image the cost falls only on deployments that opt in, and
+nothing in the RTMon image changes for anyone else.
+
+It is a second container in the RTMon pod rather than its own deployment, so `archify.sidecar_url` is a loopback
+address — containers in one pod share a network namespace. That is also why the sidecar listens on 8081: `http_api_port`
+above defaults to 8080 and the two cannot both have it.
+
+`archify-sidecar/archify-cli/` is vendored upstream Archify, pinned by its own `VERSION`, and is excluded from
+super-linter through `FILTER_REGEX_EXCLUDE` and from Biome through `biome.json` — Biome is handed the whole workspace
+and never sees the former. Reformatting code this repository does not own would turn the next version bump into a
+merge conflict. `THIRD_PARTY_NOTICES.md` beside it records the licences (Archify MIT, JetBrains Mono under the OFL).
+Upstream's generated brand-mark tree is deliberately emptied rather than vendored.
 
 ### The sidecar contract
 
@@ -86,9 +99,9 @@ needed to render a dashboard:
 covered by `test/test_archify.py` without any sidecar running. Anything that accepts that IR and serves the result at
 that URL will work.
 
-The reference implementation is [rtmon-archify](https://github.com/groundsada/rtmon-archify). It is a personal
-repository today; a deployment that wants this feature should expect to run an image it controls, so taking ownership
-of that repository, or writing another implementation of the three endpoints above, are both reasonable paths.
+The implementation that ships with this is `archify-sidecar/`, and `archify-sidecar/test/server.test.mjs` checks it
+against that contract with `node --test`. Writing another implementation of the three endpoints above and pointing
+`archify.sidecar_url` at it is equally valid — RTMon never learns which one answered.
 
 Being _half_-configured is different and is reported on the dashboard, because setting one of `archify.sidecar_url` and
 `archify.diagram_url_base` and not the other is someone who meant to turn this on. So is `topdiagrams: Archify` with no
@@ -120,6 +133,19 @@ script.
 
 `packaging/start-dev.sh` runs the built image locally with the repository, the config files and the certificates bind
 mounted. Deployment manifests are not in this repository.
+
+The Archify sidecar is a second image from the same repository and is built from the checkout rather than a clone, so
+it needs no branch argument:
+
+```sh
+cd archify-sidecar
+node --test test/server.test.mjs
+docker build . --tag ghcr.io/esnet/rtmon:archify-dev
+```
+
+In CI that is `.github/workflows/archify-image.yaml`, which runs those tests, builds, and pushes `<tag>-<date>` then
+the moving `<tag>` to `ghcr.io/esnet/rtmon` using the job's own `GITHUB_TOKEN`. It only fires for changes under
+`archify-sidecar/`, because nothing else in this repository can change that image.
 
 ## Linting
 

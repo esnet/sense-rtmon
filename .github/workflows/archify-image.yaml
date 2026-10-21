@@ -1,0 +1,89 @@
+# Build the Archify sidecar image and push it to ghcr.io/esnet/rtmon.
+#
+# Separate from docker.yaml because the two publish different things to
+# different registries: that one builds the RTMon image onto Docker Hub from a
+# Dockerfile that clones this repository, this one builds the sidecar out of
+# the checkout and pushes it to the organisation's own registry. Keeping them
+# apart also means a sidecar build cannot fail an RTMon release.
+#
+# GITHUB_TOKEN rather than a registry secret: the package lives under the same
+# organisation as this repository, so packages:write on the job is the whole
+# credential and there is nothing to rotate.
+name: Archify Sidecar Image
+
+on: # checkov:skip=CKV_GHA_7 User input is controlled and selects the image tag only
+  workflow_dispatch:
+    inputs:
+      buildtag:
+        description: "Image tag (e.g. archify-prod)"
+        default: "archify-dev"
+        type: "string"
+  # Only when the sidecar itself changes. The RTMon half of this repository
+  # cannot affect this image, so building on every push would publish a new
+  # digest that is byte-identical to the last one.
+  push:
+    branches:
+      - master
+    paths:
+      - "archify-sidecar/**"
+      - ".github/workflows/archify-image.yaml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # What lets GITHUB_TOKEN push to ghcr.io/esnet.
+      packages: write
+    steps:
+      - name: Checkout
+        # Pinned to a SHA rather than a tag, as everything else here is:
+        # zizmor's unpinned-uses audit treats a mutable tag as an error.
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Sidecar tests
+        # node --test over the file rather than the directory: the directory
+        # holds fixtures as well, and the runner treats every file it walks as
+        # a test file.
+        run: |
+          cd archify-sidecar
+          node --test test/server.test.mjs
+
+      - name: Log in to ghcr.io
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Computed once, through the environment rather than interpolated into
+      # the shell (zizmor template-injection), so every push below names the
+      # same image.
+      - name: Resolve image tags
+        env:
+          BUILD_TAG: ${{ github.event.inputs.buildtag || 'archify-dev' }}
+        run: |
+          {
+            echo "IMAGE_TAG=ghcr.io/esnet/rtmon:${BUILD_TAG}"
+            echo "IMAGE_TAG_DATED=ghcr.io/esnet/rtmon:${BUILD_TAG}-$(date +%Y%m%d)"
+          } >> "$GITHUB_ENV"
+
+      - name: Build the sidecar image
+        run: |
+          cd archify-sidecar
+          docker build . --file Dockerfile --platform linux/amd64 --tag "$IMAGE_TAG_DATED"
+
+      - name: Push the dated tag
+        run: docker push "$IMAGE_TAG_DATED"
+
+      # The moving tag second, so a deployment that pulls it never points at a
+      # digest the dated tag does not also name.
+      - name: Push the moving tag
+        run: |
+          docker tag "$IMAGE_TAG_DATED" "$IMAGE_TAG"
+          docker push "$IMAGE_TAG"

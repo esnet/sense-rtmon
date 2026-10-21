@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "NRP fixture",
+    "output": "topology.html",
+    "quality_profile": "standard",
+    "viewBox": [320, 610],
+    "views": [
+      {
+        "id": "full-path",
+        "label": "Full path",
+        "focus": [
+          "T2_US_SDSC_k8s_gen5_02_sdsc_optiputer_net",
+          "T2_US_SDSC_edgecore_s0",
+          "T2_US_SDSC_k8s_gen5_01_sdsc_optiputer_net"
+        ],
+        "note": "Every device the reservation crosses, end to end."
+      },
+      {
+        "id": "site-0",
+        "label": "T2_US_SDSC",
+        "focus": [
+          "T2_US_SDSC_k8s_gen5_02_sdsc_optiputer_net",
+          "T2_US_SDSC_edgecore_s0",
+          "T2_US_SDSC_k8s_gen5_01_sdsc_optiputer_net"
+        ],
+        "note": "Devices T2_US_SDSC contributes to this path."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "T2_US_SDSC_k8s_gen5_02_sdsc_optiputer_net",
+      "type": "external",
+      "label": "k8s-gen5-02",
+      "pos": [48, 96],
+      "size": [190, 68],
+      "sublabel": "enp168s0np0",
+      "tag": "VLAN 3110"
+    },
+    {
+      "id": "T2_US_SDSC_edgecore_s0",
+      "type": "cloud",
+      "label": "edgecore_s0",
+      "pos": [48, 244],
+      "size": [190, 68],
+      "sublabel": "Ethernet40, Ethernet32",
+      "tag": "VLAN 3110"
+    },
+    {
+      "id": "T2_US_SDSC_k8s_gen5_01_sdsc_optiputer_net",
+      "type": "external",
+      "label": "k8s-gen5-01",
+      "pos": [48, 392],
+      "size": [190, 68],
+      "sublabel": "enp168s0np0",
+      "tag": "VLAN 3110"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "T2_US_SDSC",
+      "wraps": [
+        "T2_US_SDSC_k8s_gen5_02_sdsc_optiputer_net",
+        "T2_US_SDSC_edgecore_s0",
+        "T2_US_SDSC_k8s_gen5_01_sdsc_optiputer_net"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "T2_US_SDSC_k8s_gen5_02_sdsc_optiputer_net-T2_US_SDSC_edgecore_s0",
+      "from": "T2_US_SDSC_k8s_gen5_02_sdsc_optiputer_net",
+      "to": "T2_US_SDSC_edgecore_s0",
+      "variant": "default",
+      "label": "Ethernet40",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [143.0, 204.0]
+    },
+    {
+      "id": "T2_US_SDSC_k8s_gen5_01_sdsc_optiputer_net-T2_US_SDSC_edgecore_s0",
+      "from": "T2_US_SDSC_k8s_gen5_01_sdsc_optiputer_net",
+      "to": "T2_US_SDSC_edgecore_s0",
+      "variant": "default",
+      "label": "Ethernet32",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelAt": [143.0, 352.0]
+    }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Reservation", "items": ["VLAN 3110"] },
+    {
+      "dot": "emerald",
+      "title": "Endpoints",
+      "items": [
+        "k8s-gen5-02.sdsc.optiputer.net: enp168s0np0 \u00b7 58:a2:e1:0b:34:3a",
+        "k8s-gen5-01.sdsc.optiputer.net: enp168s0np0 \u00b7 a0:88:c2:86:ee:7c"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Path",
+      "items": ["T2_US_SDSC edgecore_s0: Ethernet40, Ethernet32"]
+    }
+  ]
+}

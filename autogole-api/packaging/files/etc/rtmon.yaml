@@ -123,9 +123,10 @@ topdiagrams: Both
 # Archify topology panel. OFF until archify.sidecar_url and
 # archify.diagram_url_base are both set to something real - the block below is
 # commented out, and uncommenting it is what turns the feature on. The archify
-# runtime lives in a sidecar container (render + serve), not this repo, so
-# this is also a deployment change and not only a config one; the README's
-# topology section writes out the endpoints a sidecar has to implement.
+# runtime lives in a sidecar container (render + serve) built from
+# archify-sidecar/ in this repo and published as ghcr.io/esnet/rtmon, so this
+# is also a deployment change and not only a config one; the README's topology
+# section writes out the endpoints a sidecar has to implement.
 #
 # Half-configured is not the same as unconfigured and does warn on the
 # dashboard: setting one of the two URLs and not the other is a mistake worth

@@ -1,0 +1,14 @@
+{
+  "name": "rtmon-archify-sidecar",
+  "version": "0.0.1",
+  "description": "Renders and serves Archify topology artifacts for ESnet SENSE RTMon, as a sidecar.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test"
+  }
+}

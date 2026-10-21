@@ -8,6 +8,14 @@
 # RTMon pod - see the topology section of the README.
 FROM node:22-alpine
 
+# What links the published package to this repository on ghcr.io. Without it
+# the package is owned by whoever first pushed it and the repository's own
+# GITHUB_TOKEN is refused with "denied: permission_denied: write_package", so
+# the build that is supposed to maintain the image cannot.
+LABEL org.opencontainers.image.source="https://github.com/esnet/sense-rtmon"
+LABEL org.opencontainers.image.description="Archify render/serve sidecar for RTMon"
+LABEL org.opencontainers.image.licenses="MIT"
+
 WORKDIR /app
 COPY package.json server.mjs archify-entry.mjs ./
 COPY archify-cli ./archify-cli

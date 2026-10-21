@@ -552,6 +552,61 @@ def _connections(model, placement, ids, budget):
     return out
 
 
+def _transitConnections(model, placement, ids, budget):
+    """Dashed edges across the gaps a domain's own transit leaves behind.
+
+    A domain that does not expose its internals - ESnet and Internet2 are the
+    usual ones - reports the two ports the path enters and leaves on and
+    nothing in between, so the spine arrives as two runs with no link joining
+    them. Drawing nothing there is accurate about the manifest and misleading
+    about the path: the reservation does cross from one of those routers to the
+    other, and a reader comparing this with the Mermaid panel sees a circuit
+    that appears to stop halfway. Mermaid gets the continuity for free, because
+    it emits one subgraph per port and same-named subgraphs merge, so both
+    routers end up inside one domain box.
+
+    So the edge is drawn, and marked for what it is: dashed, and labelled
+    rather than carrying a VLAN it was never told. Only between two switches of
+    the same site that the layout has already placed either side of one gap
+    column, which is where _orientSegments puts the facing ends of two runs -
+    never between sites, and never where the manifest did report a link.
+    """
+    out = []
+    spine = sorted(
+        (key for key in model.switches() if key in placement),
+        key=lambda key: placement[key][1],
+    )
+    # zip over the offset slice, not itertools.pairwise: the image runs
+    # python 3.9 and pairwise arrived in 3.10, so ruff's RUF007 suggestion
+    # here would be an ImportError in production.
+    for keya, keyb in zip(spine, spine[1:]):
+        if model.devices[keya]["site"] != model.devices[keyb]["site"]:
+            continue
+        if tuple(sorted((keya, keyb))) in model.links:
+            continue
+        # Adjacent cells are a layout the renderer routes cleanly; anything
+        # wider means another device sits between them and the edge would run
+        # across it.
+        if placement[keyb][1] - placement[keya][1] != 2:
+            continue
+        conn = {
+            "id": f"{ids[keya]}-{ids[keyb]}-transit",
+            "from": ids[keya],
+            "to": ids[keyb],
+            "variant": "dashed",
+        }
+        label = _fit("transit", budget["conn"])
+        if label:
+            conn["label"] = label
+        sides, anchor, _ = _routeHints(placement[keya], placement[keyb])
+        if sides:
+            conn["fromSide"], conn["toSide"] = sides
+            if label:
+                conn["labelAt"] = anchor
+        out.append(conn)
+    return out
+
+
 def _boundaries(model, placement, ids):
     """One region per contiguous run of columns a site owns.
 
@@ -731,10 +786,16 @@ def buildIR(orderlist, instance, **kwargs):
     ids = {key: _componentId(key, used) for key in model.order}
     components = _components(model, placement, ids, budget)
     connections = _connections(model, placement, ids, budget)
+    transit = _transitConnections(model, placement, ids, budget)
+    connections += transit
     report = {
         "devices": len(components),
         "dropped": [_shortname(key) for key in dropped],
+        # Reported apart from the links the manifest actually carried, so a
+        # caller can tell a path that was fully described from one this had to
+        # bridge.
         "links": len(connections),
+        "transit": len(transit),
     }
     if not components:
         return None, report

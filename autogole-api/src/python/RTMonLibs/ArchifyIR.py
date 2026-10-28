@@ -340,10 +340,28 @@ def _orientSegments(model, segments):
     across every site in between. Flipping the next run so its ESnet end faces
     the previous one puts them side by side, which is both where they belong
     and what keeps the region a single tight box.
+
+    The first run has to be oriented too, which is less obvious. Each run is
+    walked from an end, and which end is whichever the seed search reached
+    first - so the shared site can just as easily come out at the head of run
+    one as at its tail. Then no later run faces it, every flip below falls
+    through to the default, and the two routers sit at opposite ends with a
+    long edge between them that the renderer rejects outright for crossing the
+    devices in between. The real SDSC-to-FNAL reservations are this shape:
+    reversed, run one ends on ESnet, the FNAL run faces it, and the pair
+    becomes the adjacent-with-a-gap case everything downstream expects.
     """
     if len(segments) < 2:
         return segments
-    ordered = [segments[0]]
+    first = segments[0]
+    # Only flip to gain a neighbour that was not already there: if the tail
+    # site is matched by some other run, the orientation is already the one
+    # that pairs up, and reversing it would just read the path backwards.
+    if len(first) > 1:
+        endsites = {model.devices[seg[0]]["site"] for seg in segments[1:]} | {model.devices[seg[-1]]["site"] for seg in segments[1:]}
+        if model.devices[first[-1]]["site"] not in endsites and model.devices[first[0]]["site"] in endsites:
+            first = list(reversed(first))
+    ordered = [first]
     pool = list(segments[1:])
     while pool:
         tailsite = model.devices[ordered[-1][-1]]["site"]

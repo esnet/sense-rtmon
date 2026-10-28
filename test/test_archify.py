@@ -41,7 +41,7 @@ sys.path.insert(0, os.path.join(ROOT, "autogole-api", "src", "python"))
 # some of it only inside the harness that builds a minimal RTMon worker.
 from RTMonLibs.ArchifyIR import DeviceModel, buildIR, placeDevices  # noqa: E402  pylint: disable=wrong-import-position
 
-FIXTURES = ("NRP", "BGP", "Debug", "multipoint")
+FIXTURES = ("NRP", "BGP", "Branch", "Debug", "multipoint")
 TOKEN = "test-token-123"
 
 FAILURES = []
@@ -280,6 +280,56 @@ def test_unreported_transit_is_bridged_and_marked():
         seen.add(node)
         stack.extend(adj[node] - seen)
     check(len(seen) == len(ids), f"every device is reachable from every other ({len(seen)}/{len(ids)})")
+
+
+def test_the_first_run_is_flipped_to_face_the_next():
+    """A run whose shared site came out at its head is reversed, not left.
+
+    Branch is a real SDSC-to-FNAL reservation and the shape that exposed this.
+    Its long run is walked from losa-cr6, so ESnet lands in column 0 while its
+    other router sits six columns away past CENIC, OASIS and a second SDSC
+    switch. No later run faces column 0, every flip falls through to the
+    default, and the two routers end up at opposite ends - so the bridge
+    between them either does not happen or spans the whole diagram, and a span
+    like that is refused by the renderer's edge-through-node rule rather than
+    drawn. Three of the thirty-seven paths RTMon had stored were this shape.
+
+    Reversed, the run ends on ESnet, the FNAL run faces it, and the pair is
+    the ordinary either-side-of-one-gap case. The assertions are therefore
+    about distance: close enough to bridge, and close enough to render.
+    """
+    print("First run orientation:")
+    model = DeviceModel(fixture("Branch"))
+    placement, _ = placeDevices(model)
+    esnet = sorted(placement[k][1] for k in model.order if model.devices[k]["site"] == "ESnet")
+    check(len(esnet) == 2, f"Branch has two ESnet devices (got {len(esnet)})")
+    if len(esnet) == 2:
+        check(esnet[1] - esnet[0] == 2, f"facing each other across one gap column (got columns {esnet})")
+
+    ir, report = buildIR(fixture("Branch"), {}, title="x", output="x.html")
+    transit = [c for c in ir["connections"] if c.get("variant") == "dashed"]
+    check(len(transit) == 1, f"one inferred edge for the one crossing (got {len(transit)})")
+    check(report.get("transit") == 1, f"and it is reported (got {report.get('transit')})")
+    if transit:
+        ends = {transit[0]["from"], transit[0]["to"]}
+        check(all("ESnet" in e for e in ends), f"between the two ESnet routers (got {sorted(ends)})")
+    labels = [b["label"] for b in ir["boundaries"]]
+    check(labels.count("ESnet") == 1, f"and they share a single ESnet region (got {labels})")
+
+    ids = {c["id"] for c in ir["components"]}
+    adj = {i: set() for i in ids}
+    for conn in ir["connections"]:
+        if conn["from"] in adj and conn["to"] in adj:
+            adj[conn["from"]].add(conn["to"])
+            adj[conn["to"]].add(conn["from"])
+    seen, stack = set(), [next(iter(ids))]
+    while stack:
+        node = stack.pop()
+        if node in seen:
+            continue
+        seen.add(node)
+        stack.extend(adj[node] - seen)
+    check(len(seen) == len(ids), f"the whole diagram is one piece (got {len(seen)}/{len(ids)})")
 
 
 def test_transit_is_never_invented_across_sites():
@@ -668,6 +718,7 @@ def main():
             test_no_self_links()
             test_disconnected_runs_stay_apart()
             test_unreported_transit_is_bridged_and_marked()
+            test_the_first_run_is_flipped_to_face_the_next()
             test_transit_is_never_invented_across_sites()
             test_long_names_are_fitted()
             test_pathological_names_degrade()
